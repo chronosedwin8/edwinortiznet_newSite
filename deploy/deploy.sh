@@ -11,7 +11,7 @@ git fetch --quiet origin main
 git reset --quiet --hard origin/main
 
 echo "→ Dependencias"
-$PHP /usr/local/bin/composer install --quiet --no-dev --optimize-autoloader --no-interaction 2>/dev/null
+$PHP -d display_errors=0 /usr/local/bin/composer install --quiet --no-dev --optimize-autoloader --no-interaction 2>/dev/null
 
 echo "→ Migraciones"
 $PHP bin/console migrate
