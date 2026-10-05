@@ -163,6 +163,19 @@ final class PaymentsTest extends TestCase
 
     // ------------------------------------------------------------ Mercado Pago
 
+    public function testDisabledGatewaysAreHiddenFromCheckout(): void
+    {
+        \App\Core\Config::set('GATEWAYS_DISABLED', 'Wompi, paypal');
+        try {
+            $this->assertSame(['mercadopago'], GatewayResolver::allowed('es'));
+            $this->assertSame([], GatewayResolver::allowed('en'));
+            $this->assertFalse(GatewayResolver::isAllowed('es', 'wompi'));
+        } finally {
+            \App\Core\Config::set('GATEWAYS_DISABLED', '');
+        }
+        $this->assertSame(['mercadopago', 'wompi'], GatewayResolver::allowed('es'));
+    }
+
     public function testMercadoPagoFullFlowValidSignatureApprovesAndDelivers(): void
     {
         [$response, $order] = $this->checkout('es', 'mercadopago');

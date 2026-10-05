@@ -37,10 +37,16 @@ final class GatewayResolver
         self::$overrides[$name] = $gateway;
     }
 
-    /** @return string[] */
+    /**
+     * Pasarelas ofrecidas en el idioma. GATEWAYS_DISABLED (lista separada por comas) oculta las que aún
+     * no tienen credenciales de producción, sin tocar el código.
+     *
+     * @return string[]
+     */
     public static function allowed(string $locale): array
     {
-        return self::BY_LOCALE[$locale] ?? [];
+        $disabled = array_filter(array_map('trim', explode(',', strtolower((string) \App\Core\Config::get('GATEWAYS_DISABLED', '')))));
+        return array_values(array_diff(self::BY_LOCALE[$locale] ?? [], $disabled));
     }
 
     public static function currency(string $locale): string
