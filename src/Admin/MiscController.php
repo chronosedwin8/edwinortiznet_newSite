@@ -29,10 +29,10 @@ final class MiscController extends AdminBase
     {
         $fh = fopen('php://temp', 'r+');
         fwrite($fh, "\xEF\xBB\xBF"); // BOM para que Excel abra bien los acentos
-        fputcsv($fh, $header, ';');
+        fputcsv($fh, $header, ';', '"', '');
         foreach ($rows as $row) {
             // Evita inyección de fórmulas al abrir en Excel.
-            fputcsv($fh, array_map(fn ($v) => is_string($v) && preg_match('/^[=+\-@]/', $v) ? "'" . $v : $v, array_values($row)), ';');
+            fputcsv($fh, array_map(fn ($v) => is_string($v) && preg_match('/^[=+\-@]/', $v) ? "'" . $v : $v, array_values($row)), ';', '"', '');
         }
         rewind($fh);
         $body = (string) stream_get_contents($fh);

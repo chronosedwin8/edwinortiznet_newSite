@@ -28,6 +28,11 @@ final class App
             if (!(error_reporting() & $severity)) {
                 return false;
             }
+            // Un aviso de obsolescencia de una versión nueva de PHP no debe tumbar una página: solo se registra.
+            if ($severity & (E_DEPRECATED | E_USER_DEPRECATED)) {
+                error_log("PHP Deprecated: $message in $file:$line");
+                return true;
+            }
             throw new \ErrorException($message, 0, $severity, $file, $line);
         });
         self::$router = null;
