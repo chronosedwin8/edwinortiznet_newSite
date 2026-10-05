@@ -1,0 +1,12 @@
+/vendor/
+/.env
+/storage/import/*.xml
+/storage/downloads/*
+!/storage/downloads/.gitkeep
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+/public/assets/uploads/
+/.phpunit.cache/
+/node_modules/

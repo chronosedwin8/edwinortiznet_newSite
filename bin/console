@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/*
+ * Consola de edwinortiz.net
+ *   php bin/console migrate [--fresh]     Crea/actualiza el esquema
+ *   php bin/console import:wxr            Importa los XML de storage/import (idempotente)
+ *   php bin/console seed                  Ejecuta los seeds (editorial, tienda, redirecciones, traducciones)
+ *   php bin/console downloads:check       Lista productos sin archivo local
+ *   php bin/console sitemap:build         Regenera storage/cache/sitemap.xml
+ *   php bin/console admin:create          Crea un usuario del panel
+ *   php bin/console orders:reconcile      Consulta pedidos pendientes en la pasarela (cron)
+ *   php bin/console cache:clear           Vacía la caché de página
+ *   php bin/console routes:check          Recorre los slugs importados y verifica 200
+ */
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+App\Core\App::boot(dirname(__DIR__));
+
+exit((new App\Console\Kernel())->run(array_slice($argv, 1)));

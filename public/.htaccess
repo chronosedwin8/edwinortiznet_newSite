@@ -1,0 +1,50 @@
+# edwinortiz.net — Apache (equivalente a deploy/nginx.conf)
+Options -Indexes -MultiViews
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Producción: forzar HTTPS y www (descomentar en el servidor)
+    # RewriteCond %{HTTPS} off [OR]
+    # RewriteCond %{HTTP_HOST} !^www\. [NC]
+    # RewriteRule ^ https://www.edwinortiz.net%{REQUEST_URI} [L,R=301]
+
+    # Bloquear archivos ocultos y de configuración
+    RewriteRule (^|/)\. - [F,L]
+
+    # Archivos estáticos existentes se sirven directamente
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Todo lo demás al front controller
+    RewriteRule ^ index.php [L,QSA]
+</IfModule>
+
+# Cabecera Authorization (PayPal/Mercado Pago no la usan en webhooks, pero se conserva)
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml application/javascript text/javascript application/json application/xml application/rss+xml image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|woff2|svg)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+        Header set X-Content-Type-Options "nosniff"
+    </FilesMatch>
+</IfModule>
+
+AddType font/woff2 .woff2
+AddType text/javascript .js .mjs

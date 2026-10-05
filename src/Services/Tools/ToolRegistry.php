@@ -1,0 +1,62 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Services\Tools;
+
+/**
+ * Herramientas gratuitas. Los textos viven en lang/*.php; aquí solo la estructura.
+ */
+final class ToolRegistry
+{
+    /** clave => [slug por idioma, producto relacionado (wp_id), script] */
+    private const TOOLS = [
+        'qr' => [
+            'slugs' => ['es' => 'generador-qr', 'en' => 'qr-code-generator'],
+            'product_wp_id' => 409,
+            'script' => 'js/tools/qr-tool.js',
+        ],
+        'words' => [
+            'slugs' => ['es' => 'numero-a-letras', 'en' => 'number-to-words'],
+            'product_wp_id' => 396,
+            'script' => 'js/tools/words-tool.js',
+        ],
+        'quiz' => [
+            'slugs' => ['es' => 'simulacro-concurso-docente'],
+            'product_wp_id' => null,
+            'product_key' => 'kit-concurso-docente-2027',
+            'script' => 'js/tools/quiz-tool.js',
+        ],
+    ];
+
+    public static function forLocale(string $locale): array
+    {
+        $out = [];
+        foreach (self::TOOLS as $key => $tool) {
+            if (!isset($tool['slugs'][$locale])) {
+                continue;
+            }
+            $out[] = $tool + ['key' => $key, 'slug' => $tool['slugs'][$locale]];
+        }
+        return $out;
+    }
+
+    public static function bySlug(string $locale, string $slug): ?array
+    {
+        foreach (self::forLocale($locale) as $tool) {
+            if ($tool['slug'] === $slug) {
+                return $tool;
+            }
+        }
+        return null;
+    }
+
+    public static function alternates(string $key): array
+    {
+        $out = [];
+        foreach (self::TOOLS[$key]['slugs'] ?? [] as $locale => $slug) {
+            $out[$locale] = route('tool', ['slug' => $slug], $locale);
+        }
+        return $out;
+    }
+}

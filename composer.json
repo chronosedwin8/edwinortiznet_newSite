@@ -1,0 +1,29 @@
+{
+    "name": "edwinortiz/edwinortiz-net",
+    "description": "edwinortiz.net: blog, herramientas y tienda de descargas digitales (ES/EN)",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.2",
+        "ext-pdo": "*",
+        "ext-curl": "*",
+        "ext-mbstring": "*",
+        "ext-intl": "*",
+        "ext-simplexml": "*",
+        "ext-dom": "*",
+        "phpmailer/phpmailer": "^6.9",
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": { "App\\": "src/" },
+        "files": ["src/helpers.php"]
+    },
+    "autoload-dev": {
+        "psr-4": { "Tests\\": "tests/" }
+    },
+    "config": { "sort-packages": true, "optimize-autoloader": true },
+    "scripts": { "test": "phpunit" }
+}
