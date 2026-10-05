@@ -41,7 +41,8 @@ final class Request
     {
         $path = (string) parse_url($uri, PHP_URL_PATH);
         parse_str((string) parse_url($uri, PHP_URL_QUERY), $query);
-        return new self(strtoupper($method), $path === '' ? '/' : $path, $query, $post, $server + ['REMOTE_ADDR' => '127.0.0.1'], $cookies, [], $body);
+        $server += ['REMOTE_ADDR' => '127.0.0.1', 'QUERY_STRING' => (string) parse_url($uri, PHP_URL_QUERY)];
+        return new self(strtoupper($method), $path === '' ? '/' : $path, $query, $post, $server, $cookies, [], $body);
     }
 
     public function body(): string

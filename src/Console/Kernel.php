@@ -33,10 +33,13 @@ final class Kernel
                 'import:wxr' => $this->import($options),
                 'seed' => $this->seed($options),
                 'downloads:check' => $this->downloadsCheck(),
+                'downloads:fetch' => $this->downloadsFetch(),
                 'sitemap:build' => $this->sitemap(),
                 'admin:create' => $this->adminCreate($options),
                 'orders:reconcile' => $this->reconcile(),
                 'cache:clear' => $this->cacheClear(),
+                'mail:test' => $this->mailTest($options),
+                'mail:ses-password' => $this->sesPassword($options),
                 'routes:check' => $this->routesCheck(),
                 default => $this->help(),
             };
@@ -48,7 +51,7 @@ final class Kernel
 
     private function help(): int
     {
-        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, sitemap:build, admin:create, orders:reconcile, cache:clear, routes:check');
+        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check');
         return 0;
     }
 
@@ -122,6 +125,15 @@ final class Kernel
         return 0;
     }
 
+    private function downloadsFetch(): int
+    {
+        foreach (DownloadService::fetchMissing() as $row) {
+            $this->out(sprintf('  %-12s %s', $row['status'], $row['file']));
+        }
+        \App\Core\Cache::flushPages();
+        return $this->downloadsCheck();
+    }
+
     private function sitemap(): int
     {
         $xml = Sitemap::build();
@@ -167,6 +179,32 @@ final class Kernel
     {
         $result = (new Reconciler())->run();
         $this->out(sprintf('Pedidos consultados: %d, actualizados: %d, anulados por vencimiento: %d.', $result['checked'], $result['updated'], $result['voided']));
+        return 0;
+    }
+
+    private function mailTest(array $options): int
+    {
+        $to = $options[0] ?? (string) Config::get('ADMIN_EMAIL', '');
+        if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+            $this->out('Uso: php bin/console mail:test correo@dominio.com');
+            return 1;
+        }
+        $ok = \App\Core\Mailer::send($to, 'Prueba de correo de edwinortiz.net', '<p>Si lees esto, el envío funciona.</p>', 'Si lees esto, el envío funciona.');
+        $this->out(($ok ? 'Enviado' : 'Falló (revisa storage/logs)') . ' con MAIL_DRIVER=' . Config::get('MAIL_DRIVER'));
+        return $ok ? 0 : 1;
+    }
+
+    /** Contraseña SMTP de Amazon SES a partir de la clave secreta IAM (algoritmo SigV4 de AWS). */
+    private function sesPassword(array $options): int
+    {
+        $region = $options[0] ?? 'us-east-1';
+        $secret = $this->ask('Clave secreta IAM: ', true);
+        $sig = hash_hmac('sha256', '11111111', 'AWS4' . $secret, true);
+        foreach ([$region, 'ses', 'aws4_request', 'SendRawEmail'] as $part) {
+            $sig = hash_hmac('sha256', $part, $sig, true);
+        }
+        $this->out('MAIL_HOST=email-smtp.' . $region . '.amazonaws.com');
+        $this->out('MAIL_PASSWORD=' . base64_encode("" . $sig));
         return 0;
     }
 

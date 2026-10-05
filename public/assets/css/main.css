@@ -343,3 +343,4 @@ body.has-sticky-buy .whatsapp-float { bottom: 84px; }
 /* ---------- Rendimiento: el navegador omite el trabajo de lo que está fuera de pantalla ---------- */
 .site-footer, .article__footer, .siblings, .section--tint, .product-details, .faq { content-visibility: auto; contain-intrinsic-size: auto 600px; }
 .prose figure, .prose .product-inline, .prose .product-grid { content-visibility: auto; contain-intrinsic-size: auto 320px; }
+legend.section__title { font-family: var(--font-head); font-weight: 600; line-height: 1.15; padding: 0; }

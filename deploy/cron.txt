@@ -1,0 +1,9 @@
+# edwinortiz.net — tareas programadas (crontab -e del usuario que ejecuta PHP)
+# Ajusta /var/www/edwinortiz a la ruta real del proyecto.
+
+# Cada 10 minutos: consulta en la pasarela los pedidos pendientes de más de 15 minutos
+# y anula los que llevan más de 24 horas sin pago.
+*/10 * * * * cd /var/www/edwinortiz && php bin/console orders:reconcile >> storage/logs/cron.log 2>&1
+
+# Cada noche: regenera el sitemap.
+15 3 * * * cd /var/www/edwinortiz && php bin/console sitemap:build >> storage/logs/cron.log 2>&1
