@@ -100,6 +100,8 @@ El simulacro propio se retiró. La página `/herramientas/simulacro-concurso-doc
 9. **Artículo de Wompi:** critica a Wompi, que es una de las pasarelas del sitio. Decide si actualizarlo (ver `EVALUACION_CONTENIDO.md`).
 10. **Artículos de Grupo Logic:** revisa los 7 artículos nuevos de la sección Docentes (datos de cada producto, enlaces y la nota sobre grados de VCodePro).
 
+11. **Serie de pasarelas (Mercado Pago y Paddle):** dos artículos nuevos de experiencia propia, enlazados entre sí y con el de Wompi (`database/seeds/data/mercado-pago.php` y `paddle.php`). Revisa que los hechos coincidan con lo que viviste. Ten en cuenta que el sitio cobra en español con Mercado Pago y Wompi, que son pasarelas que critican los propios artículos: para ventas grandes conviene ofrecer también transferencia con factura electrónica.
+
 ## C. Antes de apagar WordPress
 
 1. **Archivos de producto:** ya están copiados en `storage/downloads/` en este equipo (19 archivos, 78 MB). En el servidor nuevo, ejecuta `php bin/console downloads:fetch` mientras WordPress siga en línea, o copia la carpeta `storage/downloads/`.
