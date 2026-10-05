@@ -1,0 +1,3 @@
+# Protección: nada fuera de public/ debe servirse por web (.env, storage, src, vendor…).
+# El sitio se sirve con DocumentRoot en public/ (ver deploy/nginx.conf y public/.htaccess).
+Require all denied

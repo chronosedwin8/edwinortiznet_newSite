@@ -1,5 +1,8 @@
 # edwinortiz.net — Apache (equivalente a deploy/nginx.conf)
 Options -Indexes -MultiViews
+
+# Anula el "Require all denied" de la carpeta superior: solo public/ es accesible.
+Require all granted
 DirectoryIndex index.php
 
 <IfModule mod_rewrite.c>
