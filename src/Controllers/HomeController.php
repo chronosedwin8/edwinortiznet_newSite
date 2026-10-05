@@ -34,6 +34,7 @@ final class HomeController extends Controller
 
         return $this->page('pages/home', [
             'bestSellers' => Product::bestSellers($locale, 6),
+            'salesTotal' => (int) \App\Core\DB::value('SELECT COALESCE(SUM(legacy_sales + sales_count), 0) FROM products'),
             'tools' => ToolRegistry::forLocale($locale),
             'hubs' => $hubs,
             'latest' => $latest ?? [],

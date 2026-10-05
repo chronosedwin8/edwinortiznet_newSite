@@ -113,3 +113,22 @@ function icon(string $name, string $class = 'icon'): string
 {
     return '<svg class="' . e($class) . '" aria-hidden="true" focusable="false"><use href="' . e(asset('img/icons.svg')) . '#' . e($name) . '"></use></svg>';
 }
+
+/** Resumen de producto para tarjetas: sin URLs sueltas; si el texto corto solo repite el título, usa la descripción. */
+function product_blurb(array $product, int $length = 110): string
+{
+    $clean = static fn (?string $html): string => trim(preg_replace(
+        ['#https?://\S+#u', '/\b(ver m[aá]s|see more)\s*[:;]?/iu', '/\s+/u'],
+        [' ', ' ', ' '],
+        html_entity_decode(strip_tags((string) $html), ENT_QUOTES | ENT_HTML5, 'UTF-8')
+    ) ?? '');
+    $short = $clean($product['short_html'] ?? '');
+    $title = mb_strtolower(trim((string) ($product['title'] ?? '')));
+    if (mb_strlen($short) < 40 || str_starts_with(mb_strtolower($short), $title) && mb_strlen($short) < mb_strlen($title) + 30) {
+        $long = $clean($product['description_html'] ?? '');
+        if (mb_strlen($long) > mb_strlen($short)) {
+            $short = str_starts_with(mb_strtolower($long), $title) ? trim(mb_substr($long, mb_strlen($title)), " :.-–") : $long;
+        }
+    }
+    return excerpt_text($short, $length);
+}

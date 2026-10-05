@@ -8,7 +8,7 @@ $href = product_path($product);
   <div class="product-inline__body">
     <p class="eyebrow"><?= e($product['status'] === 'coming_soon' ? t('post.product_soon') : t('post.product_eyebrow')) ?></p>
     <p class="product-inline__title"><a href="<?= e($href) ?>"><?= e($product['title']) ?></a></p>
-    <?php if (!empty($product['short_html'])): ?><p class="product-inline__text"><?= e(excerpt_text($product['short_html'], 140)) ?></p><?php endif; ?>
+    <p class="product-inline__text"><?= e(product_blurb($product, 140)) ?></p>
     <div class="product-inline__foot">
       <?= \App\Core\View::render('partials/price', ['product' => $product, 'size' => 'sm']) ?>
       <a class="btn btn--buy btn--sm" href="<?= e($href) ?>"><?= e($product['status'] === 'coming_soon' ? t('product.notify_short') : t('post.product_cta')) ?></a>

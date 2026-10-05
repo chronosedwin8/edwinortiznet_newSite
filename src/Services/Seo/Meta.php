@@ -57,7 +57,7 @@ final class Meta
         $noindex = !empty($meta['noindex']) || Config::bool('NOINDEX');
         $meta['robots'] = $noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large';
         $meta['og_type'] ??= 'website';
-        $meta['image'] = $meta['image'] ?? url('/assets/img/og-default.png');
+        $meta['image'] = $meta['image'] ?? url($locale === 'en' ? '/assets/img/og-default-en.png' : '/assets/img/og-default.png');
         $meta['og_locale'] = I18n::meta('og');
         $meta['og_locale_alternate'] = $meta['alternates'] ? I18n::meta('og', I18n::other()) : null;
         $meta['html_lang'] = I18n::meta('html');

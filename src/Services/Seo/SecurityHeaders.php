@@ -14,7 +14,7 @@ use App\Core\Response;
 final class SecurityHeaders
 {
     /** Script en línea que fija el tema antes de pintar (evita el parpadeo claro/oscuro). */
-    public const THEME_SCRIPT = "(function(){try{var t=localStorage.getItem('eo-theme');if(t==='dark'||t==='light'){document.documentElement.dataset.theme=t}}catch(e){}document.documentElement.classList.add('js')})();";
+    public const THEME_SCRIPT = "(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('eo-theme');if(t==='dark'||t==='light'){d.dataset.theme=t}if(localStorage.getItem('eo-consent')==='all'){d.classList.add('consent-ok')}}catch(e){}})();";
 
     public static function scriptHash(string $script): string
     {

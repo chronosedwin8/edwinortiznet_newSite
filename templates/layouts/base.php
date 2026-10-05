@@ -70,7 +70,9 @@ $locale = $meta['locale'];
 <body class="<?= e($meta['body_class'] ?? '') ?>"
       data-ga="<?= e((string) Config::get('GA4_ID', '')) ?>"
       data-adsense="<?= !empty($meta['ads']) ? e((string) Config::get('ADSENSE_CLIENT', '')) : '' ?>"
-      data-has-alt="<?= $meta['switch_url'] ? '1' : '0' ?>">
+      data-has-alt="<?= $meta['switch_url'] ? '1' : '0' ?>"
+      data-label-currency="<?= e(t('price.currency_label')) ?>" data-label-charged="<?= e(t('price.charged_cop')) ?>"
+      data-label-network="<?= e(t('form.network_error')) ?>">
 <a class="skip-link" href="#main"><?= e(t('a11y.skip')) ?></a>
 <?= \App\Core\View::render('partials/header', ['meta' => $meta]) ?>
 <?php if ($meta['switch_url']): ?>

@@ -27,8 +27,8 @@ $current = \App\Services\Seo\Meta::path();
 <header class="site-header">
   <div class="wrap site-header__inner">
     <a class="brand" href="<?= e(route('home')) ?>" aria-label="<?= e(t('nav.home_label')) ?>">
-      <span class="brand__mark" aria-hidden="true">EO</span>
-      <span class="brand__name">Edwin Ortiz <span>Herazo</span></span>
+      <span class="brand__mark" aria-hidden="true"><?= e(t('nav.brand_mark')) ?></span>
+      <span class="brand__name"><?= e(t('nav.brand_first')) ?> <span><?= e(t('nav.brand_last')) ?></span></span>
     </a>
     <nav class="main-nav" aria-label="<?= e(t('nav.main')) ?>">
       <ul>

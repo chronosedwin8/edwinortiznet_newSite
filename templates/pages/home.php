@@ -1,5 +1,5 @@
 <?php
-/** @var array $bestSellers @var array $tools @var array $hubs @var array $latest */
+/** @var int $salesTotal @var array $bestSellers @var array $tools @var array $hubs @var array $latest */
 
 use App\Core\View;
 use App\Services\I18n\I18n;
@@ -34,14 +34,15 @@ $profiles = $locale === 'es'
         <div class="sheet__grid">
           <span class="sheet__h">A</span><span class="sheet__h">B</span><span class="sheet__h">C</span>
           <span><?= e(t('home.sheet.name')) ?></span><span><?= e(t('home.sheet.email')) ?></span><span><?= e(t('home.sheet.file')) ?></span>
-          <span>Ana R.</span><span>ana@…</span><span class="sheet__ok">PDF ✓</span>
-          <span>Luis M.</span><span>luis@…</span><span class="sheet__ok">PDF ✓</span>
-          <span>Sofía P.</span><span>sofia@…</span><span class="sheet__run">▸ …</span>
+          <?php foreach ([1, 2, 3] as $row): ?>
+          <span><?= e(t("home.sheet.row{$row}_name")) ?></span><span><?= e(t("home.sheet.row{$row}_mail")) ?></span>
+          <span class="<?= $row < 3 ? 'sheet__ok' : 'sheet__run' ?>"><?= e(t($row < 3 ? 'home.sheet.done' : 'home.sheet.running')) ?></span>
+          <?php endforeach; ?>
         </div>
       </figure>
       <ul class="hero__facts">
         <li><strong><?= e(t('home.fact1.value')) ?></strong> <?= e(t('home.fact1.label')) ?></li>
-        <li><strong><?= e(t('home.fact2.value')) ?></strong> <?= e(t('home.fact2.label')) ?></li>
+        <li><strong><?= e(t('home.fact2.value', ['n' => \App\Services\I18n\I18n::number($salesTotal)])) ?></strong> <?= e(t('home.fact2.label')) ?></li>
       </ul>
     </aside>
   </div>

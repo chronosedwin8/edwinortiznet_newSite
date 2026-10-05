@@ -12,7 +12,7 @@ $policies = $locale === 'es'
 <footer class="site-footer">
   <div class="wrap site-footer__grid">
     <section class="site-footer__about">
-      <p class="site-footer__brand">Edwin Ortiz Herazo</p>
+      <p class="site-footer__brand"><?= e(t('site.owner')) ?></p>
       <p><?= e(t('footer.tagline')) ?></p>
       <p><a href="<?= e(route('about')) ?>"><?= e(t('footer.about')) ?></a> · <a href="<?= e(route('contact')) ?>"><?= e(t('footer.contact')) ?></a></p>
     </section>
@@ -43,7 +43,7 @@ $policies = $locale === 'es'
     </section>
   </div>
   <div class="wrap site-footer__bottom">
-    <p>© <?= date('Y') ?> Edwin Ortiz Herazo · Barranquilla, Colombia</p>
+    <p><?= e(t('footer.copyright', ['year' => date('Y')])) ?></p>
     <p class="site-footer__lang">
       <a href="<?= e($meta['switch_url'] ?? route('home', [], $other)) ?>" hreflang="<?= e($other) ?>" lang="<?= e(I18n::meta('html', $other)) ?>"><?= e(t('lang.switch_to', [], $other)) ?></a>
     </p>

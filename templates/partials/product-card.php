@@ -9,7 +9,7 @@ $href = product_path($product, $locale);
 $isSoon = $product['status'] === 'coming_soon' || !$product['purchasable'];
 ?>
 <article class="product-card reveal" data-audience="<?= e($product['audience']) ?>" data-family="<?= e($product['family_slug'] ?? '') ?>"
-         data-price="<?= e((string) (float) $product['price_usd']) ?>">
+         data-price="<?= e((string) (float) $product['price_usd']) ?>"<?= !empty($hidden) ? ' hidden' : '' ?>>
   <a class="product-card__media" href="<?= e($href) ?>" tabindex="-1" aria-hidden="true">
     <?php if (!empty($product['cover_url'])): ?>
     <img src="<?= e($product['cover_url']) ?>" alt="" width="<?= (int) ($product['cover_width'] ?: 600) ?>" height="<?= (int) ($product['cover_height'] ?: 400) ?>"
@@ -26,7 +26,7 @@ $isSoon = $product['status'] === 'coming_soon' || !$product['purchasable'];
     </p>
     <h3 class="product-card__title"><a href="<?= e($href) ?>"><?= e($product['title']) ?></a></h3>
     <?php if (!empty($product['short_html'])): ?>
-    <p class="product-card__text"><?= e(excerpt_text($product['short_html'], 110)) ?></p>
+    <p class="product-card__text"><?= e(product_blurb($product, 110)) ?></p>
     <?php endif; ?>
     <div class="product-card__foot">
       <?= \App\Core\View::render('partials/price', ['product' => $product, 'size' => 'sm']) ?>
