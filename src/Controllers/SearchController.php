@@ -12,7 +12,7 @@ use App\Services\Search\Search;
 
 final class SearchController extends Controller
 {
-    public function page(Request $request): Response
+    public function results(Request $request): Response
     {
         $q = is_string($request->query['q'] ?? null) ? trim($request->query['q']) : '';
         $results = $q !== '' && RateLimiter::hit('search', $request->ip(), 120, 60)

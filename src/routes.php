@@ -176,7 +176,7 @@ return static function (Router $r): void {
         $r->get($p['order.status'], [OrderController::class, 'status'], 'order.status', $locale);
         $r->post($p['order.pay'], [OrderController::class, 'pay'], 'order.pay', $locale);
         $r->get($p['order'], [OrderController::class, 'show'], 'order', $locale);
-        $r->get($p['search'], [SearchController::class, 'page'], 'search', $locale);
+        $r->get($p['search'], [SearchController::class, 'results'], 'search', $locale);
         $r->post($p['subscribe'], [SubscribeController::class, 'store'], 'subscribe', $locale);
         $r->get($p['subscribe.confirm'], [SubscribeController::class, 'confirm'], 'subscribe.confirm', $locale);
         $r->get($p['subscribe.unsubscribe'], [SubscribeController::class, 'unsubscribe'], 'subscribe.unsubscribe', $locale);
