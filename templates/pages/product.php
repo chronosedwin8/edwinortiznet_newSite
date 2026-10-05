@@ -22,6 +22,7 @@ $checkoutUrl = route('checkout', ['items' => (string) $product['id']]);
         <figure class="gallery-main__item"<?= $i > 0 ? ' hidden' : '' ?> data-gallery-item="<?= $i ?>">
           <img src="<?= e($img['url']) ?>" alt="<?= e($img['alt'] ?: $product['title']) ?>"
                <?php if ($img['width'] && $img['height']): ?>width="<?= (int) $img['width'] ?>" height="<?= (int) $img['height'] ?>"<?php endif; ?>
+               <?php if ($i === 0 && !empty($product['cover_srcset'])): ?>srcset="<?= e($product['cover_srcset']) ?>" sizes="<?= e(\App\Services\Seo\Assets::PRODUCT_SIZES) ?>"<?php endif; ?>
                <?= $i === 0 ? 'fetchpriority="high"' : 'loading="lazy"' ?> decoding="async">
         </figure>
         <?php endforeach; ?>

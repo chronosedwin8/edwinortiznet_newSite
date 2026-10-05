@@ -117,6 +117,8 @@ final class ContentController extends Controller
             'og_type' => 'article',
             'image' => $image,
             'preload_image' => $image,
+            'preload_srcset' => $post['cover_srcset'] ?? null,
+            'preload_sizes' => \App\Services\Seo\Assets::COVER_SIZES,
             'published' => $post['published_at'] ? gmdate('c', strtotime($post['published_at'] . ' UTC')) : null,
             'modified' => $post['updated_at'] ? gmdate('c', strtotime($post['updated_at'] . ' UTC')) : null,
             'ads' => empty($post['no_ads']),

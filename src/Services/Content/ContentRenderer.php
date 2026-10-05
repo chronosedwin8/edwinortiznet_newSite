@@ -47,6 +47,14 @@ final class ContentRenderer
             return View::render('partials/inline-posts', ['posts' => $posts]);
         }, $html) ?? $html;
 
+        $html = self::describeGenericLinks($html);
+        // Miniaturas de YouTube: 320 px en pantallas pequeñas, 480 px en el resto.
+        $html = (string) preg_replace(
+            '#src="https://i\.ytimg\.com/vi/([A-Za-z0-9_-]{11})/hqdefault\.jpg"#',
+            'src="https://i.ytimg.com/vi/$1/hqdefault.jpg" srcset="https://i.ytimg.com/vi/$1/mqdefault.jpg 320w, https://i.ytimg.com/vi/$1/hqdefault.jpg 480w" sizes="(min-width: 760px) 720px, 300px"',
+            $html
+        );
+
         // Tabla de contenido desde los H2
         $toc = [];
         if (preg_match_all('#<h2 id="([^"]+)"[^>]*>(.*?)</h2>#is', $html, $m, PREG_SET_ORDER)) {
@@ -68,6 +76,36 @@ final class ContentRenderer
             $html = self::insertAds($html);
         }
         return ['html' => $html, 'toc' => $toc];
+    }
+
+    /**
+     * Enlaces con texto genérico ("aquí", "here"…): se añade el destino en texto oculto visualmente,
+     * para lectores de pantalla y buscadores, sin cambiar lo que se ve.
+     */
+    public static function describeGenericLinks(string $html): string
+    {
+        $generic = '/^(aqu[ií]|click aqu[ií]|clic aqu[ií]|haz clic aqu[ií]|da clic aqu[ií]|here|click here|este enlace|this link|ver m[aá]s|leer m[aá]s|m[aá]s informaci[oó]n|see more|read more|link|enlace)[.:!]?$/iu';
+        return (string) preg_replace_callback('#<a\b([^>]*)\bhref="([^"]+)"([^>]*)>(.*?)</a>#is', function (array $m) use ($generic): string {
+            $text = trim(html_entity_decode(strip_tags($m[4]), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+            if (!preg_match($generic, $text)) {
+                return $m[0];
+            }
+            $href = html_entity_decode($m[2]);
+            $label = null;
+            if (preg_match('#^/(?:en/)?(?:producto/|product/)?([a-z0-9-]+)/$#', $href, $s)) {
+                $label = \App\Core\DB::value('SELECT title FROM posts WHERE slug = :s LIMIT 1', ['s' => $s[1]])
+                    ?? \App\Core\DB::value('SELECT title FROM product_translations WHERE slug = :s LIMIT 1', ['s' => $s[1]]);
+            }
+            if ($label === null) {
+                $host = (string) parse_url($href, PHP_URL_HOST);
+                $label = $host !== '' ? preg_replace('/^www\./', '', $host) : null;
+            }
+            if ($label === null) {
+                return $m[0];
+            }
+            return '<a' . $m[1] . 'href="' . $m[2] . '"' . $m[3] . '>' . $m[4]
+                . '<span class="visually-hidden"> (' . e($label) . ')</span></a>';
+        }, $html);
     }
 
     /** Inserta $snippet tras el primer párrafo que sigue al H2 número $n (o al final). */

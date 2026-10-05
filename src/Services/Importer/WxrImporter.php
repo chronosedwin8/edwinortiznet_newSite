@@ -258,19 +258,20 @@ final class WxrImporter
                 'alt' => $alt,
                 'width' => $resolved['width'] ?? null,
                 'height' => $resolved['height'] ?? null,
+                'srcset' => $resolved ? $this->attachments->srcset($resolved['attachment'], 1024) : null,
             ];
         }
         $thumb = (int) ($it['meta']['_thumbnail_id'] ?? 0);
         $att = $thumb ? $this->attachments->get($thumb) : null;
         if ($att === null) {
-            return ['url' => null, 'alt' => null, 'width' => null, 'height' => null];
+            return ['url' => null, 'alt' => null, 'width' => null, 'height' => null, 'srcset' => null];
         }
         // Tamaño "large" si existe (más liviano), con sus dimensiones.
         $size = $att['sizes']['large'] ?? null;
         if ($size !== null && abs($size['width'] / max(1, $size['height']) - $att['width'] / max(1, $att['height'])) < 0.05) {
-            return ['url' => $size['url'], 'alt' => $att['alt'] ?: $it['title'], 'width' => $size['width'], 'height' => $size['height']];
+            return ['url' => $size['url'], 'alt' => $att['alt'] ?: $it['title'], 'width' => $size['width'], 'height' => $size['height'], 'srcset' => $this->attachments->srcset($att, 1024)];
         }
-        return ['url' => $att['url'], 'alt' => $att['alt'] ?: $it['title'], 'width' => $att['width'] ?: null, 'height' => $att['height'] ?: null];
+        return ['url' => $att['url'], 'alt' => $att['alt'] ?: $it['title'], 'width' => $att['width'] ?: null, 'height' => $att['height'] ?: null, 'srcset' => $this->attachments->srcset($att, 1024)];
     }
 
     private function importPost(array $it, string $type): void
@@ -309,6 +310,7 @@ final class WxrImporter
             'cover_alt' => $cover['alt'],
             'cover_width' => $cover['width'],
             'cover_height' => $cover['height'],
+            'cover_srcset' => $cover['srcset'],
             'hub_id' => $hubKey ? $this->hubIds[$hubKey] : null,
             'seo_title' => self::yoastTitle($it['meta']['_yoast_wpseo_title'] ?? '', $it['title']),
             'seo_description' => mb_substr($metaDesc, 0, 320),
@@ -366,6 +368,7 @@ final class WxrImporter
             'cover_alt' => $cover['alt'],
             'cover_width' => $cover['width'],
             'cover_height' => $cover['height'],
+            'cover_srcset' => $cover['srcset'],
             'legacy_sales' => (int) ($it['meta']['total_sales'] ?? 0),
         ];
         $existing = DB::value('SELECT id FROM products WHERE wp_id = :w', ['w' => $it['id']]);

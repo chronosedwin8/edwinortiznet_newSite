@@ -11,6 +11,10 @@ use App\Core\Config;
  */
 final class Assets
 {
+    public const COVER_SIZES = '(min-width: 1064px) 1000px, (min-width: 600px) calc(100vw - 48px), 340px';
+    public const PRODUCT_SIZES = '(min-width: 1180px) 600px, (min-width: 900px) 52vw, calc(100vw - 32px)';
+    public const CARD_SIZES = '(min-width: 1180px) 380px, (min-width: 600px) 45vw, calc(100vw - 32px)';
+
     private static ?string $critical = null;
 
     public static function criticalCss(): string

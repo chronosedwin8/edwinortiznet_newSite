@@ -18,19 +18,10 @@
   font-style: normal;
   font-display: swap;
 }
-@font-face {
-  font-family: "Source Sans 3";
-  src: url("/assets/fonts/source-sans-3-var-italic.woff2") format("woff2");
-  font-weight: 200 900;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "JetBrains Mono";
-  src: url("/assets/fonts/jetbrains-mono-var.woff2") format("woff2");
-  font-weight: 100 800;
-  font-display: swap;
-}
+
+/* Respaldos con métricas ajustadas: evitan saltos de diseño mientras cargan las fuentes web. */
+@font-face { font-family: "Fraunces Fallback"; src: local("Georgia"); size-adjust: 93.85%; ascent-override: 104.4%; descent-override: 27.7%; line-gap-override: 0%; }
+@font-face { font-family: "Source Sans Fallback"; src: local("Arial"); size-adjust: 92.86%; ascent-override: 109.8%; descent-override: 43.1%; line-gap-override: 0%; }
 
 :root {
   color-scheme: light;
@@ -53,9 +44,9 @@
   --grid-line: rgba(14, 90, 107, .07);
   --shadow: 0 1px 2px rgba(22, 25, 27, .06), 0 8px 24px -12px rgba(22, 25, 27, .18);
   /* Tipografía */
-  --font-head: "Fraunces", "Iowan Old Style", Georgia, serif;
-  --font-body: "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  --font-head: "Fraunces", "Fraunces Fallback", Georgia, serif;
+  --font-body: "Source Sans 3", "Source Sans Fallback", Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "Cascadia Code", Consolas, "SF Mono", Menlo, monospace;
   --step--1: clamp(.84rem, .82rem + .1vw, .9rem);
   --step-0: clamp(1.0625rem, 1.02rem + .2vw, 1.125rem);
   --step-1: clamp(1.2rem, 1.12rem + .4vw, 1.4rem);
@@ -128,6 +119,7 @@ body {
   font-size: var(--step-0);
   line-height: 1.6;
   font-optical-sizing: auto;
+  font-synthesis: style;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -160,7 +152,7 @@ main:focus { outline: none; }
 .section__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 24px; }
 .section__title { font-size: var(--step-2); margin-bottom: .8em; }
 .section__head .section__title { margin: 0; }
-.eyebrow { font-family: var(--font-mono); font-size: var(--step--1); letter-spacing: .04em; text-transform: uppercase; color: var(--brand); margin: 0 0 .75em; }
+.eyebrow { font-family: var(--font-body); font-weight: 700; font-size: .82rem; letter-spacing: .09em; text-transform: uppercase; color: var(--brand); margin: 0 0 .75em; }
 .eyebrow a { text-decoration: none; }
 .lead { font-size: var(--step-1); color: var(--muted); max-width: 60ch; }
 .link-more { font-weight: 600; text-decoration: none; white-space: nowrap; }
@@ -182,7 +174,7 @@ main:focus { outline: none; }
 .brand:hover { color: var(--text); }
 .brand__mark {
   display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 8px;
-  background: var(--brand); color: var(--on-brand); font-family: var(--font-mono); font-size: .8rem; font-weight: 700; letter-spacing: .02em;
+  background: var(--brand); color: var(--on-brand); font-family: var(--font-body); font-size: .9rem; font-weight: 800; letter-spacing: .03em;
 }
 .brand__name { font-family: var(--font-head); font-weight: 650; font-size: 1.12rem; line-height: 1.1; }
 .brand__name span { color: var(--muted); font-weight: 450; }
@@ -199,7 +191,7 @@ main:focus { outline: none; }
 }
 .btn-icon:hover { background: var(--surface-2); color: var(--text); }
 .icon { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.lang-switch { display: inline-grid; place-items: center; min-width: 44px; height: 44px; border-radius: 999px; font-family: var(--font-mono); font-weight: 700; font-size: .85rem; color: var(--text); text-decoration: none; }
+.lang-switch { display: inline-grid; place-items: center; min-width: 44px; height: 44px; border-radius: 999px; font-family: var(--font-body); font-weight: 750; font-size: .9rem; letter-spacing: .04em; color: var(--text); text-decoration: none; }
 .lang-switch:hover { background: var(--surface-2); color: var(--text); }
 .cart-count {
   position: absolute; top: 4px; right: 2px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 9px;
@@ -351,7 +343,7 @@ main:focus { outline: none; }
 /* ---------- Filtros de tienda ---------- */
 .filters { display: grid; gap: 12px; margin-bottom: 20px; }
 .filters__group { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; border: 0; margin: 0; padding: 0; }
-.filters__group legend { float: left; margin-right: 8px; font-size: var(--step--1); font-family: var(--font-mono); text-transform: uppercase; color: var(--muted); letter-spacing: .04em; }
+.filters__group legend { float: left; margin-right: 8px; font-size: .8rem; font-weight: 700; letter-spacing: .06em; font-family: var(--font-body); text-transform: uppercase; color: var(--muted); letter-spacing: .04em; }
 .chip { display: inline-flex; align-items: center; min-height: 40px; padding: 4px 14px; border: 1px solid var(--line); border-radius: 999px; color: var(--text); text-decoration: none; font-size: .95rem; background: var(--surface); }
 .chip:hover { border-color: var(--text); color: var(--text); }
 .chip[aria-current="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
@@ -372,7 +364,7 @@ main:focus { outline: none; }
 
 /* ---------- Selector de moneda (inyectado por JS) y cabecera estrecha ---------- */
 .currency-toggle { display: none; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; margin-right: 6px; }
-.currency-toggle button { border: 0; background: transparent; padding: 0 9px; min-height: 32px; font: 600 .72rem/1 var(--font-mono); cursor: pointer; color: var(--muted); }
+.currency-toggle button { border: 0; background: transparent; padding: 0 9px; min-height: 32px; font: 700 .74rem/1 var(--font-body); cursor: pointer; color: var(--muted); }
 .currency-toggle button[aria-pressed="true"] { background: var(--text); color: var(--bg); }
 @media (min-width: 560px) { .currency-toggle { display: inline-flex; } }
 @media (max-width: 419px) {

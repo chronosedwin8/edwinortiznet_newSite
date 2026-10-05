@@ -502,6 +502,17 @@ final class HtmlCleaner
                 $a->setAttribute('class', 'btn-link');
             }
         }
+        // Jerarquía sin saltos (el H1 es el título): un H3/H4 que salta un nivel sube al siguiente válido.
+        $previous = 1;
+        foreach (iterator_to_array($xpath->query('.//h2|.//h3|.//h4', $root) ?: []) as $h) {
+            /** @var DOMElement $h */
+            $level = (int) substr($h->tagName, 1);
+            if ($level > $previous + 1) {
+                $level = $previous + 1;
+                $h = $this->rename($h, 'h' . $level, $doc);
+            }
+            $previous = $level;
+        }
         // Encabezados: id estable para la tabla de contenido.
         $used = [];
         foreach (iterator_to_array($xpath->query('.//h2|.//h3', $root) ?: []) as $h) {

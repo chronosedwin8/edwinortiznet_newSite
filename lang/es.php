@@ -153,6 +153,7 @@ return [
     'shop.price.mas-de-40' => 'Más de US$ 40',
     'shop.count_one' => '1 producto',
     'shop.count_many' => ':n productos',
+    'shop.products_heading' => 'Productos',
     'shop.empty' => 'No hay productos con esos filtros.',
     'shop.compare_title' => 'Compara por familia',
     'shop.col_product' => 'Producto',
@@ -358,7 +359,7 @@ return [
     // Consentimiento
     'consent.title' => 'Preferencias de cookies',
     'consent.text' => 'Uso cookies necesarias para que el sitio funcione y, si lo aceptas, Google Analytics para medir visitas y anuncios en algunos artículos.',
-    'consent.more' => 'Más información',
+    'consent.more' => 'Leer la política de cookies',
     'consent.accept' => 'Aceptar todo',
     'consent.reject' => 'Solo necesarias',
     'consent.manage' => 'Preferencias de cookies',

@@ -58,6 +58,7 @@ $audiences = $locale === 'es' ? ShopController::AUDIENCES : ['oficina', 'docente
   <p class="shop__count" data-shop-count role="status" aria-live="polite"
      data-label-one="<?= e(t('shop.count_one')) ?>" data-label-many="<?= e(t('shop.count_many')) ?>"><?= e(count($visibleIds) === 1 ? t('shop.count_one') : t('shop.count_many', ['n' => count($visibleIds)])) ?></p>
 
+  <h2 class="visually-hidden"><?= e(t('shop.products_heading')) ?></h2>
   <div class="product-grid" data-shop-grid>
     <?php foreach ($products as $i => $product): ?>
       <?= View::render('partials/product-card', ['product' => $product, 'rank' => $i + 1, 'eager' => $i < 2, 'hidden' => !in_array((int) $product['id'], $visibleIds, true)]) ?>

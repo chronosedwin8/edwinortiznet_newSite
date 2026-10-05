@@ -3,6 +3,7 @@
   <?php if (!empty($post['cover_url'])): ?>
   <a class="post-card__media" href="<?= e(post_path($post)) ?>" tabindex="-1" aria-hidden="true">
     <img src="<?= e($post['cover_url']) ?>" alt="" width="<?= (int) ($post['cover_width'] ?: 800) ?>" height="<?= (int) ($post['cover_height'] ?: 450) ?>"
+         <?php if (!empty($post['cover_srcset'])): ?>srcset="<?= e($post['cover_srcset']) ?>" sizes="<?= e(\App\Services\Seo\Assets::CARD_SIZES) ?>"<?php endif; ?>
          loading="<?= $eager ? 'eager' : 'lazy' ?>" decoding="async"<?= $eager ? ' fetchpriority="high"' : '' ?>>
   </a>
   <?php endif; ?>

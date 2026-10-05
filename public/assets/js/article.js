@@ -27,6 +27,6 @@ if (tocLinks.length && 'IntersectionObserver' in window) {
   }, { rootMargin: '0px 0px -70% 0px' });
   byId.forEach((_, id) => { const h = document.getElementById(id); if (h) io.observe(h); });
 }
-// En pantallas pequeñas la tabla de contenido empieza cerrada.
+// En escritorio (columna lateral) la tabla de contenido se abre; en móvil queda cerrada y no mueve el texto.
 const toc = document.querySelector('.toc__details');
-if (toc && matchMedia('(max-width: 1099px)').matches) toc.open = false;
+if (toc && matchMedia('(min-width: 1100px)').matches) toc.open = true;

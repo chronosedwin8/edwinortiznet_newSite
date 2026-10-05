@@ -153,6 +153,7 @@ return [
     'shop.price.mas-de-40' => 'Over $40',
     'shop.count_one' => '1 product',
     'shop.count_many' => ':n products',
+    'shop.products_heading' => 'Products',
     'shop.empty' => 'No products match those filters.',
     'shop.compare_title' => 'Compare by family',
     'shop.col_product' => 'Product',
@@ -342,7 +343,7 @@ return [
     // Consent
     'consent.title' => 'Cookie preferences',
     'consent.text' => 'I use cookies the site needs to work and, if you accept, Google Analytics to measure visits and ads on some articles.',
-    'consent.more' => 'Learn more',
+    'consent.more' => 'Read the cookie policy',
     'consent.accept' => 'Accept all',
     'consent.reject' => 'Necessary only',
     'consent.manage' => 'Cookie preferences',

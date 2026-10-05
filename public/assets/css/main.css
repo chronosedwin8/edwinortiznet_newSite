@@ -112,7 +112,8 @@ label { display: block; font-weight: 600; margin-bottom: 6px; }
 .site-footer__bottom p { margin: 0; }
 
 /* ---------- Franja de idioma ---------- */
-.lang-banner { background: var(--text); color: var(--bg); }
+.lang-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; background: var(--text); color: var(--bg); padding-bottom: env(safe-area-inset-bottom); box-shadow: 0 -8px 24px -12px rgba(0, 0, 0, .35); }
+body:has(.lang-banner:not([hidden])) .whatsapp-float { bottom: 72px; }
 .lang-banner__inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; }
 .lang-banner p { margin: 0; }
 .lang-banner a { color: var(--bg); font-weight: 600; }
@@ -136,14 +137,15 @@ label { display: block; font-weight: 600; margin-bottom: 6px; }
 .inline-posts { margin: 1.6em 0; padding: 18px 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
 .inline-posts__title { font-family: var(--font-mono); font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-bottom: 8px; }
 .inline-posts ul { margin: 0; padding-left: 1.1em; }
-.product-inline { display: grid; gap: 16px; margin: 1.8em 0; padding: 18px; border-radius: var(--radius-lg); border: 1.5px solid color-mix(in srgb, var(--action) 55%, var(--line)); background: color-mix(in srgb, var(--action) 6%, var(--surface)); }
-.product-inline__img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius); }
+.product-inline { display: grid; grid-template-columns: 88px 1fr; align-items: start; gap: 16px; margin: 1.8em 0; padding: 18px; border-radius: var(--radius-lg); border: 1.5px solid color-mix(in srgb, var(--action) 55%, var(--line)); background: color-mix(in srgb, var(--action) 6%, var(--surface)); }
+.product-inline__img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius); }
+.product-inline > :only-child { grid-column: 1 / -1; }
 .product-inline .eyebrow { margin-bottom: .3em; }
 .product-inline__title { font-family: var(--font-head); font-size: var(--step-1); font-weight: 600; line-height: 1.2; margin-bottom: .4em; }
 .product-inline__title a { color: var(--text); text-decoration: none; }
 .product-inline__text { color: var(--muted); font-size: .98rem; }
 .product-inline__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
-@media (min-width: 640px) { .product-inline { grid-template-columns: 200px 1fr; align-items: center; } }
+@media (min-width: 640px) { .product-inline { grid-template-columns: 200px 1fr; align-items: center; } .product-inline__img { aspect-ratio: 16 / 10; } }
 .product-grid--compact { margin: 1.6em 0; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
 .prose .product-grid img { border-radius: 0; }
 .ad-slot { display: none; margin: 2em 0; min-height: 280px; background: var(--surface-2); border-radius: var(--radius); }
@@ -337,3 +339,7 @@ body.has-sticky-buy .whatsapp-float { bottom: 84px; }
   .site-header, .site-footer, .whatsapp-float, .consent, .cart-drawer, .sticky-buy, .reading-progress, .toc, .subscribe-box, .ad-slot { display: none !important; }
   body { background: #fff; color: #000; }
 }
+
+/* ---------- Rendimiento: el navegador omite el trabajo de lo que está fuera de pantalla ---------- */
+.site-footer, .article__footer, .siblings, .section--tint, .product-details, .faq { content-visibility: auto; contain-intrinsic-size: auto 600px; }
+.prose figure, .prose .product-inline, .prose .product-grid { content-visibility: auto; contain-intrinsic-size: auto 320px; }

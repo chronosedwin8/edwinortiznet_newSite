@@ -13,6 +13,7 @@ $isSoon = $product['status'] === 'coming_soon' || !$product['purchasable'];
   <a class="product-card__media" href="<?= e($href) ?>" tabindex="-1" aria-hidden="true">
     <?php if (!empty($product['cover_url'])): ?>
     <img src="<?= e($product['cover_url']) ?>" alt="" width="<?= (int) ($product['cover_width'] ?: 600) ?>" height="<?= (int) ($product['cover_height'] ?: 400) ?>"
+         <?php if (!empty($product['cover_srcset'])): ?>srcset="<?= e($product['cover_srcset']) ?>" sizes="<?= e(\App\Services\Seo\Assets::CARD_SIZES) ?>"<?php endif; ?>
          loading="<?= $eager ? 'eager' : 'lazy' ?>" decoding="async">
     <?php else: ?>
     <span class="product-card__placeholder"><?= e(mb_substr($product['family_name'] ?? $product['title'], 0, 1)) ?></span>

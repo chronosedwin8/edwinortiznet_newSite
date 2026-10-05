@@ -12,7 +12,7 @@ use App\Core\DB;
 final class Post
 {
     private const LIST_COLUMNS = 'p.id, p.wp_id, p.type, p.locale, p.translation_group, p.slug, p.title, p.excerpt, p.cover_url, p.cover_alt,
-        p.cover_width, p.cover_height, p.hub_id, p.status, p.reading_minutes, p.published_at, p.updated_at, p.related_product_id';
+        p.cover_width, p.cover_height, p.cover_srcset, p.hub_id, p.status, p.reading_minutes, p.published_at, p.updated_at, p.related_product_id';
 
     public static function find(int $id): ?array
     {

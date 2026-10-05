@@ -3,7 +3,7 @@ $href = product_path($product);
 ?>
 <aside class="product-inline" aria-label="<?= e(t('post.product_label')) ?>">
   <?php if (!empty($product['cover_url'])): ?>
-  <img class="product-inline__img" src="<?= e($product['cover_url']) ?>" alt="" width="<?= (int) ($product['cover_width'] ?: 600) ?>" height="<?= (int) ($product['cover_height'] ?: 400) ?>" loading="lazy" decoding="async">
+  <img class="product-inline__img" src="<?= e($product['cover_url']) ?>" alt="" width="<?= (int) ($product['cover_width'] ?: 600) ?>" height="<?= (int) ($product['cover_height'] ?: 400) ?>"<?php if (!empty($product['cover_srcset'])): ?> srcset="<?= e($product['cover_srcset']) ?>" sizes="(min-width: 640px) 200px, 88px"<?php endif; ?> loading="lazy" decoding="async">
   <?php endif; ?>
   <div class="product-inline__body">
     <p class="eyebrow"><?= e($product['status'] === 'coming_soon' ? t('post.product_soon') : t('post.product_eyebrow')) ?></p>

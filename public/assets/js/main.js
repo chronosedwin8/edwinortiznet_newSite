@@ -55,11 +55,7 @@ function initReveal() {
       }
     }
   }, { rootMargin: '0px 0px -8% 0px' });
-  items.forEach((el) => {
-    // Lo que ya está en pantalla aparece sin esperar.
-    if (el.getBoundingClientRect().top < innerHeight) el.classList.add('is-in');
-    else io.observe(el);
-  });
+  items.forEach((el) => io.observe(el));
 }
 
 /* ---------- YouTube lite: el iframe se crea al hacer clic ---------- */
@@ -386,12 +382,11 @@ function initConsent() {
   });
 }
 
+// Lo visible primero; el resto cuando el hilo principal esté libre.
 initTheme();
-initLangBanner();
 initReveal();
 initLiteYoutube();
-initCurrency();
-initCart();
-initSearch();
 initAsyncForms();
-initConsent();
+// Cada inicialización en su propia tarea corta para no bloquear la interacción.
+const idle = window.requestIdleCallback ? (fn) => requestIdleCallback(fn, { timeout: 2000 }) : (fn) => setTimeout(fn, 50);
+[initCurrency, initCart, initLangBanner, initSearch, initConsent].forEach((fn) => idle(fn));

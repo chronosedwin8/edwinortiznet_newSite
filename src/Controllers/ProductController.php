@@ -69,6 +69,8 @@ final class ProductController extends Controller
             'og_type' => 'product',
             'image' => $image,
             'preload_image' => $image,
+            'preload_srcset' => $product['cover_srcset'] ?? null,
+            'preload_sizes' => \App\Services\Seo\Assets::PRODUCT_SIZES,
             'jsonld' => [[
                 '@context' => 'https://schema.org',
                 '@type' => $product['type'] === 'course' ? ['Product', 'Course'] : 'Product',

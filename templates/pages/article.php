@@ -26,6 +26,7 @@ $updated = substr((string) $post['updated_at'], 0, 10);
   <figure class="article__cover wrap">
     <img src="<?= e($post['cover_url']) ?>" alt="<?= e($post['cover_alt'] ?: $post['title']) ?>"
          <?php if ($post['cover_width'] && $post['cover_height']): ?>width="<?= (int) $post['cover_width'] ?>" height="<?= (int) $post['cover_height'] ?>"<?php endif; ?>
+         <?php if (!empty($post['cover_srcset'])): ?>srcset="<?= e($post['cover_srcset']) ?>" sizes="<?= e(\App\Services\Seo\Assets::COVER_SIZES) ?>"<?php endif; ?>
          fetchpriority="high" decoding="async">
   </figure>
   <?php endif; ?>
@@ -33,7 +34,7 @@ $updated = substr((string) $post['updated_at'], 0, 10);
   <div class="article__layout wrap">
     <?php if (count($toc) >= 2): ?>
     <aside class="toc" aria-labelledby="toc-title">
-      <details class="toc__details" open>
+      <details class="toc__details">
         <summary id="toc-title"><?= e(t('post.toc')) ?></summary>
         <ol>
           <?php foreach ($toc as $item): ?>
