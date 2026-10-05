@@ -68,6 +68,16 @@ En este equipo el sitio corre en **http://localhost:8090/** mediante un VirtualH
 | Wompi | `https://www.edwinortiz.net/webhooks/wompi` | `transaction.updated`. El "Secreto de eventos" va en `WOMPI_EVENTS_SECRET`. |
 | PayPal | `https://www.edwinortiz.net/webhooks/paypal` | `PAYMENT.CAPTURE.COMPLETED`, `.DENIED`, `.REFUNDED`, `.REVERSED`, `.PENDING` y `CHECKOUT.ORDER.APPROVED`. El id del webhook va en `PAYPAL_WEBHOOK_ID`. |
 
+## Producción (desplegado el 5 de octubre de 2026)
+
+- **Servidor:** EC2 t2.small con CloudPanel (Debian 11), IP `54.165.72.25`. Comparte servidor con otros sitios: no se toca la configuración global de nginx ni de PHP.
+- **Sitio:** usuario `edwinortiz`, código en `/home/edwinortiz/htdocs/www.edwinortiz.net` (clon de `github.com/chronosedwin8/edwinortiznet_newSite`, rama `main`). Raíz web: `public/`. PHP 8.4-FPM en `127.0.0.1:19006`. Base de datos MariaDB 10.6 `edwinortiz` (las credenciales están solo en el `.env` del servidor).
+- **Nginx:** plantilla propia guardada también en CloudPanel (*Sitio → Vhost*), con PageSpeed y Varnish desactivados para este sitio. Si se edita desde el panel, conservar el front controller y `location /protected-downloads/`.
+- **Desplegar cambios:** `git push` a `main` y luego en el servidor: `sudo -u edwinortiz -H bash /home/edwinortiz/htdocs/www.edwinortiz.net/deploy/deploy.sh` (trae el código, instala dependencias, migra, vacía la caché, regenera el sitemap y comprueba las rutas).
+- **Cron** (usuario `edwinortiz`, visible en CloudPanel): `orders:reconcile` cada 10 minutos y `sitemap:build` a las 3:15.
+- **Solo en el servidor (no están en git):** `.env`, `storage/downloads/` (archivos de producto), `public/uploads/` (biblioteca de medios), `public/cv/` (CV) y `public/wp-content/uploads/` (3 archivos que el contenido aún enlaza). Inclúyelos en el respaldo.
+- **Respaldo de WordPress:** `/home/edwinortiz/backups/wordpress-*-2026-10-05.*` y copia local en `Documentos\Backups\edwinortiz-wordpress-2026-10-05`.
+
 ## 4. Comandos (`php bin/console …`)
 
 | Comando | Qué hace |

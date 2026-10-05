@@ -4,6 +4,20 @@ Todo lo de esta lista ya tiene un **valor por defecto aplicado**: el sitio funci
 
 ---
 
+## 0. Tras el despliegue del 5 de octubre de 2026 (hazlo pronto)
+
+1. **Correo con tu dominio (Amazon SES).** El sitio envía, por ahora, desde `chronosedwin8@gmail.com`, porque `edwinortiz.net` no estaba verificado en SES. Ya creé la identidad del dominio en SES; solo falta agregar en **Route 53** (zona `edwinortiz.net`) estos 3 registros CNAME:
+   - `43udo2lnilazznglvz3zzsutlfkxkagb._domainkey` → `43udo2lnilazznglvz3zzsutlfkxkagb.dkim.amazonses.com`
+   - `uclwzusamkpqyzwt2ks5tkbiaorrouis._domainkey` → `uclwzusamkpqyzwt2ks5tkbiaorrouis.dkim.amazonses.com`
+   - `yhcnn6veixbpccijlqgb5mtweo4onuh4._domainkey` → `yhcnn6veixbpccijlqgb5mtweo4onuh4.dkim.amazonses.com`
+
+   Cuando SES marque el dominio como verificado, cambia en el `.env` del servidor `MAIL_FROM_ADDRESS=hola@edwinortiz.net`.
+2. **Webhook de Mercado Pago.** En *Mercado Pago → Tus integraciones → Webhooks* configura la URL `https://www.edwinortiz.net/webhooks/mercadopago` (evento *Pagos*) y copia la «clave secreta» en `MP_WEBHOOK_SECRET` del `.env`. Mientras tanto los pagos se confirman al volver del checkout y con el cron cada 10 minutos.
+3. **Wompi.** La URL de eventos de tu cuenta apunta a otro proyecto (Supabase) y Wompi solo admite una; por eso no la cambié. Los pagos se confirman al volver del checkout y con el cron. El comercio aparece como **SERVIVPSCOM** en el checkout de Wompi.
+4. **PayPal.** Se registró el webhook `https://www.edwinortiz.net/webhooks/paypal` (ID en el `.env`). El webhook antiguo de WordPress (`…/wp-json/wc-ppcp/…`) ya no sirve; puedes borrarlo en el panel de desarrolladores de PayPal. Se usan las credenciales de producción que tenía el plugin de WooCommerce; si prefieres la app nueva (`AYH3…`), pásame el *client ID* y el *secret* completos.
+5. **AdSense.** `ADSENSE_CLIENT` ya está configurado; para mostrar anuncios dentro de los artículos crea tres bloques en AdSense y pon sus IDs en `ADSENSE_SLOT_TOP`, `ADSENSE_SLOT_MIDDLE` y `ADSENSE_SLOT_BOTTOM`.
+6. **Search Console.** Envía `https://www.edwinortiz.net/sitemap.xml` y revisa la cobertura durante las próximas semanas.
+
 ## A. Decisiones marcadas en el plan `[DECISIÓN DE EDWIN]`
 
 ### A1. Artículos traducidos al inglés
