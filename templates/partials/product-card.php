@@ -8,7 +8,7 @@ $eager ??= false;
 $href = product_path($product, $locale);
 $isSoon = $product['status'] === 'coming_soon' || !$product['purchasable'];
 ?>
-<article class="product-card reveal" data-audience="<?= e($product['audience']) ?>" data-family="<?= e($product['family_slug'] ?? '') ?>"
+<article class="product-card reveal" data-spotlight data-audience="<?= e($product['audience']) ?>" data-family="<?= e($product['family_slug'] ?? '') ?>"
          data-price="<?= e((string) (float) $product['price_usd']) ?>"<?= !empty($hidden) ? ' hidden' : '' ?>>
   <a class="product-card__media" href="<?= e($href) ?>" tabindex="-1" aria-hidden="true">
     <?php if (!empty($product['cover_url'])): ?>

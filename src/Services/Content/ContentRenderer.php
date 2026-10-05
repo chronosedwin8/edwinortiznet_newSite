@@ -20,7 +20,7 @@ final class ContentRenderer
     /**
      * @return array{html:string, toc: array<int, array{id:string,text:string}>}
      */
-    public static function render(array $post, ?array $relatedProduct = null, bool $ads = false): array
+    public static function render(array $post, ?array $relatedProduct = null, bool $ads = false, ?string $inlineHtml = null): array
     {
         $locale = $post['locale'];
         $html = (string) $post['content_html'];
@@ -67,7 +67,9 @@ final class ContentRenderer
         }
 
         // Tarjeta de producto después del segundo H2 (tras su primer párrafo).
-        if ($relatedProduct !== null) {
+        if ($inlineHtml !== null) {
+            $html = self::insertAfterHeading($html, 2, $inlineHtml);
+        } elseif ($relatedProduct !== null) {
             $card = View::render('partials/product-inline', ['product' => $relatedProduct]);
             $html = self::insertAfterHeading($html, 2, $card);
         }
@@ -76,6 +78,29 @@ final class ContentRenderer
             $html = self::insertAds($html);
         }
         return ['html' => $html, 'toc' => $toc];
+    }
+
+    /**
+     * Preguntas frecuentes escritas dentro del artículo: un H2 «Preguntas frecuentes» seguido de
+     * pares H3 (pregunta) + párrafos (respuesta). Alimenta el JSON-LD FAQPage.
+     *
+     * @return array<int, array{q:string, a:string}>
+     */
+    public static function faqs(string $html): array
+    {
+        if (!preg_match('#<h2[^>]*>\s*(?:preguntas frecuentes|frequently asked questions|faq)\b.*?</h2>(.*?)(?=<h2\b|$)#isu', $html, $section)) {
+            return [];
+        }
+        preg_match_all('#<h3[^>]*>(.*?)</h3>(.*?)(?=<h3\b|$)#is', $section[1], $pairs, PREG_SET_ORDER);
+        $faqs = [];
+        foreach ($pairs as [, $q, $a]) {
+            $q = trim(html_entity_decode(strip_tags($q), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+            $a = trim((string) preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags($a), ENT_QUOTES | ENT_HTML5, 'UTF-8')));
+            if ($q !== '' && $a !== '') {
+                $faqs[] = ['q' => $q, 'a' => $a];
+            }
+        }
+        return $faqs;
     }
 
     /**

@@ -61,7 +61,7 @@ final class Sitemap
         }
 
         // Herramientas
-        foreach (['qr', 'words', 'quiz'] as $key) {
+        foreach (['qr', 'words', 'fundales'] as $key) {
             $alts = ToolRegistry::alternates($key);
             foreach ($alts as $path) {
                 $this->add($path, null, count($alts) === 2 ? $alts : []);

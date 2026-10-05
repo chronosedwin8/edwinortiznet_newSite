@@ -1,5 +1,5 @@
 <?php
-/** @var array $tool @var string $key @var array|null $product @var array $faqs @var array $questions @var array $crumbs @var bool $sent */
+/** @var array $tool @var string $key @var array|null $product @var array $faqs @var array $crumbs */
 
 use App\Core\View;
 use App\Services\I18n\I18n;
@@ -15,7 +15,7 @@ use App\Services\I18n\I18n;
 
   <noscript><p class="notice"><?= e(t('tools.needs_js')) ?></p></noscript>
   <div class="tool__app">
-    <?= View::render("partials/tools/$key", ['questions' => $questions, 'sent' => $sent]) ?>
+    <?= View::render("partials/tools/$key") ?>
   </div>
   <p class="tool__privacy"><?= e(t('tools.privacy_note')) ?></p>
 </section>

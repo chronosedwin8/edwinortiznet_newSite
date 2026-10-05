@@ -51,7 +51,9 @@ $updated = substr((string) $post['updated_at'], 0, 10);
       <?php endif; ?>
       <?= $html ?>
 
-      <?php if ($product): ?>
+      <?php if (!empty($isContest)): ?>
+      <?= View::render('partials/fundales-cta', ['campaign' => 'articulo-final', 'variant' => 'banner']) ?>
+      <?php elseif ($product): ?>
       <section class="article__product" aria-labelledby="article-product-title">
         <h2 id="article-product-title" class="article__product-title"><?= e($product['status'] === 'coming_soon' ? t('post.product_end_soon') : t('post.product_end')) ?></h2>
         <?= View::render('partials/product-inline', ['product' => $product]) ?>

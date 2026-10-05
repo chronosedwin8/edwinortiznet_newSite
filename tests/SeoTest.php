@@ -211,10 +211,22 @@ final class SeoTest extends TestCase
 
     public function testNoindexPostsAreMarked(): void
     {
-        $html = $this->get('/los-mejores-portatiles-baratos-y-rapidos/')->body;
-        $this->assertStringContainsString('<meta name="robots" content="noindex, follow">', $html);
-        $html = $this->get('/restar-horas-en-excel/')->body;
-        $this->assertStringContainsString('<link rel="canonical" href="' . Config::appUrl() . '/como-restar-horas-en-excel-horas-laborales/">', $html);
+        $post = DB::one('SELECT id, slug FROM posts WHERE locale = "es" AND type = "post" AND status = "published" ORDER BY id LIMIT 1');
+        DB::run('UPDATE posts SET status = "noindex" WHERE id = :id', ['id' => $post['id']]);
+        try {
+            $html = $this->get("/{$post['slug']}/")->body;
+            $this->assertStringContainsString('<meta name="robots" content="noindex, follow">', $html);
+        } finally {
+            DB::run('UPDATE posts SET status = "published" WHERE id = :id', ['id' => $post['id']]);
+        }
+    }
+
+    public function testRetiredContentRedirectsToItsReplacement(): void
+    {
+        $response = $this->get('/restar-horas-en-excel/');
+        $this->assertSame(301, $response->status);
+        $this->assertSame('/como-restar-horas-en-excel-horas-laborales/', $response->headers['Location'] ?? null);
+        $this->assertSame(301, $this->get('/los-mejores-portatiles-baratos-y-rapidos/')->status);
     }
 
     public function testSecurityHeaders(): void

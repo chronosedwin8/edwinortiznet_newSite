@@ -11,7 +11,7 @@ use App\Core\Response;
 use App\Models\Setting;
 
 /**
- * Suscriptores y lista de espera (CSV), redirecciones y 404, banco de preguntas y ajustes.
+ * Suscriptores y lista de espera (CSV), redirecciones y 404, y ajustes.
  */
 final class MiscController extends AdminBase
 {
@@ -97,49 +97,7 @@ final class MiscController extends AdminBase
         return $this->back('/admin/redirecciones/', t('admin.deleted'));
     }
 
-    public function questions(Request $request): Response
-    {
-        $this->requireAdmin($request);
-        $editId = (int) ($request->query['editar'] ?? 0);
-        return $this->view('misc/questions', [
-            'questions' => DB::all('SELECT * FROM quiz_questions ORDER BY id DESC'),
-            'edit' => $editId ? DB::one('SELECT * FROM quiz_questions WHERE id = :id', ['id' => $editId]) : null,
-        ], t('admin.questions'));
-    }
-
-    public function saveQuestion(Request $request): Response
-    {
-        $this->requireAdmin($request);
-        $options = array_values(array_filter(array_map('trim', preg_split('/\R/', (string) ($request->post['options'] ?? '')) ?: []), fn ($o) => $o !== ''));
-        $correct = (int) ($request->post['correct'] ?? 1) - 1;
-        $question = self::str($request, 'question', 5000);
-        if ($question === null || count($options) < 2 || $correct < 0 || $correct >= count($options)) {
-            return $this->back('/admin/preguntas/', t('admin.error.question'));
-        }
-        $data = [
-            'area' => self::str($request, 'area', 120) ?? 'General',
-            'question' => $question,
-            'options_json' => json_encode($options, JSON_UNESCAPED_UNICODE),
-            'correct_index' => $correct,
-            'explanation' => self::str($request, 'explanation', 5000),
-            'is_demo' => !empty($request->post['is_demo']) ? 1 : 0,
-            'active' => !empty($request->post['active']) ? 1 : 0,
-        ];
-        $id = (int) ($request->post['id'] ?? 0);
-        $id > 0 ? DB::update('quiz_questions', $data, ['id' => $id]) : DB::insert('quiz_questions', $data);
-        $this->saved();
-        return $this->back('/admin/preguntas/', t('admin.saved'));
-    }
-
-    public function deleteQuestion(Request $request, string $id): Response
-    {
-        $this->requireAdmin($request);
-        DB::run('DELETE FROM quiz_questions WHERE id = :id', ['id' => (int) $id]);
-        $this->saved();
-        return $this->back('/admin/preguntas/', t('admin.deleted'));
-    }
-
-    private const SETTINGS = ['whatsapp_number', 'social_youtube', 'social_linkedin', 'refund_days', 'ads_enabled', 'adsense_max_blocks'];
+    private const SETTINGS = ['whatsapp_number', 'fundales_url', 'social_youtube', 'social_linkedin', 'refund_days', 'ads_enabled', 'adsense_max_blocks'];
 
     public function settings(Request $request): Response
     {

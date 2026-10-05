@@ -52,8 +52,8 @@ $locale = $meta['locale'];
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-<link rel="preload" href="/assets/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/source-sans-3-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/bricolage-grotesque-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/plus-jakarta-sans-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://blogedwinortiznet.s3.amazonaws.com">
 <?php if (!empty($meta['preload_image'])): ?>
 <link rel="preload" as="image" href="<?= e($meta['preload_image']) ?>"<?php if (!empty($meta['preload_srcset'])): ?> imagesrcset="<?= e($meta['preload_srcset']) ?>" imagesizes="<?= e($meta['preload_sizes'] ?? '100vw') ?>"<?php endif; ?> fetchpriority="high">

@@ -195,7 +195,7 @@ final class AdminTest extends TestCase
     public function testOtherSectionsRender(): void
     {
         $this->login();
-        foreach (['/admin/contenido/', '/admin/contenido/?review=1', '/admin/contenido/nuevo/', '/admin/productos/', '/admin/familias/', '/admin/suscriptores/', '/admin/redirecciones/', '/admin/preguntas/', '/admin/ajustes/'] as $path) {
+        foreach (['/admin/contenido/', '/admin/contenido/?review=1', '/admin/contenido/nuevo/', '/admin/productos/', '/admin/familias/', '/admin/suscriptores/', '/admin/redirecciones/', '/admin/ajustes/'] as $path) {
             $this->assertSame(200, $this->get($path)->status, $path);
         }
         $csv = $this->get('/admin/suscriptores/exportar/');

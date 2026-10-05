@@ -69,13 +69,4 @@ final class SubscribeTest extends TestCase
         $this->assertSame(422, $this->post('/suscripcion/', ['email' => $this->email], true, time())->status);
         $this->assertNull(DB::value('SELECT id FROM subscribers WHERE email = :e', ['e' => $this->email]));
     }
-
-    public function testQuizResultByEmailSubscribesWithConcursoTag(): void
-    {
-        $res = $this->post('/herramientas/simulacro-concurso-docente/resultado/', ['email' => $this->email, 'score' => 7, 'total' => 10]);
-        $this->assertSame(200, $res->status);
-        $this->assertSame('concurso', DB::value('SELECT tag FROM subscribers WHERE email = :e', ['e' => $this->email]));
-        $mail = end(Mailer::$sent);
-        $this->assertStringContainsString('7 de 10', $mail['subject']);
-    }
 }

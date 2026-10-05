@@ -73,9 +73,6 @@ return static function (Router $r): void {
     $r->get('/admin/redirecciones/', [AdminMisc::class, 'redirects'], 'admin.redirects');
     $r->post('/admin/redirecciones/', [AdminMisc::class, 'saveRedirect']);
     $r->post('/admin/redirecciones/{id}/borrar/', [AdminMisc::class, 'deleteRedirect'], 'admin.redirects.delete');
-    $r->get('/admin/preguntas/', [AdminMisc::class, 'questions'], 'admin.questions');
-    $r->post('/admin/preguntas/', [AdminMisc::class, 'saveQuestion']);
-    $r->post('/admin/preguntas/{id}/borrar/', [AdminMisc::class, 'deleteQuestion'], 'admin.questions.delete');
     $r->get('/admin/ajustes/', [AdminMisc::class, 'settings'], 'admin.settings');
     $r->post('/admin/ajustes/', [AdminMisc::class, 'saveSettings']);
     $r->post('/admin/cache/', [AdminMisc::class, 'flushCache'], 'admin.cache');
@@ -109,7 +106,6 @@ return static function (Router $r): void {
             'subscribe' => '/suscripcion/',
             'subscribe.confirm' => '/suscripcion/confirmar/{token}/',
             'subscribe.unsubscribe' => '/suscripcion/baja/{token}/',
-            'quiz.result' => '/herramientas/simulacro-concurso-docente/resultado/',
             'feed' => '/feed/',
             'content' => '/{slug}/',
         ],
@@ -157,9 +153,6 @@ return static function (Router $r): void {
             $r->get($p['courses'], [ShopController::class, 'courses'], 'courses', $locale, $cache);
         }
         $r->get($p['tools'], [ToolsController::class, 'index'], 'tools', $locale, $cache);
-        if (isset($p['quiz.result'])) {
-            $r->post($p['quiz.result'], [ToolsController::class, 'quizResult'], 'quiz.result', $locale);
-        }
         $r->get($p['tool'], [ToolsController::class, 'show'], 'tool', $locale, $cache);
         $r->get($p['about'], [PageController::class, 'about'], 'about', $locale, $cache);
         $r->get($p['contact'], [PageController::class, 'contact'], 'contact', $locale);

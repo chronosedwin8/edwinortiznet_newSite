@@ -115,12 +115,6 @@ return static function (): string {
             "<p>Si organizas cursos, eventos o capacitaciones, sabes lo que cuesta producir los certificados uno por uno y lo fácil que es falsificarlos. Esta plantilla tomará tu lista de participantes en Excel y una plantilla de diseño en Word para producir un PDF por persona.</p><p>Cada certificado llevará un código QR único que apunta a una página de verificación, de modo que quien lo reciba pueda confirmar que es auténtico.</p><p>Está pensada para instituciones educativas, centros de formación, empresas y organizadores de eventos.</p>",
             "<ul><li>Plantilla de Excel para la lista de participantes.</li><li>Plantilla de diseño en Word editable.</li><li>Generación de un PDF por participante con su código QR.</li><li>Guía para publicar la página de verificación.</li></ul>",
             $req['word']],
-        ['EO-KIT-CONC27', 'docentes', 'concurso', 'download', 25, 'kit-concurso-docente-2027',
-            'Kit Concurso Docente 2027',
-            'Material de estudio organizado para preparar el Concurso Docente: plan de estudio por semanas, resúmenes de normativa y bancos de práctica.',
-            "<p>Un kit para estudiar con orden: un plan de estudio semana a semana, resúmenes de la normativa que más se evalúa y bancos de preguntas de práctica con su explicación.</p><p>Está pensado para docentes de aula, orientadores y directivos docentes. Las fechas del concurso las define la CNSC; el kit se actualizará cuando se publiquen las definitivas.</p>",
-            "<ul><li>Plan de estudio por semanas (PDF y Excel).</li><li>Resúmenes de normativa.</li><li>Bancos de preguntas de práctica con explicación.</li></ul>",
-            'Lector de PDF y Microsoft Excel (o Google Sheets) para el plan de estudio.'],
         ['EO-BOLETINES', 'docentes', 'docente', 'download', 35, 'boletines-e-informes-con-observaciones',
             'Boletines e informes con observaciones',
             'Genera los boletines de tus estudiantes desde Excel con notas, promedios y observaciones automáticas por desempeño.',
@@ -170,6 +164,8 @@ return static function (): string {
             "<ul><li>Clases en video.</li><li>Material descargable.</li><li>Ejercicios prácticos.</li></ul>",
             $req['course']],
     ];
+    // El kit del concurso se retiró: la preparación ahora se hace en Fundales.
+    DB::run('UPDATE products SET status = "hidden" WHERE sku = "EO-KIT-CONC27"');
     $soonIds = [];
     foreach ($soon as [$sku, $family, $audience, $type, $usd, $slug, $title, $short, $desc, $includes, $requirements]) {
         $id = DB::upsert('products', [

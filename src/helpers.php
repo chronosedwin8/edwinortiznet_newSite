@@ -132,3 +132,11 @@ function product_blurb(array $product, int $length = 110): string
     }
     return excerpt_text($short, $length);
 }
+
+/** Enlace a Fundales (simulacros del Concurso Docente) con UTM para medir desde dónde llegan. */
+function fundales_url(string $campaign, string $medium = 'cta'): string
+{
+    $base = \App\Models\Setting::get('fundales_url', 'https://fundales.com/') ?? 'https://fundales.com/';
+    $sep = str_contains($base, '?') ? '&' : '?';
+    return $base . $sep . http_build_query(['utm_source' => 'edwinortiz.net', 'utm_medium' => $medium, 'utm_campaign' => $campaign]);
+}

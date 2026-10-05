@@ -10,11 +10,14 @@ $policies = $locale === 'es'
     : ['privacy' => t('footer.privacy'), 'terms' => t('footer.terms'), 'refunds' => t('footer.refunds'), 'cookies' => t('footer.cookies')];
 ?>
 <footer class="site-footer">
-  <div class="wrap site-footer__grid">
+  <div class="wrap site-footer__top">
     <section class="site-footer__about">
-      <p class="site-footer__brand"><?= e(t('site.owner')) ?></p>
+      <a class="brand brand--footer" href="<?= e(route('home')) ?>">
+        <span class="brand__mark" aria-hidden="true"><?= e(t('nav.brand_mark')) ?></span>
+        <span class="brand__name"><?= e(t('nav.brand_first')) ?> <span><?= e(t('nav.brand_last')) ?></span></span>
+      </a>
       <p><?= e(t('footer.tagline')) ?></p>
-      <p><a href="<?= e(route('about')) ?>"><?= e(t('footer.about')) ?></a> · <a href="<?= e(route('contact')) ?>"><?= e(t('footer.contact')) ?></a></p>
+      <p class="site-footer__links"><a href="<?= e(route('about')) ?>"><?= e(t('footer.about')) ?></a> <a href="<?= e(route('contact')) ?>"><?= e(t('footer.contact')) ?></a></p>
     </section>
     <nav aria-label="<?= e(t('footer.nav_explore')) ?>">
       <h2 class="site-footer__title"><?= e(t('footer.explore')) ?></h2>
@@ -24,6 +27,7 @@ $policies = $locale === 'es'
         <li><a href="<?= e(route('tools')) ?>"><?= e(t('nav.tools')) ?></a></li>
         <?php if ($locale === 'es'): ?>
         <li><a href="<?= e(route('courses')) ?>"><?= e(t('nav.courses')) ?></a></li>
+        <li><a href="<?= e(fundales_url('pie-de-pagina', 'footer')) ?>" target="_blank" rel="noopener"><?= e(t('footer.fundales')) ?></a></li>
         <?php endif; ?>
         <li><a href="<?= e(route('account')) ?>"><?= e(t('nav.account')) ?></a></li>
       </ul>
@@ -37,8 +41,9 @@ $policies = $locale === 'es'
         <li><button type="button" class="link-button js-only" data-consent-open><?= e(t('consent.manage')) ?></button></li>
       </ul>
     </nav>
-    <section aria-labelledby="footer-sub">
+    <section class="site-footer__sub" aria-labelledby="footer-sub">
       <h2 class="site-footer__title" id="footer-sub"><?= e(t('subscribe.footer_title')) ?></h2>
+      <p class="site-footer__subtext"><?= e(t('subscribe.text')) ?></p>
       <?= \App\Core\View::render('partials/subscribe-form', ['source' => 'footer', 'tag' => 'general', 'compact' => true, 'idPrefix' => 'footer']) ?>
     </section>
   </div>

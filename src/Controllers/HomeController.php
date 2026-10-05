@@ -35,6 +35,8 @@ final class HomeController extends Controller
         return $this->page('pages/home', [
             'bestSellers' => Product::bestSellers($locale, 6),
             'salesTotal' => (int) \App\Core\DB::value('SELECT COALESCE(SUM(legacy_sales + sales_count), 0) FROM products'),
+            'productCount' => (int) \App\Core\DB::value('SELECT COUNT(*) FROM products p JOIN product_translations t ON t.product_id = p.id AND t.locale = :l WHERE p.status = "active"', ['l' => $locale]),
+            'postCount' => \App\Models\Post::countPublished($locale),
             'tools' => ToolRegistry::forLocale($locale),
             'hubs' => $hubs,
             'latest' => $latest ?? [],

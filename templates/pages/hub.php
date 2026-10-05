@@ -40,7 +40,11 @@ $crumbs = [[t('nav.home'), route('home')], [$hub['title'], \App\Models\Hub::path
 </section>
 <?php endif; ?>
 
-<?php if ($products): ?>
+<?php if ($hub['key'] === 'concurso-docente'): ?>
+<section class="section wrap section--flush">
+  <?= View::render('partials/fundales-cta', ['campaign' => 'hub-concurso', 'variant' => 'banner']) ?>
+</section>
+<?php elseif ($products): ?>
 <section class="section section--tint" aria-labelledby="hub-products-title">
   <div class="wrap">
     <div class="section__head">

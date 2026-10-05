@@ -382,11 +382,137 @@ function initConsent() {
   });
 }
 
+/* ---------- Cabecera: sombra al desplazarse ---------- */
+function initHeader() {
+  const header = $('.site-header');
+  if (!header) return;
+  const sentinel = document.createElement('div');
+  sentinel.setAttribute('aria-hidden', 'true');
+  sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none';
+  document.body.prepend(sentinel);
+  if (!('IntersectionObserver' in window)) return;
+  new IntersectionObserver(([entry]) => header.classList.toggle('is-scrolled', !entry.isIntersecting)).observe(sentinel);
+}
+
+/* ---------- Foco de luz que sigue al puntero ---------- */
+function initSpotlight() {
+  if (reducedMotion || !matchMedia('(hover: hover)').matches) return;
+  document.addEventListener('pointermove', (e) => {
+    const card = e.target.closest?.('[data-spotlight]');
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    card.style.setProperty('--my', `${e.clientY - r.top}px`);
+  }, { passive: true });
+}
+
+/* ---------- Contadores animados ---------- */
+function initCounters() {
+  const items = $$('[data-count]');
+  if (!items.length || reducedMotion || !('IntersectionObserver' in window)) return;
+  const nf = new Intl.NumberFormat(locale === 'es' ? 'es-CO' : 'en-US');
+  const run = (el) => {
+    const target = Number(el.dataset.count) || 0;
+    const start = performance.now();
+    const duration = 1400;
+    const step = (now) => {
+      const p = Math.min((now - start) / duration, 1);
+      el.textContent = nf.format(Math.round(target * (1 - (1 - p) ** 3)));
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+  const io = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      io.unobserve(entry.target);
+      run(entry.target);
+    }
+  }, { threshold: .6 });
+  items.forEach((el) => io.observe(el));
+}
+
+/* ---------- Carrusel con botones anterior/siguiente ---------- */
+function initCarousels() {
+  for (const track of $$('[data-carousel]')) {
+    const name = track.dataset.carousel;
+    const prev = $(`[data-carousel-prev="${name}"]`);
+    const next = $(`[data-carousel-next="${name}"]`);
+    const page = () => Math.max(track.clientWidth * .85, 260);
+    const sync = () => {
+      const max = track.scrollWidth - track.clientWidth - 4;
+      if (prev) prev.disabled = track.scrollLeft <= 4;
+      if (next) next.disabled = track.scrollLeft >= max;
+    };
+    const behavior = reducedMotion ? 'auto' : 'smooth';
+    prev?.addEventListener('click', () => track.scrollBy({ left: -page(), behavior }));
+    next?.addEventListener('click', () => track.scrollBy({ left: page(), behavior }));
+    track.addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
+    addEventListener('resize', sync, { passive: true });
+    sync();
+  }
+}
+
+/* ---------- Pestañas accesibles (flechas, Inicio, Fin) ---------- */
+function initTabs() {
+  for (const root of $$('[data-tabs-hubs]')) {
+    const tabs = $$('[role="tab"]', root);
+    const select = (tab, focus = false) => {
+      for (const t of tabs) {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        const panel = document.getElementById(t.getAttribute('aria-controls'));
+        if (panel) panel.toggleAttribute('data-inactive', !on);
+      }
+      if (focus) tab.focus();
+    };
+    root.addEventListener('click', (e) => {
+      const tab = e.target.closest('[role="tab"]');
+      if (tab) select(tab);
+    });
+    root.addEventListener('keydown', (e) => {
+      const i = tabs.indexOf(document.activeElement);
+      if (i < 0) return;
+      const map = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 };
+      if (!(e.key in map)) return;
+      e.preventDefault();
+      select(tabs[(map[e.key] + tabs.length) % tabs.length], true);
+    });
+  }
+}
+
+/* ---------- Hoja de cálculo animada del encabezado ---------- */
+function initSheet() {
+  const sheet = $('[data-sheet]');
+  if (!sheet) return;
+  const cells = $$('[data-sheet-status]', sheet);
+  const running = cells[0]?.textContent || '';
+  const done = sheet.dataset.done || '✓';
+  const paint = (n) => cells.forEach((c, i) => {
+    const ok = i < n;
+    c.textContent = ok ? done : running;
+    c.classList.toggle('sheet__ok', ok);
+    c.classList.toggle('sheet__run', !ok);
+  });
+  if (reducedMotion) { paint(cells.length); return; }
+  let n = 0;
+  const tick = () => {
+    n = n > cells.length ? 0 : n + 1;
+    paint(n);
+    setTimeout(tick, n > cells.length - 1 ? 2400 : 900);
+  };
+  setTimeout(tick, 1200);
+}
+
 // Lo visible primero; el resto cuando el hilo principal esté libre.
 initTheme();
+initHeader();
 initReveal();
+initSheet();
+initTabs();
 initLiteYoutube();
 initAsyncForms();
 // Cada inicialización en su propia tarea corta para no bloquear la interacción.
 const idle = window.requestIdleCallback ? (fn) => requestIdleCallback(fn, { timeout: 2000 }) : (fn) => setTimeout(fn, 50);
-[initCurrency, initCart, initLangBanner, initSearch, initConsent].forEach((fn) => idle(fn));
+[initCounters, initCarousels, initSpotlight, initCurrency, initCart, initLangBanner, initSearch, initConsent].forEach((fn) => idle(fn));

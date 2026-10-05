@@ -44,7 +44,7 @@ HTML,
 <p>Llevo más de veinte años en el aula enseñando matemáticas y tecnología, y sé que el tiempo del docente no alcanza: planear, calificar, llenar formatos, atender reuniones y, además, mantenerse al día con herramientas que cambian cada mes.</p>
 <p>Esta sección reúne lo que me ha funcionado para usar la tecnología a favor del docente y no al revés: cómo apoyarte en la inteligencia artificial para preparar material sin perder tu criterio pedagógico, cómo enseñar ciudadanía digital y seguridad en internet, cómo trabajar el pensamiento computacional con recursos sencillos y cómo automatizar tareas administrativas con Excel y Word.</p>
 <p>Encontrarás guías con ejemplos reales de clase, ventajas y desventajas de cada herramienta y recomendaciones para colegios con conectividad limitada. La idea no es reemplazar al maestro, sino quitarle carga repetitiva para que dedique más tiempo a lo que importa: sus estudiantes.</p>
-<p>Si te estás preparando para el Concurso Docente, visita también la sección dedicada, con guías, entrevistas y un simulacro gratuito.</p>
+<p>Si te estás preparando para el Concurso Docente, visita también la sección dedicada, con guías y entrevistas, y practica con simulacros reales en <a href="https://fundales.com/?utm_source=edwinortiz.net&amp;utm_medium=hub&amp;utm_campaign=hub-docentes" target="_blank" rel="noopener">Fundales</a>, gratis durante un año.</p>
 HTML,
             'faq' => [
                 ['q' => '¿Puedo usar inteligencia artificial para planear mis clases?', 'a' => 'Sí, como apoyo para generar ideas, ejemplos y borradores. Revisa siempre el resultado: la IA se equivoca y no conoce el contexto de tu grupo.'],
@@ -58,17 +58,17 @@ HTML,
             'slug' => 'concurso-docente',
             'title' => 'Concurso Docente',
             'menu_title' => 'Concurso',
-            'seo_title' => 'Concurso Docente en Colombia: guías, entrevista y simulacro',
-            'seo_description' => 'Prepárate para el Concurso Docente de la CNSC: guía completa, preguntas frecuentes, entrevista para docentes y directivos, y un simulacro gratuito con retroalimentación.',
+            'seo_title' => 'Concurso Docente en Colombia: guías, entrevista y simulacros',
+            'seo_description' => 'Prepárate para el Concurso Docente de la CNSC: guía completa, preguntas frecuentes, entrevista para docentes y directivos, y simulacros reales en Fundales.',
             'intro' => <<<'HTML'
 <p>Prepararse para el Concurso Docente exige método: conocer la normativa, entender cómo se evalúan las competencias y practicar con preguntas del estilo de la prueba. Aquí reúno las guías que he preparado para docentes de aula, orientadores y directivos docentes que aspiran a un nombramiento en propiedad.</p>
-<p>Empieza por la guía completa, donde explico las etapas del concurso y una estrategia de estudio por semanas. Luego revisa las preguntas frecuentes y las guías de entrevista, que es la etapa que más dudas genera. Cuando tengas la teoría, practica con el simulacro gratuito: te muestra la respuesta correcta y una explicación en cada pregunta, y al final puedes recibir tu resultado por correo.</p>
+<p>Empieza por la guía completa, donde explico las etapas del concurso y una estrategia de estudio por semanas. Luego revisa las preguntas frecuentes y las guías de entrevista, que es la etapa que más dudas genera. Cuando tengas la teoría, entrena en <a href="https://fundales.com/?utm_source=edwinortiz.net&amp;utm_medium=hub&amp;utm_campaign=hub-concurso" target="_blank" rel="noopener">Fundales</a>, la plataforma de simulacros que creé para el concurso: preguntas tipo CNSC con juicio situacional, tiempo controlado y un análisis de tus resultados. La cuenta es gratuita durante un año.</p>
 <p>Las fechas del proceso las define la Comisión Nacional del Servicio Civil (CNSC). Cada guía indica cuándo fue actualizada; las fechas definitivas siempre se publican en cnsc.gov.co, así que confírmalas allí antes de tomar decisiones.</p>
 <p>Si te sirve, suscríbete: aviso por correo cuando publico material nuevo para el concurso.</p>
 HTML,
             'faq' => [
                 ['q' => '¿Dónde se consultan las fechas oficiales del concurso?', 'a' => 'En el sitio de la Comisión Nacional del Servicio Civil, cnsc.gov.co. Los cronogramas cambian, así que verifica allí antes de inscribirte.'],
-                ['q' => '¿El simulacro tiene costo?', 'a' => 'No. El simulacro es gratuito, funciona en el navegador y no necesitas registrarte para usarlo.'],
+                ['q' => '¿Dónde puedo hacer un simulacro del concurso?', 'a' => 'En Fundales (fundales.com), la plataforma de simulacros que creé para el Concurso Docente. Tiene preguntas tipo CNSC por cargo, control del tiempo y análisis de resultados, y la cuenta es gratuita durante un año.'],
                 ['q' => '¿Sirve para directivos docentes y orientadores?', 'a' => 'Sí. Hay guías específicas para la entrevista de directivos docentes y material para docentes de aula de todas las áreas.'],
             ],
         ],

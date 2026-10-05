@@ -4,21 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Core\DB;
-use App\Core\Mailer;
-use App\Core\RateLimiter;
 use App\Core\Request;
 use App\Core\Response;
 use App\Models\Hub;
 use App\Models\Product;
 use App\Services\I18n\I18n;
-use App\Services\Mail\MailTemplates;
 use App\Services\Seo\Meta;
-use App\Services\Subscribers;
 use App\Services\Tools\ToolRegistry;
 
 /**
- * Herramientas gratuitas: funcionan en el navegador, sin enviar datos al servidor.
+ * Herramientas gratuitas (en el navegador) y la página del simulacro, que lleva a Fundales.
  */
 final class ToolsController extends Controller
 {
@@ -52,31 +47,11 @@ final class ToolsController extends Controller
             $this->notFound();
         }
         $key = $tool['key'];
-        $product = null;
-        if (!empty($tool['product_wp_id'])) {
-            $product = Product::byWpId((int) $tool['product_wp_id'], $locale);
-        } elseif (!empty($tool['product_key'])) {
-            $id = DB::value('SELECT id FROM products WHERE sku = :s', ['s' => 'EO-KIT-CONC27']);
-            $product = $id !== null ? Product::find((int) $id, $locale) : null;
+        if ($key === 'fundales') {
+            return $this->fundales($slug);
         }
-        $faqs = [];
-        for ($i = 1; I18n::has("tool.$key.faq{$i}_q"); $i++) {
-            $faqs[] = ['q' => t("tool.$key.faq{$i}_q"), 'a' => t("tool.$key.faq{$i}_a")];
-        }
-        $questions = [];
-        if ($key === 'quiz') {
-            foreach (DB::all('SELECT id, area, question, options_json, correct_index, explanation, is_demo FROM quiz_questions WHERE active = 1 ORDER BY id') as $q) {
-                $questions[] = [
-                    'id' => (int) $q['id'],
-                    'area' => $q['area'],
-                    'q' => $q['question'],
-                    'o' => json_decode($q['options_json'], true) ?: [],
-                    'c' => (int) $q['correct_index'],
-                    'e' => (string) $q['explanation'],
-                    'demo' => (bool) $q['is_demo'],
-                ];
-            }
-        }
+        $product = !empty($tool['product_wp_id']) ? Product::byWpId((int) $tool['product_wp_id'], $locale) : null;
+        $faqs = self::faqs("tool.$key");
         $path = route('tool', ['slug' => $slug]);
         $crumbs = [[t('nav.home'), route('home')], [t('nav.tools'), route('tools')], [t("tool.$key.name"), $path]];
         return $this->page('pages/tool', [
@@ -84,9 +59,7 @@ final class ToolsController extends Controller
             'key' => $key,
             'product' => $product,
             'faqs' => $faqs,
-            'questions' => $questions,
             'crumbs' => $crumbs,
-            'sent' => isset($request->query['enviado']),
         ], [
             'title' => t("tool.$key.seo_title"),
             'title_full' => true,
@@ -109,33 +82,43 @@ final class ToolsController extends Controller
         ]);
     }
 
-    /** Resultado del simulacro por correo + suscripción con etiqueta "concurso" (doble opt-in). */
-    public function quizResult(Request $request): Response
+    /** @return array<int, array{q:string,a:string}> */
+    private static function faqs(string $prefix): array
     {
-        $this->requireHuman($request);
-        $back = route('tool', ['slug' => 'simulacro-concurso-docente']);
-        if (!RateLimiter::hit('quiz-mail', $request->ip(), 5, 3600)) {
-            return $request->wantsJson() ? Response::json(['ok' => false, 'message' => t('form.rate_limited')], 429) : $this->redirect($back);
+        $faqs = [];
+        for ($i = 1; I18n::has("$prefix.faq{$i}_q"); $i++) {
+            $faqs[] = ['q' => t("$prefix.faq{$i}_q"), 'a' => t("$prefix.faq{$i}_a")];
         }
-        $email = strtolower($request->str('email'));
-        $total = max(1, min(50, (int) $request->input('total', 10)));
-        $score = max(0, min($total, (int) $request->input('score', 0)));
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return $request->wantsJson() ? Response::json(['ok' => false, 'message' => t('form.invalid_email')], 422) : $this->redirect($back);
-        }
-        $subscriber = Subscribers::add($email, 'es', 'simulacro', 'concurso');
-        $mail = MailTemplates::render('quiz-result', 'es', [
-            'score' => $score,
-            'total' => $total,
-            'percent' => (int) round($score * 100 / $total),
-            'confirmUrl' => $subscriber['confirmed_at'] ? null : url(route('subscribe.confirm', ['token' => $subscriber['token']], 'es')),
-            'unsubscribeUrl' => url(route('subscribe.unsubscribe', ['token' => $subscriber['token']], 'es')),
-            'toolUrl' => url($back),
+        return $faqs;
+    }
+
+    /** Simulacro del Concurso Docente: presentación de Fundales (cuenta gratis por un año). */
+    private function fundales(string $slug): Response
+    {
+        $path = route('tool', ['slug' => $slug]);
+        $crumbs = [[t('nav.home'), route('home')], [t('nav.tools'), route('tools')], [t('fundales.crumb'), $path]];
+        $faqs = self::faqs('fundales');
+        return $this->page('pages/fundales', [
+            'crumbs' => $crumbs,
+            'faqs' => $faqs,
+            'hub' => Hub::byKey('concurso-docente', 'es'),
+        ], [
+            'title' => t('fundales.seo_title'),
+            'title_full' => true,
+            'description' => t('fundales.seo_description'),
+            'breadcrumbs' => $crumbs,
+            'jsonld' => [[
+                '@context' => 'https://schema.org',
+                '@type' => 'WebApplication',
+                'name' => 'Fundales — Entrenador Docente',
+                'url' => 'https://fundales.com/',
+                'applicationCategory' => 'EducationalApplication',
+                'operatingSystem' => 'Any',
+                'inLanguage' => 'es-CO',
+                'creator' => ['@type' => 'Person', 'name' => 'Edwin Ortiz Herazo'],
+                'offers' => ['@type' => 'Offer', 'price' => '0', 'priceCurrency' => 'COP', 'description' => t('fundales.offer')],
+            ], Meta::faqPage($faqs)],
+            'body_class' => 'page-fundales',
         ]);
-        Mailer::send($email, $mail['subject'], $mail['html'], $mail['text']);
-        if ($request->wantsJson()) {
-            return Response::json(['ok' => true, 'message' => t('quiz.sent')]);
-        }
-        return $this->redirect($back . '?enviado=1');
     }
 }

@@ -76,7 +76,7 @@ final class ContentController extends Controller
             }
         }
         $hubKey = $post['hub_id'] ? DB::value('SELECT `key` FROM hubs WHERE id = :id', ['id' => (int) $post['hub_id']]) : null;
-        $sku = ['concurso-docente' => 'EO-KIT-CONC27', 'ia-para-docentes' => 'EO-KIT-IA'][$hubKey] ?? null;
+        $sku = ['ia-para-docentes' => 'EO-KIT-IA'][$hubKey] ?? null;
         if ($sku !== null) {
             $id = DB::value('SELECT id FROM products WHERE sku = :s', ['s' => $sku]);
             $product = $id !== null ? Product::find((int) $id, $locale) : null;
@@ -91,13 +91,21 @@ final class ContentController extends Controller
     {
         $locale = $post['locale'];
         $hub = $post['hub_id'] ? Hub::byId((int) $post['hub_id'], $locale) : null;
-        $product = self::relatedProduct($post);
-        $rendered = ContentRenderer::render($post, $product, true);
+        $isContest = ($hub['key'] ?? null) === 'concurso-docente';
+        $product = $isContest ? null : self::relatedProduct($post);
+        $inline = $isContest ? \App\Core\View::render('partials/fundales-cta', ['campaign' => 'articulo-' . substr($post['slug'], 0, 60), 'variant' => 'card']) : null;
+        // Las reseñas de herramientas de Grupo Logic ya enlazan su producto: sin tarjeta de la tienda a mitad del texto.
+        if ($inline === null && str_contains((string) $post['content_html'], 'grupologiclatam.com/productos/')) {
+            $inline = '';
+        }
+        $rendered = ContentRenderer::render($post, $product, true, $inline);
         $path = post_path($post);
         $crumbs = [[t('nav.home'), route('home')]];
         $crumbs[] = $hub ? [$hub['menu_title'] ?: $hub['title'], Hub::path($hub)] : [t('nav.blog'), route('blog')];
         $crumbs[] = [$post['title'], $path];
         $image = $post['cover_url'] ?: null;
+        // Las portadas propias son rutas locales; Open Graph y JSON-LD necesitan la URL completa.
+        $imageAbs = $image !== null && str_starts_with($image, '/') ? url($image) : $image;
 
         return $this->page('pages/article', [
             'post' => $post,
@@ -105,6 +113,7 @@ final class ContentController extends Controller
             'html' => $rendered['html'],
             'toc' => $rendered['toc'],
             'product' => $product,
+            'isContest' => $isContest,
             'siblings' => Post::siblings($post, 2),
             'crumbs' => $crumbs,
         ], [
@@ -115,7 +124,7 @@ final class ContentController extends Controller
             'alternates' => Post::alternates($post),
             'breadcrumbs' => $crumbs,
             'og_type' => 'article',
-            'image' => $image,
+            'image' => $imageAbs,
             'preload_image' => $image,
             'preload_srcset' => $post['cover_srcset'] ?? null,
             'preload_sizes' => \App\Services\Seo\Assets::COVER_SIZES,
@@ -128,7 +137,7 @@ final class ContentController extends Controller
                 '@type' => 'Article',
                 'headline' => mb_substr($post['title'], 0, 110),
                 'description' => $post['seo_description'] ?: $post['excerpt'],
-                'image' => $image ? [$image] : null,
+                'image' => $imageAbs ? [$imageAbs] : null,
                 'datePublished' => $post['published_at'] ? gmdate('c', strtotime($post['published_at'] . ' UTC')) : null,
                 'dateModified' => $post['updated_at'] ? gmdate('c', strtotime($post['updated_at'] . ' UTC')) : null,
                 'inLanguage' => I18n::meta('html'),
@@ -136,7 +145,7 @@ final class ContentController extends Controller
                 'publisher' => ['@type' => 'Person', 'name' => 'Edwin Ortiz Herazo', 'url' => url('/')],
                 'mainEntityOfPage' => url($path),
                 'wordCount' => str_word_count((string) iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', (string) $post['content_text'])),
-            ]],
+            ], Meta::faqPage(ContentRenderer::faqs((string) $post['content_html']))],
             'body_class' => 'page-article',
         ]);
     }

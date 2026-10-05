@@ -17,18 +17,7 @@ use App\Core\View;
 
 <section class="section wrap" aria-labelledby="tools-list-title">
   <h2 id="tools-list-title" class="visually-hidden"><?= e(t('tools.title')) ?></h2>
-  <ul class="tool-list tool-list--large">
-    <?php foreach ($tools as $tool): ?>
-    <li class="tool-item reveal">
-      <a href="<?= e(route('tool', ['slug' => $tool['slug']])) ?>">
-        <span class="tool-item__tag"><?= e(t('tools.free')) ?></span>
-        <span class="tool-item__title"><?= e(t("tool.{$tool['key']}.name")) ?></span>
-        <span class="tool-item__text"><?= e(t("tool.{$tool['key']}.summary")) ?></span>
-        <span class="link-more"><?= e(t('tools.open')) ?></span>
-      </a>
-    </li>
-    <?php endforeach; ?>
-  </ul>
+  <?= View::render('partials/tool-cards', ['tools' => $tools, 'large' => true]) ?>
 </section>
 
 <?php if ($faqs): ?>

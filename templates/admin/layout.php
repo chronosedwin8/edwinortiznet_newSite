@@ -7,7 +7,6 @@ $nav = [
     ['/admin/pedidos/', 'admin.orders'],
     ['/admin/suscriptores/', 'admin.subscribers'],
     ['/admin/redirecciones/', 'admin.redirects'],
-    ['/admin/preguntas/', 'admin.questions'],
     ['/admin/ajustes/', 'admin.settings'],
 ];
 $path = \App\Services\Seo\Meta::path();

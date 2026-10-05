@@ -6,26 +6,29 @@ namespace App\Services\Tools;
 
 /**
  * Herramientas gratuitas. Los textos viven en lang/*.php; aquí solo la estructura.
+ * El simulacro del Concurso Docente es una página que lleva a Fundales (fundales.com).
  */
 final class ToolRegistry
 {
-    /** clave => [slug por idioma, producto relacionado (wp_id), script] */
+    /** clave => [slug por idioma, producto relacionado (wp_id), script, ícono] */
     private const TOOLS = [
         'qr' => [
             'slugs' => ['es' => 'generador-qr', 'en' => 'qr-code-generator'],
             'product_wp_id' => 409,
             'script' => 'js/tools/qr-tool.js',
+            'icon' => 'qr',
         ],
         'words' => [
             'slugs' => ['es' => 'numero-a-letras', 'en' => 'number-to-words'],
             'product_wp_id' => 396,
             'script' => 'js/tools/words-tool.js',
+            'icon' => 'abc',
         ],
-        'quiz' => [
+        'fundales' => [
             'slugs' => ['es' => 'simulacro-concurso-docente'],
             'product_wp_id' => null,
-            'product_key' => 'kit-concurso-docente-2027',
-            'script' => 'js/tools/quiz-tool.js',
+            'script' => null,
+            'icon' => 'target',
         ],
     ];
 
