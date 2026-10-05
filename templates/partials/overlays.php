@@ -5,7 +5,7 @@ use App\Core\Config;
 use App\Services\I18n\I18n;
 
 $locale = I18n::locale();
-$wa = (string) Config::get('WHATSAPP_NUMBER', '573162830615');
+$wa = \App\Models\Setting::get('whatsapp_number') ?? (string) Config::get('WHATSAPP_NUMBER', '573162830615');
 ?>
 <aside class="cart-drawer" id="cart-drawer" data-cart-drawer hidden aria-labelledby="cart-drawer-title"
        data-checkout="<?= e(route('checkout')) ?>" data-api="/api/carrito" data-locale="<?= e($locale) ?>">

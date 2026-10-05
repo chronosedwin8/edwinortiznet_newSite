@@ -45,5 +45,6 @@ final class RoutesSmokeTest extends TestCase
             $this->assertLessThan(500, $response->status, "GET $path → {$response->status}");
             $this->assertNotContains($response->status, [405], "GET $path");
         }
+        DB::run('DELETE FROM not_found_log WHERE path LIKE "/pedido/bbbb%" OR path LIKE "/descarga/cccc%" OR path LIKE "/suscripcion/confirmar/aaaa%"');
     }
 }

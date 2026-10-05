@@ -80,7 +80,7 @@ final class PageController extends Controller
             'crumbs' => $crumbs,
             'sent' => isset($request->query['enviado']),
             'error' => $request->query['error'] ?? null,
-            'whatsapp' => (string) Config::get('WHATSAPP_NUMBER', '573162830615'),
+            'whatsapp' => \App\Models\Setting::get('whatsapp_number') ?? (string) Config::get('WHATSAPP_NUMBER', '573162830615'),
         ], [
             'title' => t('contact.seo_title'),
             'description' => t('contact.seo_description'),

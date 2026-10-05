@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Cadenas de interfaz en español de Colombia. Uso: t('clave', ['param' => valor]) → reemplaza :param.
  * Tono cercano y directo.
  */
-return [
+return array_merge(require __DIR__ . '/admin.es.php', [
     // Sitio y SEO
     'site.name' => 'Edwin Ortiz Herazo',
     'site.owner' => 'Edwin Ortiz Herazo',
@@ -467,4 +467,4 @@ return [
     'error.429.text' => 'Espera un momento antes de volver a intentarlo.',
     'error.500.title' => 'Algo salió mal',
     'error.500.text' => 'Ocurrió un error inesperado. Ya quedó registrado; inténtalo de nuevo en un rato.',
-];
+]);

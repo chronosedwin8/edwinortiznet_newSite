@@ -37,12 +37,12 @@ final class Request
     }
 
     /** Construye peticiones sintéticas (pruebas y consola). */
-    public static function create(string $method, string $uri, array $post = [], array $server = [], array $cookies = [], ?string $body = null): self
+    public static function create(string $method, string $uri, array $post = [], array $server = [], array $cookies = [], ?string $body = null, array $files = []): self
     {
         $path = (string) parse_url($uri, PHP_URL_PATH);
         parse_str((string) parse_url($uri, PHP_URL_QUERY), $query);
         $server += ['REMOTE_ADDR' => '127.0.0.1', 'QUERY_STRING' => (string) parse_url($uri, PHP_URL_QUERY)];
-        return new self(strtoupper($method), $path === '' ? '/' : $path, $query, $post, $server, $cookies, [], $body);
+        return new self(strtoupper($method), $path === '' ? '/' : $path, $query, $post, $server, $cookies, $files, $body);
     }
 
     public function body(): string

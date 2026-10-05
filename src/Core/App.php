@@ -63,6 +63,8 @@ final class App
         \App\Services\Seo\Meta::setPath($request->path);
         try {
             $response = self::dispatch($request);
+        } catch (\App\Admin\AdminRedirect $e) {
+            $response = Response::redirect($e->url, 303);
         } catch (HttpException $e) {
             $response = $e->status === 404
                 ? self::notFound($request)

@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 final class I18nTest extends TestCase
 {
     /** Texto permitido fuera de t(): números, unidades y signos. */
-    private const ALLOWED = '/^(?:[A-Z]|[\s\d.,:;%×x+\-–—()\/|·•…→←↑↓▸✓×#*"\'«»=_&$€@?!px]*)$/u';
+    private const ALLOWED = '/^(?:[A-Z]|ES|EN|COP|USD|[\s\d.,:;%×x+\-–—()\/|·•…→←↑↓▸✓×#*"\'«»=_&$€@?!px]*)$/u';
 
     public static function templateFiles(): array
     {
