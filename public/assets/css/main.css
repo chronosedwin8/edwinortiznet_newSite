@@ -299,6 +299,8 @@ caption { caption-side: top; text-align: left; padding: 14px; font-family: var(-
 .gallery-thumbs__btn[aria-current="true"] { border-color: var(--brand); }
 .gallery-thumbs img { width: 96px; height: 64px; object-fit: cover; }
 .product-details { display: grid; gap: 32px; padding-block: 16px 32px; }
+.product-details > * { min-width: 0; }
+.product-details a, .detail-card a { overflow-wrap: anywhere; }
 .detail-block h2, .detail-card h2 { font-size: var(--step-1); }
 .detail-card { padding: 22px; border-radius: var(--radius-lg); background: var(--surface); border: 1px solid var(--line); margin-bottom: 16px; font-size: .98rem; box-shadow: var(--shadow-sm); }
 .detail-card ul { margin: 0; padding-left: 1.1em; }

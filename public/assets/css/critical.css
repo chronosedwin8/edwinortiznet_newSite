@@ -128,7 +128,8 @@ main:focus { outline: none; }
 .eyebrow { font-family: var(--font-body); font-weight: 750; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--brand); margin: 0 0 .8em; }
 .eyebrow a { text-decoration: none; }
 .lead { font-size: var(--step-1); color: var(--muted); max-width: 60ch; line-height: 1.55; }
-.link-more { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.link-more { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; text-decoration: none; white-space: nowrap; max-width: 100%; }
+.link-more-wrap .link-more, .prose .link-more { white-space: normal; }
 .link-more::after { content: "→"; transition: transform .25s var(--ease); }
 .link-more:hover::after { transform: translateX(4px); }
 .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 10px; border-radius: 999px; font-size: .85rem; font-weight: 650; background: var(--brand-soft); color: var(--brand-strong); margin: 0 0 18px; }
@@ -205,7 +206,8 @@ main:focus { outline: none; }
 .breadcrumbs li:not(:last-child)::after { content: "›"; margin-left: 6px; opacity: .6; }
 .breadcrumbs a { color: var(--muted); text-decoration: none; }
 .breadcrumbs a:hover { color: var(--brand); text-decoration: underline; }
-.breadcrumbs [aria-current] { color: var(--text); font-weight: 600; display: inline-block; max-width: 40ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
+.breadcrumbs li { min-width: 0; max-width: 100%; }
+.breadcrumbs [aria-current] { color: var(--text); font-weight: 600; display: inline-block; max-width: min(40ch, 100%); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
 
 /* ---------- Héroe oscuro con aurora ---------- */
 .hero { position: relative; overflow: hidden; isolation: isolate; color: #e9eeff; background: var(--night); padding-block: clamp(56px, 9vw, 120px) clamp(64px, 8vw, 110px); }
@@ -265,6 +267,7 @@ main:focus { outline: none; }
 .article__cover { margin-block: 28px 8px; max-width: calc(1040px + 2 * var(--gutter)); }
 .article__cover img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius-lg); background: var(--surface-2); box-shadow: var(--shadow); }
 .article__layout { display: grid; gap: 32px; padding-block: 28px 56px; }
+.article__layout > *, .article__footer > * { min-width: 0; }
 @media (min-width: 1100px) {
   .article__layout { grid-template-columns: 250px minmax(0, var(--measure)); justify-content: center; gap: 64px; }
   .toc { position: sticky; top: calc(var(--header-h) + 24px); align-self: start; max-height: calc(100vh - var(--header-h) - 48px); overflow: auto; }
@@ -289,7 +292,8 @@ main:focus { outline: none; }
 .prose pre { font-family: var(--font-mono); font-size: .88rem; background: var(--night); color: #dfe7ff; padding: 18px; border-radius: var(--radius); overflow-x: auto; }
 .prose pre code { background: none; padding: 0; color: inherit; }
 .prose hr { border: 0; height: 1px; background: var(--line); margin: 2.2em 0; }
-.prose a { font-weight: 600; }
+.prose a { font-weight: 600; overflow-wrap: anywhere; }
+.prose { overflow-wrap: break-word; }
 .notice { padding: 16px 20px; border-radius: var(--radius); background: var(--brand-soft); border: 1px solid color-mix(in srgb, var(--brand) 25%, transparent); margin: 0 0 1.6em; }
 .notice p:last-child { margin: 0; }
 .notice--ok { background: color-mix(in srgb, var(--ok) 12%, var(--surface)); border-color: color-mix(in srgb, var(--ok) 35%, transparent); }
