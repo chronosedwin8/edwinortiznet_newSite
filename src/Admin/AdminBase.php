@@ -39,7 +39,9 @@ abstract class AdminBase
     protected function view(string $template, array $data = [], string $title = ''): Response
     {
         $data['admin'] = $this->admin;
-        $data['flash'] = Session::flash('admin');
+        $flash = Session::flash('admin');
+        $data['flashError'] = $flash !== null && str_starts_with($flash, '!');
+        $data['flash'] = $data['flashError'] ? substr((string) $flash, 1) : $flash;
         $data['title'] = $title;
         $html = View::page('admin/' . $template, $data, [], 'admin/layout');
         return Response::html($html)
@@ -53,6 +55,12 @@ abstract class AdminBase
             Session::flash('admin', $message);
         }
         return Response::redirect($url, 303);
+    }
+
+    /** Igual que back(), pero el aviso se muestra como error. */
+    protected function fail(string $url, string $message): Response
+    {
+        return $this->back($url, '!' . $message);
     }
 
     /** Toda escritura del panel invalida la caché de página y el sitemap. */

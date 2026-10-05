@@ -8,6 +8,7 @@
 <title><?= e(t('admin.login.title')) ?></title>
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="<?= e(asset('css/admin.css')) ?>">
+<script><?= \App\Services\Seo\SecurityHeaders::THEME_SCRIPT ?></script>
 </head>
 <body class="admin admin--bare">
 <main class="admin-login"><?= $content ?></main>

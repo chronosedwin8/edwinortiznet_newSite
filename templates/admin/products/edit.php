@@ -6,7 +6,7 @@ use App\Admin\ProductsController;
 $isNew = $product['id'] === null;
 $action = $isNew ? '/admin/productos/nuevo/' : '/admin/productos/' . (int) $product['id'] . '/';
 ?>
-<form method="post" action="<?= e($action) ?>" class="admin-form edit-grid" data-editor>
+<form method="post" action="<?= e($action) ?>" class="admin-form edit-grid" data-editor data-autosave="<?= e($isNew ? 'producto-nuevo' : 'producto-' . (int) $product['id']) ?>">
   <?= csrf_field() ?>
   <div class="edit-main">
     <div class="tabs" role="tablist" data-tabs>
@@ -14,24 +14,24 @@ $action = $isNew ? '/admin/productos/nuevo/' : '/admin/productos/' . (int) $prod
       <button type="button" class="tab" role="tab" aria-selected="false" data-tab="tab-en"><?= e(t('admin.lang.en')) ?><?= !empty($translations['en']['needs_review']) ? ' •' : '' ?></button>
     </div>
     <?php foreach (['es', 'en'] as $loc): $tr = $translations[$loc] + ['title' => '', 'slug' => '', 'short_html' => '', 'description_html' => '', 'includes_html' => '', 'requirements' => '', 'license_text' => '', 'faq_json' => '', 'seo_title' => '', 'seo_description' => '', 'needs_review' => $loc === 'en' ? 1 : 0]; ?>
-    <section id="tab-<?= $loc ?>" class="tab-panel" role="tabpanel"<?= $loc === 'en' ? ' hidden' : '' ?>>
+    <section id="tab-<?= $loc ?>" class="tab-panel" role="tabpanel" lang="<?= $loc ?>"<?= $loc === 'en' ? ' hidden' : '' ?>>
       <?php if (!$isNew && $tr['slug'] !== ''): ?><p><a href="<?= e(route('product', ['slug' => $tr['slug']], $loc)) ?>" target="_blank" rel="noopener"><?= e(t('admin.view_public')) ?></a></p><?php endif; ?>
       <label for="t-<?= $loc ?>-title"><?= e(t('admin.col.title')) ?></label>
       <input id="t-<?= $loc ?>-title" name="<?= $loc ?>[title]" maxlength="255" value="<?= e($tr['title']) ?>"<?= $loc === 'es' ? ' required' : '' ?>>
       <label for="t-<?= $loc ?>-slug"><?= e(t('admin.field.slug')) ?></label>
       <input id="t-<?= $loc ?>-slug" name="<?= $loc ?>[slug]" maxlength="190" value="<?= e($tr['slug']) ?>">
       <label for="t-<?= $loc ?>-short"><?= e(t('admin.field.short')) ?></label>
-      <textarea id="t-<?= $loc ?>-short" name="<?= $loc ?>[short_html]" rows="4" class="code"><?= e($tr['short_html']) ?></textarea>
+      <textarea id="t-<?= $loc ?>-short" name="<?= $loc ?>[short_html]" rows="4" class="code" data-rte="basic"><?= e($tr['short_html']) ?></textarea>
       <label for="t-<?= $loc ?>-desc"><?= e(t('admin.field.description')) ?></label>
-      <textarea id="t-<?= $loc ?>-desc" name="<?= $loc ?>[description_html]" rows="14" class="code"><?= e($tr['description_html']) ?></textarea>
+      <textarea id="t-<?= $loc ?>-desc" name="<?= $loc ?>[description_html]" rows="14" class="code" data-rte="full"><?= e($tr['description_html']) ?></textarea>
       <label for="t-<?= $loc ?>-inc"><?= e(t('admin.field.includes')) ?></label>
-      <textarea id="t-<?= $loc ?>-inc" name="<?= $loc ?>[includes_html]" rows="4" class="code"><?= e($tr['includes_html']) ?></textarea>
+      <textarea id="t-<?= $loc ?>-inc" name="<?= $loc ?>[includes_html]" rows="4" class="code" data-rte="basic"><?= e($tr['includes_html']) ?></textarea>
       <label for="t-<?= $loc ?>-req"><?= e(t('admin.field.requirements')) ?></label>
       <textarea id="t-<?= $loc ?>-req" name="<?= $loc ?>[requirements]" rows="3"><?= e($tr['requirements']) ?></textarea>
       <label for="t-<?= $loc ?>-lic"><?= e(t('admin.field.license')) ?></label>
       <textarea id="t-<?= $loc ?>-lic" name="<?= $loc ?>[license_text]" rows="3"><?= e($tr['license_text']) ?></textarea>
       <label for="t-<?= $loc ?>-faq"><?= e(t('admin.field.faq')) ?></label>
-      <textarea id="t-<?= $loc ?>-faq" name="<?= $loc ?>[faq]" rows="5"><?= e(ProductsController::faqText($tr['faq_json'])) ?></textarea>
+      <textarea id="t-<?= $loc ?>-faq" name="<?= $loc ?>[faq]" rows="5" data-faq><?= e(ProductsController::faqText($tr['faq_json'])) ?></textarea>
       <p class="hint"><?= e(t('admin.hint.faq')) ?></p>
       <label for="t-<?= $loc ?>-seot"><?= e(t('admin.field.seo_title')) ?> <output data-count-for="t-<?= $loc ?>-seot" data-min="50" data-max="60"></output></label>
       <input id="t-<?= $loc ?>-seot" name="<?= $loc ?>[seo_title]" maxlength="190" value="<?= e($tr['seo_title']) ?>">
@@ -58,7 +58,7 @@ $action = $isNew ? '/admin/productos/nuevo/' : '/admin/productos/' . (int) $prod
       <input id="pr-cop" name="price_cop" type="number" step="1000" min="0" value="<?= (int) $product['price_cop'] ?>">
       <label class="check"><input type="checkbox" name="featured" value="1"<?= $product['featured'] ? ' checked' : '' ?>> <?= e(t('admin.field.featured')) ?></label>
       <label class="check"><input type="checkbox" name="has_english_version" value="1"<?= $product['has_english_version'] ? ' checked' : '' ?>> <?= e(t('admin.field.has_en')) ?></label>
-      <button class="btn" type="submit"><?= e(t('admin.save')) ?></button>
+      <button class="btn btn--block" type="submit" data-save><?= icon('check') ?><?= e(t('admin.save')) ?></button>
     </fieldset>
     <fieldset>
       <legend><?= e(t('admin.field.catalog')) ?></legend>
@@ -79,7 +79,7 @@ $action = $isNew ? '/admin/productos/nuevo/' : '/admin/productos/' . (int) $prod
         <?php foreach ($tutorials as $tu): ?><option value="<?= (int) $tu['id'] ?>"<?= (int) $product['tutorial_post_id'] === (int) $tu['id'] ? ' selected' : '' ?>><?= e($tu['title']) ?></option><?php endforeach; ?>
       </select>
       <label for="pr-cover"><?= e(t('admin.field.cover')) ?></label>
-      <input id="pr-cover" name="cover_url" maxlength="500" value="<?= e((string) $product['cover_url']) ?>">
+      <input id="pr-cover" name="cover_url" maxlength="500" value="<?= e((string) $product['cover_url']) ?>" data-media-input data-alt-target="pr-cover-alt">
       <label for="pr-cover-alt"><?= e(t('admin.field.cover_alt')) ?></label>
       <input id="pr-cover-alt" name="cover_alt" maxlength="255" value="<?= e((string) $product['cover_alt']) ?>">
       <label for="pr-video"><?= e(t('admin.field.video')) ?></label>

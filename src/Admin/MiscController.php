@@ -75,10 +75,10 @@ final class MiscController extends AdminBase
         $target = self::str($request, 'target', 500);
         $type = in_array($request->post['match_type'] ?? '', ['exact', 'prefix', 'regex'], true) ? $request->post['match_type'] : 'exact';
         if ($source === null || $target === null || !str_starts_with($source, $type === 'regex' ? '^' : '/') || $source === $target) {
-            return $this->back('/admin/redirecciones/', t('admin.error.redirect'));
+            return $this->fail('/admin/redirecciones/', t('admin.error.redirect'));
         }
         if ($type === 'regex' && @preg_match('#' . str_replace('#', '\#', $source) . '#', '') === false) {
-            return $this->back('/admin/redirecciones/', t('admin.error.redirect'));
+            return $this->fail('/admin/redirecciones/', t('admin.error.redirect'));
         }
         DB::upsert('redirects', [
             'source' => $source, 'target' => $target, 'match_type' => $type,

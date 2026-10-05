@@ -59,4 +59,6 @@ Sigue los pasos **en este orden**. Marca cada uno al terminarlo.
 
 ## 9. Respaldo
 
+- [ ] El respaldo diario incluye la base de datos, `storage/downloads/` y **`public/uploads/`** (imágenes subidas desde el panel). Permisos de escritura del usuario de PHP sobre `public/uploads/`.
+
 - [ ] Conservar el WordPress **apagado pero intacto durante 30 días** como respaldo (archivos + base de datos). No borrar nada antes de ese plazo.

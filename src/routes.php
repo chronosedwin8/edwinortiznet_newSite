@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Admin\AdminController;
+use App\Admin\HubsController as AdminHubs;
+use App\Admin\MediaController as AdminMedia;
 use App\Admin\AuthController as AdminAuth;
 use App\Admin\OrdersController as AdminOrders;
 use App\Admin\PostsController as AdminPosts;
@@ -54,6 +56,15 @@ return static function (Router $r): void {
     $r->post('/admin/contenido/{id}/', [AdminPosts::class, 'update']);
     $r->post('/admin/contenido/{id}/traducir/', [AdminPosts::class, 'translate'], 'admin.posts.translate');
     $r->post('/admin/vista-previa/', [AdminPosts::class, 'preview'], 'admin.preview');
+    $r->get('/admin/buscar/', [AdminController::class, 'search'], 'admin.search');
+    $r->get('/admin/secciones/', [AdminHubs::class, 'index'], 'admin.hubs');
+    $r->get('/admin/secciones/{id}/', [AdminHubs::class, 'edit'], 'admin.hubs.edit');
+    $r->post('/admin/secciones/{id}/', [AdminHubs::class, 'update']);
+    $r->get('/admin/medios/', [AdminMedia::class, 'index'], 'admin.media');
+    $r->get('/admin/medios/api/', [AdminMedia::class, 'api'], 'admin.media.api');
+    $r->post('/admin/medios/subir/', [AdminMedia::class, 'upload'], 'admin.media.upload');
+    $r->post('/admin/medios/{id}/', [AdminMedia::class, 'update'], 'admin.media.update');
+    $r->post('/admin/medios/{id}/borrar/', [AdminMedia::class, 'delete'], 'admin.media.delete');
     $r->get('/admin/productos/', [AdminProducts::class, 'index'], 'admin.products');
     $r->get('/admin/productos/nuevo/', [AdminProducts::class, 'create'], 'admin.products.create');
     $r->post('/admin/productos/nuevo/', [AdminProducts::class, 'store']);

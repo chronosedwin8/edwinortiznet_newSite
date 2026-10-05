@@ -41,16 +41,8 @@ Esta es la decisión que más afectará los reembolsos de compradores en inglés
 
 **Qué decidir:** confirma que el texto y las fechas son correctos. Se edita en cada entrada, campo "Aviso al inicio".
 
-### A4. Portátiles de afiliados (2020)
-**Por defecto:** `/los-mejores-portatiles-baratos-y-rapidos/` y `/cual-es-la-mejor-laptop-para-estudiantes-de-escuela-y-universidad/` quedaron con **noindex** y fuera de los listados (la URL sigue respondiendo).
-
-**Qué decidir:** mantener, actualizar o redirigir.
-
-### A5. Descargar audio y videos de YouTube
-**Por defecto:** `/descargar-audio-y-videos-de-youtube-gratis-y-sin-programas/` quedó con **noindex y sin anuncios**, por el riesgo con las políticas de AdSense.
-
-### A6. `/projekttag/`
-**Por defecto:** se conserva sin enlazar y con **noindex**.
+### A4–A6. Contenido retirado
+Los portátiles de afiliados (2020), la guía para descargar videos de YouTube y `/projekttag/` se retiraron con redirección 301, junto con otras 16 piezas de poco contenido o fuera de tema. El detalle, los motivos y cómo revertir cada una están en **`EVALUACION_CONTENIDO.md`**.
 
 ### A7. Tasa de cambio y precios en pesos
 **Por defecto:** `USD_COP_RATE=4000`, redondeado al millar. En español se cobra el precio en COP; en inglés, el precio en USD.
@@ -77,10 +69,10 @@ Esta es la decisión que más afectará los reembolsos de compradores en inglés
 
 **Qué decidir:** la tasa y los precios finales en COP. Se editan producto por producto en el panel; volver a correr el seed no los pisa.
 
-### A8. Banco de preguntas del simulacro
-**Por defecto:** solo hay **2 preguntas de demostración**, marcadas como tales. No se inventaron preguntas. El simulacro muestra un aviso mientras haya menos de 10.
+### A8. Simulacro del Concurso Docente → Fundales
+El simulacro propio se retiró. La página `/herramientas/simulacro-concurso-docente/`, el hub del concurso, la portada y los artículos del concurso llevan a **fundales.com** con UTM (`utm_source=edwinortiz.net`). El enlace base se cambia en *Panel → Ajustes*.
 
-**Qué hacer:** cargar el banco real en *Panel → Banco de preguntas*.
+**Qué revisar:** los textos de la página de Fundales (*cuenta gratis por un año*, funciones y cargos) en `lang/es.php`, claves `fundales.*`.
 
 ### A9. Políticas y "Sobre mí"
 **Por defecto:** se redactaron borradores de privacidad y tratamiento de datos (Ley 1581 de 2012), términos, reembolsos (7 días, con soporte previo) y cookies, más la página "Sobre mí" con tus datos del plan. Todos están en español y en inglés.
@@ -103,7 +95,10 @@ Esta es la decisión que más afectará los reembolsos de compradores en inglés
 5. **Curso Aptitud Matemática 2021:** sigue a la venta, pero no tiene descripción y es de 2021. Decide si actualizarlo o pasarlo a oculto.
 6. **10 productos nuevos y 3 packs:** sus fichas describen lo que *tendrán*. Revisa textos y precios antes de anunciarlos. La lista de espera está en *Panel → Suscriptores*.
 7. **53 metadescripciones automáticas** (marcadas "Meta automática"): son borradores de 150–160 caracteres tomados del primer párrafo. Revísalas en el panel y desmarca la casilla al aprobarlas.
-8. **Producto relacionado de cada artículo:** los tutoriales enlazan a su plantilla. El resto usa un producto según el hub (Excel → el más vendido; docentes → Kit de IA; concurso → Kit Concurso 2027). Se cambia en el campo "Producto relacionado" de cada artículo.
+8. **Producto relacionado de cada artículo:** los tutoriales enlazan a su plantilla. El resto usa un producto según el hub (Excel → el más vendido; docentes → Kit de IA; concurso → invitación a Fundales en lugar de un producto). Se cambia en el campo "Producto relacionado" de cada artículo.
+
+9. **Artículo de Wompi:** critica a Wompi, que es una de las pasarelas del sitio. Decide si actualizarlo (ver `EVALUACION_CONTENIDO.md`).
+10. **Artículos de Grupo Logic:** revisa los 7 artículos nuevos de la sección Docentes (datos de cada producto, enlaces y la nota sobre grados de VCodePro).
 
 ## C. Antes de apagar WordPress
 

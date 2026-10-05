@@ -116,7 +116,7 @@ final class ProductsController extends AdminBase
         $es = $request->post['es'] ?? [];
         $en = $request->post['en'] ?? [];
         if (!is_array($es) || trim((string) ($es['title'] ?? '')) === '') {
-            return $this->back($back, t('admin.error.title'));
+            return $this->fail($back, t('admin.error.title'));
         }
         $base = [
             'sku' => self::str($request, 'sku', 60),
@@ -135,7 +135,7 @@ final class ProductsController extends AdminBase
             'sort' => (int) ($request->post['sort'] ?? 50),
         ];
         if ($base['sku'] !== null && DB::value('SELECT id FROM products WHERE sku = :s AND id <> :id', ['s' => $base['sku'], 'id' => (int) $id]) !== null) {
-            return $this->back($back, t('admin.error.sku'));
+            return $this->fail($back, t('admin.error.sku'));
         }
         $cleaner = new HtmlCleaner();
         $result = DB::transaction(function () use ($id, $base, $es, $en, $cleaner, $request): int|string {
@@ -183,7 +183,7 @@ final class ProductsController extends AdminBase
             return $productId;
         });
         if ($result === 'slug') {
-            return $this->back($back, t('admin.error.slug'));
+            return $this->fail($back, t('admin.error.slug'));
         }
         $this->saved();
         return $this->back("/admin/productos/$result/", t('admin.saved'));
@@ -198,11 +198,11 @@ final class ProductsController extends AdminBase
         $file = $request->files['file'] ?? null;
         $back = "/admin/productos/$productId/";
         if ($slug === null || !is_array($file) || ($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || (int) $file['size'] > self::MAX_UPLOAD) {
-            return $this->back($back, t('admin.error.upload'));
+            return $this->fail($back, t('admin.error.upload'));
         }
         $name = preg_replace('/[^A-Za-z0-9._+\-]/', '-', basename((string) $file['name'])) ?: 'archivo.zip';
         if (preg_match('/\.(php\d?|phtml|phar|htaccess)$/i', $name)) {
-            return $this->back($back, t('admin.error.upload'));
+            return $this->fail($back, t('admin.error.upload'));
         }
         $relative = $slug . '/' . $name;
         $target = DownloadService::path($relative);
@@ -211,7 +211,7 @@ final class ProductsController extends AdminBase
         }
         $moved = is_uploaded_file((string) $file['tmp_name']) ? move_uploaded_file((string) $file['tmp_name'], $target) : rename((string) $file['tmp_name'], $target);
         if (!$moved) {
-            return $this->back($back, t('admin.error.upload'));
+            return $this->fail($back, t('admin.error.upload'));
         }
         $data = ['storage_path' => $relative, 'bytes' => filesize($target), 'version' => self::str($request, 'version', 40), 'label' => self::str($request, 'label', 190) ?? $name];
         $replace = (int) ($request->post['replace_id'] ?? 0);

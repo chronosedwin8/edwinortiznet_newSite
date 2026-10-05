@@ -11,6 +11,7 @@ use App\Core\Response;
 use App\Core\View;
 use App\Services\Content\ContentRenderer;
 use App\Services\Importer\HtmlCleaner;
+use App\Services\Media\MediaLibrary;
 use App\Services\Importer\WxrImporter;
 
 /**
@@ -49,7 +50,7 @@ final class PostsController extends AdminBase
             $params['q2'] = '%' . $filters['q'] . '%';
         }
         $posts = DB::all(
-            'SELECT p.id, p.type, p.locale, p.slug, p.title, p.status, p.needs_review, p.seo_auto, p.published_at, p.translation_group,
+            'SELECT p.id, p.type, p.locale, p.slug, p.title, p.status, p.needs_review, p.seo_auto, p.published_at, p.translation_group, p.cover_url,
                     (SELECT COUNT(*) FROM posts x WHERE x.translation_group = p.translation_group AND x.id <> p.id) AS has_translation
              FROM posts p WHERE ' . implode(' AND ', $where) . ' ORDER BY p.published_at DESC, p.id DESC LIMIT 300',
             $params
@@ -60,8 +61,8 @@ final class PostsController extends AdminBase
     private function options(): array
     {
         return [
-            'hubs' => DB::all('SELECT h.id, t.title FROM hubs h JOIN hub_translations t ON t.hub_id = h.id AND t.locale = "es" ORDER BY h.sort'),
-            'products' => DB::all('SELECT p.id, t.title FROM products p JOIN product_translations t ON t.product_id = p.id AND t.locale = "es" WHERE p.status <> "hidden" ORDER BY t.title'),
+            'hubs' => DB::all('SELECT h.id, h.`key`, t.title FROM hubs h JOIN hub_translations t ON t.hub_id = h.id AND t.locale = "es" ORDER BY h.sort'),
+            'products' => DB::all('SELECT p.id, t.title, t.slug FROM products p JOIN product_translations t ON t.product_id = p.id AND t.locale = "es" WHERE p.status <> "hidden" ORDER BY t.title'),
         ];
     }
 
@@ -110,12 +111,12 @@ final class PostsController extends AdminBase
         $slug = $slug !== '' ? $slug : 'entrada-' . time();
         $back = $post ? "/admin/contenido/{$post['id']}/" : '/admin/contenido/nuevo/';
         if ($title === '') {
-            return $this->back($back, t('admin.error.title'));
+            return $this->fail($back, t('admin.error.title'));
         }
         $taken = DB::value('SELECT id FROM posts WHERE locale = :l AND slug = :s AND id <> :id', ['l' => $locale, 's' => $slug, 'id' => (int) ($post['id'] ?? 0)]);
         $hubTaken = DB::value('SELECT id FROM hub_translations WHERE locale = :l AND slug = :s', ['l' => $locale, 's' => $slug]);
         if ($taken !== null || $hubTaken !== null) {
-            return $this->back($back, t('admin.error.slug'));
+            return $this->fail($back, t('admin.error.slug'));
         }
         $cleaner = new HtmlCleaner();
         $html = $cleaner->sanitize((string) ($request->post['content_html'] ?? ''), ['title' => $title, 'slug' => $slug]);
@@ -147,6 +148,13 @@ final class PostsController extends AdminBase
             'published_at' => self::str($request, 'published_at', 19) ?? gmdate('Y-m-d H:i:s'),
             'updated_at' => gmdate('Y-m-d H:i:s'),
         ];
+        // Portada de la biblioteca: tamaño y srcset salen de la tabla media; si cambia a otra URL se limpian.
+        $media = $data['cover_url'] !== null && str_starts_with($data['cover_url'], '/uploads/') ? MediaLibrary::byPath($data['cover_url']) : null;
+        if ($media !== null) {
+            $data += ['cover_width' => $media['width'], 'cover_height' => $media['height'], 'cover_srcset' => $media['srcset'] ?: null];
+        } elseif ($data['cover_url'] !== ($post['cover_url'] ?? null)) {
+            $data += ['cover_width' => null, 'cover_height' => null, 'cover_srcset' => null];
+        }
         if ($post === null) {
             $data['translation_group'] = WxrImporter::uuid('admin-' . bin2hex(random_bytes(8)));
             $id = DB::insert('posts', $data);

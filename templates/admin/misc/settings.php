@@ -7,6 +7,8 @@
   <input id="s-yt" name="social_youtube" type="url" value="<?= e($values['social_youtube']) ?>" placeholder="<?= e(t('admin.hint.url_placeholder')) ?>">
   <label for="s-li"><?= e(t('admin.settings.linkedin')) ?></label>
   <input id="s-li" name="social_linkedin" type="url" value="<?= e($values['social_linkedin']) ?>" placeholder="<?= e(t('admin.hint.url_placeholder')) ?>">
+  <label for="s-fun"><?= e(t('admin.settings.fundales')) ?></label>
+  <input id="s-fun" name="fundales_url" type="url" value="<?= e($values['fundales_url'] ?? '') ?>" placeholder="<?= e(t('admin.hint.url_placeholder')) ?>">
   <label for="s-ref"><?= e(t('admin.settings.refund_days')) ?></label>
   <input id="s-ref" name="refund_days" type="number" min="0" max="60" value="<?= e($values['refund_days']) ?>" class="narrow">
   <label class="check"><input type="checkbox" name="ads_enabled" value="1"<?= $values['ads_enabled'] === '1' ? ' checked' : '' ?>> <?= e(t('admin.settings.ads')) ?></label>

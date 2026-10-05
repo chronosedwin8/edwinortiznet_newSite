@@ -74,7 +74,7 @@ final class OrdersController extends AdminBase
             default => 'order-received',
         };
         $ok = OrderService::mail($template, $order);
-        return $this->back("/admin/pedidos/{$order['id']}/", $ok ? t('admin.orders.resent') : t('admin.orders.mail_failed'));
+        return $ok ? $this->back("/admin/pedidos/{$order['id']}/", t('admin.orders.resent')) : $this->fail("/admin/pedidos/{$order['id']}/", t('admin.orders.mail_failed'));
     }
 
     public function regenerate(Request $request, string $id): Response
@@ -82,7 +82,7 @@ final class OrdersController extends AdminBase
         $this->requireAdmin($request);
         $order = $this->order($id);
         if ($order['status'] !== 'approved') {
-            return $this->back("/admin/pedidos/{$order['id']}/", t('admin.orders.not_approved'));
+            return $this->fail("/admin/pedidos/{$order['id']}/", t('admin.orders.not_approved'));
         }
         DownloadService::createGrants((int) $order['id'], true);
         return $this->back("/admin/pedidos/{$order['id']}/", t('admin.orders.regenerated'));

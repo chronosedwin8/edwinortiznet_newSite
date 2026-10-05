@@ -14,6 +14,7 @@ use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
 use App\Services\Downloads\DownloadService;
+use App\Services\Media\MediaLibrary;
 use App\Services\Orders\OrderService;
 use App\Services\Payments\Status;
 use PHPUnit\Framework\TestCase;
@@ -195,7 +196,7 @@ final class AdminTest extends TestCase
     public function testOtherSectionsRender(): void
     {
         $this->login();
-        foreach (['/admin/contenido/', '/admin/contenido/?review=1', '/admin/contenido/nuevo/', '/admin/productos/', '/admin/familias/', '/admin/suscriptores/', '/admin/redirecciones/', '/admin/ajustes/'] as $path) {
+        foreach (['/admin/contenido/', '/admin/contenido/?review=1', '/admin/contenido/nuevo/', '/admin/productos/', '/admin/familias/', '/admin/suscriptores/', '/admin/redirecciones/', '/admin/ajustes/', '/admin/', '/admin/secciones/', '/admin/medios/'] as $path) {
             $this->assertSame(200, $this->get($path)->status, $path);
         }
         $csv = $this->get('/admin/suscriptores/exportar/');
@@ -204,5 +205,88 @@ final class AdminTest extends TestCase
         $this->assertSame(303, $res->status);
         \App\Services\Seo\Redirects::clear();
         $this->assertSame(301, $this->get("/vieja-prueba-{$this->run}/")->status);
+    }
+    public function testMediaUploadConvertsToWebpAndFillsCover(): void
+    {
+        $this->login();
+        $tmp = tempnam(sys_get_temp_dir(), 'eo') . '.png';
+        $img = imagecreatetruecolor(2000, 1000);
+        imagefill($img, 0, 0, imagecolorallocate($img, 35, 80, 240));
+        imagepng($img, $tmp);
+        $file = ['name' => "Foto prueba {$this->run}.png", 'type' => 'image/png', 'tmp_name' => $tmp, 'error' => UPLOAD_ERR_OK, 'size' => filesize($tmp)];
+        $res = App::handle(Request::create('POST', '/admin/medios/subir/', ['_csrf' => $this->csrf, 'alt' => 'Azul'], ['HTTP_X_REQUESTED_WITH' => 'fetch'], [Csrf::COOKIE => $this->csrf], null, ['files' => [
+            'name' => [$file['name']], 'type' => [$file['type']], 'tmp_name' => [$tmp], 'error' => [UPLOAD_ERR_OK], 'size' => [$file['size']],
+        ]]));
+        $this->assertSame(200, $res->status);
+        $item = json_decode($res->body, true)['items'][0];
+        $this->assertStringEndsWith('.webp', $item['url']);
+        $this->assertSame(1600, $item['width']);
+        $this->assertSame(800, $item['height']);
+        $this->assertStringContainsString('-800.webp 800w', $item['srcset']);
+        $this->assertFileExists(MediaLibrary::root() . $item['url']);
+        $this->assertSame("\x52\x49\x46\x46", substr((string) file_get_contents(MediaLibrary::root() . $item['url']), 0, 4));
+
+        // Un texto disfrazado de imagen se rechaza.
+        $fake = tempnam(sys_get_temp_dir(), 'eo');
+        file_put_contents($fake, '<?php echo 1;');
+        $bad = App::handle(Request::create('POST', '/admin/medios/subir/', ['_csrf' => $this->csrf], ['HTTP_X_REQUESTED_WITH' => 'fetch'], [Csrf::COOKIE => $this->csrf], null, ['file' => [
+            'name' => 'x.png', 'type' => 'image/png', 'tmp_name' => $fake, 'error' => UPLOAD_ERR_OK, 'size' => 13,
+        ]]));
+        $this->assertSame(422, $bad->status);
+
+        // La portada de un artículo toma tamaño y srcset de la biblioteca.
+        $postId = (int) DB::value('SELECT id FROM posts WHERE locale = "es" AND type = "post" AND status = "published" ORDER BY id LIMIT 1');
+        $before = DB::one('SELECT * FROM posts WHERE id = :id', ['id' => $postId]);
+        try {
+            $this->post("/admin/contenido/$postId/", [
+                'title' => $before['title'], 'slug' => $before['slug'], 'content_html' => $before['content_html'], 'status' => 'published', 'type' => 'post',
+                'cover_url' => $item['url'], 'cover_alt' => 'Azul', 'published_at' => $before['published_at'],
+            ]);
+            $after = DB::one('SELECT cover_width, cover_height, cover_srcset FROM posts WHERE id = :id', ['id' => $postId]);
+            $this->assertSame(1600, (int) $after['cover_width']);
+            $this->assertSame($item['srcset'], $after['cover_srcset']);
+            $json = json_decode($this->get('/admin/medios/api/?q=' . rawurlencode("prueba {$this->run}"))->body, true);
+            $this->assertSame(1, $json['total']);
+            // En uso: no se borra sin confirmar.
+            $this->post("/admin/medios/{$item['id']}/borrar/");
+            $this->assertNotNull(MediaLibrary::find($item['id']));
+        } finally {
+            $restore = array_intersect_key($before, array_flip(['cover_url', 'cover_alt', 'cover_width', 'cover_height', 'cover_srcset', 'updated_at', 'excerpt', 'seo_title', 'seo_description', 'focus_keyword', 'content_html', 'content_text', 'reading_minutes', 'hub_id', 'related_product_id', 'seo_auto', 'canonical_url', 'notice_html', 'needs_review', 'no_ads']));
+            DB::update('posts', $restore, ['id' => $postId]);
+            MediaLibrary::delete($item['id']);
+            @unlink($tmp);
+        }
+        $this->assertFileDoesNotExist(MediaLibrary::root() . $item['url']);
+    }
+
+    public function testEditHubIntroAndFaq(): void
+    {
+        $this->login();
+        $hub = DB::one('SELECT h.id, h.sort, h.pillar_post_id FROM hubs h WHERE h.`key` = "excel"');
+        $before = DB::one('SELECT * FROM hub_translations WHERE hub_id = :h AND locale = "es"', ['h' => $hub['id']]);
+        $this->assertSame(200, $this->get("/admin/secciones/{$hub['id']}/")->status);
+        try {
+            $res = $this->post("/admin/secciones/{$hub['id']}/", [
+                'sort' => (string) $hub['sort'], 'pillar_post_id' => (string) $hub['pillar_post_id'],
+                'es' => ['title' => $before['title'], 'slug' => $before['slug'], 'menu_title' => $before['menu_title'],
+                    'intro_html' => '<p>Introducción de prueba <script>alert(1)</script></p>', 'faq' => "¿Pregunta {$this->run}? | Respuesta"],
+            ]);
+            $this->assertSame(303, $res->status);
+            $row = DB::one('SELECT intro_html, faq_json FROM hub_translations WHERE id = :id', ['id' => $before['id']]);
+            $this->assertStringNotContainsString('<script', $row['intro_html']);
+            $this->assertStringContainsString("Pregunta {$this->run}", $row['faq_json']);
+            $this->assertStringContainsString("Pregunta {$this->run}", $this->get('/' . $before['slug'] . '/')->body);
+        } finally {
+            DB::update('hub_translations', array_diff_key($before, ['id' => 1, 'updated_at' => 1]), ['id' => $before['id']]);
+        }
+    }
+
+    public function testCommandPaletteSearch(): void
+    {
+        $this->login();
+        $json = json_decode($this->get('/admin/buscar/?q=excel')->body, true);
+        $this->assertNotEmpty($json['items']);
+        $this->assertStringStartsWith('/admin/', $json['items'][0]['url']);
+        $this->assertSame([], json_decode($this->get('/admin/buscar/?q=e')->body, true)['items']);
     }
 }

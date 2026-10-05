@@ -426,7 +426,7 @@ legend.section__title { font-family: var(--font-head); font-weight: 750; line-he
 @media (min-width: 900px) { .about__grid { grid-template-columns: 320px minmax(0, var(--measure)); gap: 60px; } .about__card { position: sticky; top: calc(var(--header-h) + 24px); } }
 
 /* ---------- Rendimiento: omitir el trabajo fuera de pantalla ---------- */
-.site-footer, .article__footer, .siblings, .product-details, .faq { content-visibility: auto; contain-intrinsic-size: auto 600px; }
+.article__footer, .siblings, .product-details, .faq { content-visibility: auto; contain-intrinsic-size: auto 600px; }
 .prose figure, .prose .product-inline, .prose .product-grid { content-visibility: auto; contain-intrinsic-size: auto 320px; }
 
 /* ---------- Impresión ---------- */

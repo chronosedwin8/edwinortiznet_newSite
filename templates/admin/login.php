@@ -1,4 +1,5 @@
 <?php /** @var string|null $error */ ?>
+<p class="side__brand" style="color:inherit;padding:0 0 8px"><span class="side__mark" aria-hidden="true"><?= e(t('nav.brand_mark')) ?></span><span><?= e(t('admin.brand')) ?><small class="muted"><?= e(t('admin.brand_sub')) ?></small></span></p>
 <h1><?= e(t('admin.login.title')) ?></h1>
 <?php if ($error): ?><p class="flash flash--error" role="alert"><?= e($error) ?></p><?php endif; ?>
 <form method="post" action="/admin/acceso/" class="admin-form">

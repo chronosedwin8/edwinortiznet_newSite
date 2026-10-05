@@ -13,7 +13,7 @@ Sitio de Edwin Ortiz Herazo: blog, herramientas gratuitas y tienda de descargas 
 
 | Componente | Versión | Notas |
 | --- | --- | --- |
-| PHP | 8.2 o superior | Extensiones: `pdo_mysql`, `curl`, `mbstring`, `intl`, `dom`, `simplexml`, `fileinfo`. Activa OPcache en producción. |
+| PHP | 8.2 o superior | Extensiones: `pdo_mysql`, `curl`, `mbstring`, `intl`, `dom`, `simplexml`, `fileinfo` y `gd` con soporte WebP (biblioteca de medios); `exif` opcional para orientar fotos de celular. Activa OPcache en producción. |
 | MySQL | 8.0 | `utf8mb4_unicode_ci`, InnoDB. |
 | Servidor web | Nginx (recomendado) o Apache 2.4 | La raíz web es **`public/`**. Ver `deploy/nginx.conf` o `public/.htaccess`. |
 | Composer | 2.x | |
@@ -87,7 +87,9 @@ En este equipo el sitio corre en **http://localhost:8090/** mediante un VirtualH
 
 ## 5. Operación diaria
 
-- **Panel:** `https://www.edwinortiz.net/admin/`. Escritorio con ventas, pendientes, suscriptores, 404 y productos sin archivo. Desde ahí se editan artículos, productos (textos ES/EN, precios, archivos), familias, pedidos (reenviar correo, regenerar descargas, consultar la pasarela), suscriptores y lista de espera (CSV), redirecciones, banco de preguntas del simulacro y ajustes.
+- **Panel:** `https://www.edwinortiz.net/admin/`. Escritorio con ventas, pendientes, suscriptores, 404 y productos sin archivo. Desde ahí se editan artículos, productos (textos ES/EN, precios, archivos), familias, pedidos (reenviar correo, regenerar descargas, consultar la pasarela), suscriptores y lista de espera (CSV), redirecciones, secciones (introducción, preguntas frecuentes y SEO de cada hub), biblioteca de medios y ajustes.
+- **Editor del panel:** texto enriquecido con limpieza al pegar desde Word/Docs, imágenes (subir, arrastrar o elegir de la biblioteca, con texto alternativo obligatorio), videos de YouTube, tablas, bloques dinámicos `{{productos:…}}` / `{{articulos:…}}` y vista de HTML. Incluye asistente SEO con vista previa de Google, borradores locales que se recuperan si se cierra el navegador, `Ctrl+S` para guardar y `Ctrl+K` para buscar en todo el panel.
+- **Imágenes subidas:** se convierten a WebP (1600 y 800 px) y se guardan en `public/uploads/AAAA/MM/`. **Incluye `public/uploads/` en el respaldo diario** junto con la base de datos y `storage/downloads/`.
 - **Caché:** cada guardado en el panel vacía la caché de página. Las páginas en caché se sirven en milisegundos y llevan `ETag`.
 - **Traducciones:** todo lo traducido al inglés entra con `needs_review = 1`. El filtro "Por revisar" del panel muestra lo pendiente; desmarca la casilla al aprobarlo. En una entrada en español, "Crear versión en inglés" crea el borrador enlazado (mismo `translation_group`) y el `hreflang` aparece al publicarlo.
 - **Cambiar un slug** desde el panel crea automáticamente una redirección 301 desde la URL anterior.
