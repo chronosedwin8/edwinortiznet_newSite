@@ -11,3 +11,7 @@
 !/public/uploads/.htaccess
 /.phpunit.cache/
 /node_modules/
+
+# Solo en el servidor: CV personal y archivos rescatados de WordPress
+/public/cv/
+/public/wp-content/
