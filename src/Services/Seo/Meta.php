@@ -141,7 +141,18 @@ final class Meta
 
     public static function json(array $data): string
     {
-        $json = (string) json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG);
-        return $json;
+        return (string) json_encode(self::withoutNulls($data), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG);
+    }
+
+    private static function withoutNulls(array $data): array
+    {
+        foreach ($data as $key => $value) {
+            if ($value === null || $value === []) {
+                unset($data[$key]);
+            } elseif (is_array($value)) {
+                $data[$key] = self::withoutNulls($value);
+            }
+        }
+        return $data;
     }
 }

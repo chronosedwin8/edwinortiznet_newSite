@@ -1,0 +1,126 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Services\Content;
+
+use App\Core\Config;
+use App\Core\View;
+use App\Models\Hub;
+use App\Models\Post;
+use App\Models\Product;
+use App\Models\Setting;
+
+/**
+ * Convierte el HTML guardado en HTML de página: resuelve marcadores, genera la tabla de contenido,
+ * inserta la tarjeta de producto relacionada y reserva los espacios de anuncios.
+ */
+final class ContentRenderer
+{
+    /**
+     * @return array{html:string, toc: array<int, array{id:string,text:string}>}
+     */
+    public static function render(array $post, ?array $relatedProduct = null, bool $ads = false): array
+    {
+        $locale = $post['locale'];
+        $html = (string) $post['content_html'];
+
+        // Marcadores {{productos:slug1,slug2}} y {{articulos:hub}}
+        $html = preg_replace_callback('#<p>\s*\{\{productos:([^}]*)\}\}\s*</p>|\{\{productos:([^}]*)\}\}#u', function (array $m) use ($locale): string {
+            $arg = trim($m[1] !== '' ? $m[1] : ($m[2] ?? ''));
+            $products = $arg === 'destacados' || $arg === ''
+                ? Product::bestSellers($locale, 3)
+                : Product::bySlugs(array_map('trim', explode(',', $arg)), $locale);
+            if ($products === []) {
+                return '';
+            }
+            return View::render('partials/product-grid', ['products' => $products, 'compact' => true]);
+        }, $html) ?? $html;
+
+        $html = preg_replace_callback('#<p>\s*\{\{articulos:([a-z0-9-]*)\}\}\s*</p>|\{\{articulos:([a-z0-9-]*)\}\}#u', function (array $m) use ($post, $locale): string {
+            $key = $m[1] !== '' ? $m[1] : ($m[2] ?? 'blog');
+            $hub = $key !== 'blog' ? Hub::byKey($key, $locale) : null;
+            $posts = Post::latest($locale, 4, 0, $hub ? (int) $hub['id'] : null, [(int) $post['id']]);
+            if ($posts === []) {
+                return '';
+            }
+            return View::render('partials/inline-posts', ['posts' => $posts]);
+        }, $html) ?? $html;
+
+        // Tabla de contenido desde los H2
+        $toc = [];
+        if (preg_match_all('#<h2 id="([^"]+)"[^>]*>(.*?)</h2>#is', $html, $m, PREG_SET_ORDER)) {
+            foreach ($m as $h) {
+                $text = trim(html_entity_decode(strip_tags($h[2]), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+                if ($text !== '') {
+                    $toc[] = ['id' => $h[1], 'text' => $text];
+                }
+            }
+        }
+
+        // Tarjeta de producto después del segundo H2 (tras su primer párrafo).
+        if ($relatedProduct !== null) {
+            $card = View::render('partials/product-inline', ['product' => $relatedProduct]);
+            $html = self::insertAfterHeading($html, 2, $card);
+        }
+
+        if ($ads && empty($post['no_ads']) && Setting::get('ads_enabled', '1') === '1' && Config::get('ADSENSE_CLIENT')) {
+            $html = self::insertAds($html);
+        }
+        return ['html' => $html, 'toc' => $toc];
+    }
+
+    /** Inserta $snippet tras el primer párrafo que sigue al H2 número $n (o al final). */
+    public static function insertAfterHeading(string $html, int $n, string $snippet): string
+    {
+        $offset = 0;
+        for ($i = 0; $i < $n; $i++) {
+            $pos = stripos($html, '<h2', $offset);
+            if ($pos === false) {
+                return $html . $snippet;
+            }
+            $offset = $pos + 3;
+        }
+        $end = stripos($html, '</p>', $offset);
+        $nextH2 = stripos($html, '<h2', $offset);
+        if ($end === false || ($nextH2 !== false && $nextH2 < $end)) {
+            $close = stripos($html, '</h2>', $offset);
+            $at = $close === false ? strlen($html) : $close + 5;
+        } else {
+            $at = $end + 4;
+        }
+        return substr($html, 0, $at) . $snippet . substr($html, $at);
+    }
+
+    /** Máximo tres bloques, con espacio reservado (no mueven el contenido). */
+    private static function insertAds(string $html): string
+    {
+        $max = max(0, min(3, (int) Setting::get('adsense_max_blocks', '3')));
+        $slots = array_slice(array_values(array_filter([
+            Config::get('ADSENSE_SLOT_TOP'),
+            Config::get('ADSENSE_SLOT_MIDDLE'),
+            Config::get('ADSENSE_SLOT_BOTTOM'),
+        ])), 0, $max);
+        if ($slots === []) {
+            return $html;
+        }
+        $block = static fn (string $slot): string => '<aside class="ad-slot" aria-label="' . e(t('ads.label')) . '"><ins class="adsbygoogle" data-ad-slot="' . e($slot) . '" data-ad-format="auto" data-full-width-responsive="true"></ins></aside>';
+        preg_match_all('#<h2#i', $html, $m, PREG_OFFSET_CAPTURE);
+        $positions = array_column($m[0], 1);
+        $inserts = [];
+        if (isset($slots[0], $positions[0])) {
+            $inserts[$positions[0]] = $block($slots[0]);
+        }
+        if (isset($slots[1]) && count($positions) >= 4) {
+            $inserts[$positions[intdiv(count($positions), 2)]] = $block($slots[1]);
+        }
+        if (isset($slots[2]) && count($positions) >= 2) {
+            $inserts[strlen($html)] = $block($slots[2]);
+        }
+        krsort($inserts);
+        foreach ($inserts as $pos => $snippet) {
+            $html = substr($html, 0, $pos) . $snippet . substr($html, $pos);
+        }
+        return $html;
+    }
+}
