@@ -6,12 +6,14 @@ namespace App\Services\Media;
 
 use App\Core\DB;
 use App\Services\Importer\HtmlCleaner;
+use App\Services\Storage\S3;
 use RuntimeException;
 
 /**
  * Biblioteca de imágenes del panel. Cada imagen subida se vuelve a codificar en WebP (lo que también
  * descarta metadatos y cualquier contenido que no sea imagen) en dos tamaños: hasta 1600 px y 800 px.
- * Se guardan en public/uploads/AAAA/MM/ y se registran en la tabla media.
+ * En producción se guardan en S3 (uploads/AAAA/MM/, lectura pública); en desarrollo, en public/uploads.
+ * Se registran en la tabla media con su URL pública.
  */
 final class MediaLibrary
 {
@@ -57,12 +59,9 @@ final class MediaLibrary
         $original = (string) ($file['name'] ?? 'imagen');
         $base = HtmlCleaner::slugify(pathinfo($original, PATHINFO_FILENAME)) ?: 'imagen';
         $base = substr($base, 0, 70);
-        $dir = '/uploads/' . gmdate('Y/m');
-        if (!is_dir(self::root() . $dir) && !mkdir(self::root() . $dir, 0775, true) && !is_dir(self::root() . $dir)) {
-            throw new RuntimeException('disk');
-        }
+        $dir = 'uploads/' . gmdate('Y/m');
         $name = $base;
-        for ($i = 2; is_file(self::root() . "$dir/$name.webp"); $i++) {
+        for ($i = 2; self::taken("$dir/$name.webp"); $i++) {
             $name = "$base-$i";
         }
 
@@ -74,15 +73,16 @@ final class MediaLibrary
                 continue;
             }
             $resized = self::resize($image, min($width, $max));
-            $path = $i === 0 ? "$dir/$name.webp" : "$dir/$name-$max.webp";
-            if (!imagewebp($resized, self::root() . $path, self::QUALITY)) {
+            $key = $i === 0 ? "$dir/$name.webp" : "$dir/$name-$max.webp";
+            $tmpFile = tempnam(sys_get_temp_dir(), 'eo-media-');
+            if ($tmpFile === false || !imagewebp($resized, $tmpFile, self::QUALITY)) {
                 throw new RuntimeException('disk');
             }
-            $variant = ['path' => $path, 'width' => imagesx($resized), 'height' => imagesy($resized), 'bytes' => (int) filesize(self::root() . $path)];
+            $variant = ['path' => '', 'width' => imagesx($resized), 'height' => imagesy($resized), 'bytes' => (int) filesize($tmpFile)];
+            $variant['path'] = self::save($tmpFile, $key);
             $main ??= $variant;
             $variants[] = $variant;
         }
-
         $id = DB::insert('media', [
             'path' => $main['path'],
             'original_name' => mb_substr($original, 0, 255),
@@ -140,12 +140,48 @@ final class MediaLibrary
             return;
         }
         foreach ($media['variants'] as $v) {
+            $key = S3::keyFromUrl($v['path']);
+            if ($key !== null) {
+                S3::delete($key);
+                continue;
+            }
             $file = self::root() . $v['path'];
             if (str_starts_with($v['path'], '/uploads/') && is_file($file)) {
                 unlink($file);
             }
         }
         DB::run('DELETE FROM media WHERE id = :id', ['id' => $id]);
+    }
+
+    /**
+     * Guarda una variante ya generada: en S3 (lectura pública, caché de un año) si STORAGE_DISK=s3,
+     * o en public/uploads en desarrollo. Devuelve la URL pública.
+     */
+    private static function save(string $tmpFile, string $key): string
+    {
+        try {
+            if (S3::enabled()) {
+                S3::put($key, $tmpFile, 'image/webp', true, 'public, max-age=31536000, immutable');
+                return S3::publicUrl($key);
+            }
+            $target = self::root() . '/' . $key;
+            if (!is_dir(dirname($target)) && !mkdir(dirname($target), 0775, true) && !is_dir(dirname($target))) {
+                throw new RuntimeException('disk');
+            }
+            if (!copy($tmpFile, $target)) {
+                throw new RuntimeException('disk');
+            }
+            return '/' . $key;
+        } finally {
+            @unlink($tmpFile);
+        }
+    }
+
+    /** ¿Ya existe una imagen con esa ruta (en la tabla o en disco)? */
+    private static function taken(string $key): bool
+    {
+        return is_file(self::root() . '/' . $key)
+            || (int) DB::value('SELECT COUNT(*) FROM media WHERE path LIKE :p', ['p' => '%/' . $key]) > 0;
     }
 
     private static function present(array $row): array

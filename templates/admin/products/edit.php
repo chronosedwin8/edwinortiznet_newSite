@@ -106,7 +106,7 @@ $action = $isNew ? '/admin/productos/nuevo/' : '/admin/productos/' . (int) $prod
     <?php foreach ($files as $f): ?>
       <tr>
         <td><?= e($f['label']) ?><?= $f['version'] ? ' · v' . e($f['version']) : '' ?></td>
-        <td><?php if ($f['storage_path']): ?><code><?= e($f['storage_path']) ?></code><?php else: ?><span class="tag tag--warn"><?= e(t('admin.files.missing')) ?></span><?php endif; ?></td>
+        <td><?php if ($f['storage_path']): ?><span class="tag tag--<?= ($f['storage_disk'] ?? 'local') === 's3' ? 'published' : 'warn' ?>"><?= e(t(($f['storage_disk'] ?? 'local') === 's3' ? 'admin.files.in_s3' : 'admin.files.in_server')) ?></span> <code><?= e($f['storage_path']) ?></code><?php else: ?><span class="tag tag--warn"><?= e(t('admin.files.missing')) ?></span><?php endif; ?></td>
         <td><small class="muted"><?= e((string) $f['source_url']) ?></small></td>
         <td><?= $f['bytes'] ? e(\App\Services\I18n\I18n::number(((int) $f['bytes']) / 1024, 0, 'es')) . ' KB' : '' ?></td>
       </tr>

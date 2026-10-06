@@ -13,5 +13,6 @@
         <env name="APP_ENV" value="testing" force="true"/>
         <env name="MAIL_DRIVER" value="array" force="true"/>
         <env name="PAGE_CACHE" value="false" force="true"/>
+        <env name="STORAGE_DISK" value="local" force="true"/>
     </php>
 </phpunit>

@@ -10,6 +10,7 @@ use App\Core\Request;
 use App\Core\Response;
 use App\Services\Downloads\DownloadService;
 use App\Services\Importer\HtmlCleaner;
+use App\Services\Storage\S3;
 
 /**
  * Productos (fila base + textos ES/EN), packs, familias y archivos descargables.
@@ -205,15 +206,30 @@ final class ProductsController extends AdminBase
             return $this->fail($back, t('admin.error.upload'));
         }
         $relative = $slug . '/' . $name;
-        $target = DownloadService::path($relative);
-        if (!is_dir(dirname($target))) {
-            mkdir(dirname($target), 0775, true);
+        $tmp = (string) $file['tmp_name'];
+        $bytes = (int) filesize($tmp);
+        if (S3::enabled()) {
+            // Producción: objeto privado en el bucket; se entrega con URL firmada de pocos minutos.
+            try {
+                S3::put(DownloadService::S3_PREFIX . $relative, $tmp, 'application/octet-stream', false);
+            } catch (\RuntimeException $e) {
+                \App\Core\Logger::warning('Subida de archivo de producto a S3 fallida', ['error' => $e->getMessage()]);
+                return $this->fail($back, t('admin.error.upload'));
+            }
+            @unlink($tmp);
+            $disk = 's3';
+        } else {
+            $target = DownloadService::path($relative);
+            if (!is_dir(dirname($target))) {
+                mkdir(dirname($target), 0775, true);
+            }
+            $moved = is_uploaded_file($tmp) ? move_uploaded_file($tmp, $target) : rename($tmp, $target);
+            if (!$moved) {
+                return $this->fail($back, t('admin.error.upload'));
+            }
+            $disk = 'local';
         }
-        $moved = is_uploaded_file((string) $file['tmp_name']) ? move_uploaded_file((string) $file['tmp_name'], $target) : rename((string) $file['tmp_name'], $target);
-        if (!$moved) {
-            return $this->fail($back, t('admin.error.upload'));
-        }
-        $data = ['storage_path' => $relative, 'bytes' => filesize($target), 'version' => self::str($request, 'version', 40), 'label' => self::str($request, 'label', 190) ?? $name];
+        $data = ['storage_path' => $relative, 'storage_disk' => $disk, 'bytes' => $bytes, 'version' => self::str($request, 'version', 40), 'label' => self::str($request, 'label', 190) ?? $name];
         $replace = (int) ($request->post['replace_id'] ?? 0);
         if ($replace > 0 && DB::value('SELECT id FROM product_files WHERE id = :id AND product_id = :p', ['id' => $replace, 'p' => $productId]) !== null) {
             DB::update('product_files', $data, ['id' => $replace]);

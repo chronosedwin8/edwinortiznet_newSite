@@ -149,7 +149,7 @@ final class PostsController extends AdminBase
             'updated_at' => gmdate('Y-m-d H:i:s'),
         ];
         // Portada de la biblioteca: tamaño y srcset salen de la tabla media; si cambia a otra URL se limpian.
-        $media = $data['cover_url'] !== null && str_starts_with($data['cover_url'], '/uploads/') ? MediaLibrary::byPath($data['cover_url']) : null;
+        $media = $data['cover_url'] !== null ? MediaLibrary::byPath($data['cover_url']) : null;
         if ($media !== null) {
             $data += ['cover_width' => $media['width'], 'cover_height' => $media['height'], 'cover_srcset' => $media['srcset'] ?: null];
         } elseif ($data['cover_url'] !== ($post['cover_url'] ?? null)) {

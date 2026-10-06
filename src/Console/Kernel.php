@@ -41,6 +41,7 @@ final class Kernel
                 'mail:test' => $this->mailTest($options),
                 'mail:ses-password' => $this->sesPassword($options),
                 'routes:check' => $this->routesCheck(),
+                'storage:s3' => $this->storageS3(),
                 default => $this->help(),
             };
         } catch (\Throwable $e) {
@@ -51,7 +52,7 @@ final class Kernel
 
     private function help(): int
     {
-        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check');
+        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3');
         return 0;
     }
 
@@ -236,5 +237,13 @@ final class Kernel
         }
         $this->out(sprintf('%d rutas verificadas, %d con error.', count($paths), $fail));
         return $fail === 0 ? 0 : 1;
+    }
+
+    /** Mueve a S3 los archivos que aún están en el servidor (productos, biblioteca e imágenes de WordPress). */
+    private function storageS3(): int
+    {
+        $summary = (new \App\Services\Storage\S3Migration(fn (string $l) => $this->out($l)))->run();
+        $this->out(sprintf('Movidos a S3: %d archivos de producto, %d imágenes de la biblioteca, %d de WordPress; %d registros actualizados.', $summary['downloads'], $summary['media'], $summary['wordpress'], $summary['references']));
+        return 0;
     }
 }

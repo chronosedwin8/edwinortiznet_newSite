@@ -8,12 +8,19 @@ use App\Core\Config;
 use App\Core\DB;
 use App\Core\Request;
 use App\Core\Response;
+use App\Services\Storage\S3;
 
 /**
- * Permisos de descarga (30 días, 5 descargas) y entrega desde storage/downloads (nunca con URL pública).
+ * Permisos de descarga (30 días, 5 descargas) y entrega del archivo: desde S3 con una URL firmada de pocos
+ * minutos (storage_disk = s3) o desde storage/downloads (local). Nunca con una URL pública permanente.
  */
 final class DownloadService
 {
+    /** Prefijo de los archivos de producto dentro del bucket (objetos privados). */
+    public const S3_PREFIX = 'descargas/';
+    /** Vigencia de la URL firmada de S3: basta para empezar la descarga. */
+    private const S3_LINK_SECONDS = 300;
+
     public static function maxDownloads(): int
     {
         return max(1, Config::int('DOWNLOAD_MAX', 5));
@@ -100,7 +107,7 @@ final class DownloadService
     {
         return DB::transaction(function () use ($token, $request): Response|string|null {
             $grant = DB::one(
-                'SELECT g.*, pf.storage_path, pf.label, o.status AS order_status
+                'SELECT g.*, pf.storage_path, pf.storage_disk, pf.label, o.status AS order_status
                  FROM download_grants g
                  JOIN order_items oi ON oi.id = g.order_item_id
                  JOIN orders o ON o.id = oi.order_id
@@ -115,11 +122,19 @@ final class DownloadService
                 || strtotime($grant['expires_at'] . ' UTC') < time() || (int) $grant['downloads'] >= (int) $grant['max_downloads']) {
                 return 'download.expired';
             }
-            if (empty($grant['storage_path']) || !is_file(self::path((string) $grant['storage_path']))) {
+            $inS3 = ($grant['storage_disk'] ?? 'local') === 's3';
+            if (empty($grant['storage_path']) || ($inS3 ? !S3::configured() : !is_file(self::path((string) $grant['storage_path'])))) {
                 return 'download.unavailable';
             }
             DB::run('UPDATE download_grants SET downloads = downloads + 1 WHERE id = :id', ['id' => (int) $grant['id']]);
             DB::insert('download_log', ['grant_id' => (int) $grant['id'], 'ip' => $request->ip(), 'user_agent' => $request->userAgent()]);
+            if ($inS3) {
+                $url = S3::presignedGet(self::S3_PREFIX . $grant['storage_path'], self::S3_LINK_SECONDS, basename((string) $grant['storage_path']));
+                return Response::redirect($url, 302)
+                    ->header('Cache-Control', 'private, no-store')
+                    ->header('Referrer-Policy', 'no-referrer')
+                    ->header('X-Robots-Tag', 'noindex');
+            }
             return self::fileResponse((string) $grant['storage_path']);
         });
     }
@@ -170,7 +185,9 @@ final class DownloadService
             $missing = [];
             $files = DB::all('SELECT * FROM product_files WHERE product_id = :p', ['p' => (int) $row['id']]);
             foreach ($files as $file) {
-                if (empty($file['storage_path']) || !is_file(self::path((string) $file['storage_path']))) {
+                $present = !empty($file['storage_path'])
+                    && (($file['storage_disk'] ?? 'local') === 's3' || is_file(self::path((string) $file['storage_path'])));
+                if (!$present) {
                     $file['expected_path'] = self::expectedPath($file, $row['slug']);
                     $missing[] = $file;
                 }
