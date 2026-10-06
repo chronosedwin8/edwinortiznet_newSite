@@ -59,6 +59,6 @@ Sigue los pasos **en este orden**. Marca cada uno al terminarlo.
 
 ## 9. Respaldo
 
-- [ ] El respaldo diario incluye la base de datos, `storage/downloads/` y **`public/uploads/`** (imágenes subidas desde el panel). Permisos de escritura del usuario de PHP sobre `public/uploads/`.
+- [ ] El respaldo diario incluye la base de datos y el `.env`. Las imágenes y los archivos de producto están en S3 (`STORAGE_DISK=s3`): activa el **versionado del bucket** `blogedwinortiznet` para poder recuperar archivos borrados o reemplazados.
 
 - [ ] Conservar el WordPress **apagado pero intacto durante 30 días** como respaldo (archivos + base de datos). No borrar nada antes de ese plazo.
