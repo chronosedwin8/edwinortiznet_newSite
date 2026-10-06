@@ -37,6 +37,9 @@ return static function (Router $r): void {
 
     // --- Sin idioma -------------------------------------------------------
     $r->get('/sitemap.xml', [SeoController::class, 'sitemap'], 'sitemap');
+    foreach (['sitemap_index', 'post-sitemap', 'page-sitemap', 'product-sitemap', 'product_cat-sitemap', 'category-sitemap', 'wp-sitemap'] as $legacy) {
+        $r->get("/$legacy.xml", [SeoController::class, 'legacySitemap']);
+    }
     $r->get('/robots.txt', [SeoController::class, 'robots'], 'robots');
     $r->get('/api/buscar', [SearchController::class, 'api'], 'api.search');
     $r->post('/api/carrito', [CartController::class, 'validate'], 'api.cart');

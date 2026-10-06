@@ -197,6 +197,15 @@ final class SeoTest extends TestCase
         $this->assertStringContainsString('<lastmod>', $response->body);
     }
 
+    public function testLegacyWordPressSitemapsRedirect(): void
+    {
+        foreach (['/sitemap_index.xml', '/post-sitemap.xml', '/wp-sitemap.xml'] as $path) {
+            $response = $this->get($path);
+            $this->assertSame(301, $response->status, $path);
+            $this->assertStringEndsWith('/sitemap.xml', $response->headers['Location']);
+        }
+    }
+
     public function testFeeds(): void
     {
         foreach (['/feed/' => 'es-CO', '/en/feed/' => 'en'] as $path => $lang) {

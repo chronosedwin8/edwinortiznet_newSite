@@ -18,6 +18,12 @@ final class SeoController extends Controller
         return Response::text(Sitemap::cached(), 200, 'application/xml')->header('Cache-Control', 'public, max-age=3600');
     }
 
+    /** Sitemaps del WordPress anterior (Yoast y el nativo) que Search Console puede tener registrados. */
+    public function legacySitemap(Request $request): Response
+    {
+        return Response::redirect(url('/sitemap.xml'), 301)->header('Cache-Control', 'public, max-age=86400');
+    }
+
     /** Respaldo dinámico si public/robots.txt no existe (Nginx/Apache sirven primero el estático). */
     public function robots(Request $request): Response
     {
