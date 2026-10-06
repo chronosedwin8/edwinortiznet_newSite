@@ -194,6 +194,7 @@ return [
     'admin.orders.utc' => 'UTC',
 
     'admin.subscribers.export' => 'Exportar suscriptores (CSV)',
+    'admin.subscribers.empty' => 'Todavía no hay suscriptores. Aparecerán aquí cuando alguien se suscriba con el formulario «Recibe las guías nuevas en tu correo» del sitio.',
     'admin.waitlist.export' => 'Exportar lista de espera (CSV)',
     'admin.waitlist.notified' => 'Se avisó por correo a :n persona(s) de la lista de espera.',
     'admin.subscribers.by_tag' => 'Por etiqueta',

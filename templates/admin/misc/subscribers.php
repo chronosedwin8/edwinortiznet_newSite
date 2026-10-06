@@ -6,6 +6,7 @@
 <div class="grid-2">
   <section class="panel">
     <h2><?= e(t('admin.subscribers.by_tag')) ?></h2>
+    <?php if (!$byTag): ?><p class="muted"><?= e(t('admin.subscribers.empty')) ?></p><?php endif; ?>
     <table><tbody><?php foreach ($byTag as $tg): ?><tr><td><?= e($tg['tag']) ?></td><td><?= e(t('admin.subscribers.active_total', ['active' => (int) $tg['active'], 'total' => (int) $tg['total']])) ?></td></tr><?php endforeach; ?></tbody></table>
   </section>
   <section class="panel">
@@ -15,6 +16,7 @@
     <?php endif; ?>
   </section>
 </div>
+<?php if ($subscribers): ?>
 <table class="data">
   <thead><tr><th><?= e(t('form.email')) ?></th><th><?= e(t('admin.f.locale')) ?></th><th><?= e(t('admin.col.tag')) ?></th><th><?= e(t('admin.col.source')) ?></th><th><?= e(t('admin.f.status')) ?></th><th><?= e(t('admin.col.date')) ?></th></tr></thead>
   <tbody>
@@ -25,3 +27,4 @@
   <?php endforeach; ?>
   </tbody>
 </table>
+<?php endif; ?>

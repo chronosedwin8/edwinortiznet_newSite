@@ -44,7 +44,7 @@ HTML,
             'intro' => <<<'HTML'
 <p>I have spent more than twenty years in the classroom teaching math and technology, and I know a teacher’s time never stretches far enough: planning, grading, paperwork, meetings — and on top of that, keeping up with tools that change every month.</p>
 <p>This section gathers what has worked for me to make technology serve the teacher and not the other way round: using artificial intelligence to prepare materials without giving up your professional judgement, and automating admin tasks with Excel and Word so you have more time for your students.</p>
-<p>For now, the classroom articles are available in Spanish; the Excel automation guides are already available in English.</p>
+<p>Here you’ll find reviews of classroom tools, from AI assistants for planning and grading to platforms for teaching programming, along with analyses of education in Colombia, Latin America and the world written from the point of view of teachers, families and students.</p>
 HTML,
             'faq' => [
                 ['q' => 'Can I use AI to plan my lessons?', 'a' => 'Yes, as support for ideas, examples and first drafts. Always review the result: AI makes mistakes and doesn’t know your group.'],
