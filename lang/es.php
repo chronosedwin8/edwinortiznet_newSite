@@ -188,7 +188,7 @@ return array_merge(require __DIR__ . '/admin.es.php', [
     'product.spanish_interface' => 'La interfaz de la plantilla está en español.',
     'waitlist.label' => 'Avísame cuando salga',
     'waitlist.button' => 'Avísame',
-    'waitlist.ok' => 'Listo. Te escribo apenas esté disponible.',
+    'waitlist.ok' => 'Listo. Te envié un correo de confirmación y te escribo apenas esté disponible.',
 
     // Cursos
     'courses.title' => 'Cursos',

@@ -195,6 +195,7 @@ return [
 
     'admin.subscribers.export' => 'Exportar suscriptores (CSV)',
     'admin.waitlist.export' => 'Exportar lista de espera (CSV)',
+    'admin.waitlist.notified' => 'Se avisó por correo a :n persona(s) de la lista de espera.',
     'admin.subscribers.by_tag' => 'Por etiqueta',
     'admin.subscribers.active_total' => ':active activos de :total',
     'admin.subscribers.confirmed' => 'Confirmado',

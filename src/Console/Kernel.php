@@ -42,6 +42,7 @@ final class Kernel
                 'mail:ses-password' => $this->sesPassword($options),
                 'routes:check' => $this->routesCheck(),
                 'storage:s3' => $this->storageS3(),
+                'waitlist:notify' => $this->waitlistNotify(),
                 default => $this->help(),
             };
         } catch (\Throwable $e) {
@@ -52,7 +53,7 @@ final class Kernel
 
     private function help(): int
     {
-        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3');
+        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify');
         return 0;
     }
 
@@ -180,6 +181,17 @@ final class Kernel
     {
         $result = (new Reconciler())->run();
         $this->out(sprintf('Pedidos consultados: %d, actualizados: %d, anulados por vencimiento: %d.', $result['checked'], $result['updated'], $result['voided']));
+        return 0;
+    }
+
+    /** Avisa a las listas de espera de los productos que ya se pueden comprar. */
+    private function waitlistNotify(): int
+    {
+        $sent = 0;
+        foreach (DB::column('SELECT DISTINCT product_id FROM waitlist WHERE notified_at IS NULL') as $productId) {
+            $sent += \App\Services\Waitlist::notifyIfAvailable((int) $productId);
+        }
+        $this->out("Avisos de lista de espera enviados: $sent.");
         return 0;
     }
 

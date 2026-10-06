@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Services\Content\ContentRenderer;
 use App\Services\I18n\I18n;
 use App\Services\Seo\Meta;
+use App\Services\Waitlist;
 
 final class ProductController extends Controller
 {
@@ -95,7 +96,7 @@ final class ProductController extends Controller
         ]);
     }
 
-    /** Formulario "Avísame cuando salga" → waitlist. */
+    /** Formulario "Avísame cuando salga" → waitlist + correo de confirmación. */
     public function waitlist(Request $request): Response
     {
         $this->requireHuman($request);
@@ -109,7 +110,7 @@ final class ProductController extends Controller
         if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $product === null) {
             return $this->reply($request, false, t('form.invalid_email'), 422);
         }
-        DB::run('INSERT IGNORE INTO waitlist (product_id, email, locale) VALUES (:p, :e, :l)', ['p' => $productId, 'e' => $email, 'l' => $locale]);
+        Waitlist::add($product, $email, $locale);
         return $this->reply($request, true, t('waitlist.ok'), 200, product_path($product) . '?lista=ok#waitlist');
     }
 

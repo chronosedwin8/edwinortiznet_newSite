@@ -188,7 +188,7 @@ return [
     'product.spanish_interface' => 'The template interface is in Spanish; an English quick-start guide is included.',
     'waitlist.label' => 'Tell me when it’s out',
     'waitlist.button' => 'Notify me',
-    'waitlist.ok' => 'Done. I’ll email you as soon as it’s available.',
+    'waitlist.ok' => 'Done. I’ve sent you a confirmation email and I’ll write again as soon as it’s available.',
 
     // Courses
     'courses.title' => 'Courses',

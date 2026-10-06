@@ -11,6 +11,7 @@ use App\Core\Response;
 use App\Services\Downloads\DownloadService;
 use App\Services\Importer\HtmlCleaner;
 use App\Services\Storage\S3;
+use App\Services\Waitlist;
 
 /**
  * Productos (fila base + textos ES/EN), packs, familias y archivos descargables.
@@ -87,6 +88,13 @@ final class ProductsController extends AdminBase
             throw HttpException::notFound();
         }
         return $this->save($request, (int) $id);
+    }
+
+    /** Si el producto ya se puede comprar, avisa a su lista de espera y lo cuenta en el mensaje. */
+    private static function withNotified(string $message, int $productId): string
+    {
+        $sent = Waitlist::notifyIfAvailable($productId);
+        return $sent > 0 ? $message . ' ' . t('admin.waitlist.notified', ['n' => $sent]) : $message;
     }
 
     /** "Pregunta | Respuesta" por línea → JSON. */
@@ -187,7 +195,7 @@ final class ProductsController extends AdminBase
             return $this->fail($back, t('admin.error.slug'));
         }
         $this->saved();
-        return $this->back("/admin/productos/$result/", t('admin.saved'));
+        return $this->back("/admin/productos/$result/", self::withNotified(t('admin.saved'), (int) $result));
     }
 
     /** Sube el archivo descargable a storage/downloads/{slug}/ (nunca al webroot). */
@@ -237,7 +245,7 @@ final class ProductsController extends AdminBase
             DB::insert('product_files', $data + ['product_id' => $productId]);
         }
         $this->saved();
-        return $this->back($back, t('admin.products.uploaded'));
+        return $this->back($back, self::withNotified(t('admin.products.uploaded'), $productId));
     }
 
     public function families(Request $request): Response
