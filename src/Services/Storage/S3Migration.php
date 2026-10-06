@@ -76,9 +76,17 @@ final class S3Migration
         $moved = 0;
         $map = [];
         $root = MediaLibrary::root();
-        foreach (DB::all('SELECT * FROM media WHERE path LIKE "/uploads/%"') as $row) {
+        foreach (DB::all('SELECT * FROM media') as $row) {
             $variants = json_decode((string) $row['variants'], true) ?: [['path' => $row['path'], 'width' => (int) $row['width'], 'height' => (int) $row['height']]];
             foreach ($variants as &$v) {
+                // Ya en S3 (por ejemplo, en una ejecución anterior interrumpida): solo falta limpiar la copia local
+                $key = S3::keyFromUrl($v['path']);
+                if ($key !== null) {
+                    if (is_file($root . '/' . $key) && S3::size($key) === filesize($root . '/' . $key)) {
+                        $map['/' . $key] = $v['path'];
+                    }
+                    continue;
+                }
                 if (!str_starts_with($v['path'], '/uploads/')) {
                     continue;
                 }
@@ -93,8 +101,10 @@ final class S3Migration
                 $moved++;
             }
             unset($v);
-            DB::update('media', ['path' => $map[$row['path']] ?? $row['path'], 'variants' => json_encode($variants)], ['id' => (int) $row['id']]);
-            ($this->out)('  imagen → ' . ($map[$row['path']] ?? $row['path']));
+            if (str_starts_with((string) $row['path'], '/uploads/')) {
+                DB::update('media', ['path' => $map[$row['path']] ?? $row['path'], 'variants' => json_encode($variants)], ['id' => (int) $row['id']]);
+                ($this->out)('  imagen → ' . ($map[$row['path']] ?? $row['path']));
+            }
         }
         $refs = $this->replaceReferences($map);
         foreach (array_keys($map) as $path) {
@@ -162,9 +172,14 @@ final class S3Migration
         }
         $updated = 0;
         foreach (self::REFERENCES as $table => $columns) {
-            $where = implode(' OR ', array_map(fn ($c) => "`$c` LIKE :like", $columns));
+            // Un marcador por columna: PDO no permite repetir el mismo nombre en una consulta
+            $where = implode(' OR ', array_map(fn ($i) => "`{$columns[$i]}` LIKE :like$i", array_keys($columns)));
             foreach (array_keys($map) as $old) {
-                foreach (DB::all("SELECT id, " . implode(', ', array_map(fn ($c) => "`$c`", $columns)) . " FROM `$table` WHERE $where", ['like' => '%' . $old . '%']) as $row) {
+                $params = [];
+                foreach (array_keys($columns) as $i) {
+                    $params["like$i"] = '%' . $old . '%';
+                }
+                foreach (DB::all("SELECT id, " . implode(', ', array_map(fn ($c) => "`$c`", $columns)) . " FROM `$table` WHERE $where", $params) as $row) {
                     $changes = [];
                     foreach ($columns as $c) {
                         if ($row[$c] === null) {
