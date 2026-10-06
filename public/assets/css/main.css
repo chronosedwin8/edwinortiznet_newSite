@@ -436,3 +436,33 @@ legend.section__title { font-family: var(--font-head); font-weight: 750; line-he
   .site-header, .site-footer, .whatsapp-float, .consent, .cart-drawer, .sticky-buy, .reading-progress, .toc, .subscribe-box, .ad-slot, .fundales { display: none !important; }
   body { background: #fff; color: #000; }
 }
+
+/* ---------- Descarga para Excel (herramientas) ---------- */
+.tool__excel-jump { margin: 6px 0 0; }
+.excel-dl { scroll-margin-top: calc(var(--header-h) + 16px); }
+.excel-dl__inner { display: grid; gap: 24px; padding: clamp(22px, 4vw, 40px); border-radius: var(--radius-lg); border: 1.5px solid transparent; background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(120deg, #107c41, var(--accent) 45%, var(--brand)) border-box; box-shadow: var(--shadow); }
+.excel-dl__inner > * { min-width: 0; }
+@media (min-width: 900px) { .excel-dl__inner { grid-template-columns: minmax(0, 1fr) 340px; gap: 44px; align-items: start; } }
+.excel-dl__title { font-size: var(--step-2); margin-bottom: .4em; }
+.excel-dl__text { color: var(--muted); }
+.excel-dl__examples { list-style: none; margin: 18px 0 22px; padding: 0; display: grid; gap: 8px; }
+.excel-dl__examples li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding: 12px 14px; border-radius: 12px; background: var(--surface-2); }
+.excel-dl__examples code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: .92rem; font-weight: 700; color: #107c41; overflow-wrap: anywhere; }
+:root[data-theme="dark"] .excel-dl__examples code { color: #4ade80; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .excel-dl__examples code { color: #4ade80; } }
+.excel-dl__examples span { color: var(--muted); font-size: .95rem; }
+.excel-dl__subtitle { font-size: var(--step-1); margin: 0 0 .5em; }
+.excel-dl__steps { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; }
+.excel-dl__card { display: grid; gap: 12px; padding: 22px; border-radius: var(--radius-lg); background: var(--surface-2); }
+.excel-dl__icon { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 16px; background: #107c41; color: #fff; }
+.excel-dl__icon .icon { width: 26px; height: 26px; }
+.excel-dl__card-title { margin: 0; font-weight: 800; }
+.excel-dl__files { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: .95rem; }
+.excel-dl__files li { display: flex; gap: 8px; align-items: flex-start; }
+.excel-dl__files .icon { width: 18px; height: 18px; color: var(--accent-strong); flex: none; margin-top: 3px; }
+.excel-dl__button { justify-content: center; }
+.excel-dl__button .icon { width: 20px; height: 20px; }
+.excel-dl__meta { margin: -4px 0 0; text-align: center; font-size: var(--step--1); color: var(--muted); }
+.excel-dl__note { margin: 0; font-size: var(--step--1); color: var(--muted); }
+.tool__excel-jump .link-more { white-space: normal; }
+.excel-dl.section { padding-top: 12px; }

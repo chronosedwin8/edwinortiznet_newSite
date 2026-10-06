@@ -133,6 +133,16 @@ En este equipo el sitio corre en **http://localhost:8090/** mediante un VirtualH
 - Panel: Argon2id, bloqueo tras 5 intentos fallidos y cookies `HttpOnly` + `SameSite=Lax` (+ `Secure` en HTTPS).
 - Los registros (`storage/logs`) omiten datos sensibles. Los errores detallados solo se muestran con `APP_DEBUG=true`.
 
+### Módulos gratuitos para Excel
+
+Las herramientas de número a letras y de códigos QR también se descargan como módulos VBA para Excel (función `=NUMEROALETRAS()` / `=NUMBERTOWORDS()` y función `=QR()` con la macro `GenerarQR`). El código fuente está en `tools/excel/src/`. Para regenerar los ZIP de `public/descargas/` (módulo `.bas`, complemento `.xlam`, libro de ejemplo `.xlsm` e instrucciones) en un equipo con Excel para Windows:
+
+```
+pwsh -File tools/excel/build.ps1
+```
+
+El script compara cada función con los 160 casos de `tests/fixtures/numwords_cases.json` y cada QR con el codificador del sitio antes de generar las descargas. Activa temporalmente el acceso al modelo de objetos de VBA y lo deja como estaba.
+
 ## 7. Pruebas
 
 ```bash

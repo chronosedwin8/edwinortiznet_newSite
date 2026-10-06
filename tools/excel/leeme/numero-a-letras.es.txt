@@ -1,0 +1,43 @@
+NÚMERO A LETRAS PARA EXCEL — gratis
+edwinortiz.net · https://www.edwinortiz.net/herramientas/numero-a-letras/
+=====================================================================
+
+Agrega a Excel la función NUMEROALETRAS, que escribe cualquier valor en
+letras, listo para facturas, cheques, cuentas de cobro y contratos.
+
+  =NUMEROALETRAS(A2)               un millón doscientos cincuenta mil
+  =NUMEROALETRAS(A2; VERDADERO)    UN MILLÓN DOSCIENTOS CINCUENTA MIL PESOS M/CTE
+  =NUMEROALETRAS(A2; FALSO; 0)     sin decimales (redondea)
+  =NUMBERTOWORDS(A2)               one million two hundred fifty thousand (en inglés)
+
+Funciona hasta 999 billones, con centavos («CON 50 CENTAVOS») y con
+textos como "1.250.000,50". Si el valor no es válido devuelve #¡VALOR!.
+
+QUÉ INCLUYE
+  NumerosALetras.bas            módulo para importar en tus propios archivos
+  NumerosALetras.xlam           complemento: la función queda en todos tus libros
+  NumerosALetras-ejemplo.xlsm   libro con ejemplos listos
+
+ANTES DE ABRIR: DESBLOQUEA LOS ARCHIVOS
+  Windows bloquea las macros de los archivos descargados de internet.
+  Clic derecho sobre el archivo > Propiedades > marca «Desbloquear» > Aceptar.
+  (Hazlo con el .xlam y con el .xlsm.)
+
+OPCIÓN 1 — Usarla en un archivo tuyo (recomendada)
+  1. Abre tu archivo de Excel y pulsa Alt+F11 (editor de Visual Basic).
+  2. Menú Archivo > Importar archivo… y elige NumerosALetras.bas.
+  3. Cierra el editor y escribe =NUMEROALETRAS(A2) en cualquier celda.
+  4. Guarda como «Libro de Excel habilitado para macros (*.xlsm)».
+
+OPCIÓN 2 — Tenerla siempre disponible (complemento)
+  1. Copia NumerosALetras.xlam en una carpeta fija (por ejemplo Documentos).
+  2. En Excel: Archivo > Opciones > Complementos > Administrar: Complementos
+     de Excel > Ir… > Examinar… y elige el archivo. Deja la casilla marcada.
+  3. La función queda disponible en todos tus libros.
+
+¿Necesitas más? La plantilla de factura con envío por correo y el
+convertidor con más formatos están en https://www.edwinortiz.net/tienda/
+
+Licencia: uso libre en tus archivos personales y de tu empresa. Puedes
+modificarlo; no se permite venderlo como producto propio.
+Requiere Excel 2010 o posterior para Windows (en Mac funciona la opción 1).

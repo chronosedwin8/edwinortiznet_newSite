@@ -77,7 +77,7 @@ final class ToolsController extends Controller
                 'browserRequirements' => 'Requires JavaScript',
                 'inLanguage' => I18n::meta('html'),
                 'offers' => ['@type' => 'Offer', 'price' => '0', 'priceCurrency' => I18n::currency()],
-            ], Meta::faqPage($faqs)],
+            ] + (isset($tool['excel']['zip'][$locale]) ? ['downloadUrl' => url('/descargas/' . $tool['excel']['zip'][$locale])] : []), Meta::faqPage($faqs)],
             'body_class' => 'page-tool page-tool--' . $key,
         ]);
     }

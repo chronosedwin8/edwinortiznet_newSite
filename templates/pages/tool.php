@@ -18,7 +18,12 @@ use App\Services\I18n\I18n;
     <?= View::render("partials/tools/$key") ?>
   </div>
   <p class="tool__privacy"><?= e(t('tools.privacy_note')) ?></p>
+  <?php if (!empty($tool['excel'])): ?><p class="tool__excel-jump"><a class="link-more" href="#excel"><?= e(t('tools.excel.jump')) ?></a></p><?php endif; ?>
 </section>
+
+<?php if (!empty($tool['excel'])): ?>
+<?= View::render('partials/excel-download', ['key' => $key, 'excel' => $tool['excel']]) ?>
+<?php endif; ?>
 
 <section class="section wrap tool__content">
   <div class="prose page-narrow">

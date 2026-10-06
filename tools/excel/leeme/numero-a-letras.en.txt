@@ -1,0 +1,40 @@
+NUMBER TO WORDS FOR EXCEL — free
+edwinortiz.net · https://www.edwinortiz.net/en/tools/number-to-words/
+=====================================================================
+
+Adds the NUMBERTOWORDS function to Excel, which writes any value in
+words — ready for invoices, cheques and contracts.
+
+  =NUMBERTOWORDS(A2)              one million two hundred fifty thousand
+  =NUMBERTOWORDS(A2, TRUE)        One million two hundred fifty thousand dollars
+  =NUMBERTOWORDS(A2, FALSE, 0)    no decimals (rounds)
+  =NUMEROALETRAS(A2)              un millón doscientos cincuenta mil (Spanish)
+
+Works up to 999 trillion, with cents and with text such as "1,250,000.50".
+Invalid values return #VALUE!.
+
+WHAT'S INSIDE
+  NumerosALetras.bas            module to import into your own workbooks
+  NumerosALetras.xlam           add-in: the function is available in every workbook
+  NumerosALetras-example.xlsm   workbook with ready-made examples
+
+BEFORE OPENING: UNBLOCK THE FILES
+  Windows blocks macros in files downloaded from the internet.
+  Right-click the file > Properties > tick "Unblock" > OK.
+  (Do it for the .xlam and the .xlsm.)
+
+OPTION 1 — Use it in your own workbook (recommended)
+  1. Open your workbook and press Alt+F11 (Visual Basic editor).
+  2. File > Import File… and choose NumerosALetras.bas.
+  3. Close the editor and type =NUMBERTOWORDS(A2) in any cell.
+  4. Save as "Excel Macro-Enabled Workbook (*.xlsm)".
+
+OPTION 2 — Always available (add-in)
+  1. Copy NumerosALetras.xlam to a permanent folder (e.g. Documents).
+  2. In Excel: File > Options > Add-ins > Manage: Excel Add-ins > Go… >
+     Browse… and choose the file. Keep the box ticked.
+  3. The function is now available in all your workbooks.
+
+License: free to use in your personal and business files. You may modify
+it; you may not sell it as your own product.
+Requires Excel 2010 or later for Windows (option 1 also works on Mac).

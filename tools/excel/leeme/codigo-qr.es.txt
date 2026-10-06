@@ -1,0 +1,49 @@
+GENERADOR DE CÓDIGOS QR PARA EXCEL — gratis
+edwinortiz.net · https://www.edwinortiz.net/herramientas/generador-qr/
+=====================================================================
+
+Crea códigos QR dentro de Excel, sin internet y sin servicios externos:
+lo que escribes nunca sale de tu computador.
+
+COMO FUNCIÓN (se actualiza sola cuando cambia el texto)
+  =QR(A2)          dibuja el código QR de A2 dentro de la celda de la fórmula
+  =QR(A2; "H")     corrección de errores: L 7 %, M 15 % (por defecto), Q 25 %, H 30 %
+  Ajusta el alto de la fila y el ancho de la columna: el QR ocupa el
+  cuadrado más grande que cabe en la celda.
+
+COMO MACRO (Alt+F8)
+  GenerarQR   selecciona las celdas con los textos y ejecútala: el QR
+              aparece en la celda de la derecha de cada una.
+  BorrarQR    elimina los códigos QR de la hoja activa.
+
+Sirve para enlaces, textos, códigos de producto, activos fijos, carnés,
+WiFi (WIFI:T:WPA;S:MiRed;P:clave;;), con tildes y eñes.
+
+QUÉ INCLUYE
+  CodigoQR.bas             módulo para importar en tus propios archivos
+  CodigoQR.xlam            complemento: =QR() queda en todos tus libros
+  CodigoQR-ejemplo.xlsm    libro con ejemplos listos
+
+ANTES DE ABRIR: DESBLOQUEA LOS ARCHIVOS
+  Windows bloquea las macros de los archivos descargados de internet.
+  Clic derecho sobre el archivo > Propiedades > marca «Desbloquear» > Aceptar.
+  (Hazlo con el .xlam y con el .xlsm.)
+
+OPCIÓN 1 — Usarlo en un archivo tuyo (recomendada)
+  1. Abre tu archivo de Excel y pulsa Alt+F11 (editor de Visual Basic).
+  2. Menú Archivo > Importar archivo… y elige CodigoQR.bas.
+  3. Cierra el editor, escribe =QR(A2) en una celda y agrándala.
+  4. Guarda como «Libro de Excel habilitado para macros (*.xlsm)».
+
+OPCIÓN 2 — Tenerlo siempre disponible (complemento)
+  1. Copia CodigoQR.xlam en una carpeta fija (por ejemplo Documentos).
+  2. En Excel: Archivo > Opciones > Complementos > Administrar: Complementos
+     de Excel > Ir… > Examinar… y elige el archivo. Deja la casilla marcada.
+
+¿Necesitas cientos de códigos, exportarlos como imágenes PNG o imprimir
+etiquetas? Las plantillas de QR masivos están en
+https://www.edwinortiz.net/tienda/
+
+Licencia: uso libre en tus archivos personales y de tu empresa. Puedes
+modificarlo; no se permite venderlo como producto propio.
+Requiere Excel 2010 o posterior para Windows.

@@ -10,19 +10,22 @@ namespace App\Services\Tools;
  */
 final class ToolRegistry
 {
-    /** clave => [slug por idioma, producto relacionado (wp_id), script, ícono] */
+    /** clave => [slug por idioma, producto relacionado (wp_id), script, ícono, descarga para Excel] */
     private const TOOLS = [
         'qr' => [
             'slugs' => ['es' => 'generador-qr', 'en' => 'qr-code-generator'],
             'product_wp_id' => 409,
             'script' => 'js/tools/qr-tool.js',
             'icon' => 'qr',
+            // Módulo VBA gratuito (tools/excel/build.ps1 genera los ZIP en public/descargas/)
+            'excel' => ['module' => 'CodigoQR', 'zip' => ['es' => 'codigo-qr-excel.zip', 'en' => 'qr-code-excel.zip']],
         ],
         'words' => [
             'slugs' => ['es' => 'numero-a-letras', 'en' => 'number-to-words'],
             'product_wp_id' => 396,
             'script' => 'js/tools/words-tool.js',
             'icon' => 'abc',
+            'excel' => ['module' => 'NumerosALetras', 'zip' => ['es' => 'numero-a-letras-excel.zip', 'en' => 'number-to-words-excel.zip']],
         ],
         'fundales' => [
             'slugs' => ['es' => 'simulacro-concurso-docente'],

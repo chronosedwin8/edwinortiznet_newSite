@@ -1,0 +1,43 @@
+QR CODE GENERATOR FOR EXCEL — free
+edwinortiz.net · https://www.edwinortiz.net/en/tools/qr-code-generator/
+=====================================================================
+
+Creates QR codes inside Excel, offline and without external services:
+what you type never leaves your computer.
+
+AS A FUNCTION (updates when the text changes)
+  =QR(A2)          draws the QR code for A2 inside the formula's cell
+  =QR(A2, "H")     error correction: L 7%, M 15% (default), Q 25%, H 30%
+  Resize the row and column: the code fills the largest square that fits.
+
+AS A MACRO (Alt+F8)
+  GenerarQR   select the cells with the texts and run it: each QR code is
+              drawn in the cell to the right.
+  BorrarQR    deletes the QR codes on the active sheet.
+
+Works with links, text, product codes, asset tags, ID cards and WiFi
+(WIFI:T:WPA;S:MyNetwork;P:password;;), including accents and emoji.
+
+WHAT'S INSIDE
+  CodigoQR.bas             module to import into your own workbooks
+  CodigoQR.xlam            add-in: =QR() is available in every workbook
+  CodigoQR-example.xlsm    workbook with ready-made examples
+
+BEFORE OPENING: UNBLOCK THE FILES
+  Windows blocks macros in files downloaded from the internet.
+  Right-click the file > Properties > tick "Unblock" > OK.
+
+OPTION 1 — Use it in your own workbook (recommended)
+  1. Open your workbook and press Alt+F11 (Visual Basic editor).
+  2. File > Import File… and choose CodigoQR.bas.
+  3. Close the editor, type =QR(A2) in a cell and make the cell bigger.
+  4. Save as "Excel Macro-Enabled Workbook (*.xlsm)".
+
+OPTION 2 — Always available (add-in)
+  1. Copy CodigoQR.xlam to a permanent folder (e.g. Documents).
+  2. In Excel: File > Options > Add-ins > Manage: Excel Add-ins > Go… >
+     Browse… and choose the file. Keep the box ticked.
+
+License: free to use in your personal and business files. You may modify
+it; you may not sell it as your own product.
+Requires Excel 2010 or later for Windows.
