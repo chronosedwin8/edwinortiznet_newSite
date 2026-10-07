@@ -59,7 +59,7 @@ return static function (): string {
 <li>Recursos, proyectos para todo el grupo, compromisos de docentes, familia, directivos y estudiante, y plan de seguimiento.</li>
 <li>Acta de acuerdo con espacios para las firmas.</li>
 </ul>
-<p>Antes de comprar puedes <a href="/herramientas/piar/">conocer la herramienta</a> y crear <strong>2 PIAR de prueba gratis</strong> en <a href="/piar/">edwinortiz.net/piar/</a>.</p>
+<p>Antes de comprar puedes <a href="/herramientas/piar/">conocer la herramienta</a> y crear <strong>1 PIAR de prueba gratis</strong> en <a href="/piar/">edwinortiz.net/piar/</a>.</p>
 <p><strong>Importante:</strong> al pagar usa el mismo correo de tu cuenta PIAR. El paquete se activa automáticamente en esa cuenta cuando se aprueba el pago. Si compras otro paquete mientras este sigue activo, se suma uno nuevo por 30 días.</p>
 HTML;
         $includes = "<ul><li>Hasta $n PIAR generados con IA durante 30 días.</li><li>Historial guardado: tus PIAR siguen disponibles aunque el paquete venza.</li><li>Edición de cada sección del documento.</li><li>PDF formal con logo e institución, y acta de acuerdo con firmas.</li><li>Soporte por correo.</li></ul>";

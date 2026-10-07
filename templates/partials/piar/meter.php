@@ -1,5 +1,5 @@
 <?php
-/** Medidor de uso: prueba (x/2) o paquete (usados/total y vencimiento). @var array $summary */
+/** Medidor de uso: prueba (x/1) o paquete (usados/total y vencimiento). @var array $summary */
 $paid = $summary['has_active'];
 $total = $paid ? max(1, (int) $summary['credits']) : \App\Services\Piar\PiarCredits::TRIAL_LIMIT;
 $used = $paid ? (int) $summary['used'] : (int) $summary['trial_used'];

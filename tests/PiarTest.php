@@ -235,24 +235,24 @@ final class PiarTest extends TestCase
         $this->assertNotSame('application/pdf', $pdf->headers['Content-Type'] ?? null);
         $this->assertSame(303, $this->request('GET', "/piar/$first/editar/")->status);
 
-        $second = $this->uuidFrom($this->generate());
-        $third = $this->generate();
-        $this->assertSame(303, $third->status);
-        $this->assertSame('/piar/planes/', $third->headers['Location']);
-        $this->assertSame(2, (int) DB::value('SELECT COUNT(*) FROM piar_plans WHERE customer_id = :c', ['c' => $id]));
-        $this->assertSame(2, $this->geminiCalls);
+        // Una sola prueba por cuenta: el segundo intento lleva a los planes.
+        $second = $this->generate();
+        $this->assertSame(303, $second->status);
+        $this->assertSame('/piar/planes/', $second->headers['Location']);
+        $this->assertSame(1, (int) DB::value('SELECT COUNT(*) FROM piar_plans WHERE customer_id = :c', ['c' => $id]));
+        $this->assertSame(1, $this->geminiCalls);
 
         // Las pruebas no aparecen en el historial.
         $this->assertSame([], PiarPlans::history($id));
 
         // Otra sesión de la misma cuenta no la ve.
         Session::forget('piar_trials');
-        $this->assertSame(410, $this->request('GET', "/piar/$second/")->status);
-        $this->assertSame(404, $this->request('GET', "/piar/$second/estado/")->status);
+        $this->assertSame(410, $this->request('GET', "/piar/$first/")->status);
+        $this->assertSame(404, $this->request('GET', "/piar/$first/estado/")->status);
 
         // Purga a las 2 horas: el contenido se borra, el contador no se reinicia.
         DB::run('UPDATE piar_plans SET purge_after = :p WHERE customer_id = :c', ['p' => gmdate('Y-m-d H:i:s', time() - 60), 'c' => $id]);
-        $this->assertGreaterThanOrEqual(2, PiarPlans::purgeTrials());
+        $this->assertGreaterThanOrEqual(1, PiarPlans::purgeTrials());
         $rows = DB::all('SELECT output_json, input_json, student_alias, purged_at FROM piar_plans WHERE customer_id = :c', ['c' => $id]);
         foreach ($rows as $row) {
             $this->assertNull($row['output_json']);
@@ -260,7 +260,7 @@ final class PiarTest extends TestCase
             $this->assertNull($row['student_alias']);
             $this->assertNotNull($row['purged_at']);
         }
-        $this->assertSame(2, PiarCredits::trialUsed($id));
+        $this->assertSame(1, PiarCredits::trialUsed($id));
         Session::set('piar_trials', [$first]);
         $this->assertSame(410, $this->request('GET', "/piar/$first/")->status);
     }

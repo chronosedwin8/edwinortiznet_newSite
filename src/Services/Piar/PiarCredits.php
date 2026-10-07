@@ -14,7 +14,7 @@ use App\Core\DB;
  */
 final class PiarCredits
 {
-    public const TRIAL_LIMIT = 2;
+    public const TRIAL_LIMIT = 1;
     public const DAYS = 30;
     /** SKU => PIAR por paquete. */
     public const SKUS = ['PIAR-5' => 5, 'PIAR-10' => 10, 'PIAR-20' => 20];

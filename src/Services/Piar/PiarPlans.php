@@ -116,7 +116,7 @@ final class PiarPlans
                     'SELECT COUNT(*) FROM piar_plans WHERE ip_hash = :h AND is_trial = 1 AND status <> "error" AND created_at > :since',
                     ['h' => $ipHash, 'since' => gmdate('Y-m-d H:i:s', time() - 30 * 86400)]
                 );
-                if ($recent >= 8 || !RateLimiter::hit('piar-trial', $ip, 4, 86400)) {
+                if ($recent >= 4 || !RateLimiter::hit('piar-trial', $ip, 2, 86400)) {
                     return ['plan' => null, 'error' => 'trial_ip'];
                 }
                 $isTrial = true;

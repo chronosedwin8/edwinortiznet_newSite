@@ -1,7 +1,7 @@
 <?php
 /**
  * PIAR en PDF (dompdf, DejaVu Sans). Encabezado con logo e institución, ficha del estudiante,
- * secciones, acta de acuerdo con firmas y pie con la nota sobre la IA (los números de página los pinta PiarPdf).
+ * secciones, acta de acuerdo con firmas y pie con la nota de validación por el equipo (los números de página los pinta PiarPdf).
  * @var array $plan @var array $input @var array $output @var array $sections @var array $rows @var string|null $logo
  * @var string $institution @var string $city @var string $year
  */
@@ -78,7 +78,7 @@ thead { display: table-header-group; }
 </style>
 </head>
 <body>
-<div class="foot"><div class="foot__note"><?= e(t('piar.plan.disclaimer')) ?></div></div>
+<div class="foot"><div class="foot__note"><?= e(t('piar.pdf.footer')) ?></div></div>
 
 <table class="head">
   <tr>
@@ -110,7 +110,7 @@ thead { display: table-header-group; }
 
 <?= View::render('partials/piar/document', ['output' => $output, 'sections' => $sections, 'mode' => 'pdf']) ?>
 
-<div class="disclaimer"><?= e(t('piar.plan.disclaimer')) ?></div>
+<div class="disclaimer"><?= e(t('piar.pdf.footer')) ?></div>
 
 <div class="acta">
   <p class="acta__title"><?= e(t('piar.acta.title')) ?></p>

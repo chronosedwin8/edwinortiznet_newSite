@@ -8,7 +8,7 @@ declare(strict_types=1);
 return [
     'piar.brand' => 'PIAR con IA',
     'piar.seo_title' => 'PIAR con IA: crea el Plan de Ajustes Razonables en minutos',
-    'piar.seo_description' => 'Elabora el PIAR (Decreto 1421 de 2017) con inteligencia artificial: valoración pedagógica, barreras, ajustes, evaluación y acta en PDF. Prueba 2 gratis.',
+    'piar.seo_description' => 'Elabora el PIAR (Decreto 1421 de 2017) con inteligencia artificial: valoración pedagógica, barreras, ajustes, evaluación y acta en PDF. Prueba 1 gratis.',
 
     // Presentación (/herramientas/piar/)
     'piar.hero.pill' => 'Nuevo · Con inteligencia artificial',
@@ -17,7 +17,7 @@ return [
     'piar.hero.lead' => 'Describe al estudiante en un formulario guiado y la IA redacta el borrador completo del Plan Individual de Ajustes Razonables: contexto, valoración pedagógica, barreras, objetivos, ajustes, evaluación, compromisos y acta de acuerdo.',
     'piar.hero.cta' => 'Crear mi primer PIAR gratis',
     'piar.hero.secondary' => 'Ver precios',
-    'piar.hero.trust1' => '2 PIAR de prueba gratis',
+    'piar.hero.trust1' => '1 PIAR de prueba gratis',
     'piar.hero.trust2' => 'Basado en el Decreto 1421 de 2017',
     'piar.hero.trust3' => 'PDF formal con el logo de tu institución',
     'piar.mock.label' => 'Borrador del PIAR',
@@ -76,7 +76,7 @@ return [
     'piar.faq2_q' => '¿Necesito el diagnóstico médico del estudiante?',
     'piar.faq2_a' => 'No. La falta de diagnóstico no impide elaborar el PIAR ni prestar los apoyos. Si la familia aportó informes, puedes resumir sus recomendaciones para el contexto escolar.',
     'piar.faq3_q' => '¿Qué incluye la prueba gratis?',
-    'piar.faq3_a' => 'Puedes generar 2 PIAR completos y verlos en pantalla justo después de crearlos. La prueba no guarda el documento, no permite editarlo ni descargarlo en PDF, y su contenido se borra a las 2 horas.',
+    'piar.faq3_a' => 'Puedes generar 1 PIAR completo y verlo en pantalla justo después de crearlo. La prueba no guarda el documento, no permite editarlo ni descargarlo en PDF, y su contenido se borra a las 2 horas.',
     'piar.faq4_q' => '¿Cómo funcionan los paquetes?',
     'piar.faq4_a' => 'Cada paquete (5, 10 o 20 PIAR) está activo 30 días desde el pago. Cada PIAR generado descuenta uno. Los PIAR que generes quedan guardados en tu cuenta aunque el paquete venza.',
     'piar.faq5_q' => '¿Puedo pagar desde otro país?',
@@ -86,12 +86,12 @@ return [
     'piar.faq7_q' => '¿Puedo borrar un PIAR para recuperar el cupo?',
     'piar.faq7_a' => 'No. Los PIAR generados no se borran ni devuelven el cupo. Si la generación falla por un problema técnico, el crédito no se descuenta.',
     'piar.final.title' => 'Prueba hoy con uno de tus estudiantes',
-    'piar.final.text' => 'Crea tu cuenta con tu correo y genera tus 2 primeros PIAR sin pagar.',
+    'piar.final.text' => 'Crea tu cuenta con tu correo y genera tu primer PIAR sin pagar.',
 
     // Precios (tarjetas)
     'piar.price.trial_name' => 'Prueba gratis',
     'piar.price.trial_price' => '$0',
-    'piar.price.trial_unit' => '2 PIAR por cuenta',
+    'piar.price.trial_unit' => '1 PIAR por cuenta',
     'piar.price.trial_f1' => 'PIAR completo en pantalla',
     'piar.price.trial_f2' => 'Sin guardar, editar ni PDF',
     'piar.price.trial_f3' => 'Se borra a las 2 horas',
@@ -122,7 +122,7 @@ return [
     // Acceso
     'piar.access.title' => 'Entra a PIAR con IA',
     'piar.access.lead' => 'Escribe tu nombre y tu correo. Te enviamos un enlace para entrar, sin contraseñas. Si no tienes cuenta, la creamos.',
-    'piar.access.b1' => '2 PIAR de prueba gratis',
+    'piar.access.b1' => '1 PIAR de prueba gratis',
     'piar.access.b2' => 'La misma cuenta de tus compras en la tienda',
     'piar.access.b3' => 'Datos protegidos (Ley 1581 de 2012)',
     'piar.access.name' => 'Tu nombre',
@@ -188,7 +188,7 @@ return [
     'piar.new.trial_note' => 'Estás usando la prueba gratis: verás el PIAR en pantalla, pero no se guardará ni podrás descargarlo.',
     'piar.new.credits_note' => 'Este PIAR descontará 1 de tus :n disponibles.',
     'piar.new.locked_title' => 'No tienes PIAR disponibles',
-    'piar.new.locked_trial' => 'Ya usaste tus 2 PIAR de prueba. Con un paquete puedes crear, guardar, editar y descargar tus PIAR.',
+    'piar.new.locked_trial' => 'Ya usaste tu PIAR de prueba. Con un paquete puedes crear, guardar, editar y descargar tus PIAR.',
     'piar.new.locked_paid' => 'Usaste todos los PIAR de tu paquete. Compra otro para seguir: se suma a tu cuenta por 30 días.',
     'piar.new.unavailable' => 'La generación con IA no está disponible en este momento. Inténtalo más tarde.',
     'piar.new.privacy' => 'Usa solo las iniciales o un alias del estudiante. Lo que escribas se procesa con la API de Google Gemini para redactar el borrador.',
@@ -278,7 +278,7 @@ return [
     'piar.error.conditions' => 'Marca al menos una condición o describe la situación del estudiante.',
     'piar.error.unavailable' => 'La generación con IA no está disponible en este momento. Inténtalo más tarde.',
     'piar.error.no_credits' => 'No te quedan PIAR disponibles. Elige un paquete para seguir creando.',
-    'piar.error.trial_exhausted' => 'Ya usaste tus 2 PIAR de prueba. Elige un paquete para seguir creando y guardar tus PIAR.',
+    'piar.error.trial_exhausted' => 'Ya usaste tu PIAR de prueba. Elige un paquete para seguir creando y guardar tus PIAR.',
     'piar.error.trial_ip' => 'Se crearon demasiadas pruebas desde esta conexión. Elige un paquete o inténtalo mañana.',
     'piar.error.trial_locked' => 'La versión de prueba no permite editar ni descargar en PDF. Con un paquete puedes hacerlo con todos tus PIAR.',
 
@@ -294,6 +294,7 @@ return [
     'piar.plan.created_on' => 'Creado el :date',
     'piar.plan.toc' => 'Secciones',
     'piar.plan.validate_legend' => 'Lo marcado como «(a validar por el equipo)» es una propuesta que no se apoya en tus datos: confírmala o ajústala.',
+    'piar.pdf.footer' => 'Este documento debe ser revisado y validado por el equipo de expertos de la institución (docentes de aula, docente de apoyo, orientación y directivos) junto con la familia del estudiante.',
     'piar.plan.disclaimer' => 'Documento elaborado con apoyo de inteligencia artificial; debe ser revisado, ajustado y validado por el equipo docente y la familia.',
     'piar.plan.empty' => 'Sin información en esta sección.',
     'piar.plan.new_another' => 'Crear otro PIAR',
@@ -390,7 +391,7 @@ return [
     'piar.plans.how1' => 'Elige el paquete y paga con Mercado Pago o Wompi (tarjeta, PSE, Nequi y más).',
     'piar.plans.how2' => 'Usa el mismo correo de tu cuenta PIAR. El paquete se activa automáticamente al aprobarse el pago y te avisamos por correo.',
     'piar.plans.how3' => 'Cada PIAR descuenta uno. Si compras otro paquete, se suma por 30 días desde ese pago.',
-    'piar.plans.login_hint' => '¿Aún no tienes cuenta? Créala gratis y prueba 2 PIAR antes de comprar.',
+    'piar.plans.login_hint' => '¿Aún no tienes cuenta? Créala gratis y prueba 1 PIAR antes de comprar.',
     'piar.plans.login_cta' => 'Crear cuenta gratis',
 
     // Perfil
