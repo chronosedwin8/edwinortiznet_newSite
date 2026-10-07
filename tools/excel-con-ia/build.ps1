@@ -88,7 +88,10 @@ if (-not $Worker) {
   if (Test-Path $zip) { Remove-Item $zip -Force }
   $files = 'ExcelConIA.bas', 'datos-ejemplo.xlsx', 'analisis_con_python.py', 'requirements.txt', 'LEEME.txt' | ForEach-Object { "$pkg\$_" }
   Compress-Archive -Path $files -DestinationPath $zip -CompressionLevel Optimal
-  Copy-Item "$pkg\ExcelConIA.bas" "$out\ExcelConIA.bas" -Force
+  # El módulo solo también va comprimido: algunos navegadores y antivirus bloquean o muestran un .bas suelto.
+  $mod = "$out\ExcelConIA-modulo.zip"
+  if (Test-Path $mod) { Remove-Item $mod -Force }
+  Compress-Archive -Path "$pkg\ExcelConIA.bas" -DestinationPath $mod -CompressionLevel Optimal
   foreach ($f in (Get-ChildItem $out)) { "{0,-22} {1,9:N0} bytes" -f $f.Name, $f.Length }
   exit 0
 }

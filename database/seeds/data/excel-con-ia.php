@@ -296,7 +296,7 @@ $download = <<<'HTML'
 <li><strong>Funciones con IA:</strong> <code>=IA("Resume en 10 palabras"; A2)</code>, <code>=IA_CLASIFICAR(B2; $H$2:$H$6)</code> e <code>=IA_EXTRAER(C2; "correo")</code> llaman a Google Gemini con tu propia clave gratuita de Google AI Studio, que guardas con la macro <strong>ConfigurarIA</strong>. Las respuestas quedan en memoria para no repetir consultas, y <strong>LimpiarCacheIA</strong> las borra.</li>
 </ul>
 <p>Para instalarlo: desbloquea el .zip (clic derecho &gt; Propiedades &gt; Desbloquear), descomprímelo, pulsa Alt+F11, Archivo &gt; Importar archivo, eliges ExcelConIA.bas y guardas tu libro como .xlsm. PerfilarDatos y GenerarPromptIA trabajan solo en tu computador, sin internet ni clave; las funciones IA envían a Google el texto de las celdas que uses y necesitan Windows, así que úsalas con datos anonimizados. Para probar las fórmulas de este artículo con el libro de ejemplo, convierte cada hoja en tabla con Ctrl+T y ponle el nombre de la hoja.</p>
-<p><a class="btn-link" href="/descargas/excel-con-ia/excel-con-ia.zip">Descargar el paquete completo (.zip)</a> <a class="btn-link" href="/descargas/excel-con-ia/ExcelConIA.bas" download>Descargar solo ExcelConIA.bas</a></p>
+<p><a class="btn-link" href="/descargas/excel-con-ia/excel-con-ia.zip">Descargar el paquete completo (.zip)</a> <a class="btn-link" href="/descargas/excel-con-ia/ExcelConIA-modulo.zip" download>Descargar solo el módulo ExcelConIA (.zip)</a></p>
 HTML;
 
 $html = strtr($code($html), [

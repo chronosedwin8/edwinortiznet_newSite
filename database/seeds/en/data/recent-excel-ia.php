@@ -294,7 +294,7 @@ $download = <<<'HTML'
 <li><strong>AI functions:</strong> <code>=IA("Summarize in 10 words", A2)</code>, <code>=IA_CLASIFICAR(B2, $H$2:$H$6)</code> (classify) and <code>=IA_EXTRAER(C2, "email")</code> (extract) call Google Gemini with your own free Google AI Studio key, which you save with the <strong>ConfigurarIA</strong> macro. Answers are cached in memory so queries aren’t repeated, and <strong>LimpiarCacheIA</strong> clears them.</li>
 </ul>
 <p>To install it: unblock the .zip (right-click &gt; Properties &gt; Unblock), extract it, press Alt+F11, File &gt; Import File, choose ExcelConIA.bas and save your workbook as .xlsm. PerfilarDatos and GenerarPromptIA run only on your computer, with no internet or key; the AI functions send the text of the cells you use to Google and need Windows, so use them with anonymized data. To try this article’s formulas on the sample workbook, turn each sheet into a table with Ctrl+T and give it the sheet’s name (columns keep their Spanish names).</p>
-<p><a class="btn-link" href="/descargas/excel-con-ia/excel-con-ia.zip">Download the complete package (.zip)</a> <a class="btn-link" href="/descargas/excel-con-ia/ExcelConIA.bas" download>Download only ExcelConIA.bas</a></p>
+<p><a class="btn-link" href="/descargas/excel-con-ia/excel-con-ia.zip">Download the complete package (.zip)</a> <a class="btn-link" href="/descargas/excel-con-ia/ExcelConIA-modulo.zip" download>Download only the ExcelConIA module (.zip)</a></p>
 HTML;
 
 $html = strtr($code($html), [
