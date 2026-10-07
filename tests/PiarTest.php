@@ -194,6 +194,29 @@ final class PiarTest extends TestCase
         $this->assertNull(Session::get('customer_id'));
     }
 
+    public function testAdminWithPanelSessionEntersDirectly(): void
+    {
+        $email = 'admin' . self::DOMAIN;
+        $adminId = (int) DB::insert('admin_users', ['email' => $email, 'name' => 'Admin prueba', 'password_hash' => 'x']);
+        try {
+            $this->assertStringNotContainsString('Entrar como administrador', $this->request('GET', '/piar/')->body);
+            Session::set('admin_id', $adminId);
+            $this->assertStringContainsString('Entrar como administrador', $this->request('GET', '/piar/')->body);
+            $res = $this->request('POST', '/piar/acceso/admin/');
+            $this->assertSame(303, $res->status);
+            $customerId = (int) DB::value('SELECT id FROM customers WHERE email = :e', ['e' => $email]);
+            $this->assertSame($customerId, Session::get('customer_id'));
+            $this->assertNotNull(DB::value('SELECT terms_accepted_at FROM piar_profiles WHERE customer_id = :c', ['c' => $customerId]));
+            // Sin sesión de administrador el atajo no hace nada.
+            Session::forget('admin_id');
+            Session::forget('customer_id');
+            $this->request('POST', '/piar/acceso/admin/');
+            $this->assertNull(Session::get('customer_id'));
+        } finally {
+            DB::run('DELETE FROM admin_users WHERE id = :id', ['id' => $adminId]);
+        }
+    }
+
     public function testTrialIsLimitedToTwoAndItsContentIsEphemeral(): void
     {
         $id = $this->login();

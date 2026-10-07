@@ -403,3 +403,7 @@ html:not(.js) .piar-wizard__nav { display: none; }
   .is-trial .piar-doc, .is-trial .piar-doc-head { display: none !important; }
   .is-trial .piar-print-block { display: block; font-size: 1.2rem; padding: 40px 0; }
 }
+
+/* Atajo para el administrador con sesión en el panel */
+.piar-admin-entry { display: grid; gap: .75rem; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--line); }
+.piar-admin-entry p { margin: 0; }

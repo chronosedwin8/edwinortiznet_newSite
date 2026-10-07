@@ -29,6 +29,14 @@ $sent = $notice !== null && Session::get('piar_sent') !== null;
     <?php else: ?>
     <?= View::render('partials/piar/flash', ['notice' => $notice, 'error' => $error]) ?>
     <?php endif; ?>
+    <?php if (!empty($admin) && !$sent): ?>
+    <form class="piar-admin-entry" action="<?= e(route('piar.access.admin')) ?>" method="post">
+      <?= csrf_field() ?>
+      <p class="piar-muted"><?= e(t('piar.access.admin_hint', ['email' => $admin['email']])) ?></p>
+      <button class="btn btn--primary btn--lg btn--block" type="submit"><?= e(t('piar.access.admin_submit')) ?></button>
+      <p class="piar-muted"><?= e(t('piar.access.admin_or')) ?></p>
+    </form>
+    <?php endif; ?>
     <form class="form piar-form" action="<?= e(route('piar.access')) ?>" method="post"<?= $sent ? ' hidden' : '' ?>>
       <?= csrf_field() ?>
       <div class="form__row">

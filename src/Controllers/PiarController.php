@@ -155,7 +155,7 @@ final class PiarController extends Controller
         if ($customer === null) {
             $old = Session::get('piar_old');
             Session::forget('piar_old');
-            return $this->view('access', ['old' => is_array($old) ? $old : []], t('piar.access.title'));
+            return $this->view('access', ['old' => is_array($old) ? $old : [], 'admin' => self::admin()], t('piar.access.title'));
         }
         $id = (int) $customer['id'];
         if (empty($this->profile['terms_accepted_at'])) {
@@ -168,6 +168,31 @@ final class PiarController extends Controller
             'pending' => PiarPlans::pending($id),
             'grades' => PiarCatalog::grades(),
         ], t('piar.dash.title'));
+    }
+
+    /** Administrador con sesión en el panel (para entrar sin enlace mágico). */
+    private static function admin(): ?array
+    {
+        $id = Session::get('admin_id');
+        return is_int($id) ? DB::one('SELECT id, email, name FROM admin_users WHERE id = :id', ['id' => $id]) : null;
+    }
+
+    /** Atajo para el administrador: entra con la cuenta PIAR de su mismo correo (la crea si no existe). */
+    public function adminLogin(Request $request): Response
+    {
+        $this->requireCsrf($request);
+        Session::start($request);
+        $admin = self::admin();
+        if ($admin === null) {
+            return $this->redirect(route('piar'));
+        }
+        $customerId = PiarCredits::customerFor(strtolower((string) $admin['email']), (string) $admin['name']);
+        PiarProfile::ensure($customerId);
+        PiarProfile::acceptTerms($customerId);
+        Session::regenerate();
+        Session::set('admin_id', (int) $admin['id']);
+        Session::set('customer_id', $customerId);
+        return $this->redirect(route('piar'));
     }
 
     public function requestLink(Request $request): Response

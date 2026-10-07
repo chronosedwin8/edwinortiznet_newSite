@@ -110,6 +110,7 @@ return static function (Router $r): void {
     $r->get('/piar/', [PiarController::class, 'dashboard'], 'piar');
     $r->get('/piar/acceso/', [PiarController::class, 'dashboard']);
     $r->post('/piar/acceso/', [PiarController::class, 'requestLink'], 'piar.access');
+    $r->post('/piar/acceso/admin/', [PiarController::class, 'adminLogin'], 'piar.access.admin');
     $r->get('/piar/acceso/{token}/', [PiarController::class, 'login'], 'piar.login');
     $r->post('/piar/salir/', [PiarController::class, 'logout'], 'piar.logout');
     $r->post('/piar/terminos/', [PiarController::class, 'acceptTerms'], 'piar.terms');
