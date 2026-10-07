@@ -38,8 +38,11 @@ final class CartController extends Controller
             'total' => $cart['total'],
             'total_label' => money($cart['total'], $cart['currency']),
             'removed' => $cart['removed'],
+            'needs_variant' => array_map(fn ($p) => ['id' => (int) $p['id'], 'title' => $p['title'], 'url' => product_path($p, $locale)], $cart['needs_variant']),
             'items' => array_map(fn ($p) => [
                 'id' => (int) $p['id'],
+                'key' => $p['line_key'],
+                'variant' => $p['variant'],
                 'title' => $p['title'],
                 'url' => product_path($p, $locale),
                 'img' => $p['cover_url'],

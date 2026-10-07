@@ -15,7 +15,8 @@ final class Product
         t.license_text, t.faq_json, t.seo_title, t.seo_description, t.needs_review,
         f.`key` AS family_key, ft.name AS family_name, ft.slug AS family_slug,
         (SELECT COUNT(*) FROM product_files pf WHERE pf.product_id = p.id) AS file_count,
-        (SELECT COUNT(*) FROM product_files pf WHERE pf.product_id = p.id AND pf.storage_path IS NOT NULL AND pf.storage_path <> "") AS file_ready_count
+        (SELECT COUNT(*) FROM product_files pf WHERE pf.product_id = p.id AND pf.storage_path IS NOT NULL AND pf.storage_path <> "") AS file_ready_count,
+        (SELECT COUNT(DISTINCT pf.variant) FROM product_files pf WHERE pf.product_id = p.id AND pf.variant IS NOT NULL AND pf.variant <> "") AS variant_count
         FROM products p
         JOIN product_translations t ON t.product_id = p.id AND t.locale = :locale
         LEFT JOIN product_families f ON f.id = p.family_id
@@ -149,6 +150,57 @@ final class Product
     public static function files(int $productId): array
     {
         return DB::all('SELECT * FROM product_files WHERE product_id = :id ORDER BY id', ['id' => $productId]);
+    }
+
+    /**
+     * Variantes que se pueden comprar (clave => nombre), según los archivos con `variant`.
+     * Un producto sin archivos de variante devuelve []. Orden alfabético por nombre.
+     * @return array<string, string>
+     */
+    public static function variants(int $productId, ?string $locale = null): array
+    {
+        return self::variantsFor([$productId], $locale)[$productId] ?? [];
+    }
+
+    /** @return array<int, array<string, string>> producto => [clave => nombre] */
+    public static function variantsFor(array $productIds, ?string $locale = null): array
+    {
+        $ids = array_values(array_unique(array_filter(array_map('intval', $productIds))));
+        if ($ids === []) {
+            return [];
+        }
+        $placeholders = [];
+        $params = [];
+        foreach ($ids as $i => $id) {
+            $placeholders[] = ":p$i";
+            $params["p$i"] = $id;
+        }
+        $rows = DB::all(
+            'SELECT product_id, variant, label FROM product_files
+             WHERE product_id IN (' . implode(',', $placeholders) . ') AND variant IS NOT NULL AND variant <> "" ORDER BY id',
+            $params
+        );
+        $out = [];
+        foreach ($rows as $row) {
+            $pid = (int) $row['product_id'];
+            $key = (string) $row['variant'];
+            $out[$pid][$key] ??= self::variantLabel($key, (string) $row['label'], $locale);
+        }
+        $collator = class_exists(\Collator::class) ? new \Collator($locale === 'en' ? 'en' : 'es') : null;
+        foreach ($out as &$list) {
+            $collator ? $collator->asort($list) : asort($list);
+        }
+        return $out;
+    }
+
+    /** Nombre visible de una variante: la cadena `variant.{clave}` del idioma si existe; si no, la etiqueta del archivo. */
+    public static function variantLabel(string $key, string $fallback = '', ?string $locale = null): string
+    {
+        $locale ??= \App\Services\I18n\I18n::locale();
+        if (\App\Services\I18n\I18n::has("variant.$key", $locale)) {
+            return t("variant.$key", [], $locale);
+        }
+        return $fallback !== '' ? $fallback : $key;
     }
 
     public static function alternates(int $productId): array

@@ -103,6 +103,24 @@ El simulacro propio se retiró. La página `/herramientas/simulacro-concurso-doc
 
 **Qué decidir:** si quieres otros nombres o emojis para las reacciones (`lang/es.php` y `lang/en.php`, claves `rx.*`) o sumar los conteos de las dos versiones de un artículo.
 
+### A11. Generador de exámenes con IA (7 de octubre de 2026)
+**Por defecto:**
+- Tres planes de 30 días, acumulables, sin suscripción automática (exámenes · versiones por examen · preguntas únicas por examen · preguntas extra con IA por examen):
+  - **Esencial** `EXAM-8`: 8 · 4 · 24 · 6 — **29.900 COP** / 9,50 USD.
+  - **Docente** `EXAM-20`: 20 · 6 · 36 · 8 — **74.900 COP** / 21,90 USD (el «más elegido»).
+  - **Institucional** `EXAM-40`: 40 · 8 · 45 · 10 — **159.900 COP** / 44,90 USD.
+  Margen tras IA y pasarela ≈ 92 % en uso normal y ≈ 88 % en uso máximo (detalle en el comentario de `database/seeds/14_examenes.php`).
+- «Preguntas únicas» = las que escribe la IA: en «versiones distintas» cuenta cada versión; en «barajar», una sola vez.
+- No hay cuenta gratis: el simulador `/examenes/demo/` muestra un examen de muestra (banco fijo, sin IA) y un PDF con marca DEMO.
+- Si la IA falla, el examen vuelve al plan como máximo 2 veces por plan. Borrar un examen no devuelve cupo.
+- El producto «Generador de exámenes en varias versiones» (Excel, `EO-EXAMENES`, «pronto») quedó **oculto** y su URL redirige (301) a `/herramientas/generador-de-examenes/`. Sigue dentro del «Pack Docente» (también «pronto»).
+
+**Qué decidir:**
+- Precios y límites (se editan en el panel; los límites están en `ExamCredits::PLANS`).
+- Si avisas a quienes se anotaron en la lista de espera del generador en Excel (*Panel → Suscriptores*): el aviso automático no sale porque ese producto quedó oculto.
+- Si el «Pack Docente» debe incluir un plan del generador en lugar del producto en Excel.
+- Revisar los textos de la presentación, las preguntas frecuentes y el banco del simulador (`src/Services/Examenes/DemoBank.php`).
+
 ## B. Revisión de contenido
 
 1. **Traducciones al inglés por revisar** (filtro "Por revisar" del panel): 12 artículos, 15 productos, 7 familias, 3 hubs, 5 páginas y `lang/en.php`. Notas de la traducción:

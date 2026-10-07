@@ -168,6 +168,17 @@ return static function (): string {
     DB::run('UPDATE products SET status = "hidden" WHERE sku = "EO-KIT-CONC27"');
     $soonIds = [];
     foreach ($soon as [$sku, $family, $audience, $type, $usd, $slug, $title, $short, $desc, $includes, $requirements]) {
+        // Una vez creado, el Kit de IA para docentes lo administra 13_kit_ia.php (textos, portada y estado según sus archivos).
+        if ($sku === 'EO-KIT-IA' && ($kitId = DB::value('SELECT id FROM products WHERE sku = :s', ['s' => $sku])) !== null) {
+            $soonIds[$sku] = (int) $kitId;
+            continue;
+        }
+        // El generador de exámenes en Excel lo reemplazó el Generador de exámenes con IA (14_examenes.php lo oculta y redirige).
+        if ($sku === 'EO-EXAMENES' && DB::value('SELECT id FROM products WHERE sku = "EXAM-20"') !== null
+            && ($oldId = DB::value('SELECT id FROM products WHERE sku = :s', ['s' => $sku])) !== null) {
+            $soonIds[$sku] = (int) $oldId;
+            continue;
+        }
         $id = DB::upsert('products', [
             'sku' => $sku, 'family_id' => $familyIds[$family], 'audience' => $audience, 'type' => $type,
             'price_usd' => $usd, 'status' => 'coming_soon', 'sort' => 50,

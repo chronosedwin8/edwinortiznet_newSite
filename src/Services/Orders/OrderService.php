@@ -24,25 +24,95 @@ final class OrderService
     private static array $outbox = [];
 
     /**
-     * Valida los productos del carrito (ids) para un idioma.
-     * @return array{items: array, removed: bool, total: float, currency: string}
+     * Normaliza las líneas del carrito. Cada línea es un id ("25"), un id con variante ("25:matematicas")
+     * o ['id' => 25, 'variant' => 'matematicas']. Sin duplicados y como máximo 20.
+     * @return list<array{id:int, variant:?string, key:string}>
+     */
+    public static function lines(array $raw): array
+    {
+        $out = [];
+        foreach ($raw as $entry) {
+            if (is_array($entry)) {
+                $id = (int) ($entry['id'] ?? 0);
+                $variant = (string) ($entry['variant'] ?? '');
+            } else {
+                [$id, $variant] = array_pad(explode(':', trim((string) $entry), 2), 2, '');
+                $id = (int) $id;
+            }
+            $variant = strtolower(trim($variant));
+            if ($id <= 0) {
+                continue;
+            }
+            if ($variant !== '' && !preg_match('/^[a-z0-9][a-z0-9_-]{0,39}$/', $variant)) {
+                $variant = '-';  // formato inválido: no coincide con ninguna variante y la línea se descarta
+            }
+            $key = $variant === '' ? (string) $id : "$id:$variant";
+            $out[$key] = ['id' => $id, 'variant' => $variant === '' ? null : $variant, 'key' => $key];
+        }
+        return array_slice(array_values($out), 0, 20);
+    }
+
+    /**
+     * Valida las líneas del carrito para un idioma. Un producto con variantes exige una variante válida
+     * (si falta o no existe, la línea se descarta y el producto queda en `needs_variant`). Cada ítem lleva
+     * `variant`, `variant_label`, `line_key` y `title` con el nombre de la variante («Kit … — Matemáticas»).
+     * @return array{items: array, removed: bool, needs_variant: array, total: float, currency: string}
      */
     public static function cart(string $locale, array $ids): array
     {
-        $ids = array_values(array_unique(array_filter(array_map('intval', $ids))));
-        $ids = array_slice($ids, 0, 20);
-        $products = Product::byIds($ids, $locale, false);
-        $items = array_values(array_filter($products, fn ($p) => $p['purchasable']));
+        $lines = self::lines($ids);
+        $products = [];
+        foreach (Product::byIds(array_column($lines, 'id'), $locale, false) as $p) {
+            $products[(int) $p['id']] = $p;
+        }
+        $variants = Product::variantsFor(array_keys($products), $locale);
+        $items = [];
+        $needsVariant = [];
+        foreach ($lines as $line) {
+            $p = $products[$line['id']] ?? null;
+            if ($p === null || !$p['purchasable']) {
+                continue;
+            }
+            $options = $variants[$line['id']] ?? [];
+            $p['product_title'] = $p['title'];
+            $p['variant'] = null;
+            $p['variant_label'] = null;
+            if ($options !== []) {
+                if ($line['variant'] === null || !isset($options[$line['variant']])) {
+                    $needsVariant[$line['id']] = $p;
+                    continue;
+                }
+                $p['variant'] = $line['variant'];
+                $p['variant_label'] = $options[$line['variant']];
+                $p['title'] = $p['product_title'] . ' — ' . $p['variant_label'];
+            }
+            $p['line_key'] = $p['variant'] === null ? (string) $p['id'] : $p['id'] . ':' . $p['variant'];
+            $items[$p['line_key']] ??= $p;
+        }
+        $items = array_values($items);
         $total = 0.0;
         foreach ($items as $p) {
             $total += Product::chargePrice($p, $locale);
         }
         return [
             'items' => $items,
-            'removed' => count($items) < count($ids),
+            'removed' => count($items) < count($lines),
+            'needs_variant' => array_values($needsVariant),
             'total' => $total,
             'currency' => GatewayResolver::currency($locale),
         ];
+    }
+
+    /** Líneas ("id" o "id:variante") de los ítems de un pedido, para volver a crearlo. */
+    public static function itemLines(array $order): array
+    {
+        $out = [];
+        foreach ($order['items'] as $item) {
+            if ((int) $item['product_id'] > 0) {
+                $out[] = $item['product_id'] . (($item['variant'] ?? '') !== '' ? ':' . $item['variant'] : '');
+            }
+        }
+        return $out;
     }
 
     public static function newReference(): string
@@ -99,7 +169,9 @@ final class OrderService
                 DB::insert('order_items', [
                     'order_id' => $orderId,
                     'product_id' => (int) $p['id'],
-                    'title' => $p['title'],
+                    'variant' => $p['variant'],
+                    'variant_label' => $p['variant_label'] !== null ? mb_substr((string) $p['variant_label'], 0, 120) : null,
+                    'title' => mb_substr((string) $p['title'], 0, 255),
                     'unit_price' => $price,
                     'quantity' => 1,
                     'total' => $price,
@@ -209,6 +281,10 @@ final class OrderService
                     if (\App\Services\Piar\PiarCredits::grantForOrder($id) > 0) {
                         self::queue('piar-credits', $id);
                     }
+                    // Generador de exámenes: una suscripción de 30 días por cada ítem EXAM-* (idempotente).
+                    if (\App\Services\Examenes\ExamCredits::grantForOrder($id) > 0) {
+                        self::queue('examenes-plan', $id);
+                    }
                     return ['result' => 'approved', 'order_id' => $id];
 
                 case Status::DECLINED:
@@ -228,6 +304,7 @@ final class OrderService
                     DB::update('orders', $base + ['status' => 'refunded'], ['id' => $id]);
                     DownloadService::revokeGrants($id);
                     \App\Services\Piar\PiarCredits::revokeForOrder($id);
+                    \App\Services\Examenes\ExamCredits::revokeForOrder($id);
                     return ['result' => 'refunded', 'order_id' => $id];
 
                 default:

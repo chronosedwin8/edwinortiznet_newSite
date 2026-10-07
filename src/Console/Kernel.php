@@ -44,6 +44,8 @@ final class Kernel
                 'storage:s3' => $this->storageS3(),
                 'waitlist:notify' => $this->waitlistNotify(),
                 'piar:purge' => $this->piarPurge(),
+                'examenes:purge' => $this->examenesPurge(),
+                'kit:build' => $this->kitBuild($options),
                 default => $this->help(),
             };
         } catch (\Throwable $e) {
@@ -54,7 +56,7 @@ final class Kernel
 
     private function help(): int
     {
-        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify, piar:purge');
+        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify, piar:purge, examenes:purge, kit:build [materia…] [--check]');
         return 0;
     }
 
@@ -197,12 +199,64 @@ final class Kernel
     }
 
     /** PIAR con IA: borra el contenido de las pruebas gratis vencidas (2 h) y da por fallidas las generaciones colgadas. */
+    /** Generador de exámenes: da por fallidas las generaciones colgadas (devuelve el examen) y vacía los exámenes borrados hace 30 días. */
+    private function examenesPurge(): int
+    {
+        $stale = \App\Services\Examenes\Exams::expireStale();
+        $purged = \App\Services\Examenes\Exams::purgeDeleted();
+        $this->out("Exámenes: $stale generación(es) vencida(s), $purged borrado(s) vaciado(s).");
+        return 0;
+    }
+
     private function piarPurge(): int
     {
         $stale = \App\Services\Piar\PiarPlans::expireStale();
         $purged = \App\Services\Piar\PiarPlans::purgeTrials();
         $this->out("PIAR: $purged prueba(s) purgada(s), $stale generación(es) vencida(s).");
         return 0;
+    }
+
+    /**
+     * Kit de IA para docentes: por cada materia con contenido en database/kits/ia-docentes/ genera el PDF, el
+     * prompts.txt y el ZIP, y los registra como archivo del producto (variante = materia). Idempotente.
+     * Uso: kit:build [matematicas lenguaje …] [--check]  (--check solo valida el contenido).
+     */
+    private function kitBuild(array $options): int
+    {
+        @ini_set('memory_limit', '1024M');
+        @set_time_limit(0);
+        $Kit = \App\Services\Kits\KitIaDocentes::class;
+        $check = in_array('--check', $options, true);
+        $only = array_values(array_filter($options, fn ($o) => !str_starts_with($o, '--')));
+        $failed = 0;
+        foreach ($Kit::SUBJECTS as $key) {
+            if ($only !== [] && !in_array($key, $only, true)) {
+                continue;
+            }
+            $kit = $Kit::load($key);
+            if ($kit === null) {
+                $this->out("  · $key: sin contenido todavía");
+                continue;
+            }
+            $problems = $Kit::validate($kit);
+            if ($problems !== []) {
+                $failed++;
+                $this->out("  ✘ $key: " . implode('; ', $problems));
+                continue;
+            }
+            if ($check) {
+                $this->out("  ✔ $key: " . count($kit['recetas']) . ' recetas, ' . count($kit['cadenas']) . ' flujos, ' . count($kit['rubricas']) . ' rúbricas, ' . count($kit['errores']) . ' errores');
+                continue;
+            }
+            $start = microtime(true);
+            $result = $Kit::build($key);
+            $this->out(sprintf('  ✔ %s: PDF %s KB, ZIP %s KB (%s) en %.1f s', $key, number_format($result['pdf_bytes'] / 1024, 0, ',', '.'), number_format($result['zip_bytes'] / 1024, 0, ',', '.'), $result['disk'], microtime(true) - $start));
+        }
+        if (!$check) {
+            $this->out('Estado del producto: ' . $Kit::syncStatus());
+            Cache::flushPages();
+        }
+        return $failed > 0 ? 1 : 0;
     }
 
     private function mailTest(array $options): int

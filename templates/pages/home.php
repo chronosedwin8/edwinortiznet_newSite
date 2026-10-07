@@ -5,16 +5,40 @@ use App\Core\View;
 use App\Services\I18n\I18n;
 
 $locale = I18n::locale();
+// Perfiles: [enlace, ícono, título, texto, accesos directos [etiqueta, enlace]].
 $profiles = $locale === 'es'
     ? [
-        ['/excel/', 'briefcase', t('home.profile.office.title'), t('home.profile.office.text')],
-        ['/ia-para-docentes/', 'school', t('home.profile.teacher.title'), t('home.profile.teacher.text')],
-        ['/concurso-docente/', 'trophy', t('home.profile.contest.title'), t('home.profile.contest.text')],
+        ['/excel/', 'briefcase', t('home.profile.office.title'), t('home.profile.office.text'), [
+            ['Correos masivos con adjuntos', '/enviar-correos-masivos-con-adjuntos-desde-excel-y-outlook/'],
+            ['Un PDF por cada fila', '/combinar-correspondencia-y-generar-pdf-individuales/'],
+            ['Códigos QR en lote', '/generador-masivo-de-codigos-qr-desde-excel/'],
+            ['Facturas con numeración', '/facturas-en-excel-con-numeracion-automatica-alfanumerica/'],
+        ]],
+        ['/ia-para-docentes/', 'school', t('home.profile.teacher.title'), t('home.profile.teacher.text'), [
+            ['PIAR con IA', '/herramientas/piar/'],
+            ['Generador de exámenes', '/herramientas/generador-de-examenes/'],
+            ['Kit de IA por materia', '/producto/kit-de-ia-para-docentes/'],
+        ]],
+        ['/concurso-docente/', 'trophy', t('home.profile.contest.title'), t('home.profile.contest.text'), [
+            ['Simulacro gratis', '/herramientas/simulacro-concurso-docente/'],
+            ['Guía 2026', '/concurso-docente-2026-guia-definitiva-con-estrategias-normativa-y-simulacros-con-ia/'],
+            ['Entrevista', '/entrevista-del-concurso-docente-2026-docentes-preescolar-basica-media-todas-las-areas/'],
+        ]],
     ]
     : [
-        ['/en/excel-automation/', 'briefcase', t('home.profile.office.title'), t('home.profile.office.text')],
-        ['/en/ai-for-teachers/', 'school', t('home.profile.teacher.title'), t('home.profile.teacher.text')],
-        [route('tools'), 'bolt', t('home.profile.tools.title'), t('home.profile.tools.text')],
+        ['/en/excel-automation/', 'briefcase', t('home.profile.office.title'), t('home.profile.office.text'), [
+            ['Bulk email with attachments', '/en/send-bulk-emails-with-attachments-from-excel-and-outlook/'],
+            ['One PDF per row', '/en/mail-merge-to-individual-pdf-files/'],
+            ['Bulk QR codes', '/en/bulk-qr-code-generator-from-excel/'],
+        ]],
+        ['/en/ai-for-teachers/', 'school', t('home.profile.teacher.title'), t('home.profile.teacher.text'), [
+            ['Classroom inclusion', '/en/classroom-inclusion-piar-colombia-latin-america-world/'],
+            ['PISA results', '/en/pisa-results-latin-america-colombia-teachers-families/'],
+        ]],
+        [route('tools'), 'bolt', t('home.profile.tools.title'), t('home.profile.tools.text'), [
+            ['QR code generator', route('tool', ['slug' => 'qr-code-generator'])],
+            ['Number to words', route('tool', ['slug' => 'number-to-words'])],
+        ]],
     ];
 $stats = [
     [20, '+', t('home.stat.years')],
@@ -74,13 +98,32 @@ $stats = [
     </div>
   </div>
   <div class="bento">
-    <?php foreach ($profiles as $i => [$href, $ic, $title, $text]): ?>
-    <a href="<?= e($href) ?>" class="bento__card bento__card--<?= $i + 1 ?> reveal" style="--i: <?= $i ?>" data-spotlight>
-      <span class="bento__icon"><?= icon($ic) ?></span>
-      <span class="bento__title"><?= e($title) ?></span>
-      <span class="bento__text"><?= e($text) ?></span>
-      <span class="bento__go"><?= icon('arrow') ?></span>
-    </a>
+    <?php foreach ($profiles as $i => [$href, $ic, $title, $text, $links]): ?>
+    <article class="bento__card bento__card--<?= $i + 1 ?> reveal" style="--i: <?= $i ?>" data-spotlight>
+      <span class="bento__mark" aria-hidden="true"><?= icon($ic) ?></span>
+      <span class="bento__icon" aria-hidden="true"><?= icon($ic) ?></span>
+      <h3 class="bento__title"><a class="bento__link" href="<?= e($href) ?>"><?= e($title) ?></a></h3>
+      <p class="bento__text"><?= e($text) ?></p>
+      <?php if ($i === 0): ?>
+      <div class="bento__visual" aria-hidden="true">
+        <div class="bento__sheet">
+          <span class="bento__row bento__row--head"><i></i><i></i><i></i></span>
+          <?php for ($r = 0; $r < 4; $r++): ?><span class="bento__row" style="--r: <?= $r ?>"><i></i><i></i><i></i></span><?php endfor; ?>
+        </div>
+        <span class="bento__flow"><?= icon('arrow') ?></span>
+        <div class="bento__outputs">
+          <span style="--o: 0"><?= icon('mail') ?></span>
+          <span style="--o: 1"><?= icon('file') ?></span>
+          <span style="--o: 2"><?= icon('qr') ?></span>
+        </div>
+        <p class="bento__caption"><?= e(t('home.profile.office.visual')) ?></p>
+      </div>
+      <?php endif; ?>
+      <ul class="bento__chips" aria-label="<?= e(t('home.profile.popular')) ?>">
+        <?php foreach ($links as [$label, $url]): ?><li><a class="bento__chip" href="<?= e($url) ?>"><?= e($label) ?></a></li><?php endforeach; ?>
+      </ul>
+      <span class="bento__go" aria-hidden="true"><span><?= e(t('home.profile.cta')) ?></span><?= icon('arrow') ?></span>
+    </article>
     <?php endforeach; ?>
   </div>
 </section>

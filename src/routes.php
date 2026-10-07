@@ -127,6 +127,34 @@ return static function (Router $r): void {
     $r->get('/piar/{uuid:token}/pdf/', [PiarController::class, 'pdf'], 'piar.pdf');
     $r->post('/piar/{uuid:token}/asistente/', [PiarController::class, 'assist'], 'piar.assist');
 
+    // --- Generador de exámenes con IA (solo español; la presentación está en /herramientas/generador-de-examenes/) ---
+    $r->get('/admin/examenes/', [\App\Admin\ExamenesController::class, 'index'], 'admin.examenes');
+    $r->post('/admin/examenes/', [\App\Admin\ExamenesController::class, 'grant']);
+    $r->get('/examenes/', [\App\Controllers\ExamenesController::class, 'dashboard'], 'examenes');
+    $r->get('/examenes/acceso/', [\App\Controllers\ExamenesController::class, 'dashboard']);
+    $r->post('/examenes/acceso/', [\App\Controllers\ExamenesController::class, 'requestLink'], 'examenes.access');
+    $r->post('/examenes/acceso/admin/', [\App\Controllers\ExamenesController::class, 'adminLogin'], 'examenes.access.admin');
+    $r->get('/examenes/acceso/{token}/', [\App\Controllers\ExamenesController::class, 'login'], 'examenes.login');
+    $r->post('/examenes/salir/', [\App\Controllers\ExamenesController::class, 'logout'], 'examenes.logout');
+    $r->post('/examenes/terminos/', [\App\Controllers\ExamenesController::class, 'acceptTerms'], 'examenes.terms');
+    $r->get('/examenes/nuevo/', [\App\Controllers\ExamenesController::class, 'create'], 'examenes.new');
+    $r->post('/examenes/nuevo/', [\App\Controllers\ExamenesController::class, 'store']);
+    $r->get('/examenes/planes/', [\App\Controllers\ExamenesController::class, 'plans'], 'examenes.plans');
+    $r->get('/examenes/demo/', [\App\Controllers\ExamenesController::class, 'demo'], 'examenes.demo');
+    $r->post('/examenes/demo/', [\App\Controllers\ExamenesController::class, 'demo']);
+    $r->post('/examenes/demo/pdf/', [\App\Controllers\ExamenesController::class, 'demoPdf'], 'examenes.demo.pdf');
+    $r->post('/examenes/vista-previa/', [\App\Controllers\ExamenesController::class, 'render'], 'examenes.render');
+    $r->get('/examenes/perfil/', [\App\Controllers\ExamenesController::class, 'profile'], 'examenes.profile');
+    $r->post('/examenes/perfil/', [\App\Controllers\ExamenesController::class, 'saveProfile']);
+    $r->get('/examenes/perfil/logo/', [\App\Controllers\ExamenesController::class, 'logo'], 'examenes.logo');
+    $r->get('/examenes/{uuid:token}/', [\App\Controllers\ExamenesController::class, 'show'], 'examenes.show');
+    $r->get('/examenes/{uuid:token}/estado/', [\App\Controllers\ExamenesController::class, 'status'], 'examenes.status');
+    $r->get('/examenes/{uuid:token}/editar/', [\App\Controllers\ExamenesController::class, 'edit'], 'examenes.edit');
+    $r->post('/examenes/{uuid:token}/editar/', [\App\Controllers\ExamenesController::class, 'update']);
+    $r->post('/examenes/{uuid:token}/ia/', [\App\Controllers\ExamenesController::class, 'ai'], 'examenes.ai');
+    $r->get('/examenes/{uuid:token}/pdf/', [\App\Controllers\ExamenesController::class, 'pdf'], 'examenes.pdf');
+    $r->post('/examenes/{uuid:token}/borrar/', [\App\Controllers\ExamenesController::class, 'destroy'], 'examenes.delete');
+
     // --- Rutas por idioma -------------------------------------------------
     $locales = [
         'es' => [

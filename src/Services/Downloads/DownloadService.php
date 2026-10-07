@@ -49,12 +49,17 @@ final class DownloadService
             self::revokeGrants($orderId);
         }
         $items = DB::all(
-            'SELECT oi.id, oi.product_id FROM order_items oi JOIN products p ON p.id = oi.product_id WHERE oi.order_id = :o AND p.type = "download"',
+            'SELECT oi.id, oi.product_id, oi.variant FROM order_items oi JOIN products p ON p.id = oi.product_id WHERE oi.order_id = :o AND p.type = "download"',
             ['o' => $orderId]
         );
         $count = 0;
         foreach ($items as $item) {
-            foreach (DB::all('SELECT id FROM product_files WHERE product_id = :p ORDER BY id', ['p' => (int) $item['product_id']]) as $file) {
+            // Archivos sin variante: para todos. Con variante: solo para quien compró esa variante.
+            $files = DB::all(
+                'SELECT id FROM product_files WHERE product_id = :p AND (variant IS NULL OR variant = "" OR variant = :v) ORDER BY id',
+                ['p' => (int) $item['product_id'], 'v' => (string) ($item['variant'] ?? '')]
+            );
+            foreach ($files as $file) {
                 $active = DB::value(
                     'SELECT id FROM download_grants WHERE order_item_id = :i AND product_file_id = :f AND revoked_at IS NULL AND expires_at > UTC_TIMESTAMP() AND downloads < max_downloads',
                     ['i' => (int) $item['id'], 'f' => (int) $file['id']]

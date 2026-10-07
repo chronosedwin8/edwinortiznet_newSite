@@ -13,7 +13,7 @@
       <td><?= e(t('admin.ptype.' . $p['type'])) ?></td>
       <td><?= e(money($p['price_cop'], 'COP', 'es')) ?><br><small class="muted"><?= e(money($p['price_usd'], 'USD', 'en')) ?></small></td>
       <td><?= (int) $p['legacy_sales'] ?> + <?= (int) $p['sales_count'] ?></td>
-      <td><?php if ($p['type'] === 'download'): ?><span class="tag<?= (int) $p['files'] > 0 && $p['files'] === $p['files_ready'] ? ' tag--published' : ' tag--warn' ?>"><?= (int) $p['files_ready'] ?>/<?= (int) $p['files'] ?></span><?php endif; ?></td>
+      <td><?php if ($p['type'] === 'download'): ?><span class="tag<?= (int) $p['files'] > 0 && $p['files'] === $p['files_ready'] ? ' tag--published' : ' tag--warn' ?>"><?= (int) $p['files_ready'] ?>/<?= (int) $p['files'] ?></span><?php if (!empty($p['variants'])): ?><br><small class="muted" title="<?= e(t('admin.files.variants')) ?>"><?= e($p['variants']) ?></small><?php endif; ?><?php endif; ?></td>
       <td><?= $p['title_en'] ? e(t($p['en_review'] ? 'admin.f.review' : 'admin.yes')) : '—' ?></td>
       <td><?= (int) $p['waitlist'] ?: '' ?></td>
     </tr>

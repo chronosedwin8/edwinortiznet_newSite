@@ -31,7 +31,9 @@ $isSoon = $product['status'] === 'coming_soon' || !$product['purchasable'];
     <?php endif; ?>
     <div class="product-card__foot">
       <?= \App\Core\View::render('partials/price', ['product' => $product, 'size' => 'sm']) ?>
-      <?php if (!$isSoon): ?>
+      <?php if (!$isSoon && (int) ($product['variant_count'] ?? 0) > 0): ?>
+      <a class="btn btn--buy btn--sm" href="<?= e($href) ?>#buy"><?= e(t('product.variant.choose_short')) ?></a>
+      <?php elseif (!$isSoon): ?>
       <button type="button" class="btn btn--buy btn--sm js-only" data-add-to-cart="<?= (int) $product['id'] ?>"
               data-title="<?= e($product['title']) ?>" data-url="<?= e($href) ?>" data-img="<?= e($product['cover_url'] ?? '') ?>"
               data-price-cop="<?= (int) $product['price_cop'] ?>" data-price-usd="<?= e((string) $product['price_usd']) ?>"><?= e(t('product.add')) ?></button>

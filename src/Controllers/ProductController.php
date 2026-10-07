@@ -58,6 +58,8 @@ final class ProductController extends Controller
             'tutorial' => $tutorial,
             'family' => Product::sameFamily($product, 3),
             'packItems' => $packItems,
+            // Variantes (p. ej. la materia del kit): el comprador debe elegir una antes de pagar.
+            'variants' => $product['purchasable'] && (int) $product['variant_count'] > 0 ? Product::variants((int) $product['id'], $locale) : [],
             'faqs' => $faqs,
             'crumbs' => $crumbs,
             'waitlisted' => isset($request->query['lista']),

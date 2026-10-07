@@ -105,7 +105,7 @@ $action = $isNew ? '/admin/productos/nuevo/' : '/admin/productos/' . (int) $prod
     <tbody>
     <?php foreach ($files as $f): ?>
       <tr>
-        <td><?= e($f['label']) ?><?= $f['version'] ? ' · v' . e($f['version']) : '' ?></td>
+        <td><?= e($f['label']) ?><?= $f['version'] ? ' · v' . e($f['version']) : '' ?><?php if (!empty($f['variant'])): ?> <span class="tag" title="<?= e(t('admin.field.variant')) ?>"><?= e($f['variant']) ?></span><?php endif; ?></td>
         <td><?php if ($f['storage_path']): ?><span class="tag tag--<?= ($f['storage_disk'] ?? 'local') === 's3' ? 'published' : 'warn' ?>"><?= e(t(($f['storage_disk'] ?? 'local') === 's3' ? 'admin.files.in_s3' : 'admin.files.in_server')) ?></span> <code><?= e($f['storage_path']) ?></code><?php else: ?><span class="tag tag--warn"><?= e(t('admin.files.missing')) ?></span><?php endif; ?></td>
         <td><small class="muted"><?= e((string) $f['source_url']) ?></small></td>
         <td><?= $f['bytes'] ? e(\App\Services\I18n\I18n::number(((int) $f['bytes']) / 1024, 0, 'es')) . ' KB' : '' ?></td>
@@ -122,6 +122,9 @@ $action = $isNew ? '/admin/productos/nuevo/' : '/admin/productos/' . (int) $prod
     <input id="up-label" name="label" maxlength="190">
     <label for="up-version"><?= e(t('admin.field.version')) ?></label>
     <input id="up-version" name="version" maxlength="40">
+    <label for="up-variant"><?= e(t('admin.field.variant')) ?></label>
+    <input id="up-variant" name="variant" maxlength="40" list="up-variants" aria-describedby="up-variant-hint">
+    <datalist id="up-variants"><?php foreach (array_unique(array_filter(array_column($files, 'variant'))) as $v): ?><option value="<?= e($v) ?>"><?php endforeach; ?></datalist>
     <?php if ($files): ?>
     <label for="up-replace"><?= e(t('admin.files.replace')) ?></label>
     <select id="up-replace" name="replace_id"><option value="0"><?= e(t('admin.files.add_new')) ?></option>
@@ -130,6 +133,7 @@ $action = $isNew ? '/admin/productos/nuevo/' : '/admin/productos/' . (int) $prod
     <?php endif; ?>
     <button class="btn" type="submit"><?= e(t('admin.files.upload_button')) ?></button>
     <p class="hint"><?= e(t('admin.hint.upload')) ?></p>
+    <p class="hint" id="up-variant-hint"><?= e(t('admin.hint.variant')) ?></p>
   </form>
 </section>
 <?php endif; ?>

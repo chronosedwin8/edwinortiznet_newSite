@@ -19,3 +19,7 @@
 
 # Imágenes para compartir (JPEG) generadas a partir de las portadas WebP
 /public/og/
+
+# Generador de exámenes: dependencias de compilación de tex2svg y logos subidos (sin S3)
+/tools/tex2svg/node_modules/
+/storage/examenes/

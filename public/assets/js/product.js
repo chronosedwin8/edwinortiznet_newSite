@@ -18,3 +18,43 @@ if (sticky && buyBox && 'IntersectionObserver' in window) {
   });
   io.observe(buyBox);
 }
+
+// Producto con variantes (p. ej. la materia del kit): elegir una es obligatorio para comprar o agregar al carrito.
+const variantForm = document.querySelector('[data-variant-form]');
+if (variantForm) {
+  const picker = variantForm.querySelector('.variant-picker');
+  const error = variantForm.querySelector('[data-variant-error]');
+  const radios = [...variantForm.querySelectorAll('input[name="items"]')];
+  const addButton = variantForm.querySelector('[data-add-to-cart]');
+  const showError = (show) => {
+    error.hidden = !show;
+    picker.classList.toggle('is-invalid', show);
+    radios.forEach((r) => r.setAttribute('aria-invalid', String(show)));
+  };
+  const sync = () => {
+    const checked = radios.find((r) => r.checked);
+    if (addButton) {
+      if (checked) {
+        addButton.dataset.variant = checked.dataset.variant;
+        addButton.dataset.variantLabel = checked.dataset.variantLabel;
+      } else {
+        delete addButton.dataset.variant;
+        delete addButton.dataset.variantLabel;
+      }
+    }
+    if (checked) showError(false);
+  };
+  const missing = () => {
+    showError(true);
+    picker.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    radios[0]?.focus({ preventScroll: true });
+  };
+  variantForm.addEventListener('change', sync);
+  variantForm.addEventListener('eo:variant-missing', missing);
+  // Envío sin elegir (incluido el botón fijo en móvil, que usa form="buy-form").
+  variantForm.addEventListener('submit', (e) => {
+    if (!radios.some((r) => r.checked)) { e.preventDefault(); missing(); }
+  });
+  radios[0]?.addEventListener('invalid', (e) => { e.preventDefault(); missing(); });
+  sync();
+}

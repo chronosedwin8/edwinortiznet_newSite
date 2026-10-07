@@ -11,6 +11,7 @@ $groups = [
         ['/admin/familias/', 'tag', 'admin.families'],
         ['/admin/pedidos/', 'receipt', 'admin.orders'],
         ['/admin/piar/', 'puzzle', 'admin.piar'],
+        ['/admin/examenes/', 'list-ol', 'admin.examenes'],
     ],
     'admin.group.site' => [
         ['/admin/suscriptores/', 'users', 'admin.subscribers'],

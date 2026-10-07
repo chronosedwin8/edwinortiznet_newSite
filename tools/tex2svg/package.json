@@ -1,0 +1,13 @@
+{
+  "name": "edwinortiz-tex2svg",
+  "private": true,
+  "description": "MathJax 3 (TeX → SVG) empaquetado en un solo archivo para Node 12+, usado por el Generador de exámenes.",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "esbuild src/tex2svg.js --bundle --platform=node --target=node12 --format=cjs --minify --legal-comments=eof --outfile=dist/tex2svg.cjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "mathjax-full": "3.2.2"
+  }
+}

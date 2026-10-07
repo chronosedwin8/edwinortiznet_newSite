@@ -101,7 +101,7 @@ final class OrderController extends Controller
         if (!RateLimiter::hit('checkout', $request->ip(), 15, 3600)) {
             return $this->redirect(route('order', ['token' => $token, 'error' => 'rate']));
         }
-        $ids = array_filter(array_map(fn ($i) => (int) $i['product_id'], $order['items']));
+        $ids = OrderService::itemLines($order);
         try {
             $new = OrderService::create($order['locale'], $ids, [
                 'name' => $order['name'], 'email' => $order['email'], 'document' => (string) $order['document'], 'phone' => (string) $order['phone'],

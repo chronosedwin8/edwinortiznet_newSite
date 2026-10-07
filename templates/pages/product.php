@@ -1,5 +1,5 @@
 <?php
-/** @var array $product @var array $images @var string $description @var array|null $tutorial @var array $family @var array $packItems @var array $faqs @var array $crumbs @var bool $waitlisted */
+/** @var array $product @var array $images @var string $description @var array|null $tutorial @var array $family @var array $packItems @var array $faqs @var array $crumbs @var bool $waitlisted @var array $variants */
 
 use App\Core\View;
 use App\Services\I18n\I18n;
@@ -11,6 +11,8 @@ if (!empty($product['cover_url'])) {
     array_unshift($gallery, ['url' => $product['cover_url'], 'alt' => $product['cover_alt'] ?: $product['title'], 'width' => $product['cover_width'], 'height' => $product['cover_height']]);
 }
 $checkoutUrl = route('checkout', ['items' => (string) $product['id']]);
+$variants ??= [];
+$hasVariants = $variants !== [];
 ?>
 <section class="product wrap">
   <?= View::render('partials/breadcrumbs', ['crumbs' => $crumbs]) ?>
@@ -53,7 +55,35 @@ $checkoutUrl = route('checkout', ['items' => (string) $product['id']]);
 
       <div class="buy-box" id="buy">
         <?= View::render('partials/price', ['product' => $product, 'size' => 'lg']) ?>
-        <?php if (!$soon): ?>
+        <?php if (!$soon && $hasVariants): ?>
+        <form class="buy-box__form" id="buy-form" action="<?= e(route('checkout')) ?>" method="get" data-variant-form>
+          <fieldset class="variant-picker" aria-describedby="variant-help">
+            <legend class="variant-picker__legend"><?= e(t('product.variant.choose')) ?> <span class="variant-picker__req"><?= e(t('product.variant.required')) ?></span></legend>
+            <p class="variant-picker__help" id="variant-help"><?= e(t('product.variant.help')) ?></p>
+            <div class="variant-picker__grid">
+              <?php foreach ($variants as $vKey => $vLabel): $hintKey = "variant.$vKey.hint"; ?>
+              <label class="variant-option">
+                <input type="radio" name="items" value="<?= (int) $product['id'] ?>:<?= e($vKey) ?>" required
+                       data-variant="<?= e($vKey) ?>" data-variant-label="<?= e($vLabel) ?>">
+                <span class="variant-option__box">
+                  <span class="variant-option__name"><?= e($vLabel) ?></span>
+                  <?php if (\App\Services\I18n\I18n::has($hintKey)): ?><span class="variant-option__hint"><?= e(t($hintKey)) ?></span><?php endif; ?>
+                </span>
+              </label>
+              <?php endforeach; ?>
+            </div>
+            <p class="field-error" data-variant-error role="alert" hidden><?= e(t('product.variant.error')) ?></p>
+          </fieldset>
+          <div class="buy-box__actions">
+            <button class="btn btn--buy btn--lg" type="submit" data-buy-now="<?= (int) $product['id'] ?>"><?= e(t('product.buy_now')) ?></button>
+            <button type="button" class="btn btn--ghost btn--lg js-only" data-add-to-cart="<?= (int) $product['id'] ?>" data-requires-variant="1"
+                    data-title="<?= e($product['title']) ?>" data-url="<?= e(product_path($product)) ?>" data-img="<?= e($product['cover_url'] ?? '') ?>"
+                    data-price-cop="<?= (int) $product['price_cop'] ?>" data-price-usd="<?= e((string) $product['price_usd']) ?>"><?= e(t('product.add')) ?></button>
+          </div>
+          <p class="buy-box__note"><?= e(t('product.variant.note')) ?></p>
+        </form>
+        <p class="buy-box__note"><?= e(t($locale === 'es' ? 'product.pay_note_es' : 'product.pay_note_en')) ?></p>
+        <?php elseif (!$soon): ?>
         <div class="buy-box__actions">
           <a class="btn btn--buy btn--lg" href="<?= e($checkoutUrl) ?>" data-buy-now="<?= (int) $product['id'] ?>"><?= e(t('product.buy_now')) ?></a>
           <button type="button" class="btn btn--ghost btn--lg js-only" data-add-to-cart="<?= (int) $product['id'] ?>"
@@ -85,7 +115,11 @@ $checkoutUrl = route('checkout', ['items' => (string) $product['id']]);
   <div class="sticky-buy__inner">
     <span class="sticky-buy__title"><?= e($product['title']) ?></span>
     <?= View::render('partials/price', ['product' => $product, 'size' => 'sm']) ?>
+    <?php if ($hasVariants): ?>
+    <button class="btn btn--buy btn--sm" type="submit" form="buy-form" data-buy-now="<?= (int) $product['id'] ?>"><?= e(t('product.buy_now')) ?></button>
+    <?php else: ?>
     <a class="btn btn--buy btn--sm" href="<?= e($checkoutUrl) ?>" data-buy-now="<?= (int) $product['id'] ?>"><?= e(t('product.buy_now')) ?></a>
+    <?php endif; ?>
   </div>
 </div>
 <?php endif; ?>

@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Cadenas de interfaz en español de Colombia. Uso: t('clave', ['param' => valor]) → reemplaza :param.
  * Tono cercano y directo.
  */
-return array_merge(require __DIR__ . '/admin.es.php', require __DIR__ . '/piar.es.php', [
+return array_merge(require __DIR__ . '/admin.es.php', require __DIR__ . '/piar.es.php', require __DIR__ . '/examenes.es.php', [
     // Sitio y SEO
     'site.name' => 'Edwin Ortiz Herazo',
     'site.owner' => 'Edwin Ortiz Herazo',
@@ -106,6 +106,9 @@ return array_merge(require __DIR__ . '/admin.es.php', require __DIR__ . '/piar.e
     'home.fact2.value' => ':n',
     'home.fact2.label' => 'plantillas compradas por usuarios del sitio',
     'home.profiles_title' => '¿Por dónde quieres empezar?',
+    'home.profile.popular' => 'Lo más visitado',
+    'home.profile.cta' => 'Explorar',
+    'home.profile.office.visual' => 'Una lista de Excel → correos, PDF y códigos QR en minutos',
     'home.profile.office.title' => 'Trabajo en oficina',
     'home.profile.office.text' => 'Correos masivos, documentos en lote, códigos QR y facturas desde Excel.',
     'home.profile.teacher.title' => 'Soy docente',
@@ -222,6 +225,25 @@ return array_merge(require __DIR__ . '/admin.es.php', require __DIR__ . '/piar.e
     'product.add' => 'Añadir al carrito',
     'product.buy_now' => 'Comprar ahora',
     'product.coming_soon' => 'Disponible pronto',
+    'product.variant.choose' => 'Elige la materia',
+    'product.variant.required' => '(obligatorio)',
+    'product.variant.help' => 'Recibes solo el kit de la materia que elijas.',
+    'product.variant.error' => 'Elige una materia para continuar.',
+    'product.variant.note' => '¿Enseñas varias materias? Agrega cada una al carrito: cada materia es un kit distinto.',
+    'product.variant.choose_short' => 'Elegir materia',
+    'checkout.needs_variant' => 'Elige la materia de estos productos antes de pagar:',
+    'variant.matematicas' => 'Matemáticas',
+    'variant.matematicas.hint' => 'Los cinco pensamientos',
+    'variant.lenguaje' => 'Lengua Castellana',
+    'variant.lenguaje.hint' => 'Lectura, escritura y oralidad',
+    'variant.naturales' => 'Ciencias Naturales',
+    'variant.naturales.hint' => 'Entornos vivo y físico, CTS',
+    'variant.sociales' => 'Ciencias Sociales',
+    'variant.sociales.hint' => 'Historia, geografía y ciudadanía',
+    'variant.ingles' => 'Inglés',
+    'variant.ingles.hint' => 'Niveles A1 a B1 del MCER',
+    'variant.tecnologia' => 'Tecnología e Informática',
+    'variant.tecnologia.hint' => 'Diseño, problemas y ética',
     'product.best_seller' => 'Más vendido',
     'product.notify_short' => 'Avísame',
     'product.gallery' => 'Imágenes del producto',
@@ -362,6 +384,8 @@ return array_merge(require __DIR__ . '/admin.es.php', require __DIR__ . '/piar.e
     'tools.ai' => 'Con IA',
     'tool.piar.name' => 'Plan de ajustes razonables (PIAR)',
     'tool.piar.summary' => 'Apoya la construcción de ajustes para estudiantes con necesidades diversas.',
+    'tool.examenes.name' => 'Generador de exámenes con IA',
+    'tool.examenes.summary' => 'Crea exámenes en varias versiones, con hoja de respuestas, solucionario y fórmulas LaTeX.',
 
     // Fundales (solo español): simulacros del Concurso Docente en fundales.com
     'fundales.crumb' => 'Simulacro del Concurso Docente',

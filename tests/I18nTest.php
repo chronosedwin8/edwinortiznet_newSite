@@ -67,8 +67,8 @@ final class I18nTest extends TestCase
     {
         $es = require dirname(__DIR__) . '/lang/es.php';
         $en = require dirname(__DIR__) . '/lang/en.php';
-        // El panel solo existe en español; la página de Fundales y PIAR con IA no se traducen.
-        $skip = static fn (string $k): bool => str_starts_with($k, 'admin.') || str_starts_with($k, 'fundales.') || str_starts_with($k, 'tool.fundales.') || str_starts_with($k, 'piar.')
+        // El panel solo existe en español; la página de Fundales, PIAR con IA y el Generador de exámenes no se traducen.
+        $skip = static fn (string $k): bool => str_starts_with($k, 'admin.') || str_starts_with($k, 'fundales.') || str_starts_with($k, 'tool.fundales.') || str_starts_with($k, 'piar.') || str_starts_with($k, 'examenes.')
             || str_starts_with($k, 'home.profile.contest') || in_array($k, ['tool.words.faq3_q', 'tool.words.faq3_a', 'tool.words.how_p4', 'tool.qr.how_p5'], true);
         $missing = array_filter(array_diff(array_keys($es), array_keys($en)), fn ($k) => !$skip($k));
         $this->assertSame([], array_values($missing), 'Claves de es.php sin traducir en en.php');

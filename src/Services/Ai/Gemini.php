@@ -54,6 +54,82 @@ final class Gemini
         if (!self::configured()) {
             throw new RuntimeException('Gemini no está configurado (GEMINI_API_KEY).');
         }
+        [$url, $headers, $body, $model] = self::request($system, $user, $schema, $temperature, $maxTokens, $model, $thinking);
+        $started = microtime(true);
+        $res = self::$transport !== null ? (self::$transport)($url, $headers, $body) : self::post($url, $headers, $body);
+        return self::parse($res, $model, round(microtime(true) - $started, 1));
+    }
+
+    /**
+     * Varias llamadas en paralelo (curl_multi), hasta $concurrency a la vez. Cada solicitud es un arreglo con las
+     * claves system, user, schema y, opcionales, temperature, maxTokens, model y thinking. Devuelve, en el mismo
+     * orden, el resultado de generateJson() o la RuntimeException de esa llamada (las demás siguen).
+     * @param array<int, array<string, mixed>> $requests
+     * @return array<int, array|RuntimeException>
+     */
+    public static function generateJsonMany(array $requests, int $concurrency = 4): array
+    {
+        if (!self::configured()) {
+            throw new RuntimeException('Gemini no está configurado (GEMINI_API_KEY).');
+        }
+        $prepared = [];
+        foreach ($requests as $i => $r) {
+            $prepared[$i] = self::request(
+                (string) $r['system'], (string) $r['user'], (array) $r['schema'], (float) ($r['temperature'] ?? 0.6),
+                (int) ($r['maxTokens'] ?? 16384), $r['model'] ?? null, (int) ($r['thinking'] ?? 4096)
+            );
+        }
+        $out = [];
+        if (self::$transport !== null) {
+            foreach ($prepared as $i => [$url, $headers, $body, $model]) {
+                try {
+                    $out[$i] = self::parse((self::$transport)($url, $headers, $body), $model, 0.0);
+                } catch (RuntimeException $e) {
+                    $out[$i] = $e;
+                }
+            }
+            return $out;
+        }
+        foreach (array_chunk($prepared, max(1, $concurrency), true) as $group) {
+            $multi = curl_multi_init();
+            $handles = [];
+            $started = microtime(true);
+            foreach ($group as $i => [$url, $headers, $body]) {
+                $handles[$i] = self::handle($url, $headers, $body);
+                curl_multi_add_handle($multi, $handles[$i]);
+            }
+            do {
+                $status = curl_multi_exec($multi, $running);
+                if ($running) {
+                    curl_multi_select($multi, 1.0);
+                }
+            } while ($running && $status === CURLM_OK);
+            foreach ($handles as $i => $ch) {
+                $response = curl_multi_getcontent($ch);
+                $code = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+                $error = curl_error($ch);
+                curl_multi_remove_handle($multi, $ch);
+                curl_close($ch);
+                if (!is_string($response) || ($response === '' && $code === 0)) {
+                    Logger::error('Gemini sin conexión', ['error' => $error]);
+                    $out[$i] = new RuntimeException('No se pudo conectar con el servicio de IA.');
+                    continue;
+                }
+                try {
+                    $out[$i] = self::parse(['status' => $code, 'body' => $response], $group[$i][3], round(microtime(true) - $started, 1));
+                } catch (RuntimeException $e) {
+                    $out[$i] = $e;
+                }
+            }
+            curl_multi_close($multi);
+        }
+        ksort($out);
+        return $out;
+    }
+
+    /** @return array{0:string, 1:array, 2:array, 3:string} url, cabeceras, cuerpo y modelo */
+    private static function request(string $system, string $user, array $schema, float $temperature, int $maxTokens, ?string $model, int $thinking): array
+    {
         $model = $model !== null && preg_match('/^[a-z0-9.\-]{3,60}$/', $model) ? $model : self::model();
         $generation = [
             'responseMimeType' => 'application/json',
@@ -72,11 +148,15 @@ final class Gemini
         ];
         $url = self::BASE . rawurlencode($model) . ':generateContent';
         $headers = ['Content-Type: application/json', 'x-goog-api-key: ' . Config::get('GEMINI_API_KEY', '')];
+        return [$url, $headers, $body, $model];
+    }
 
-        $started = microtime(true);
-        $res = self::$transport !== null ? (self::$transport)($url, $headers, $body) : self::post($url, $headers, $body);
-        $seconds = round(microtime(true) - $started, 1);
-
+    /**
+     * @param array{status:int, body:string} $res
+     * @return array{data: array, model: string, prompt_tokens: int, output_tokens: int}
+     */
+    private static function parse(array $res, string $model, float $seconds): array
+    {
         $json = json_decode((string) $res['body'], true);
         if ((int) $res['status'] !== 200 || !is_array($json)) {
             $message = is_array($json) ? (string) ($json['error']['status'] ?? $json['error']['message'] ?? '') : '';
@@ -92,14 +172,25 @@ final class Gemini
             }
         }
         $usage = (array) ($json['usageMetadata'] ?? []);
+        // Respuesta 200 sin JSON utilizable: se factura igual; la excepción lleva el uso y el texto recibido.
+        $billed = static function (string $message) use ($usage, $finish, $text, $model): GeminiException {
+            $e = new GeminiException($message);
+            $e->billed = true;
+            $e->promptTokens = (int) ($usage['promptTokenCount'] ?? 0);
+            $e->outputTokens = (int) ($usage['candidatesTokenCount'] ?? 0) + (int) ($usage['thoughtsTokenCount'] ?? 0);
+            $e->finish = $finish;
+            $e->text = $text;
+            $e->model = $model;
+            return $e;
+        };
         if ($text === '') {
             Logger::error('Gemini no devolvió texto', ['finish' => $finish, 'block' => $json['promptFeedback']['blockReason'] ?? null, 'model' => $model]);
-            throw new RuntimeException('El servicio de IA no devolvió contenido' . ($finish !== '' ? " ($finish)" : '') . '.');
+            throw $billed('El servicio de IA no devolvió contenido' . ($finish !== '' ? " ($finish)" : '') . '.');
         }
         $data = json_decode(self::stripFences($text), true);
         if (!is_array($data)) {
             Logger::error('Gemini devolvió JSON inválido', ['finish' => $finish, 'chars' => mb_strlen($text), 'model' => $model]);
-            throw new RuntimeException($finish === 'MAX_TOKENS' ? 'La respuesta de la IA quedó incompleta.' : 'La respuesta de la IA no tiene el formato esperado.');
+            throw $billed($finish === 'MAX_TOKENS' ? 'La respuesta de la IA quedó incompleta.' : 'La respuesta de la IA no tiene el formato esperado.');
         }
         Logger::info('Gemini generó contenido', [
             // (las claves no dicen "token": el registro las ocultaría)
@@ -124,8 +215,7 @@ final class Gemini
         return $text;
     }
 
-    /** @return array{status:int, body:string} */
-    private static function post(string $url, array $headers, array $body): array
+    private static function handle(string $url, array $headers, array $body): \CurlHandle
     {
         $ch = curl_init($url);
         curl_setopt_array($ch, [
@@ -136,6 +226,13 @@ final class Gemini
             CURLOPT_CONNECTTIMEOUT => 15,
             CURLOPT_TIMEOUT => 240,
         ]);
+        return $ch;
+    }
+
+    /** @return array{status:int, body:string} */
+    private static function post(string $url, array $headers, array $body): array
+    {
+        $ch = self::handle($url, $headers, $body);
         $response = curl_exec($ch);
         $status = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         $error = curl_error($ch);

@@ -11,3 +11,7 @@
 # Cada 15 minutos: PIAR con IA — borra el contenido de las pruebas gratis vencidas (2 horas)
 # y da por fallidas las generaciones colgadas (devuelve el crédito).
 */15 * * * * cd /var/www/edwinortiz && php bin/console piar:purge >> storage/logs/cron.log 2>&1
+
+# Cada 15 minutos: Generador de exámenes — da por fallidas las generaciones colgadas (devuelve el examen al plan)
+# y vacía el contenido de los exámenes borrados hace más de 30 días (el cupo usado no se devuelve).
+*/15 * * * * cd /var/www/edwinortiz && php bin/console examenes:purge >> storage/logs/cron.log 2>&1

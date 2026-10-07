@@ -4,7 +4,7 @@
 use App\Services\I18n\I18n;
 
 $locale = I18n::locale();
-$ids = implode(',', array_map(fn ($p) => (int) $p['id'], $cart['items']));
+$ids = implode(',', array_map(fn ($p) => (string) $p['line_key'], $cart['items']));
 $old += ['name' => '', 'email' => '', 'document' => '', 'phone' => '', 'gateway' => $gateways[0] ?? ''];
 $totalLabel = money($cart['total'], $cart['currency']);
 $err = static fn (string $k): string => isset($errors[$k]) ? '<p class="field-error" id="err-' . e($k) . '">' . e($errors[$k]) . '</p>' : '';
@@ -17,7 +17,11 @@ $err = static fn (string $k): string => isset($errors[$k]) ? '<p class="field-er
   </header>
 
   <?php if (!empty($errors['form'])): ?><p class="notice notice--error" role="alert"><?= e($errors['form']) ?></p><?php endif; ?>
-  <?php if ($cart['removed']): ?><p class="notice notice--info" role="status"><?= e(t('checkout.removed')) ?></p><?php endif; ?>
+  <?php if (!empty($cart['needs_variant'])): ?>
+  <div class="notice notice--info" role="status"><p><?= e(t('checkout.needs_variant')) ?></p><ul>
+    <?php foreach ($cart['needs_variant'] as $p): ?><li><a href="<?= e(product_path($p, $locale)) ?>#buy"><?= e($p['title']) ?></a></li><?php endforeach; ?>
+  </ul></div>
+  <?php elseif ($cart['removed']): ?><p class="notice notice--info" role="status"><?= e(t('checkout.removed')) ?></p><?php endif; ?>
 
   <?php if (!$cart['items']): ?>
   <p class="notice"><?= e(t('checkout.empty')) ?></p>

@@ -41,6 +41,14 @@ final class ToolRegistry
             'icon' => 'puzzle',
             'tag' => 'tools.ai',
         ],
+        // Generador de exámenes con IA: presentación aquí; la aplicación vive en /examenes/ (ExamenesController).
+        'examenes' => [
+            'slugs' => ['es' => 'generador-de-examenes'],
+            'product_wp_id' => null,
+            'script' => null,
+            'icon' => 'list-ol',
+            'tag' => 'tools.ai',
+        ],
     ];
 
     public static function forLocale(string $locale): array

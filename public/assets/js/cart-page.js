@@ -5,7 +5,7 @@ async function render() {
   const cart = window.eoCart;
   if (!root || !cart) return;
   const locale = document.documentElement.dataset.locale === 'en' ? 'en' : 'es';
-  const ids = cart.items().map((i) => i.id);
+  const ids = cart.items().map(cart.key);
   const list = root.querySelector('[data-cart-page-items]');
   const empty = root.querySelector('[data-cart-page-empty]');
   const foot = root.querySelector('[data-cart-page-foot]');
@@ -31,7 +31,7 @@ async function render() {
     list.append(li);
   }
   // Sincroniza el carrito local con lo que realmente se puede comprar.
-  if (data.removed) cart.save(cart.items().filter((i) => data.items.some((v) => v.id === Number(i.id))));
+  if (data.removed) cart.save(cart.items().filter((i) => data.items.some((v) => v.key === cart.key(i))));
   empty.hidden = data.items.length > 0;
   foot.hidden = data.items.length === 0;
   checkout.hidden = data.items.length === 0;

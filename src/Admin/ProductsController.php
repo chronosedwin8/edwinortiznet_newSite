@@ -29,6 +29,7 @@ final class ProductsController extends AdminBase
                     es.title, es.slug, en.title AS title_en, en.needs_review AS en_review, ft.name AS family,
                     (SELECT COUNT(*) FROM product_files f WHERE f.product_id = p.id) AS files,
                     (SELECT COUNT(*) FROM product_files f WHERE f.product_id = p.id AND f.storage_path IS NOT NULL) AS files_ready,
+                    (SELECT GROUP_CONCAT(DISTINCT f.variant ORDER BY f.variant SEPARATOR ", ") FROM product_files f WHERE f.product_id = p.id AND f.variant IS NOT NULL AND f.variant <> "") AS variants,
                     (SELECT COUNT(*) FROM waitlist w WHERE w.product_id = p.id) AS waitlist
              FROM products p
              JOIN product_translations es ON es.product_id = p.id AND es.locale = "es"
@@ -239,6 +240,11 @@ final class ProductsController extends AdminBase
             $disk = 'local';
         }
         $data = ['storage_path' => $relative, 'storage_disk' => $disk, 'bytes' => $bytes, 'version' => self::str($request, 'version', 40), 'label' => self::str($request, 'label', 190) ?? $name];
+        // Variante opcional (p. ej. la materia): clave en minúsculas; al reemplazar sin indicarla se conserva la actual.
+        $variant = preg_replace('/[^a-z0-9_-]/', '', strtolower((string) self::str($request, 'variant', 40)));
+        if ($variant !== '') {
+            $data['variant'] = $variant;
+        }
         $replace = (int) ($request->post['replace_id'] ?? 0);
         if ($replace > 0 && DB::value('SELECT id FROM product_files WHERE id = :id AND product_id = :p', ['id' => $replace, 'p' => $productId]) !== null) {
             DB::update('product_files', $data, ['id' => $replace]);

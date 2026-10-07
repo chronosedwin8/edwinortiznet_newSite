@@ -4,8 +4,9 @@ if (page && page.dataset.hasItems === '0' && !new URLSearchParams(location.searc
   const locale = document.documentElement.dataset.locale === 'en' ? 'en' : 'es';
   try {
     const items = JSON.parse(localStorage.getItem(`eo-cart-${locale}`) || '[]');
-    const ids = items.map((i) => Number(i.id)).filter((n) => n > 0);
-    if (ids.length) location.replace(`${location.pathname}?items=${ids.join(',')}`);
+    // Cada línea es "id" o "id:variante" (la materia del kit, por ejemplo).
+    const ids = items.filter((i) => Number(i.id) > 0).map((i) => (i.variant ? `${Number(i.id)}:${i.variant}` : String(Number(i.id))));
+    if (ids.length) location.replace(`${location.pathname}?items=${encodeURIComponent(ids.join(','))}`);
   } catch { /* sin almacenamiento */ }
 }
 

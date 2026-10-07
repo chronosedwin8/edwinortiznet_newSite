@@ -128,7 +128,10 @@ function initCurrency() {
 
 /* ---------- Carrito (localStorage, validado en servidor al pagar) ---------- */
 const CART_KEY = `eo-cart-${locale}`;
+// Cada línea es "id" o "id:variante" (p. ej. la materia del kit): dos variantes = dos líneas.
+const lineKey = (i) => (i.variant ? `${Number(i.id)}:${i.variant}` : String(Number(i.id)));
 const cart = {
+  key: lineKey,
   items() { return store.json(CART_KEY, []).filter((i) => i && Number(i.id) > 0); },
   save(items) {
     store.set(CART_KEY, JSON.stringify(items));
@@ -136,13 +139,13 @@ const cart = {
     renderCart();
   },
   add(item) {
-    const items = this.items().filter((i) => Number(i.id) !== Number(item.id));
+    const items = this.items().filter((i) => lineKey(i) !== lineKey(item));
     items.push(item);
     this.save(items);
   },
-  remove(id) { this.save(this.items().filter((i) => Number(i.id) !== Number(id))); },
+  remove(key) { this.save(this.items().filter((i) => lineKey(i) !== String(key))); },
   checkoutUrl(base) {
-    const ids = this.items().map((i) => i.id).join(',');
+    const ids = this.items().map(lineKey).join(',');
     return ids ? `${base}?items=${encodeURIComponent(ids)}` : base;
   },
 };
@@ -164,7 +167,7 @@ function renderCart() {
     const a = $('.cart-item__title', node);
     a.href = item.url; a.textContent = item.title;
     $('.cart-item__price', node).textContent = formatPrice(item);
-    $('.cart-item__remove', node).addEventListener('click', () => cart.remove(item.id));
+    $('.cart-item__remove', node).addEventListener('click', () => cart.remove(lineKey(item)));
     list.append(node);
     total += locale === 'en' ? Number(item.usd) : Number(item.cop);
   }
@@ -195,9 +198,16 @@ function initCart() {
     const add = e.target.closest('[data-add-to-cart]');
     if (add) {
       e.preventDefault();
+      // Producto con variantes (p. ej. materia): sin elegir una, product.js muestra el aviso y no se agrega.
+      if (add.dataset.requiresVariant && !add.dataset.variant) {
+        add.dispatchEvent(new CustomEvent('eo:variant-missing', { bubbles: true }));
+        return;
+      }
       cart.add({
-        id: Number(add.dataset.addToCart), title: add.dataset.title, url: add.dataset.url, img: add.dataset.img,
+        id: Number(add.dataset.addToCart), title: add.dataset.title + (add.dataset.variantLabel ? ` — ${add.dataset.variantLabel}` : ''),
+        url: add.dataset.url, img: add.dataset.img,
         cop: Number(add.dataset.priceCop), usd: Number(add.dataset.priceUsd),
+        ...(add.dataset.variant ? { variant: add.dataset.variant } : {}),
       });
       open();
       return;
