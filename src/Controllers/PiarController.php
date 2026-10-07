@@ -433,6 +433,7 @@ final class PiarController extends Controller
         }
         return $this->view('edit', [
             'plan' => $plan,
+            'assistQuota' => PiarAssist::quota((int) $plan['customer_id']),
             'output' => PiarPlans::output($plan),
             'sections' => PiarPrompt::sections(),
         ], t('piar.edit.title'));
@@ -460,8 +461,10 @@ final class PiarController extends Controller
         if ($plan === null || (int) $plan['is_trial'] === 1 || $plan['status'] !== 'done') {
             return $json(['ok' => false, 'error' => t('piar.assist.forbidden')], 403);
         }
-        if (PiarAssist::limited((int) $id) || !RateLimiter::hit('piar-assist', $request->ip(), 60, 3600)) {
-            return $json(['ok' => false, 'error' => t('piar.assist.limit', ['hour' => PiarAssist::PER_HOUR, 'day' => PiarAssist::PER_DAY])], 429);
+        $blocked = PiarAssist::blocked((int) $id);
+        if ($blocked !== null || !RateLimiter::hit('piar-assist', $request->ip(), 20, 3600)) {
+            $message = $blocked === 'quota' ? t('piar.assist.quota_out') : t('piar.assist.limit', ['hour' => PiarAssist::PER_HOUR]);
+            return $json(['ok' => false, 'error' => $message, 'left' => PiarAssist::quota((int) $id)['left']], 429);
         }
         @set_time_limit(120);
         try {
@@ -469,7 +472,7 @@ final class PiarController extends Controller
         } catch (\RuntimeException $e) {
             return $json(['ok' => false, 'error' => $e->getMessage()], 422);
         }
-        return $json(['ok' => true] + $result);
+        return $json(['ok' => true, 'left' => PiarAssist::quota((int) $id)['left']] + $result);
     }
 
     public function pdf(Request $request, string $uuid): Response

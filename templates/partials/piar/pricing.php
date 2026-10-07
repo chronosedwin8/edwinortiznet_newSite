@@ -26,6 +26,7 @@ $popular = 'PIAR-10';
     <ul class="piar-price__list">
       <li><?= icon('check') ?><span><?= e(t('piar.price.f_save')) ?></span></li>
       <li><?= icon('check') ?><span><?= e(t('piar.price.f_edit')) ?></span></li>
+      <li><?= icon('check') ?><span><?= e(t('piar.price.f_ai', ['n' => $o['credits'] * \App\Services\Piar\PiarAssist::PER_PIAR])) ?></span></li>
       <li><?= icon('check') ?><span><?= e(t('piar.price.f_pdf')) ?></span></li>
       <li><?= icon('check') ?><span><?= e(t('piar.price.f_acta')) ?></span></li>
     </ul>

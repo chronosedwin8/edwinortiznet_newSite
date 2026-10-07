@@ -383,7 +383,7 @@ return [
     'piar.edit.save' => 'Guardar cambios',
     'piar.edit.cancel' => 'Cancelar',
     'piar.edit.saved' => 'Cambios guardados.',
-    'piar.assist.intro' => 'En cada campo puedes usar «Redactar con IA»: cuéntale qué quieres escribir, elige el tono, el lenguaje y la extensión, y revisa la propuesta antes de usarla. Luego puedes editarla a mano. Recuerda guardar los cambios al final.',
+    'piar.assist.intro' => 'En cada campo puedes usar «Redactar con IA»: cuéntale qué quieres escribir, elige el tono, el lenguaje y la extensión, y revisa la propuesta antes de usarla. Cada paquete incluye 10 redacciones por PIAR: úsalas en los campos que más lo necesiten y edita el resto a mano. Recuerda guardar los cambios al final.',
     'piar.assist.button' => 'Redactar con IA',
     'piar.assist.title' => 'Redactar con IA',
     'piar.assist.instruction' => '¿Qué quieres que diga este campo?',
@@ -405,7 +405,11 @@ return [
     'piar.assist.need' => 'Escribe qué quieres que redacte la IA.',
     'piar.assist.unsaved' => 'Tienes cambios sin guardar.',
     'piar.assist.forbidden' => 'El asistente está disponible solo en los PIAR de tu paquete.',
-    'piar.assist.limit' => 'Llegaste al límite del asistente (:hour por hora o :day por día). Inténtalo más tarde.',
+    'piar.assist.limit' => 'Llegaste al límite del asistente (:hour usos por hora). Inténtalo un poco más tarde.',
+    'piar.assist.quota_out' => 'Ya usaste todas las redacciones con IA de tu paquete. Se renuevan al comprar un nuevo paquete; mientras tanto puedes seguir editando a mano.',
+    'piar.assist.quota' => 'Redacciones con IA disponibles en tu paquete: :left de :total.',
+    'piar.assist.left' => 'Te quedan :n redacciones con IA.',
+    'piar.price.f_ai' => ':n redacciones con IA en el editor',
 
     // Planes
     'piar.plans.title' => 'Planes de PIAR con IA',

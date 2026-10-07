@@ -494,6 +494,8 @@ function initAssist(form) {
           const json = await res.json().catch(() => ({}));
           if (!res.ok || !json.ok) throw new Error(json.error || T.error);
           result.value = json.texto;
+          const counter = $('[data-ai-quota]');
+          if (counter && typeof json.left === 'number') counter.textContent = T.quota.replace(':left', json.left).replace(':total', cfg.total);
           resultBox.hidden = false;
           status.textContent = '';
           autogrow(result);

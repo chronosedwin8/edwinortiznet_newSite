@@ -257,11 +257,32 @@ final class PiarTest extends TestCase
         $this->assertSame(422, $this->request('POST', "/piar/$uuid/asistente/", ['field' => 'otra_cosa', 'instruction' => 'x'])->status);
         $this->assertSame(422, $this->request('POST', "/piar/$uuid/asistente/", ['field' => 'resumen', 'current' => '', 'instruction' => ''])->status);
 
+        // Cupo del paquete: 10 redacciones por PIAR (paquete de 1 → 10).
+        $quota = PiarAssist::quota($id);
+        $this->assertSame(PiarAssist::PER_PIAR, $quota['total']);
+        $this->assertSame(1, $quota['used']);
+        $this->assertSame(PiarAssist::PER_PIAR - 1, $data['left']);
+
         // Límite por hora.
-        for ($i = 0; $i < PiarAssist::PER_HOUR; $i++) {
-            DB::insert('piar_assists', ['customer_id' => $id, 'plan_id' => (int) DB::value('SELECT id FROM piar_plans WHERE uuid = :u', ['u' => $uuid]), 'field' => 'resumen', 'action' => 'mejorar']);
+        $planId = (int) DB::value('SELECT id FROM piar_plans WHERE uuid = :u', ['u' => $uuid]);
+        for ($i = 1; $i < PiarAssist::PER_HOUR; $i++) {
+            DB::insert('piar_assists', ['customer_id' => $id, 'plan_id' => $planId, 'field' => 'resumen', 'action' => 'mejorar']);
         }
-        $this->assertSame(429, $this->request('POST', "/piar/$uuid/asistente/", ['field' => 'resumen', 'instruction' => 'Más corto'])->status);
+        $hour = $this->request('POST', "/piar/$uuid/asistente/", ['field' => 'resumen', 'instruction' => 'Más corto']);
+        $this->assertSame(429, $hour->status);
+        $this->assertStringContainsString('por hora', json_decode($hour->body, true)['error']);
+
+        // Pasada la hora, el cupo del paquete es el que manda: al agotarlo, 429 aunque no haya uso reciente.
+        $earlier = gmdate('Y-m-d H:i:s', time() - 7200);
+        DB::run('UPDATE piar_packages SET starts_at = :s WHERE customer_id = :c', ['s' => gmdate('Y-m-d H:i:s', time() - 10800), 'c' => $id]);
+        DB::run('UPDATE piar_assists SET created_at = :t WHERE customer_id = :c', ['t' => $earlier, 'c' => $id]);
+        $this->assertSame(200, $this->request('POST', "/piar/$uuid/asistente/", ['field' => 'resumen', 'instruction' => 'Más corto'])->status);
+        DB::insert('piar_assists', ['customer_id' => $id, 'plan_id' => $planId, 'field' => 'resumen', 'action' => 'mejorar']);
+        DB::run('UPDATE piar_assists SET created_at = :t WHERE customer_id = :c', ['t' => $earlier, 'c' => $id]);
+        $this->assertSame(0, PiarAssist::quota($id)['left']);
+        $out = $this->request('POST', "/piar/$uuid/asistente/", ['field' => 'resumen', 'instruction' => 'Más corto']);
+        $this->assertSame(429, $out->status);
+        $this->assertStringContainsString('redacciones con IA de tu paquete', json_decode($out->body, true)['error']);
 
         // Una cuenta de prueba no puede usarlo.
         $this->login('Prueba');

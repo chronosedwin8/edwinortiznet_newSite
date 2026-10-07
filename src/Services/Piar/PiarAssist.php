@@ -11,12 +11,13 @@ use RuntimeException;
 /**
  * Asistente "Redactar con IA" del editor: redacta o reescribe UN campo del PIAR según las
  * indicaciones del docente (contenido, tono, lenguaje y extensión). Solo PIAR pagados; no
- * descuenta créditos, pero tiene límite por hora y por día (tabla piar_assists).
+ * descuenta créditos de PIAR. Cupo: PER_PIAR usos por cada PIAR de los paquetes vigentes
+ * (5 → 50, 10 → 100, 20 → 200 en sus 30 días) y PER_HOUR por hora (tabla piar_assists).
  */
 final class PiarAssist
 {
-    public const PER_HOUR = 30;
-    public const PER_DAY = 150;
+    public const PER_PIAR = 10;
+    public const PER_HOUR = 8;
     private const MAX_INSTRUCTION = 1500;
     private const MAX_CURRENT = 6000;
 
@@ -93,20 +94,32 @@ final class PiarAssist
         return null;
     }
 
-    /** Usos en la última hora y en el día, para el límite. */
-    public static function usage(int $customerId): array
+    /**
+     * Cupo del asistente: PER_PIAR usos por cada PIAR de los paquetes vigentes, contados desde el
+     * inicio del paquete vigente más antiguo (solo los usos que devolvieron texto).
+     * @return array{total:int, used:int, left:int, hour:int}
+     */
+    public static function quota(int $customerId): array
     {
+        $packages = PiarCredits::active($customerId);
+        $total = self::PER_PIAR * array_sum(array_map(static fn (array $p): int => (int) $p['credits'], $packages));
+        $since = $packages !== [] ? min(array_column($packages, 'starts_at')) : gmdate('Y-m-d H:i:s');
         $row = DB::one(
-            'SELECT SUM(created_at > :h) AS hour, COUNT(*) AS day FROM piar_assists WHERE customer_id = :c AND created_at > :d',
-            ['h' => gmdate('Y-m-d H:i:s', time() - 3600), 'c' => $customerId, 'd' => gmdate('Y-m-d H:i:s', time() - 86400)]
+            'SELECT SUM(ok = 1 AND created_at >= :s) AS used, SUM(created_at > :h) AS hour FROM piar_assists WHERE customer_id = :c AND created_at > :d',
+            ['s' => $since, 'h' => gmdate('Y-m-d H:i:s', time() - 3600), 'c' => $customerId, 'd' => gmdate('Y-m-d H:i:s', time() - (PiarCredits::DAYS + 1) * 86400)]
         );
-        return ['hour' => (int) ($row['hour'] ?? 0), 'day' => (int) ($row['day'] ?? 0)];
+        $used = (int) ($row['used'] ?? 0);
+        return ['total' => $total, 'used' => $used, 'left' => max(0, $total - $used), 'hour' => (int) ($row['hour'] ?? 0)];
     }
 
-    public static function limited(int $customerId): bool
+    /** null si puede usar el asistente; si no, 'quota' (sin cupo en el paquete) u 'hour' (límite por hora). */
+    public static function blocked(int $customerId): ?string
     {
-        $usage = self::usage($customerId);
-        return $usage['hour'] >= self::PER_HOUR || $usage['day'] >= self::PER_DAY;
+        $quota = self::quota($customerId);
+        if ($quota['left'] <= 0) {
+            return 'quota';
+        }
+        return $quota['hour'] >= self::PER_HOUR ? 'hour' : null;
     }
 
     /**
@@ -134,7 +147,7 @@ final class PiarAssist
         $ok = false;
         $result = ['model' => $model, 'prompt_tokens' => 0, 'output_tokens' => 0, 'data' => []];
         try {
-            $result = Gemini::generateJson(self::system(), $user, $schema, 0.5, 4096, $model, str_contains($model, 'flash') ? 0 : 512);
+            $result = Gemini::generateJson(self::system(), $user, $schema, 0.5, 1500, $model, str_contains($model, 'flash') ? 0 : 512);
             $text = self::tidy((string) ($result['data']['texto'] ?? ''), $field['lines']);
             if ($text === '') {
                 throw new RuntimeException('La IA no devolvió texto. Inténtalo de nuevo.');

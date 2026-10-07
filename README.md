@@ -59,7 +59,7 @@ En este equipo el sitio corre en **http://localhost:8090/** mediante un VirtualH
 | `MP_*`, `WOMPI_*`, `PAYPAL_*` | Credenciales y modo `sandbox`/`production` de cada pasarela. |
 | `GA4_ID`, `ADSENSE_*` | Se cargan solo tras aceptar cookies; AdSense solo en artículos (máximo 3 bloques). |
 | `DOWNLOAD_ACCEL=true` | Con Nginx, entrega los archivos con `X-Accel-Redirect`. |
-| `GEMINI_API_KEY`, `GEMINI_MODEL`, `GEMINI_ASSIST_MODEL` | PIAR con IA: clave de la API de Google Gemini (va en la cabecera `x-goog-api-key`), modelo del documento (por defecto `gemini-2.5-pro`) y modelo del asistente «Redactar con IA» por campo (por defecto `gemini-2.5-flash`; 30 usos por hora y 150 por día por cuenta, no descuenta PIAR). Sin clave, la generación se muestra como no disponible. |
+| `GEMINI_API_KEY`, `GEMINI_MODEL`, `GEMINI_ASSIST_MODEL` | PIAR con IA: clave de la API de Google Gemini (va en la cabecera `x-goog-api-key`), modelo del documento (por defecto `gemini-2.5-pro`) y modelo del asistente «Redactar con IA» por campo (por defecto `gemini-2.5-flash`; 10 usos por cada PIAR de los paquetes vigentes y 8 por hora, respuestas de máximo 1.500 tokens; no descuenta PIAR). Sin clave, la generación se muestra como no disponible. |
 
 ### URLs de webhook que se registran en cada pasarela
 

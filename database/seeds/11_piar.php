@@ -62,7 +62,7 @@ return static function (): string {
 <p>Antes de comprar puedes <a href="/herramientas/piar/">conocer la herramienta</a> y crear <strong>1 PIAR de prueba gratis</strong> en <a href="/piar/">edwinortiz.net/piar/</a>.</p>
 <p><strong>Importante:</strong> al pagar usa el mismo correo de tu cuenta PIAR. El paquete se activa automáticamente en esa cuenta cuando se aprueba el pago. Si compras otro paquete mientras este sigue activo, se suma uno nuevo por 30 días.</p>
 HTML;
-        $includes = "<ul><li>Hasta $n PIAR generados con IA durante 30 días.</li><li>Historial guardado: tus PIAR siguen disponibles aunque el paquete venza.</li><li>Edición de cada sección del documento.</li><li>PDF formal con logo e institución, y acta de acuerdo con firmas.</li><li>Soporte por correo.</li></ul>";
+        $includes = "<ul><li>Hasta $n PIAR generados con IA durante 30 días.</li><li>Historial guardado: tus PIAR siguen disponibles aunque el paquete venza.</li><li>Edición de cada sección del documento, con " . ($n * \App\Services\Piar\PiarAssist::PER_PIAR) . " redacciones con IA para ajustar los campos que necesites.</li><li>PDF formal con logo e institución, y acta de acuerdo con firmas.</li><li>Soporte por correo.</li></ul>";
         $faq = [
             ['q' => '¿Cuándo se activa el paquete?', 'a' => 'Automáticamente, apenas la pasarela aprueba el pago. Te llega un correo y lo ves en edwinortiz.net/piar/ al entrar con el mismo correo con el que pagaste.'],
             ['q' => '¿Qué pasa si no uso todos los PIAR en 30 días?', 'a' => 'Los PIAR que no uses vencen con el paquete. Los que ya generaste quedan guardados en tu cuenta para siempre, con edición y PDF.'],
