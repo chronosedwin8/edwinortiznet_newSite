@@ -29,7 +29,7 @@ final class HtmlCleaner
     /** Clases propias que sobreviven al saneado. */
     private const CLASSES = ['lite-yt', 'lite-yt__link', 'lite-yt__play', 'gallery', 'table-wrap', 'embed-link', 'btn-link', 'notice', 'video'];
     private const ATTRS = [
-        'a' => ['href', 'title', 'rel', 'target', 'class', 'data-yt'],
+        'a' => ['href', 'title', 'rel', 'target', 'class', 'data-yt', 'download'],
         'img' => ['src', 'alt', 'width', 'height', 'srcset', 'sizes', 'loading', 'decoding'],
         'td' => ['colspan', 'rowspan'],
         'th' => ['colspan', 'rowspan', 'scope'],

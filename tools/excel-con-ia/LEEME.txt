@@ -1,0 +1,110 @@
+EXCEL CON INTELIGENCIA ARTIFICIAL: kit gratuito
+edwinortiz.net · https://www.edwinortiz.net/
+=====================================================================
+
+QUÉ INCLUYE
+  ExcelConIA.bas           módulo de macros y funciones para Excel
+  datos-ejemplo.xlsx       datos ficticios para practicar: Ventas (pyme,
+                           800 filas con errores a propósito), Notas
+                           (colegio, escala 1,0 a 5,0) y Encuesta
+                           (comentarios de clientes para clasificar)
+  analisis_con_python.py   el mismo análisis, más completo, con Python
+  requirements.txt         librerías que necesita el script de Python
+  LEEME.txt                este archivo
+
+---------------------------------------------------------------------
+PARTE 1 · EXCEL (Windows, Excel 2016, 2019, 2021 o Microsoft 365)
+---------------------------------------------------------------------
+ANTES DE EMPEZAR: clic derecho sobre el .zip descargado > Propiedades >
+marca «Desbloquear» > Aceptar, y luego descomprímelo.
+
+Instalar el módulo
+  1. Abre datos-ejemplo.xlsx (o tu propio archivo) y pulsa Alt+F11.
+  2. Menú Archivo > Importar archivo… y elige ExcelConIA.bas.
+  3. Cierra el editor y guarda como «Libro de Excel habilitado para
+     macros (*.xlsm)». Si Excel muestra «Habilitar contenido», acéptalo.
+
+Macros (Alt+F8, elige la macro y pulsa Ejecutar)
+  PerfilarDatos    Haz clic en cualquier celda de tu tabla (la primera
+                   fila deben ser los encabezados) y ejecútala. Crea la
+                   hoja «Perfil de datos»: tipo de cada columna, vacíos,
+                   únicos, mínimo, máximo, promedio, mediana, valor más
+                   frecuente, filas duplicadas y alertas (tipos
+                   mezclados, espacios sobrantes, variantes de escritura,
+                   posibles ID, valores atípicos). Luego te pregunta qué
+                   quieres lograr y genera el prompt.
+  GenerarPromptIA  Escribe un prompt listo para ChatGPT, Gemini, Copilot
+                   o Claude y lo copia al portapapeles: solo pega con
+                   Ctrl+V. Describe la estructura y las estadísticas de
+                   tus datos, NUNCA las filas, y le pide a la IA los pasos
+                   de limpieza, 5 preguntas de análisis, las fórmulas
+                   exactas para tu versión de Excel y el código en Python.
+  ConfigurarIA     Guarda (o borra, escribiendo BORRAR) tu clave de Gemini
+                   para usar las funciones de abajo.
+  LimpiarCacheIA   Olvida las respuestas de IA guardadas en memoria.
+  Estas dos primeras macros no necesitan internet ni clave.
+
+Funciones con IA (como cualquier fórmula; Excel en español usa «;»)
+  =IA("Resume en una frase"; G2)
+  =IA("¿Qué ciudad aparece más?"; B2:B50)
+  =IA_CLASIFICAR(G2; $K$2:$K$6)                    una de esas categorías
+  =IA_CLASIFICAR(J2; "Positivo, Negativo, Neutro")
+  =IA_EXTRAER(A2; "correo")       también: ciudad, teléfono, monto, fecha…
+  Si algo falla, la celda muestra un texto que empieza por «#IA:» con la
+  causa (falta la clave, clave no válida, límite de la API, sin internet).
+
+Clave gratuita de Gemini
+  1. Entra a https://aistudio.google.com/apikey con tu cuenta de Google
+     y crea una clave («Create API key»).
+  2. En Excel ejecuta la macro ConfigurarIA y pégala.
+  La clave queda guardada dentro de ESE libro, oculta pero sin cifrar:
+  no compartas el archivo mientras tenga tu clave (ConfigurarIA > BORRAR
+  la quita). Alternativa: crea la variable de entorno de Windows
+  GEMINI_API_KEY (en el Símbolo del sistema: setx GEMINI_API_KEY "tu_clave"
+  y reinicia Excel); así ningún libro guarda la clave.
+
+Privacidad, límites y costos (léelo)
+  - PerfilarDatos y GenerarPromptIA trabajan solo en tu computador. El
+    prompt no lleva filas, pero sí nombres de columnas, mínimos, máximos y
+    el valor más frecuente: revísalo antes de pegarlo.
+  - Las funciones IA envían a Google la instrucción y las celdas que les
+    pases. Con el nivel gratuito, Google puede usar ese contenido para
+    mejorar sus productos: usa datos anonimizados (sin nombres, documentos,
+    teléfonos ni datos de salud de personas reales).
+  - El nivel gratuito permite pocas consultas por minuto y por día: cada
+    celda con una función IA es una consulta. Prueba primero con 10 filas.
+    Si ves «#IA: límite de la API», espera un minuto y pulsa Ctrl+Alt+F9:
+    las respuestas que ya llegaron se guardan en memoria y no se repiten.
+  - Si activas la facturación en Google, cada consulta tiene un costo.
+  - Mientras Excel consulta a la IA queda ocupado unos segundos por celda.
+
+Mac: PerfilarDatos y GenerarPromptIA funcionan (si el portapapeles falla,
+copia a mano las celdas del prompt). Las funciones IA necesitan Windows.
+
+---------------------------------------------------------------------
+PARTE 2 · PYTHON (Windows, macOS o Linux; Python 3.10 o superior)
+---------------------------------------------------------------------
+  1. Instala Python desde https://www.python.org/ (en Windows marca
+     «Add python.exe to PATH»).
+  2. Abre una terminal en la carpeta descomprimida y ejecuta:
+        pip install -r requirements.txt
+        python analisis_con_python.py
+  3. Abre reporte.xlsx: resumen de KPI, bitácora de limpieza, ventas por
+     mes con pronóstico de 6 meses y gráfico, ciudades, productos, canales,
+     valores atípicos, comentarios clasificados con IA, promedios por curso
+     y área, desempeños del Decreto 1290 y estudiantes en riesgo.
+
+  Para clasificar los comentarios con Gemini define la clave antes:
+     Windows:     setx GEMINI_API_KEY "tu_clave"   (abre otra terminal)
+     macOS/Linux: export GEMINI_API_KEY="tu_clave"
+  Sin clave, ese paso se omite y todo lo demás funciona. Opciones:
+     python analisis_con_python.py --sin-ia
+     python analisis_con_python.py --max-ia 50
+     python analisis_con_python.py --datos otro.xlsx --salida mi_reporte.xlsx
+  Para el pronóstico Holt-Winters instala también: pip install statsmodels
+
+Los datos de ejemplo son ficticios, generados por computador.
+
+Licencia: uso libre personal y en tu empresa o institución educativa.
+Puedes modificarlo; no se permite venderlo ni publicarlo como propio.
+Más plantillas y herramientas: https://www.edwinortiz.net/
