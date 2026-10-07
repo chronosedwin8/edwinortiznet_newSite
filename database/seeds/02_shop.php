@@ -210,8 +210,9 @@ return static function (): string {
             'Las plantillas más usadas en la oficina en un solo paquete: correo masivo, combinador de documentos, QR y códigos de barras y factura con envío por correo.',
             [$idsByWp[380] ?? 0, $idsByWp[376] ?? 0, $idsByWp[664] ?? 0, $idsByWp[706] ?? 0, $idsByWp[420] ?? 0]],
         ['EO-PACK-DOC', 79, 'pack-docente', 'Pack Docente', 'docente',
-            'Herramientas para el día a día del aula: asistencia, boletines, generador de exámenes y documentos individuales para estudiantes y acudientes.',
-            [$idsByWp[349] ?? 0, $idsByWp[358] ?? 0, $idsByWp[409] ?? 0, $soonIds['EO-BOLETINES'], $soonIds['EO-EXAMENES'], $soonIds['EO-ASIST-QR']]],
+            'Herramientas para el día a día del aula: asistencia, boletines, documentos individuales para estudiantes y acudientes, y un mes del plan Docente del Generador de exámenes con IA.',
+            // El generador de exámenes es el nuevo con IA (plan EXAM-20); el de Excel quedó retirado.
+            [$idsByWp[349] ?? 0, $idsByWp[358] ?? 0, $idsByWp[409] ?? 0, $soonIds['EO-BOLETINES'], (int) DB::value('SELECT id FROM products WHERE sku = "EXAM-20"'), $soonIds['EO-ASIST-QR']]],
         ['EO-PACK-ANUAL', 149, 'todo-incluido-anual', 'Todo incluido anual', 'oficina',
             'Todas las plantillas de la tienda y las que salgan durante un año, con sus actualizaciones.',
             $activeDownloads],

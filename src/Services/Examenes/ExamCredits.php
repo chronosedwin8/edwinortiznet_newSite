@@ -123,10 +123,14 @@ final class ExamCredits
     {
         $skus = array_keys(self::PLANS);
         $in = implode(',', array_fill(0, count($skus), '?'));
+        // Planes comprados directamente o incluidos en un pack (p. ej., el Pack Docente).
         $items = DB::all(
             "SELECT oi.id, oi.quantity, p.sku FROM order_items oi JOIN products p ON p.id = oi.product_id
-             WHERE oi.order_id = ? AND p.sku IN ($in)",
-            array_merge([$orderId], $skus)
+             WHERE oi.order_id = ? AND p.sku IN ($in)
+             UNION ALL
+             SELECT oi.id, oi.quantity, c.sku FROM order_items oi JOIN pack_items pi ON pi.pack_id = oi.product_id JOIN products c ON c.id = pi.product_id
+             WHERE oi.order_id = ? AND c.sku IN ($in)",
+            array_merge([$orderId], $skus, [$orderId], $skus)
         );
         if ($items === []) {
             return 0;

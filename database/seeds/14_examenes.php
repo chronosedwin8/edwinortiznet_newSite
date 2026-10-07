@@ -156,5 +156,19 @@ HTML;
         Redirects::add('/producto/generador-de-examenes-en-varias-versiones/', '/herramientas/generador-de-examenes/', 'Generador de exámenes en Excel reemplazado por el Generador de exámenes con IA');
         $note = ' (EO-EXAMENES oculto y redirigido)';
     }
+    // Pack Docente: el generador de exámenes incluido es el nuevo con IA (un mes del plan Docente).
+    $packId = DB::value('SELECT id FROM products WHERE sku = "EO-PACK-DOC"');
+    $planId = DB::value('SELECT id FROM products WHERE sku = "EXAM-20"');
+    if ($packId !== null && $planId !== null) {
+        DB::run('DELETE pi FROM pack_items pi JOIN products p ON p.id = pi.product_id WHERE pi.pack_id = :p AND p.sku = "EO-EXAMENES"', ['p' => (int) $packId]);
+        DB::run('INSERT IGNORE INTO pack_items (pack_id, product_id) VALUES (:p, :i)', ['p' => (int) $packId, 'i' => (int) $planId]);
+        $short = 'Herramientas para el día a día del aula: asistencia, boletines, documentos individuales para estudiantes y acudientes, y un mes del plan Docente del Generador de exámenes con IA.';
+        DB::run('UPDATE product_translations SET short_html = :s, description_html = REPLACE(description_html, :old, :new), seo_description = :d WHERE product_id = :p AND locale = "es"', [
+            's' => "<p>$short</p>", 'old' => 'boletines, generador de exámenes y documentos individuales para estudiantes y acudientes.',
+            'new' => 'boletines, documentos individuales para estudiantes y acudientes, y un mes del plan Docente del Generador de exámenes con IA.',
+            'd' => mb_substr($short, 0, 160), 'p' => (int) $packId,
+        ]);
+    }
+
     return "$count planes del Generador de exámenes con IA$note";
 };

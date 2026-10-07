@@ -292,6 +292,32 @@ final class ExamenesTest extends TestCase
         $this->assertFalse(ExamCredits::summary($customerId)['has_active']);
     }
 
+    public function testPackDocenteIncludesTheNewGeneratorAndGrantsItsPlan(): void
+    {
+        $packId = DB::value('SELECT id FROM products WHERE sku = "EO-PACK-DOC"');
+        if ($packId === null) {
+            $this->markTestSkipped('Sin Pack Docente en esta base');
+        }
+        $skus = DB::column('SELECT p.sku FROM pack_items pi JOIN products p ON p.id = pi.product_id WHERE pi.pack_id = :p', ['p' => (int) $packId]);
+        $this->assertContains('EXAM-20', $skus);
+        $this->assertNotContains('EO-EXAMENES', $skus);
+
+        // Un pedido aprobado del pack activa el plan Docente del generador (una sola vez).
+        $email = 'pack-' . bin2hex(random_bytes(3)) . self::DOMAIN;
+        $orderId = (int) DB::insert('orders', [
+            'reference' => 'TEST-PACK-' . strtoupper(bin2hex(random_bytes(4))), 'token' => bin2hex(random_bytes(32)),
+            'email' => $email, 'name' => 'Pack Docente', 'locale' => 'es', 'currency' => 'COP', 'subtotal' => 316000, 'total' => 316000,
+            'status' => 'approved', 'gateway' => 'wompi', 'paid_at' => DB::now(),
+        ]);
+        DB::insert('order_items', ['order_id' => $orderId, 'product_id' => (int) $packId, 'title' => 'Pack Docente', 'unit_price' => 316000, 'quantity' => 1, 'total' => 316000]);
+        ExamCredits::grantForOrder($orderId);
+        ExamCredits::grantForOrder($orderId);
+        $subs = ExamCredits::forOrder($orderId);
+        $this->assertCount(1, $subs);
+        $this->assertSame('EXAM-20', $subs[0]['sku']);
+        $this->assertSame(ExamCredits::PLANS['EXAM-20']['exams'], (int) $subs[0]['exams']);
+    }
+
     // ------------------------------------------------------------------ cupos
 
     public function testQuotasForExamsVersionsAndUniqueQuestions(): void
