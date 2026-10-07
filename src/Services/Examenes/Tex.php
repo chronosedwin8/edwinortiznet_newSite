@@ -352,6 +352,26 @@ final class Tex
         return nl2br($html, false);
     }
 
+    /**
+     * dompdf calcula la memoria de una imagen SVG como si fuera un mapa de bits del tamaño del viewBox;
+     * en fórmulas largas de MathJax (viewBox de decenas de miles de unidades) supera el límite y la
+     * descarta. Se divide el viewBox entre 100 y se compensa con una escala interna: el dibujo es igual.
+     */
+    private static function shrinkViewBox(string $svg): string
+    {
+        if (!preg_match('/viewBox="([-\d.]+) ([-\d.]+) ([-\d.]+) ([-\d.]+)"/', $svg, $m)) {
+            return $svg;
+        }
+        $box = vsprintf('%s %s %s %s', array_map(static fn (string $v): string => rtrim(rtrim(sprintf('%.4F', (float) $v / 100), '0'), '.'), array_slice($m, 1)));
+        $svg = str_replace($m[0], 'viewBox="' . $box . '"', $svg);
+        $open = strpos($svg, '>');
+        $close = strrpos($svg, '</svg>');
+        if ($open === false || $close === false) {
+            return $svg;
+        }
+        return substr($svg, 0, $open + 1) . '<g transform="scale(0.01)">' . substr($svg, $open + 1, $close - $open - 1) . '</g></svg>';
+    }
+
     public static function mathHtml(string $tex, bool $display, string $target = 'screen', float $maxEm = 0): string
     {
         $r = self::formula($tex, $display);
@@ -361,6 +381,7 @@ final class Tex
         }
         if ($target === 'pdf') {
             $svg = (string) preg_replace(['/ style="[^"]*"/', '/ width="[^"]*"/', '/ height="[^"]*"/'], '', $r['svg'], 1);
+            $svg = self::shrinkViewBox($svg);
             // ex de MathJax = 0,5 em del texto que la rodea.
             $w = $r['w'] / 2;
             $h = $r['h'] / 2;
