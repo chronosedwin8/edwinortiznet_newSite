@@ -5,7 +5,7 @@ Sitio de Edwin Ortiz Herazo: blog, herramientas gratuitas y tienda de descargas 
 - **Backend:** PHP 8.2+ sin framework (PSR-4, PSR-12, `strict_types`), MySQL 8 con PDO y sentencias preparadas.
 - **Frontend:** plantillas PHP con HTML semántico, `critical.css` en línea + `main.css`, JavaScript en módulos ES sin dependencias.
 - **Pagos:** Mercado Pago y Wompi (español, COP) y PayPal (inglés, USD), por REST con cURL.
-- **Dependencias de Composer:** solo `phpmailer/phpmailer` y `vlucas/phpdotenv` (más `phpunit` para desarrollo).
+- **Dependencias de Composer:** `phpmailer/phpmailer`, `vlucas/phpdotenv` y `dompdf/dompdf` (PDF del PIAR), más `phpunit` para desarrollo.
 
 ---
 
@@ -59,6 +59,7 @@ En este equipo el sitio corre en **http://localhost:8090/** mediante un VirtualH
 | `MP_*`, `WOMPI_*`, `PAYPAL_*` | Credenciales y modo `sandbox`/`production` de cada pasarela. |
 | `GA4_ID`, `ADSENSE_*` | Se cargan solo tras aceptar cookies; AdSense solo en artículos (máximo 3 bloques). |
 | `DOWNLOAD_ACCEL=true` | Con Nginx, entrega los archivos con `X-Accel-Redirect`. |
+| `GEMINI_API_KEY`, `GEMINI_MODEL` | PIAR con IA: clave de la API de Google Gemini (va en la cabecera `x-goog-api-key`) y modelo (por defecto `gemini-2.5-pro`). Sin clave, la generación se muestra como no disponible. |
 
 ### URLs de webhook que se registran en cada pasarela
 
@@ -90,6 +91,7 @@ En este equipo el sitio corre en **http://localhost:8090/** mediante un VirtualH
 | `sitemap:build` | Regenera `storage/cache/sitemap.xml`. |
 | `admin:create [correo] [nombre] [clave]` | Crea o restablece un usuario del panel (Argon2id). |
 | `orders:reconcile` | Tarea programada: consulta pedidos pendientes y anula los vencidos. |
+| `piar:purge` | Tarea programada (cada 15 min): borra el contenido de las pruebas gratis del PIAR vencidas (2 h) y da por fallidas las generaciones colgadas, devolviendo el crédito. |
 | `cache:clear` | Vacía la caché de página completa. |
 | `routes:check` | Verifica que todas las URL importadas respondan 200. |
 | `mail:test [correo]` | Envía un correo de prueba con la configuración actual. |
@@ -121,10 +123,24 @@ En este equipo el sitio corre en **http://localhost:8090/** mediante un VirtualH
 - Cada evento se guarda en `payment_events` (único por pasarela + id), así que los duplicados no se reprocesan. Firma inválida → 401.
 - Al aprobarse se crean los permisos de descarga y se envían los correos en el idioma del pedido, junto con el aviso a `ADMIN_EMAIL`.
 
+### PIAR con IA (`/herramientas/piar/` y `/piar/`)
+- Herramienta solo en español para redactar el **Plan Individual de Ajustes Razonables** (Decreto 1421 de 2017) con Google Gemini. Presentación indexable en `/herramientas/piar/`; la aplicación (`/piar/…`) es `noindex` y `private, no-store`.
+- **Acceso:** enlace mágico con la misma tabla `customers`/`login_tokens` y la misma sesión (`customer_id`) que Mi cuenta; aquí pedir el enlace **crea la cuenta** y registra la aceptación de términos y tratamiento de datos (`piar_profiles.terms_accepted_at`).
+- **Prueba gratis:** 2 PIAR por cuenta de por vida (los fallidos no cuentan), más límite por IP. Solo se ven en la misma sesión, sin PDF ni edición, y su contenido se purga a las 2 horas (perezosamente y con `piar:purge`); el registro sin contenido queda para el contador.
+- **Paquetes:** productos de servicio `PIAR-5`, `PIAR-10` y `PIAR-20` (seed `11_piar.php`), comprados por el pago normal. Al aprobarse el pedido, `OrderService` crea un paquete por ítem (`piar_packages`, único por `order_item_id`) con vigencia de 30 días desde el pago y envía `piar-credits`; el reembolso anula los créditos sin usar. Cada PIAR consume un crédito del paquete que vence primero (`SELECT … FOR UPDATE`); si la IA falla, se devuelve. No existe la opción de borrar PIAR.
+- **Generación asíncrona:** el POST crea la fila `pending` y redirige a la página de progreso, que consulta `/piar/{id}/estado/`. Con PHP-FPM la llamada a Gemini corre después de `fastcgi_finish_request()` (hasta 300 s; el pool debe permitirlo: `request_terminate_timeout` en 0 o ≥ 300); sin FPM se genera dentro de la misma petición. Un `pending` de más de 6 minutos pasa a error y devuelve el crédito.
+- **Con paquete activo:** historial permanente, edición por secciones, PDF formal (dompdf, DejaVu Sans) con logo e institución del perfil y acta de acuerdo con firmas. El logo (PNG/JPG/WebP ≤ 1 MB) se valida con `getimagesize`, se recodifica a PNG y queda privado en S3 (`piar/logos/`) o en `storage/piar/logos/`.
+- **Panel:** *Tienda → PIAR con IA* lista las cuentas (prueba usada, créditos vigentes, PIAR guardados) y permite dar un paquete manual.
+
 ### SEO y rendimiento
 - Title, descripción, canonical, `hreflang` recíproco con `x-default`, Open Graph/Twitter y JSON-LD (`Person`, `WebSite` + `SearchAction`, `Article`, `Product`/`Offer`, `BreadcrumbList`, `FAQPage`, `Course`).
 - Sitemap dinámico con alternativas (sin `noindex`), feeds RSS `/feed/` y `/en/feed/`, `robots.txt`.
 - Caché de página en disco, CSS crítico en línea, fuentes WOFF2 locales con respaldo de métricas ajustadas, `srcset` de los tamaños que existen en S3, `preconnect` al bucket, `content-visibility` bajo el pliegue y GA4/AdSense diferidos tras el consentimiento.
+
+### Reacciones y compartir
+- Cada artículo termina con reacciones al estilo LinkedIn (una por visitante y artículo, se cambia o se quita) y botones para compartir. La página está en la caché completa, así que `article.js` pide los conteos y la reacción del visitante a `GET /api/reacciones/{id}` y guarda con `POST /api/reacciones/{id}` (`reaction` = `like|insightful|celebrate|love|thoughtful`, vacío para quitar; CSRF por `X-CSRF-Token`; límite por IP). Sin JS, cada reacción es un botón de formulario.
+- Tabla `post_reactions` (migración 009) con `UNIQUE(post_id, visitor)`; `visitor` es el HMAC con `APP_KEY` del id aleatorio de la cookie funcional `eo_rx` (un año, `HttpOnly`, solo se crea al reaccionar). Los conteos son por idioma (fila de `posts`) y salen de un `GROUP BY` sobre el índice `(post_id, reaction)`; `Reactions::summaries()` los da para varias entradas en una consulta.
+- Open Graph: de las portadas WebP se genera una vez un JPEG 1200×630 en `public/og/` (WhatsApp y LinkedIn no siempre muestran WebP); las imágenes por defecto son `og-default.png` y `og-default-en.png`.
 
 ### Seguridad
 - CSRF con cookie de doble envío firmada; honeypot y marca de tiempo firmada en los formularios públicos; límite de peticiones por IP en acceso, pago, suscripción, búsqueda y contacto.

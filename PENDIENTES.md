@@ -92,6 +92,17 @@ El simulacro propio se retiró. La página `/herramientas/simulacro-concurso-doc
 
 ---
 
+### A10. Reacciones, compartir y menú móvil (7 de octubre de 2026)
+**Por defecto:**
+- Cada artículo (ES y EN, también los futuros; no las páginas ni las políticas) termina con el bloque **"¿Te sirvió este artículo?"**: reacciones al estilo LinkedIn (👍 Me gusta, 💡 Útil, 👏 Aplausos, ❤️ Me encanta, 🤔 Me hizo pensar) y botones para compartir (WhatsApp, LinkedIn, Facebook, X, Telegram, correo, copiar enlace y el menú nativo del celular). Junto al título aparece un resumen de reacciones y un botón "Compartir".
+- **Una reacción por visitante y artículo**, que se puede cambiar o quitar. Los conteos son **por idioma** (la versión en inglés cuenta aparte): son públicos distintos y así nadie cuenta dos veces.
+- El visitante se reconoce con la cookie funcional `eo_rx` (id aleatorio, un año), que **solo se crea al reaccionar**. En la base solo queda su firma (HMAC), nunca el valor. Ya está documentada en la política de cookies (ES y EN).
+- Los enlaces para compartir **no llevan UTM**: el sitio solo usa UTM en enlaces salientes, y una URL con parámetros no se sirve desde la caché de página.
+- No hay botón flotante para compartir en el celular: ya está el de WhatsApp y competiría con la lectura y los anuncios.
+- Para que WhatsApp y LinkedIn muestren la portada al compartir, de cada portada WebP se genera una vez un JPEG de 1200×630 en `public/og/` (fuera de git).
+
+**Qué decidir:** si quieres otros nombres o emojis para las reacciones (`lang/es.php` y `lang/en.php`, claves `rx.*`) o sumar los conteos de las dos versiones de un artículo.
+
 ## B. Revisión de contenido
 
 1. **Traducciones al inglés por revisar** (filtro "Por revisar" del panel): 12 artículos, 15 productos, 7 familias, 3 hubs, 5 páginas y `lang/en.php`. Notas de la traducción:

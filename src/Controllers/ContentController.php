@@ -106,6 +106,8 @@ final class ContentController extends Controller
         $image = $post['cover_url'] ?: null;
         // Las portadas propias son rutas locales; Open Graph y JSON-LD necesitan la URL completa.
         $imageAbs = $image !== null && str_starts_with($image, '/') ? url($image) : $image;
+        // Para compartir: JPEG 1200×630 derivado de las portadas WebP (WhatsApp y LinkedIn no siempre muestran WebP).
+        $og = \App\Services\Seo\OgImage::forCover($image, $post['cover_srcset'] ?? null);
 
         return $this->page('pages/article', [
             'post' => $post,
@@ -116,6 +118,8 @@ final class ContentController extends Controller
             'isContest' => $isContest,
             'siblings' => Post::siblings($post, 2),
             'crumbs' => $crumbs,
+            // Conteos al momento de generar la página (puede quedar en caché); article.js los actualiza.
+            'reactions' => \App\Services\Reactions::summary((int) $post['id']),
         ], [
             'title' => $post['seo_title'] ?: $post['title'],
             'description' => $post['seo_description'] ?: $post['excerpt'],
@@ -124,7 +128,11 @@ final class ContentController extends Controller
             'alternates' => Post::alternates($post),
             'breadcrumbs' => $crumbs,
             'og_type' => 'article',
-            'image' => $imageAbs,
+            'image' => $og !== null ? url($og['url']) : $imageAbs,
+            'image_width' => $og['width'] ?? ($post['cover_width'] ? (int) $post['cover_width'] : null),
+            'image_height' => $og['height'] ?? ($post['cover_height'] ? (int) $post['cover_height'] : null),
+            'image_alt' => $image !== null ? ($post['cover_alt'] ?: $post['title']) : null,
+            'article_section' => $hub ? ($hub['menu_title'] ?: $hub['title']) : null,
             'preload_image' => $image,
             'preload_srcset' => $post['cover_srcset'] ?? null,
             'preload_sizes' => \App\Services\Seo\Assets::COVER_SIZES,

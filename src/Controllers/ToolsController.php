@@ -50,6 +50,9 @@ final class ToolsController extends Controller
         if ($key === 'fundales') {
             return $this->fundales($slug);
         }
+        if ($key === 'piar') {
+            return (new PiarController())->landing($slug);
+        }
         $product = !empty($tool['product_wp_id']) ? Product::byWpId((int) $tool['product_wp_id'], $locale) : null;
         $faqs = self::faqs("tool.$key");
         $path = route('tool', ['slug' => $slug]);

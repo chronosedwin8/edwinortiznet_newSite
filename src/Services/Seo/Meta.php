@@ -57,7 +57,17 @@ final class Meta
         $noindex = !empty($meta['noindex']) || Config::bool('NOINDEX');
         $meta['robots'] = $noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large';
         $meta['og_type'] ??= 'website';
-        $meta['image'] = $meta['image'] ?? url($locale === 'en' ? '/assets/img/og-default-en.png' : '/assets/img/og-default.png');
+        if (empty($meta['image'])) {
+            // Imagen por defecto (1200×630) de cada idioma.
+            $meta['image'] = url($locale === 'en' ? '/assets/img/og-default-en.png' : '/assets/img/og-default.png');
+            $meta['image_width'] = 1200;
+            $meta['image_height'] = 630;
+            $meta['image_alt'] = I18n::t('seo.home.title');
+        } elseif (str_starts_with((string) $meta['image'], '/') && !str_starts_with((string) $meta['image'], '//')) {
+            // Open Graph exige URL absoluta.
+            $meta['image'] = url((string) $meta['image']);
+        }
+        $meta['image_alt'] ??= $fullTitle;
         $meta['og_locale'] = I18n::meta('og');
         $meta['og_locale_alternate'] = $meta['alternates'] ? I18n::meta('og', I18n::other()) : null;
         $meta['html_lang'] = I18n::meta('html');

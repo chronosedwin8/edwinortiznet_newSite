@@ -19,6 +19,7 @@ return [
 <li><strong>eo_csrf:</strong> protects forms against forged submissions.</li>
 <li><strong>eo_sess:</strong> keeps your “My account” and admin panel session.</li>
 <li><strong>eo_cart:</strong> indicates that you have products in your cart.</li>
+<li><strong>eo_rx:</strong> remembers your reaction to articles so you can change or remove it. It is a random identifier that is only created when you react and lasts one year.</li>
 </ul>
 <h2>Preferences (local storage)</h2>
 <ul>

@@ -1,7 +1,9 @@
 <?php
 /** @var array $order @var string $orderUrl @var array $downloads @var string $total */
 $subject = "Pago aprobado: tus descargas del pedido {$order['reference']}";
-$hasService = (bool) array_filter($order['items'], fn ($i) => in_array($i['product_type'] ?? '', ['service', 'course'], true));
+$isPiar = fn ($i) => str_starts_with((string) ($i['product_sku'] ?? ''), 'PIAR-');
+$hasPiar = (bool) array_filter($order['items'], $isPiar);
+$hasService = (bool) array_filter($order['items'], fn ($i) => in_array($i['product_type'] ?? '', ['service', 'course'], true) && !$isPiar($i));
 ?>
 <p>Hola, <?= e($order['name']) ?>:</p>
 <p>¡Tu pago de <strong><?= e($total) ?></strong> fue aprobado! Gracias por tu compra.</p>
@@ -12,6 +14,9 @@ $hasService = (bool) array_filter($order['items'], fn ($i) => in_array($i['produ
   <li><a href="<?= e(url(route('download', ['token' => $d['token']]))) ?>"><?= e($d['title']) ?><?= $d['label'] && $d['label'] !== $d['title'] ? ' — ' . e($d['label']) : '' ?></a></li>
 <?php endforeach; ?>
 </ul>
+<?php endif; ?>
+<?php if ($hasPiar): ?>
+<p>Tu paquete de <strong>PIAR con IA</strong> ya está activo: entra con este mismo correo en <a href="<?= e(url(route('piar'))) ?>"><?= e(url(route('piar'))) ?></a> y crea tus planes.</p>
 <?php endif; ?>
 <?php if ($hasService): ?>
 <p>Para los cursos o servicios de tu pedido te escribiré a este correo para coordinar el acceso.</p>

@@ -18,14 +18,11 @@ final class HomeController extends Controller
     public function index(Request $request): Response
     {
         $locale = I18n::locale();
-        $hubKeys = $locale === 'es' ? ['excel', 'ia-para-docentes', 'concurso-docente'] : ['excel', 'ia-para-docentes'];
+        // Pestañas por sección: las mismas del menú principal (Secciones → "Mostrar en el menú").
         $hubs = [];
-        foreach ($hubKeys as $key) {
-            $hub = Hub::byKey($key, $locale);
-            if ($hub !== null) {
-                $hub['posts'] = Post::latest($locale, 3, 0, (int) $hub['id']);
-                $hubs[] = $hub;
-            }
+        foreach (Hub::menu($locale) as $hub) {
+            $hub['posts'] = Post::latest($locale, 3, 0, (int) $hub['id']);
+            $hubs[] = $hub;
         }
         if ($locale === 'en') {
             // En inglés hay pocos artículos por hub: se muestran también los últimos en general.

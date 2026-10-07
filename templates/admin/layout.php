@@ -10,6 +10,7 @@ $groups = [
         ['/admin/productos/', 'box', 'admin.products'],
         ['/admin/familias/', 'tag', 'admin.families'],
         ['/admin/pedidos/', 'receipt', 'admin.orders'],
+        ['/admin/piar/', 'puzzle', 'admin.piar'],
     ],
     'admin.group.site' => [
         ['/admin/suscriptores/', 'users', 'admin.subscribers'],

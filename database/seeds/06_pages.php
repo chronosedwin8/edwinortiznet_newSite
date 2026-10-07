@@ -141,6 +141,7 @@ HTML,
 <li><strong>eo_csrf:</strong> protege los formularios contra envíos falsificados.</li>
 <li><strong>eo_sess:</strong> mantiene la sesión de «Mi cuenta» y del panel de administración.</li>
 <li><strong>eo_cart:</strong> indica que tienes productos en el carrito.</li>
+<li><strong>eo_rx:</strong> recuerda tu reacción en los artículos para que puedas cambiarla o quitarla. Es un identificador aleatorio que solo se crea cuando reaccionas y dura un año.</li>
 </ul>
 <h2>Preferencias (almacenamiento local)</h2>
 <ul>

@@ -116,8 +116,30 @@ $publicUrl = $post['type'] === 'policy' ? route('policy', ['slug' => $post['slug
       <summary><?= e(t('admin.seo.outline')) ?></summary>
       <div class="box__body"><ol class="outline" data-outline></ol></div>
     </details>
+
+    <?php if (!$isNew): ?>
+    <details class="box box--danger">
+      <summary><?= e(t('admin.danger_zone')) ?></summary>
+      <div class="box__body">
+        <?php if (!empty($protected)): ?>
+        <p class="hint"><?= e(t('admin.posts.protected_hint')) ?></p>
+        <?php else: ?>
+        <p class="hint"><?= e(t('admin.posts.delete_note')) ?></p>
+        <button class="btn btn--danger btn--small btn--block" type="submit" form="delete-post"><?= icon('trash') ?><?= e(t('admin.posts.delete_this')) ?></button>
+        <?php endif; ?>
+      </div>
+    </details>
+    <?php endif; ?>
   </aside>
 </form>
+<?php if (!$isNew && empty($protected)): ?>
+<form id="delete-post" method="post" action="<?= e(route('admin.posts.delete')) ?>" data-delete-form hidden>
+  <?= csrf_field() ?>
+  <input type="hidden" name="ids[]" value="<?= (int) $post['id'] ?>" data-title="<?= e($post['title']) ?>" data-translation="<?= $translation ? '1' : '0' ?>">
+  <input type="hidden" name="return" value="/admin/contenido/">
+</form>
+<?= \App\Core\View::render('admin/posts/delete-dialog', ['returnUrl' => '/admin/contenido/']) ?>
+<?php endif; ?>
 <script type="application/json" id="rte-data"><?= json_encode([
     'products' => array_map(fn ($p) => ['slug' => $p['slug'], 'title' => $p['title']], $products),
     'hubs' => array_map(fn ($h) => ['key' => $h['key'], 'title' => $h['title']], $hubs),

@@ -32,6 +32,20 @@ final class Hub
         return DB::all(self::SELECT . ' WHERE t.locale = :l ORDER BY h.sort', ['l' => $locale]);
     }
 
+    /**
+     * Secciones del menú principal y de las pestañas de la portada (hubs.in_menu = 1), en orden.
+     * "herramientas" no entra: su página es /herramientas/, que ya tiene su propio enlace.
+     */
+    public static function menu(string $locale): array
+    {
+        try {
+            return DB::all(self::SELECT . ' WHERE t.locale = :l AND h.in_menu = 1 AND h.`key` <> "herramientas" ORDER BY h.sort, h.id', ['l' => $locale]);
+        } catch (\PDOException) {
+            // Sin la migración 013 (despliegue a medias): las secciones de siempre.
+            return DB::all(self::SELECT . ' WHERE t.locale = :l AND h.`key` IN ("excel", "ia-para-docentes", "concurso-docente") ORDER BY h.sort', ['l' => $locale]);
+        }
+    }
+
     public static function path(array $hub): string
     {
         return ($hub['locale'] === 'en' ? '/en/' : '/') . $hub['slug'] . '/';

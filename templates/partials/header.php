@@ -6,22 +6,12 @@ use App\Services\I18n\I18n;
 $locale = I18n::locale();
 $other = I18n::other();
 $switch = $meta['switch_url'] ?? null;
-$nav = $locale === 'es'
-    ? [
-        ['/excel/', t('nav.excel')],
-        ['/ia-para-docentes/', t('nav.teachers')],
-        ['/concurso-docente/', t('nav.contest')],
-        [route('tools'), t('nav.tools')],
-        [route('shop'), t('nav.shop')],
-        [route('blog'), t('nav.blog')],
-    ]
-    : [
-        ['/en/excel-automation/', t('nav.excel')],
-        ['/en/ai-for-teachers/', t('nav.teachers')],
-        [route('tools'), t('nav.tools')],
-        [route('shop'), t('nav.shop')],
-        [route('blog'), t('nav.blog')],
-    ];
+// Secciones marcadas "en el menú" desde el panel (Secciones), luego las páginas fijas.
+$hubs = \App\Models\Hub::menu($locale);
+$nav = array_map(fn (array $hub) => [\App\Models\Hub::path($hub), $hub['menu_title'] ?: $hub['title']], $hubs);
+$nav[] = [route('tools'), t('nav.tools')];
+$nav[] = [route('shop'), t('nav.shop')];
+$nav[] = [route('blog'), t('nav.blog')];
 $current = \App\Services\Seo\Meta::path();
 ?>
 <header class="site-header">
@@ -39,11 +29,15 @@ $current = \App\Services\Seo\Meta::path();
     </nav>
     <div class="header-actions">
       <a class="btn-icon" href="<?= e(route('search')) ?>" data-search-open aria-label="<?= e(t('search.open')) ?>" title="<?= e(t('search.shortcut')) ?>"><?= icon('search') ?></a>
-      <a class="lang-switch" href="<?= e($switch ?? route('home', [], $other)) ?>" hreflang="<?= e($other) ?>" lang="<?= e(I18n::meta('html', $other)) ?>" aria-label="<?= e(t('lang.switch_label', [], $other)) ?>"><?= e(strtoupper($other)) ?></a>
-      <button type="button" class="btn-icon js-only" data-theme-toggle aria-label="<?= e(t('theme.toggle')) ?>"><?= icon('contrast') ?></button>
+      <a class="lang-switch header-actions__wide" href="<?= e($switch ?? route('home', [], $other)) ?>" hreflang="<?= e($other) ?>" lang="<?= e(I18n::meta('html', $other)) ?>" aria-label="<?= e(t('lang.switch_label', [], $other)) ?>"><?= e(strtoupper($other)) ?></a>
+      <button type="button" class="btn-icon js-only header-actions__wide" data-theme-toggle aria-label="<?= e(t('theme.toggle')) ?>"><?= icon('contrast') ?></button>
       <a class="btn-icon cart-link" href="<?= e(route('cart')) ?>" data-cart-open aria-label="<?= e(t('cart.open')) ?>">
         <?= icon('cart') ?><span class="cart-count" data-cart-count hidden>0</span>
       </a>
+      <button type="button" class="btn-icon menu-toggle js-only" data-menu-open aria-expanded="false" aria-controls="mobile-menu" aria-label="<?= e(t('nav.menu_open')) ?>">
+        <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
     </div>
   </div>
 </header>
+<?= \App\Core\View::render('partials/mobile-menu', ['meta' => $meta, 'hubs' => $hubs, 'current' => $current, 'switch' => $switch]) ?>

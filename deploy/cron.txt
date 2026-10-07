@@ -7,3 +7,7 @@
 
 # Cada noche: regenera el sitemap.
 15 3 * * * cd /var/www/edwinortiz && php bin/console sitemap:build >> storage/logs/cron.log 2>&1
+
+# Cada 15 minutos: PIAR con IA — borra el contenido de las pruebas gratis vencidas (2 horas)
+# y da por fallidas las generaciones colgadas (devuelve el crédito).
+*/15 * * * * cd /var/www/edwinortiz && php bin/console piar:purge >> storage/logs/cron.log 2>&1

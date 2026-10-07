@@ -10,6 +10,7 @@ use App\Admin\OrdersController as AdminOrders;
 use App\Admin\PostsController as AdminPosts;
 use App\Admin\ProductsController as AdminProducts;
 use App\Admin\MiscController as AdminMisc;
+use App\Admin\PiarController as AdminPiar;
 use App\Controllers\AccountController;
 use App\Controllers\BlogController;
 use App\Controllers\CartController;
@@ -19,6 +20,7 @@ use App\Controllers\DownloadController;
 use App\Controllers\HomeController;
 use App\Controllers\OrderController;
 use App\Controllers\PageController;
+use App\Controllers\PiarController;
 use App\Controllers\ProductController;
 use App\Controllers\SearchController;
 use App\Controllers\SeoController;
@@ -43,6 +45,8 @@ return static function (Router $r): void {
     $r->get('/robots.txt', [SeoController::class, 'robots'], 'robots');
     $r->get('/api/buscar', [SearchController::class, 'api'], 'api.search');
     $r->post('/api/carrito', [CartController::class, 'validate'], 'api.cart');
+    $r->get('/api/reacciones/{id}', [\App\Controllers\ReactionsController::class, 'show'], 'api.reactions');
+    $r->post('/api/reacciones/{id}', [\App\Controllers\ReactionsController::class, 'update']);
     $r->post('/webhooks/{gateway}', [WebhookController::class, 'handle'], 'webhook');
     $r->get('/webhooks/{gateway}', [WebhookController::class, 'ping']);
     $r->get('/descarga/{token}/', [DownloadController::class, 'download'], 'download');
@@ -55,12 +59,16 @@ return static function (Router $r): void {
     $r->get('/admin/contenido/', [AdminPosts::class, 'index'], 'admin.posts');
     $r->get('/admin/contenido/nuevo/', [AdminPosts::class, 'create'], 'admin.posts.create');
     $r->post('/admin/contenido/nuevo/', [AdminPosts::class, 'store']);
+    $r->post('/admin/contenido/borrar/', [AdminPosts::class, 'destroy'], 'admin.posts.delete');
     $r->get('/admin/contenido/{id}/', [AdminPosts::class, 'edit'], 'admin.posts.edit');
     $r->post('/admin/contenido/{id}/', [AdminPosts::class, 'update']);
     $r->post('/admin/contenido/{id}/traducir/', [AdminPosts::class, 'translate'], 'admin.posts.translate');
     $r->post('/admin/vista-previa/', [AdminPosts::class, 'preview'], 'admin.preview');
     $r->get('/admin/buscar/', [AdminController::class, 'search'], 'admin.search');
     $r->get('/admin/secciones/', [AdminHubs::class, 'index'], 'admin.hubs');
+    $r->get('/admin/secciones/nueva/', [AdminHubs::class, 'create'], 'admin.hubs.create');
+    $r->post('/admin/secciones/nueva/', [AdminHubs::class, 'store']);
+    $r->post('/admin/secciones/{id}/borrar/', [AdminHubs::class, 'destroy'], 'admin.hubs.delete');
     $r->get('/admin/secciones/{id}/', [AdminHubs::class, 'edit'], 'admin.hubs.edit');
     $r->post('/admin/secciones/{id}/', [AdminHubs::class, 'update']);
     $r->get('/admin/medios/', [AdminMedia::class, 'index'], 'admin.media');
@@ -76,6 +84,11 @@ return static function (Router $r): void {
     $r->post('/admin/productos/{id}/archivo/', [AdminProducts::class, 'upload'], 'admin.products.upload');
     $r->get('/admin/familias/', [AdminProducts::class, 'families'], 'admin.families');
     $r->post('/admin/familias/', [AdminProducts::class, 'saveFamilies']);
+    $r->get('/admin/familias/nueva/', [AdminProducts::class, 'createFamily'], 'admin.families.create');
+    $r->post('/admin/familias/nueva/', [AdminProducts::class, 'storeFamily']);
+    $r->get('/admin/familias/{id}/', [AdminProducts::class, 'editFamily'], 'admin.families.edit');
+    $r->post('/admin/familias/{id}/', [AdminProducts::class, 'updateFamily']);
+    $r->post('/admin/familias/{id}/borrar/', [AdminProducts::class, 'deleteFamily'], 'admin.families.delete');
     $r->get('/admin/pedidos/', [AdminOrders::class, 'index'], 'admin.orders');
     $r->get('/admin/pedidos/{id}/', [AdminOrders::class, 'show'], 'admin.orders.show');
     $r->post('/admin/pedidos/{id}/reenviar/', [AdminOrders::class, 'resend'], 'admin.orders.resend');
@@ -90,6 +103,27 @@ return static function (Router $r): void {
     $r->get('/admin/ajustes/', [AdminMisc::class, 'settings'], 'admin.settings');
     $r->post('/admin/ajustes/', [AdminMisc::class, 'saveSettings']);
     $r->post('/admin/cache/', [AdminMisc::class, 'flushCache'], 'admin.cache');
+
+    // --- PIAR con IA (solo español; la presentación está en /herramientas/piar/) ---
+    $r->get('/admin/piar/', [AdminPiar::class, 'index'], 'admin.piar');
+    $r->post('/admin/piar/', [AdminPiar::class, 'grant']);
+    $r->get('/piar/', [PiarController::class, 'dashboard'], 'piar');
+    $r->get('/piar/acceso/', [PiarController::class, 'dashboard']);
+    $r->post('/piar/acceso/', [PiarController::class, 'requestLink'], 'piar.access');
+    $r->get('/piar/acceso/{token}/', [PiarController::class, 'login'], 'piar.login');
+    $r->post('/piar/salir/', [PiarController::class, 'logout'], 'piar.logout');
+    $r->post('/piar/terminos/', [PiarController::class, 'acceptTerms'], 'piar.terms');
+    $r->get('/piar/nuevo/', [PiarController::class, 'create'], 'piar.new');
+    $r->post('/piar/nuevo/', [PiarController::class, 'store']);
+    $r->get('/piar/planes/', [PiarController::class, 'plans'], 'piar.plans');
+    $r->get('/piar/perfil/', [PiarController::class, 'profile'], 'piar.profile');
+    $r->post('/piar/perfil/', [PiarController::class, 'saveProfile']);
+    $r->get('/piar/perfil/logo/', [PiarController::class, 'logo'], 'piar.logo');
+    $r->get('/piar/{uuid:token}/', [PiarController::class, 'show'], 'piar.show');
+    $r->get('/piar/{uuid:token}/estado/', [PiarController::class, 'status'], 'piar.status');
+    $r->get('/piar/{uuid:token}/editar/', [PiarController::class, 'edit'], 'piar.edit');
+    $r->post('/piar/{uuid:token}/editar/', [PiarController::class, 'update']);
+    $r->get('/piar/{uuid:token}/pdf/', [PiarController::class, 'pdf'], 'piar.pdf');
 
     // --- Rutas por idioma -------------------------------------------------
     $locales = [

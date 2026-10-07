@@ -10,6 +10,7 @@ use App\Core\Request;
 use App\Core\Response;
 use App\Core\View;
 use App\Services\Content\ContentRenderer;
+use App\Services\Content\PostDeletion;
 use App\Services\Importer\HtmlCleaner;
 use App\Services\Media\MediaLibrary;
 use App\Services\Importer\WxrImporter;
@@ -55,7 +56,12 @@ final class PostsController extends AdminBase
              FROM posts p WHERE ' . implode(' AND ', $where) . ' ORDER BY p.published_at DESC, p.id DESC LIMIT 300',
             $params
         );
-        return $this->view('posts/index', ['posts' => $posts, 'filters' => $filters], t('admin.posts'));
+        foreach ($posts as &$p) {
+            $p['protected'] = PostDeletion::isProtected($p);
+        }
+        unset($p);
+        $qs = $request->queryString();
+        return $this->view('posts/index', ['posts' => $posts, 'filters' => $filters, 'returnUrl' => '/admin/contenido/' . ($qs !== '' ? '?' . $qs : '')], t('admin.posts'));
     }
 
     private function options(): array
@@ -84,7 +90,7 @@ final class PostsController extends AdminBase
             throw HttpException::notFound();
         }
         $translation = DB::one('SELECT id, locale, slug, title, needs_review FROM posts WHERE translation_group = :g AND id <> :id LIMIT 1', ['g' => $post['translation_group'], 'id' => (int) $post['id']]);
-        return $this->view('posts/edit', ['post' => $post, 'translation' => $translation] + $this->options(), $post['title']);
+        return $this->view('posts/edit', ['post' => $post, 'translation' => $translation, 'protected' => PostDeletion::isProtected($post)] + $this->options(), $post['title']);
     }
 
     public function store(Request $request): Response
@@ -117,6 +123,12 @@ final class PostsController extends AdminBase
         $hubTaken = DB::value('SELECT id FROM hub_translations WHERE locale = :l AND slug = :s', ['l' => $locale, 's' => $slug]);
         if ($taken !== null || $hubTaken !== null) {
             return $this->fail($back, t('admin.error.slug'));
+        }
+        // Un slug nuevo no puede ser el de una ruta fija (/blog/, /tienda/…): esa página nunca se vería.
+        // (Las existentes, como /sobre-mi/, se sirven por su propia ruta y conservan su slug.)
+        $postType = $request->post['type'] ?? 'post';
+        if ($postType !== 'policy' && $slug !== ($post['slug'] ?? null) && Slugs::reserved($locale, $slug)) {
+            return $this->fail($back, t('admin.error.slug_route'));
         }
         $cleaner = new HtmlCleaner();
         $html = $cleaner->sanitize((string) ($request->post['content_html'] ?? ''), ['title' => $title, 'slug' => $slug]);
@@ -170,6 +182,46 @@ final class PostsController extends AdminBase
         }
         $this->saved();
         return $this->back("/admin/contenido/$id/", t('admin.saved'));
+    }
+
+    /**
+     * Borra uno o varios (ids[]). Sin "confirmed" muestra la página de confirmación (respaldo sin JavaScript;
+     * con JavaScript se confirma en el diálogo de la lista o de la zona de peligro). Ver PostDeletion.
+     */
+    public function destroy(Request $request): Response
+    {
+        $this->requireAdmin($request);
+        $ids = array_values(array_filter(array_map('intval', (array) ($request->post['ids'] ?? [])), fn (int $id) => $id > 0));
+        $return = (string) ($request->post['return'] ?? '');
+        $return = preg_match('#^/admin/contenido/(\?[^\s]*)?$#', $return) === 1 ? $return : '/admin/contenido/';
+        if ($ids === []) {
+            return $this->fail($return, t('admin.posts.delete_none'));
+        }
+        if (empty($request->post['confirmed'])) {
+            $posts = DB::all(
+                'SELECT p.id, p.type, p.locale, p.slug, p.title, p.status,
+                        (SELECT COUNT(*) FROM posts x WHERE x.translation_group = p.translation_group AND x.id <> p.id) AS has_translation
+                 FROM posts p WHERE p.id IN (' . DB::in($ids) . ') ORDER BY p.title',
+                $ids
+            );
+            foreach ($posts as &$p) {
+                $p['protected'] = PostDeletion::isProtected($p);
+            }
+            unset($p);
+            return $this->view('posts/delete', ['posts' => $posts, 'returnUrl' => $return], t('admin.posts.delete_title'));
+        }
+        $result = PostDeletion::delete($ids, !empty($request->post['with_translations']), !empty($request->post['redirect']));
+        $n = count($result['deleted']);
+        $blocked = implode(', ', array_map(fn (array $p) => '«' . $p['title'] . '»', $result['protected']));
+        if ($n === 0) {
+            return $this->fail($return, $blocked !== '' ? t('admin.posts.delete_protected', ['titles' => $blocked]) : t('admin.posts.delete_none'));
+        }
+        $this->saved();
+        $message = t($n === 1 ? 'admin.posts.deleted_one' : 'admin.posts.deleted', ['n' => $n]);
+        if ($blocked !== '') {
+            $message .= ' ' . t('admin.posts.delete_skipped', ['titles' => $blocked]);
+        }
+        return $this->back($return, $message);
     }
 
     /** Crea la versión en inglés a partir de la española (borrador, needs_review = 1). */

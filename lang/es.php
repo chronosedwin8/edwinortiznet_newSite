@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Cadenas de interfaz en español de Colombia. Uso: t('clave', ['param' => valor]) → reemplaza :param.
  * Tono cercano y directo.
  */
-return array_merge(require __DIR__ . '/admin.es.php', [
+return array_merge(require __DIR__ . '/admin.es.php', require __DIR__ . '/piar.es.php', [
     // Sitio y SEO
     'site.name' => 'Edwin Ortiz Herazo',
     'site.owner' => 'Edwin Ortiz Herazo',
@@ -33,12 +33,30 @@ return array_merge(require __DIR__ . '/admin.es.php', [
     'nav.blog' => 'Blog',
     'nav.courses' => 'Cursos',
     'nav.account' => 'Mi cuenta',
+    'nav.menu' => 'Menú',
+    'nav.menu_open' => 'Abrir el menú',
+    'nav.menu_close' => 'Cerrar el menú',
+    'nav.topics' => 'Temas',
+    'nav.resources' => 'Recursos',
+    'nav.more' => 'Más',
+    'nav.preferences' => 'Preferencias',
+    'nav.excel_desc' => 'Plantillas y automatización de oficina',
+    'nav.teachers_desc' => 'IA y tecnología para el aula',
+    'nav.contest_desc' => 'Guías, entrevista y simulacros',
+    'nav.tools_desc' => 'Gratis y en tu navegador',
+    'nav.shop_desc' => 'Plantillas listas para usar',
+    'nav.courses_desc' => 'Aprende a tu ritmo',
+    'nav.blog_desc' => 'Guías y artículos recientes',
+    'nav.language' => 'Idioma',
 
     // Idioma y tema
     'lang.banner' => 'Esta página está disponible en español',
     'lang.switch_label' => 'Ver esta página en español',
     'lang.switch_to' => 'Español',
     'theme.toggle' => 'Cambiar entre modo claro y oscuro',
+    'theme.label' => 'Tema',
+    'theme.light' => 'Claro',
+    'theme.dark' => 'Oscuro',
 
     // Pie
     'footer.tagline' => 'Automatización, IA y tecnología para docentes y oficinas. Desde Barranquilla, Colombia.',
@@ -127,6 +145,41 @@ return array_merge(require __DIR__ . '/admin.es.php', [
     'post.product_cta' => 'Ver plantilla',
     'post.product_end' => '¿Prefieres tenerlo listo?',
     'post.product_end_soon' => 'Estoy preparando una herramienta para esto',
+    'post.share_short' => 'Compartir',
+
+    // Reacciones y compartir
+    'engage.title' => '¿Te sirvió este artículo?',
+    'engage.text' => 'Reacciona y compártelo con alguien a quien le pueda servir.',
+    'rx.like' => 'Me gusta',
+    'rx.insightful' => 'Útil',
+    'rx.celebrate' => 'Aplausos',
+    'rx.love' => 'Me encanta',
+    'rx.thoughtful' => 'Me hizo pensar',
+    'rx.picker' => 'Elige una reacción',
+    'rx.more' => 'Ver todas las reacciones',
+    'rx.remove' => 'Quitar mi reacción',
+    'rx.hint' => 'Mantén presionado para elegir otra reacción',
+    'rx.total_one' => '1 reacción',
+    'rx.total' => ':n reacciones',
+    'rx.none' => 'Sé el primero en reaccionar',
+    'rx.details' => 'Ver el detalle de las reacciones',
+    'rx.saved' => 'Reaccionaste con «:r»',
+    'rx.removed' => 'Quitaste tu reacción',
+    'rx.error' => 'No se pudo guardar tu reacción. Inténtalo de nuevo.',
+    'rx.summary' => 'Reacciones de los lectores',
+    'share.title' => 'Compártelo',
+    'share.label' => 'Compartir este artículo',
+    'share.native' => 'Compartir',
+    'share.whatsapp' => 'Compartir en WhatsApp',
+    'share.linkedin' => 'Compartir en LinkedIn',
+    'share.facebook' => 'Compartir en Facebook',
+    'share.x' => 'Compartir en X',
+    'share.telegram' => 'Compartir en Telegram',
+    'share.email' => 'Enviar por correo',
+    'share.email_body' => 'Te comparto este artículo, creo que te puede servir:',
+    'share.copy' => 'Copiar enlace',
+    'share.copied' => '¡Enlace copiado!',
+    'share.copy_error' => 'No se pudo copiar. Mantén presionado el enlace para copiarlo.',
     'ads.label' => 'Publicidad',
 
     // Hubs
@@ -306,6 +359,9 @@ return array_merge(require __DIR__ . '/admin.es.php', [
     'tool.fundales.name' => 'Simulacro del Concurso Docente',
     'tool.fundales.summary' => 'Practica con simulacros reales en Fundales: preguntas tipo CNSC, juicio situacional y análisis de resultados. Cuenta gratis por un año.',
     'tools.external' => 'Proyecto aliado',
+    'tools.ai' => 'Con IA',
+    'tool.piar.name' => 'Plan de ajustes razonables (PIAR)',
+    'tool.piar.summary' => 'Apoya la construcción de ajustes para estudiantes con necesidades diversas.',
 
     // Fundales (solo español): simulacros del Concurso Docente en fundales.com
     'fundales.crumb' => 'Simulacro del Concurso Docente',

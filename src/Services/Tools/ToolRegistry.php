@@ -33,6 +33,14 @@ final class ToolRegistry
             'script' => null,
             'icon' => 'target',
         ],
+        // PIAR con IA: presentación aquí; la aplicación vive en /piar/ (PiarController).
+        'piar' => [
+            'slugs' => ['es' => 'piar'],
+            'product_wp_id' => null,
+            'script' => null,
+            'icon' => 'puzzle',
+            'tag' => 'tools.ai',
+        ],
     ];
 
     public static function forLocale(string $locale): array

@@ -10,6 +10,7 @@ use App\Core\Request;
 use App\Core\Response;
 use App\Services\Downloads\DownloadService;
 use App\Services\Importer\HtmlCleaner;
+use App\Services\Seo\Redirects;
 use App\Services\Storage\S3;
 use App\Services\Waitlist;
 
@@ -252,11 +253,12 @@ final class ProductsController extends AdminBase
     {
         $this->requireAdmin($request);
         $rows = DB::all(
-            'SELECT f.id, f.`key`, f.audience, f.sort, es.name AS name_es, es.slug AS slug_es, en.name AS name_en, en.slug AS slug_en
+            'SELECT f.id, f.`key`, f.audience, f.sort, es.name AS name_es, es.slug AS slug_es, en.name AS name_en, en.slug AS slug_en,
+                    (SELECT COUNT(*) FROM products p WHERE p.family_id = f.id) AS products
              FROM product_families f
              LEFT JOIN product_family_translations es ON es.family_id = f.id AND es.locale = "es"
              LEFT JOIN product_family_translations en ON en.family_id = f.id AND en.locale = "en"
-             ORDER BY f.sort'
+             ORDER BY f.sort, f.id'
         );
         return $this->view('products/families', ['families' => $rows], t('admin.families'));
     }
@@ -264,20 +266,154 @@ final class ProductsController extends AdminBase
     public function saveFamilies(Request $request): Response
     {
         $this->requireAdmin($request);
+        $rows = [];
         foreach ((array) ($request->post['families'] ?? []) as $id => $f) {
-            if (!is_array($f)) {
+            if (!is_array($f) || (int) $id <= 0) {
                 continue;
             }
-            DB::update('product_families', ['sort' => (int) ($f['sort'] ?? 0)], ['id' => (int) $id]);
             foreach (['es', 'en'] as $locale) {
-                $name = trim((string) ($f["name_$locale"] ?? ''));
+                $name = mb_substr(trim((string) ($f["name_$locale"] ?? '')), 0, 190);
                 if ($name !== '') {
                     $slug = HtmlCleaner::slugify((string) (($f["slug_$locale"] ?? '') ?: $name));
-                    DB::upsert('product_family_translations', ['family_id' => (int) $id, 'locale' => $locale, 'name' => $name, 'slug' => $slug], ['family_id', 'locale']);
+                    if ($slug === '' || self::familySlugTaken($locale, $slug, (int) $id)) {
+                        return $this->fail('/admin/familias/', t('admin.error.slug') . ' (' . $name . ')');
+                    }
+                    $rows[] = [(int) $id, $locale, ['name' => $name, 'slug' => $slug]];
                 }
             }
+            DB::update('product_families', ['sort' => (int) ($f['sort'] ?? 0)], ['id' => (int) $id]);
+        }
+        foreach ($rows as [$id, $locale, $data]) {
+            self::putFamilyTranslation($id, $locale, $data);
         }
         $this->saved();
         return $this->back('/admin/familias/', t('admin.saved'));
+    }
+
+    public function createFamily(Request $request): Response
+    {
+        $this->requireAdmin($request);
+        $family = ['id' => null, 'key' => '', 'audience' => 'oficina', 'sort' => (int) DB::value('SELECT COALESCE(MAX(sort), 0) + 1 FROM product_families')];
+        return $this->view('products/family', ['family' => $family, 'translations' => [], 'productCount' => 0], t('admin.families.new'));
+    }
+
+    public function editFamily(Request $request, string $id): Response
+    {
+        $this->requireAdmin($request);
+        $family = DB::one('SELECT * FROM product_families WHERE id = :id', ['id' => (int) $id]) ?? throw HttpException::notFound();
+        $translations = [];
+        foreach (DB::all('SELECT * FROM product_family_translations WHERE family_id = :id', ['id' => $family['id']]) as $row) {
+            $translations[$row['locale']] = $row;
+        }
+        return $this->view('products/family', [
+            'family' => $family,
+            'translations' => $translations,
+            'productCount' => (int) DB::value('SELECT COUNT(*) FROM products WHERE family_id = :f', ['f' => $family['id']]),
+        ], t('admin.families.edit', ['name' => $translations['es']['name'] ?? $family['key']]));
+    }
+
+    public function storeFamily(Request $request): Response
+    {
+        $this->requireAdmin($request);
+        return $this->saveFamily($request, null);
+    }
+
+    public function updateFamily(Request $request, string $id): Response
+    {
+        $this->requireAdmin($request);
+        $family = DB::one('SELECT * FROM product_families WHERE id = :id', ['id' => (int) $id]) ?? throw HttpException::notFound();
+        return $this->saveFamily($request, $family);
+    }
+
+    /** Familia nueva o editada: clave (solo al crear), perfil, orden y nombre, slug y descripción por idioma. */
+    private function saveFamily(Request $request, ?array $family): Response
+    {
+        $back = $family ? "/admin/familias/{$family['id']}/" : '/admin/familias/nueva/';
+        $familyId = (int) ($family['id'] ?? 0);
+        $cleaner = new HtmlCleaner();
+        $rows = [];
+        foreach (['es', 'en'] as $locale) {
+            $tr = $request->post[$locale] ?? null;
+            $name = is_array($tr) ? mb_substr(trim((string) ($tr['name'] ?? '')), 0, 190) : '';
+            if ($name === '') {
+                if ($locale === 'es') {
+                    return $this->fail($back, t('admin.error.name'));
+                }
+                continue; // Sin nombre en inglés: la familia no aparece (o conserva su versión) en la tienda en inglés.
+            }
+            $slug = HtmlCleaner::slugify((string) (($tr['slug'] ?? '') ?: $name));
+            if ($slug === '' || self::familySlugTaken($locale, $slug, $familyId)) {
+                return $this->fail($back, t('admin.error.slug'));
+            }
+            $description = trim((string) ($tr['description_html'] ?? ''));
+            $rows[$locale] = [
+                'name' => $name,
+                'slug' => $slug,
+                'description_html' => $description !== '' ? $cleaner->sanitize($description) : null,
+                'needs_review' => !empty($tr['needs_review']) ? 1 : 0,
+            ];
+        }
+        $base = [
+            'audience' => in_array($request->post['audience'] ?? '', \App\Controllers\ShopController::AUDIENCES, true) ? $request->post['audience'] : 'oficina',
+            'sort' => (int) ($request->post['sort'] ?? ($family['sort'] ?? 0)),
+        ];
+        if ($family === null) {
+            $key = substr(HtmlCleaner::slugify((string) ($request->post['key'] ?? '') ?: $rows['es']['slug']), 0, 60);
+            if ($key === '' || DB::value('SELECT id FROM product_families WHERE `key` = :k', ['k' => $key]) !== null) {
+                return $this->fail($back, t('admin.error.family_key'));
+            }
+            $base['key'] = $key;
+        }
+        $familyId = DB::transaction(function () use ($family, $familyId, $base, $rows): int {
+            if ($family === null) {
+                $familyId = DB::insert('product_families', $base);
+            } else {
+                DB::update('product_families', $base, ['id' => $familyId]);
+            }
+            foreach ($rows as $locale => $data) {
+                self::putFamilyTranslation($familyId, $locale, $data);
+            }
+            return $familyId;
+        });
+        $this->saved();
+        return $this->back("/admin/familias/$familyId/", t($family === null ? 'admin.families.created' : 'admin.saved'));
+    }
+
+    /** Solo se eliminan familias vacías. Sus URL (/categoria-producto/…/) redirigen (301) a la tienda. */
+    public function deleteFamily(Request $request, string $id): Response
+    {
+        $this->requireAdmin($request);
+        $family = DB::one('SELECT * FROM product_families WHERE id = :id', ['id' => (int) $id]) ?? throw HttpException::notFound();
+        $count = (int) DB::value('SELECT COUNT(*) FROM products WHERE family_id = :f', ['f' => $family['id']]);
+        if ($count > 0) {
+            return $this->fail('/admin/familias/', t('admin.families.not_empty', ['n' => $count]));
+        }
+        DB::transaction(function () use ($family): void {
+            foreach (DB::all('SELECT locale, slug FROM product_family_translations WHERE family_id = :f', ['f' => $family['id']]) as $tr) {
+                Redirects::add(route('shop.family', ['slug' => $tr['slug']], $tr['locale']), route('shop', [], $tr['locale']), 'Familia eliminada en el panel: ' . $family['key']);
+            }
+            DB::run('DELETE FROM product_families WHERE id = :id', ['id' => $family['id']]);
+        });
+        $this->saved();
+        return $this->back('/admin/familias/', t('admin.families.deleted'));
+    }
+
+    private static function familySlugTaken(string $locale, string $slug, int $exceptFamily): bool
+    {
+        return DB::value('SELECT id FROM product_family_translations WHERE locale = ? AND slug = ? AND family_id <> ?', [$locale, $slug, $exceptFamily]) !== null;
+    }
+
+    /** Inserta o actualiza el texto de una familia; si cambia el slug, la URL anterior redirige (301). */
+    private static function putFamilyTranslation(int $familyId, string $locale, array $data): void
+    {
+        $current = DB::one('SELECT id, slug FROM product_family_translations WHERE family_id = ? AND locale = ?', [$familyId, $locale]);
+        if ($current === null) {
+            DB::insert('product_family_translations', ['family_id' => $familyId, 'locale' => $locale] + $data);
+            return;
+        }
+        DB::update('product_family_translations', $data, ['id' => (int) $current['id']]);
+        if ($current['slug'] !== $data['slug']) {
+            Redirects::add(route('shop.family', ['slug' => $current['slug']], $locale), route('shop.family', ['slug' => $data['slug']], $locale), 'Cambio de slug de familia en el panel');
+        }
     }
 }

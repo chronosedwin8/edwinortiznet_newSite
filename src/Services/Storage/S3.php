@@ -77,6 +77,19 @@ final class S3
         }
     }
 
+    /** Contenido de un objeto (privado o público), o null si no existe. */
+    public static function get(string $key): ?string
+    {
+        $res = self::send('GET', $key);
+        if ($res['status'] === 404) {
+            return null;
+        }
+        if ($res['status'] !== 200) {
+            throw new RuntimeException('S3 GET ' . $key . ': HTTP ' . $res['status'] . ' ' . self::error($res['body']));
+        }
+        return $res['body'];
+    }
+
     /** Tamaño en bytes del objeto, o null si no existe. */
     public static function size(string $key): ?int
     {

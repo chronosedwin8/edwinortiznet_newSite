@@ -43,6 +43,7 @@ final class Kernel
                 'routes:check' => $this->routesCheck(),
                 'storage:s3' => $this->storageS3(),
                 'waitlist:notify' => $this->waitlistNotify(),
+                'piar:purge' => $this->piarPurge(),
                 default => $this->help(),
             };
         } catch (\Throwable $e) {
@@ -53,7 +54,7 @@ final class Kernel
 
     private function help(): int
     {
-        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify');
+        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify, piar:purge');
         return 0;
     }
 
@@ -192,6 +193,15 @@ final class Kernel
             $sent += \App\Services\Waitlist::notifyIfAvailable((int) $productId);
         }
         $this->out("Avisos de lista de espera enviados: $sent.");
+        return 0;
+    }
+
+    /** PIAR con IA: borra el contenido de las pruebas gratis vencidas (2 h) y da por fallidas las generaciones colgadas. */
+    private function piarPurge(): int
+    {
+        $stale = \App\Services\Piar\PiarPlans::expireStale();
+        $purged = \App\Services\Piar\PiarPlans::purgeTrials();
+        $this->out("PIAR: $purged prueba(s) purgada(s), $stale generación(es) vencida(s).");
         return 0;
     }
 

@@ -36,7 +36,7 @@ const T = {
   editImage: 'Editar imagen', emptyLib: 'Todavía no hay imágenes. Sube la primera.',
   draftFound: 'Hay cambios sin guardar de una sesión anterior.', restore: 'Recuperar', discard: 'Descartar',
   pick: 'Elegir imagen', noImage: 'Sin imagen', question: 'Pregunta', answer: 'Respuesta', addFaq: 'Agregar pregunta', up: 'Subir', down: 'Bajar',
-  cmdNo: 'Sin resultados',
+  cmdNo: 'Sin resultados', ok: 'Aceptar',
   seo: {
     title: 'Título SEO entre 50 y 60 caracteres', desc: 'Meta descripción entre 120 y 160 caracteres', kwTitle: 'Palabra clave en el título SEO',
     kwDesc: 'Palabra clave en la meta descripción', kwFirst: 'Palabra clave en el primer párrafo', kwH2: 'Palabra clave en algún H2',
@@ -209,10 +209,116 @@ for (const tabs of $$('[data-tabs]')) {
   });
 }
 
-document.addEventListener('submit', (e) => {
+/* Confirmación accesible (en lugar de window.confirm): <form data-confirm="¿Seguro…?" data-confirm-ok="Eliminar">.
+   El foco empieza en "Cancelar"; Esc cancela y el navegador devuelve el foco al botón que abrió el diálogo. */
+function confirmDialog(text, okLabel = T.ok) {
+  const dlg = document.createElement('dialog');
+  dlg.className = 'modal modal--sm';
+  const id = `confirm-${Date.now()}`;
+  dlg.setAttribute('aria-labelledby', id);
+  dlg.innerHTML = `<div class="modal__body"><p class="confirm-text" id="${id}"></p></div>
+    <div class="modal__foot"><button type="button" class="btn btn--ghost" data-no>${esc(T.cancel)}</button><button type="button" class="btn btn--danger" data-yes>${icon('trash')}${esc(okLabel)}</button></div>`;
+  $(`#${id}`, dlg).textContent = text;
+  body.append(dlg);
+  return new Promise((resolve) => {
+    let ok = false;
+    $('[data-no]', dlg).addEventListener('click', () => dlg.close());
+    $('[data-yes]', dlg).addEventListener('click', () => { ok = true; dlg.close(); });
+    dlg.addEventListener('close', () => { dlg.remove(); resolve(ok); });
+    dlg.showModal();
+    $('[data-no]', dlg).focus();
+  });
+}
+document.addEventListener('submit', async (e) => {
   const form = e.target.closest('form[data-confirm]');
-  if (form && !window.confirm(form.dataset.confirm)) e.preventDefault();
+  if (!form) return;
+  if (form.dataset.confirmed === '1') { delete form.dataset.confirmed; return; }
+  e.preventDefault();
+  const submitter = e.submitter?.form === form ? e.submitter : undefined;
+  const ok = typeof HTMLDialogElement === 'function'
+    ? await confirmDialog(form.dataset.confirm, form.dataset.confirmOk || T.ok)
+    : window.confirm(form.dataset.confirm);
+  if (!ok) return;
+  form.dataset.confirmed = '1';
+  form.requestSubmit(submitter);
 });
+
+/* Artículos y páginas: selección múltiple con barra fija y diálogo de borrado (con opciones de traducción y 301).
+   Sin JavaScript, los mismos formularios llevan a una página de confirmación en el servidor. */
+(function initBulkDelete() {
+  const bar = $('[data-bulk-bar]');
+  if (bar) {
+    const boxes = () => $$('[data-row-check]');
+    const all = $('[data-select-all]');
+    const count = $('[data-bulk-count]', bar);
+    const clear = $('[data-bulk-clear]', bar);
+    const update = () => {
+      const list = boxes();
+      const n = list.filter((b) => b.checked).length;
+      bar.hidden = n === 0;
+      count.textContent = n === 1 ? count.dataset.one : count.dataset.many.replace(':n', n);
+      if (all) {
+        all.checked = n > 0 && n === list.length;
+        all.indeterminate = n > 0 && n < list.length;
+      }
+    };
+    if (all) {
+      all.hidden = false;
+      all.disabled = boxes().length === 0;
+      all.addEventListener('change', () => { boxes().forEach((b) => { b.checked = all.checked; }); update(); });
+    }
+    clear.hidden = false;
+    clear.addEventListener('click', () => { boxes().forEach((b) => { b.checked = false; }); update(); all?.focus(); });
+    let last = null;
+    document.addEventListener('click', (e) => {
+      const box = e.target.closest('[data-row-check]');
+      if (!box) return;
+      // Mayús + clic marca o desmarca el rango desde la última casilla.
+      if (e.shiftKey && last && last !== box) {
+        const list = boxes();
+        const [a, b] = [list.indexOf(last), list.indexOf(box)].sort((x, y) => x - y);
+        list.slice(a, b + 1).forEach((x) => { x.checked = box.checked; });
+      }
+      last = box;
+      update();
+    });
+    document.addEventListener('change', (e) => { if (e.target.matches('[data-row-check]')) update(); });
+    window.addEventListener('pageshow', update);
+    update();
+  }
+
+  const dlg = $('[data-delete-dialog]');
+  if (!dlg || typeof dlg.showModal !== 'function') return;
+  const form = $('form', dlg);
+  const heading = $('[data-delete-heading]', dlg);
+  const list = $('[data-delete-list]', dlg);
+  const ids = $('[data-delete-ids]', dlg);
+  const trBox = $('[data-delete-tr]', dlg);
+  const trLabel = $('[data-delete-tr-label]', dlg);
+  const cancel = $('[data-delete-cancel]', dlg);
+  cancel.addEventListener('click', () => dlg.close());
+  form.addEventListener('submit', () => { $$('button', form).forEach((b) => { b.disabled = true; }); });
+  document.addEventListener('submit', (e) => {
+    const src = e.target.closest('form[data-delete-form]');
+    if (!src) return;
+    e.preventDefault();
+    const items = [...src.elements].filter((el) => el.name === 'ids[]' && (el.type !== 'checkbox' || el.checked));
+    if (!items.length) return;
+    const n = items.length;
+    heading.textContent = n === 1 ? heading.dataset.one.replace(':title', items[0].dataset.title || '') : heading.dataset.many.replace(':n', n);
+    list.replaceChildren(...items.slice(0, 8).map((el) => Object.assign(document.createElement('li'), { textContent: el.dataset.title || `#${el.value}` })));
+    if (n > 8) list.append(Object.assign(document.createElement('li'), { className: 'muted', textContent: list.dataset.more.replace(':n', n - 8) }));
+    ids.replaceChildren(...items.map((el) => Object.assign(document.createElement('input'), { type: 'hidden', name: 'ids[]', value: el.value })));
+    const withTr = items.filter((el) => el.dataset.translation === '1').length;
+    trBox.hidden = withTr === 0;
+    $('input', trBox).checked = false;
+    trLabel.textContent = trLabel.dataset.text.replace(':n', withTr);
+    const ret = $('[name="return"]', src);
+    if (ret) $('[data-delete-return]', dlg).value = ret.value;
+    dlg.showModal();
+    cancel.focus();
+  });
+}());
 
 for (const form of $$('form[data-editor]')) {
   let dirty = false;

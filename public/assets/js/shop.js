@@ -35,3 +35,12 @@ if (root) {
     apply();
   });
 }
+
+// En el celular cada grupo de filtros es una fila deslizable: el filtro activo queda a la vista.
+for (const group of document.querySelectorAll('.filters__group')) {
+  const active = group.querySelector('.chip[aria-current="true"]');
+  if (active && group.scrollWidth > group.clientWidth) {
+    const offset = active.getBoundingClientRect().left - group.getBoundingClientRect().left + group.scrollLeft;
+    group.scrollLeft = Math.max(0, offset - group.clientWidth / 2 + active.offsetWidth / 2);
+  }
+}

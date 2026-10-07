@@ -1,5 +1,5 @@
 <?php
-/** @var array $post @var array|null $hub @var string $html @var array $toc @var array|null $product @var array $siblings @var array $crumbs */
+/** @var array $post @var array|null $hub @var string $html @var array $toc @var array|null $product @var array $siblings @var array $crumbs @var array $reactions */
 
 use App\Core\View;
 
@@ -19,6 +19,11 @@ $updated = substr((string) $post['updated_at'], 0, 10);
       <span><?= e(t('post.updated')) ?> <time datetime="<?= e($updated) ?>"><?= e(fdate($post['updated_at'])) ?></time></span>
       <?php endif; ?>
       <span><?= e(t('post.minutes', ['n' => (int) $post['reading_minutes']])) ?></span>
+      <a class="article__rx" href="#reacciones" data-rx-summary title="<?= e(t('rx.summary')) ?>"<?= $reactions['total'] ? '' : ' hidden' ?>>
+        <span class="rx__stack" aria-hidden="true" data-rx-stack><?php foreach ($reactions['top'] as $type): ?><span><?= \App\Services\Reactions::TYPES[$type] ?></span><?php endforeach; ?></span>
+        <span class="visually-hidden"><?= e(t('rx.summary')) ?>:</span> <span data-rx-total-short><?= (int) $reactions['total'] ?></span>
+      </a>
+      <a class="article__share" href="#compartir" data-share-jump><?= icon('share') ?><?= e(t('post.share_short')) ?></a>
     </p>
   </header>
 
@@ -50,6 +55,8 @@ $updated = substr((string) $post['updated_at'], 0, 10);
       <div class="notice" role="note"><?= $post['notice_html'] ?></div>
       <?php endif; ?>
       <?= $html ?>
+
+      <?= View::render('partials/post-engage', ['post' => $post, 'reactions' => $reactions]) ?>
 
       <?php if (!empty($isContest)): ?>
       <?= View::render('partials/fundales-cta', ['campaign' => 'articulo-final', 'variant' => 'banner']) ?>

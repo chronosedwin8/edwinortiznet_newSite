@@ -7,6 +7,7 @@
 !/storage/cache/.gitkeep
 /storage/logs/*
 !/storage/logs/.gitkeep
+/storage/piar/
 /public/uploads/*
 !/public/uploads/.htaccess
 /.phpunit.cache/
@@ -15,3 +16,6 @@
 # Solo en el servidor: CV personal y archivos rescatados de WordPress
 /public/cv/
 /public/wp-content/
+
+# Imágenes para compartir (JPEG) generadas a partir de las portadas WebP
+/public/og/

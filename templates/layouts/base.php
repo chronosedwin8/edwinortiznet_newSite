@@ -32,8 +32,11 @@ $locale = $meta['locale'];
 <meta property="og:description" content="<?= e($meta['description']) ?>">
 <meta property="og:url" content="<?= e($meta['canonical']) ?>">
 <meta property="og:image" content="<?= e($meta['image']) ?>">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<?php if (!empty($meta['image_width']) && !empty($meta['image_height'])): ?>
+<meta property="og:image:width" content="<?= (int) $meta['image_width'] ?>">
+<meta property="og:image:height" content="<?= (int) $meta['image_height'] ?>">
+<?php endif; ?>
+<meta property="og:image:alt" content="<?= e($meta['image_alt']) ?>">
 <meta property="og:locale" content="<?= e($meta['og_locale']) ?>">
 <?php if ($meta['og_locale_alternate']): ?>
 <meta property="og:locale:alternate" content="<?= e($meta['og_locale_alternate']) ?>">
@@ -44,10 +47,17 @@ $locale = $meta['locale'];
 <?php if (!empty($meta['modified'])): ?>
 <meta property="article:modified_time" content="<?= e($meta['modified']) ?>">
 <?php endif; ?>
+<?php if ($meta['og_type'] === 'article'): ?>
+<meta property="article:author" content="<?= e(url(route('about'))) ?>">
+<?php if (!empty($meta['article_section'])): ?>
+<meta property="article:section" content="<?= e($meta['article_section']) ?>">
+<?php endif; ?>
+<?php endif; ?>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="<?= e($meta['og_title'] ?? $meta['full_title']) ?>">
 <meta name="twitter:description" content="<?= e($meta['description']) ?>">
 <meta name="twitter:image" content="<?= e($meta['image']) ?>">
+<meta name="twitter:image:alt" content="<?= e($meta['image_alt']) ?>">
 <link rel="alternate" type="application/rss+xml" title="<?= e(t('site.name')) ?>" href="<?= e(url(route('feed'))) ?>">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
@@ -90,5 +100,8 @@ $locale = $meta['locale'];
 <?= \App\Core\View::render('partials/footer', ['meta' => $meta]) ?>
 <?= \App\Core\View::render('partials/overlays', ['meta' => $meta]) ?>
 <link rel="stylesheet" href="<?= e(asset('css/main.css')) ?>">
+<?php foreach (($meta['styles'] ?? []) as $style): ?>
+<link rel="stylesheet" href="<?= e(asset($style)) ?>">
+<?php endforeach; ?>
 </body>
 </html>

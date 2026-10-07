@@ -394,6 +394,70 @@ function initHeader() {
   new IntersectionObserver(([entry]) => header.classList.toggle('is-scrolled', !entry.isIntersecting)).observe(sentinel);
 }
 
+/* ---------- Menú móvil: panel lateral con foco atrapado, Esc y bloqueo del scroll ---------- */
+function initMenu() {
+  const menu = $('[data-menu]');
+  const toggle = $('[data-menu-open]');
+  if (!menu || !toggle) return;
+  const panel = $('.mobile-menu__panel', menu);
+  const outside = () => [$('.site-header'), $('main'), $('.site-footer'), $('.whatsapp-float'), $('[data-lang-banner]')].filter(Boolean);
+  let closeTimer = 0;
+  const syncTheme = () => {
+    const current = doc.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    $$('[data-theme-set]', menu).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.themeSet === current)));
+  };
+  const isOpen = () => !menu.hidden && menu.classList.contains('is-open');
+  const open = () => {
+    clearTimeout(closeTimer);
+    syncTheme();
+    menu.hidden = false;
+    doc.classList.add('menu-open');
+    outside().forEach((el) => { el.inert = true; });
+    toggle.setAttribute('aria-expanded', 'true');
+    // Un cuadro después, para que la transición arranque desde fuera de la pantalla.
+    requestAnimationFrame(() => requestAnimationFrame(() => menu.classList.add('is-open')));
+    $('.mobile-menu__close', menu)?.focus({ preventScroll: true });
+  };
+  const close = (restoreFocus = true) => {
+    if (menu.hidden) return;
+    menu.classList.remove('is-open');
+    doc.classList.remove('menu-open');
+    outside().forEach((el) => { el.inert = false; });
+    toggle.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) toggle.focus({ preventScroll: true });
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(() => { if (!menu.classList.contains('is-open')) menu.hidden = true; }, reducedMotion ? 0 : 340);
+  };
+  toggle.addEventListener('click', () => (isOpen() ? close() : open()));
+  menu.addEventListener('click', (e) => {
+    if (e.target.closest('[data-menu-close]')) { close(); return; }
+    const themeBtn = e.target.closest('[data-theme-set]');
+    if (themeBtn) {
+      doc.dataset.theme = themeBtn.dataset.themeSet;
+      store.set('eo-theme', themeBtn.dataset.themeSet);
+      syncTheme();
+      return;
+    }
+    // Al navegar se cierra. Si abre el buscador o el carrito, el foco vuelve antes al botón del menú
+    // para que, al cerrarlos, regrese a un elemento visible.
+    const link = e.target.closest('a[href]');
+    if (link) close(Boolean(link.closest('[data-cart-open], [data-search-open]')));
+  });
+  menu.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+    if (e.key !== 'Tab') return;
+    const focusables = $$('a[href], button:not([disabled])', panel).filter((el) => el.offsetParent !== null);
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  // Al pasar a escritorio (o volver con el botón Atrás desde la caché del navegador) el panel no queda abierto.
+  matchMedia('(min-width: 1000px)').addEventListener('change', (e) => { if (e.matches) close(false); });
+  addEventListener('pageshow', (e) => { if (e.persisted) close(false); });
+}
+
 /* ---------- Foco de luz que sigue al puntero ---------- */
 function initSpotlight() {
   if (reducedMotion || !matchMedia('(hover: hover)').matches) return;
@@ -508,6 +572,7 @@ function initSheet() {
 // Lo visible primero; el resto cuando el hilo principal esté libre.
 initTheme();
 initHeader();
+initMenu();
 initReveal();
 initSheet();
 initTabs();

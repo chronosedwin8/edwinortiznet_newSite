@@ -20,6 +20,20 @@ final class Redirects
         self::$rules = null;
     }
 
+    /**
+     * Redirección exacta (301 por defecto) de una URL que deja de existir. Las reglas que apuntaban a esa URL
+     * pasan a apuntar al nuevo destino, para no encadenar saltos.
+     */
+    public static function add(string $source, string $target, string $note, int $code = 301): void
+    {
+        if ($source === $target) {
+            return;
+        }
+        DB::upsert('redirects', ['source' => $source, 'target' => $target, 'code' => $code, 'match_type' => 'exact', 'note' => mb_substr($note, 0, 255)], ['source', 'match_type']);
+        DB::run('UPDATE redirects SET target = ? WHERE target = ? AND source <> ?', [$target, $source, $target]);
+        self::$rules = null;
+    }
+
     private static function rules(): array
     {
         if (self::$rules === null) {

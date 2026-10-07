@@ -134,7 +134,7 @@ final class OrderService
     public static function withItems(array $order): array
     {
         $order['items'] = DB::all(
-            'SELECT oi.*, p.type AS product_type, p.cover_url FROM order_items oi LEFT JOIN products p ON p.id = oi.product_id WHERE oi.order_id = :o ORDER BY oi.id',
+            'SELECT oi.*, p.type AS product_type, p.sku AS product_sku, p.cover_url FROM order_items oi LEFT JOIN products p ON p.id = oi.product_id WHERE oi.order_id = :o ORDER BY oi.id',
             ['o' => (int) $order['id']]
         );
         return $order;
@@ -205,6 +205,10 @@ final class OrderService
                     DB::run('UPDATE products p JOIN order_items oi ON oi.product_id = p.id SET p.sales_count = p.sales_count + oi.quantity WHERE oi.order_id = :o', ['o' => $id]);
                     self::queue('order-approved', $id);
                     self::queue('admin-sale', $id);
+                    // PIAR con IA: un paquete de créditos por cada ítem (idempotente).
+                    if (\App\Services\Piar\PiarCredits::grantForOrder($id) > 0) {
+                        self::queue('piar-credits', $id);
+                    }
                     return ['result' => 'approved', 'order_id' => $id];
 
                 case Status::DECLINED:
@@ -223,6 +227,7 @@ final class OrderService
                 case Status::REFUNDED:
                     DB::update('orders', $base + ['status' => 'refunded'], ['id' => $id]);
                     DownloadService::revokeGrants($id);
+                    \App\Services\Piar\PiarCredits::revokeForOrder($id);
                     return ['result' => 'refunded', 'order_id' => $id];
 
                 default:
