@@ -12,7 +12,7 @@ use RuntimeException;
  * Cliente mínimo de la API de Google Gemini (generateContent) con salida JSON estructurada.
  * La clave va en la cabecera x-goog-api-key, nunca en la URL ni en los registros.
  *
- * .env: GEMINI_API_KEY y GEMINI_MODEL (por defecto gemini-2.5-pro).
+ * .env: GEMINI_API_KEY y GEMINI_MODEL (por defecto gemini-2.5-pro); GEMINI_ASSIST_MODEL para textos cortos.
  */
 final class Gemini
 {
@@ -32,6 +32,13 @@ final class Gemini
         return preg_match('/^[a-z0-9.\-]{3,60}$/', $model) ? $model : 'gemini-2.5-pro';
     }
 
+    /** Modelo rápido para el asistente de redacción por campo (por defecto gemini-2.5-flash). */
+    public static function assistModel(): string
+    {
+        $model = (string) Config::get('GEMINI_ASSIST_MODEL', 'gemini-2.5-flash');
+        return preg_match('/^[a-z0-9.\-]{3,60}$/', $model) ? $model : 'gemini-2.5-flash';
+    }
+
     /** Pruebas: sustituye la red. Recibe (url, cabeceras, cuerpo decodificado) y devuelve ['status', 'body']. */
     public static function fake(?callable $transport): void
     {
@@ -42,12 +49,12 @@ final class Gemini
      * Genera JSON según $schema. Lanza RuntimeException con un mensaje seguro (sin secretos).
      * @return array{data: array, model: string, prompt_tokens: int, output_tokens: int}
      */
-    public static function generateJson(string $system, string $user, array $schema, float $temperature = 0.6, int $maxTokens = 16384): array
+    public static function generateJson(string $system, string $user, array $schema, float $temperature = 0.6, int $maxTokens = 16384, ?string $model = null, int $thinking = 4096): array
     {
         if (!self::configured()) {
             throw new RuntimeException('Gemini no está configurado (GEMINI_API_KEY).');
         }
-        $model = self::model();
+        $model = $model !== null && preg_match('/^[a-z0-9.\-]{3,60}$/', $model) ? $model : self::model();
         $generation = [
             'responseMimeType' => 'application/json',
             'responseSchema' => $schema,
@@ -56,7 +63,7 @@ final class Gemini
         ];
         // En 2.5 el razonamiento consume del mismo tope de salida: se acota para que el JSON no quede truncado.
         if (str_starts_with($model, 'gemini-2.5')) {
-            $generation['thinkingConfig'] = ['thinkingBudget' => 4096];
+            $generation['thinkingConfig'] = ['thinkingBudget' => $thinking];
         }
         $body = [
             'systemInstruction' => ['parts' => [['text' => $system]]],

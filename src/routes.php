@@ -125,6 +125,7 @@ return static function (Router $r): void {
     $r->get('/piar/{uuid:token}/editar/', [PiarController::class, 'edit'], 'piar.edit');
     $r->post('/piar/{uuid:token}/editar/', [PiarController::class, 'update']);
     $r->get('/piar/{uuid:token}/pdf/', [PiarController::class, 'pdf'], 'piar.pdf');
+    $r->post('/piar/{uuid:token}/asistente/', [PiarController::class, 'assist'], 'piar.assist');
 
     // --- Rutas por idioma -------------------------------------------------
     $locales = [

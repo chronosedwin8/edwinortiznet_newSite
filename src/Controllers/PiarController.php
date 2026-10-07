@@ -13,6 +13,7 @@ use App\Core\Session;
 use App\Services\Ai\Gemini;
 use App\Services\I18n\I18n;
 use App\Services\Mail\MailTemplates;
+use App\Services\Piar\PiarAssist;
 use App\Services\Piar\PiarCatalog;
 use App\Services\Piar\PiarCredits;
 use App\Services\Piar\PiarPdf;
@@ -447,6 +448,28 @@ final class PiarController extends Controller
         PiarPlans::saveEdit($plan, $request->post);
         Session::flash('piar', t('piar.edit.saved'));
         return $this->redirect(route('piar.show', ['uuid' => $plan['uuid']]));
+    }
+
+    /** "Redactar con IA" en un campo del editor (JSON). No descuenta créditos; tiene límite por hora y día. */
+    public function assist(Request $request, string $uuid): Response
+    {
+        $this->requireCsrf($request);
+        $json = static fn (array $data, int $status = 200): Response => Response::json($data, $status)->header('Cache-Control', 'private, no-store');
+        $id = $this->member($request);
+        $plan = $id !== null ? PiarPlans::find($uuid, $id) : null;
+        if ($plan === null || (int) $plan['is_trial'] === 1 || $plan['status'] !== 'done') {
+            return $json(['ok' => false, 'error' => t('piar.assist.forbidden')], 403);
+        }
+        if (PiarAssist::limited((int) $id) || !RateLimiter::hit('piar-assist', $request->ip(), 60, 3600)) {
+            return $json(['ok' => false, 'error' => t('piar.assist.limit', ['hour' => PiarAssist::PER_HOUR, 'day' => PiarAssist::PER_DAY])], 429);
+        }
+        @set_time_limit(120);
+        try {
+            $result = PiarAssist::draft($plan, (int) $id, $request->post);
+        } catch (\RuntimeException $e) {
+            return $json(['ok' => false, 'error' => $e->getMessage()], 422);
+        }
+        return $json(['ok' => true] + $result);
     }
 
     public function pdf(Request $request, string $uuid): Response

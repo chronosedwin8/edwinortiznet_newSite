@@ -383,6 +383,175 @@ function initLogo(input) {
   });
 }
 
+/* ---------- "Redactar con IA" en cada campo del editor ---------- */
+const PREFS_KEY = 'eo-piar-assist-v1';
+const prefs = {
+  get() { try { return JSON.parse(localStorage.getItem(PREFS_KEY) || '{}') || {}; } catch { return {}; } },
+  set(v) { try { localStorage.setItem(PREFS_KEY, JSON.stringify(v)); } catch { /* sin almacenamiento */ } },
+};
+
+function el(tag, attrs = {}, children = []) {
+  const node = document.createElement(tag);
+  Object.entries(attrs).forEach(([k, v]) => {
+    if (k === 'text') node.textContent = v;
+    else if (v !== false && v !== null && v !== undefined) node.setAttribute(k, v === true ? '' : v);
+  });
+  children.forEach((c) => node.append(c));
+  return node;
+}
+
+function initAssist(form) {
+  let cfg;
+  try { cfg = JSON.parse(form.dataset.piarAssist); } catch { return; }
+  const T = cfg.text;
+  const csrf = $('input[name="_csrf"]', form)?.value || '';
+  let dirty = false;
+  form.addEventListener('input', () => { dirty = true; });
+  form.addEventListener('submit', () => { dirty = false; });
+  window.addEventListener('beforeunload', (ev) => {
+    if (dirty) { ev.preventDefault(); ev.returnValue = T.unsaved; }
+  });
+
+  const select = (name, id, current) => {
+    const s = el('select', { id, 'data-ai-opt': name });
+    Object.entries(cfg.options[name]).forEach(([k, label]) => {
+      const o = el('option', { value: k, text: label });
+      if (k === current) o.selected = true;
+      s.append(o);
+    });
+    return s;
+  };
+
+  // Datos de los demás campos del mismo elemento de una tabla (área, objetivo…), para dar contexto.
+  const siblings = (field) => {
+    const item = field.closest('.piar-edit__item');
+    if (!item) return '';
+    return $$('input[type="text"], textarea[data-ai-field], select:not([data-ai-opt])', item)
+      .filter((f) => f !== field && f.value.trim() !== '')
+      .map((f) => `${(item.querySelector(`label[for="${f.id}"]`)?.textContent || '').trim()}: ${f.value.trim()}`)
+      .join('\n')
+      .slice(0, 1500);
+  };
+
+  $$('textarea[data-ai-field]', form).forEach((field, n) => {
+    const row = field.closest('.form__row') || field.parentElement;
+    const label = row.querySelector(`label[for="${field.id}"]`);
+    const toggle = el('button', { type: 'button', class: 'piar-ai-toggle', 'aria-expanded': 'false', 'aria-controls': `ai-${n}` }, [
+      el('span', { 'aria-hidden': 'true', text: '✨' }), T.button,
+    ]);
+    (label || field).after(toggle);
+    let panel = null;
+
+    const build = () => {
+      const p = prefs.get();
+      const id = (k) => `ai-${n}-${k}`;
+      const status = el('p', { class: 'piar-ai__status', role: 'status', 'aria-live': 'polite' });
+      const instruction = el('textarea', { id: id('i'), rows: '3', maxlength: '1500', placeholder: T.placeholder });
+      const actionSel = select('accion', id('a'), field.value.trim() === '' ? 'redactar' : 'mejorar');
+      const toneSel = select('tono', id('t'), p.tono || 'formal');
+      const langSel = select('lenguaje', id('l'), p.lenguaje || 'tecnico');
+      const lenSel = select('extension', id('e'), p.extension || 'media');
+      const generate = el('button', { type: 'button', class: 'btn btn--primary btn--sm' }, [T.generate]);
+      const close = el('button', { type: 'button', class: 'btn btn--ghost btn--sm' }, [T.close]);
+      const result = el('textarea', { id: id('r'), rows: '5' });
+      const resultBox = el('div', { class: 'piar-ai__result', hidden: true }, [
+        el('label', { class: 'piar-ai__label', for: result.id, text: T.result }), result,
+        el('div', { class: 'piar-ai__actions' }, [
+          el('button', { type: 'button', class: 'btn btn--primary btn--sm', 'data-do': 'replace' }, [T.replace]),
+          el('button', { type: 'button', class: 'btn btn--ghost btn--sm', 'data-do': 'append' }, [T.append]),
+          el('button', { type: 'button', class: 'btn btn--ghost btn--sm', 'data-do': 'retry' }, [T.retry]),
+          el('button', { type: 'button', class: 'btn btn--ghost btn--sm', 'data-do': 'discard' }, [T.discard]),
+        ]),
+      ]);
+      const pair = (key, control) => el('div', { class: 'piar-ai__opt' }, [el('label', { for: control.id, text: T[key] }), control]);
+      panel = el('div', { class: 'piar-ai', id: `ai-${n}`, role: 'group', 'aria-label': T.title }, [
+        el('label', { class: 'piar-ai__label', for: instruction.id, text: T.instruction }), instruction,
+        el('div', { class: 'piar-ai__opts' }, [pair('accion', actionSel), pair('tono', toneSel), pair('lenguaje', langSel), pair('extension', lenSel)]),
+        el('div', { class: 'piar-ai__actions' }, [generate, close]),
+        status, resultBox,
+      ]);
+      field.after(panel);
+
+      const run = async () => {
+        const empty = field.value.trim() === '';
+        if (instruction.value.trim() === '' && (actionSel.value === 'redactar' || empty)) {
+          status.textContent = T.need;
+          instruction.focus();
+          return;
+        }
+        prefs.set({ tono: toneSel.value, lenguaje: langSel.value, extension: lenSel.value });
+        const body = new FormData();
+        const data = {
+          _csrf: csrf, field: field.name, current: field.value, instruction: instruction.value,
+          accion: actionSel.value, tono: toneSel.value, lenguaje: langSel.value, extension: lenSel.value, siblings: siblings(field),
+        };
+        Object.entries(data).forEach(([k, v]) => body.append(k, v));
+        generate.disabled = true;
+        panel.classList.add('is-busy');
+        status.textContent = T.working;
+        try {
+          const res = await fetch(cfg.url, { method: 'POST', body, credentials: 'same-origin', headers: { Accept: 'application/json' } });
+          const json = await res.json().catch(() => ({}));
+          if (!res.ok || !json.ok) throw new Error(json.error || T.error);
+          result.value = json.texto;
+          resultBox.hidden = false;
+          status.textContent = '';
+          autogrow(result);
+          result.focus();
+        } catch (e) {
+          status.textContent = e.message || T.error;
+        } finally {
+          generate.disabled = false;
+          panel.classList.remove('is-busy');
+        }
+      };
+
+      generate.addEventListener('click', run);
+      instruction.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)) run();
+      });
+      close.addEventListener('click', () => {
+        panel.hidden = true;
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.focus();
+      });
+      result.addEventListener('input', () => autogrow(result));
+      instruction.addEventListener('input', () => autogrow(instruction));
+      resultBox.addEventListener('click', (ev) => {
+        const what = ev.target.closest('[data-do]')?.dataset.do;
+        if (!what) return;
+        if (what === 'retry') { run(); return; }
+        if (what !== 'discard') {
+          const text = result.value.trim();
+          const keep = what === 'append' && field.value.trim() !== '';
+          field.value = keep ? `${field.value.replace(/\s+$/, '')}\n${text}` : text;
+          field.dispatchEvent(new Event('input', { bubbles: true }));
+          status.textContent = T.applied;
+          field.classList.add('is-ai-applied');
+          setTimeout(() => field.classList.remove('is-ai-applied'), 1600);
+          field.focus();
+        }
+        resultBox.hidden = true;
+        result.value = '';
+      });
+      return instruction;
+    };
+
+    toggle.addEventListener('click', () => {
+      if (!panel) {
+        const first = build();
+        toggle.setAttribute('aria-expanded', 'true');
+        first.focus();
+        return;
+      }
+      const open = panel.hidden;
+      panel.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+      if (open) panel.querySelector('textarea')?.focus();
+    });
+  });
+}
+
 /* ---------- Arranque ---------- */
 initAutogrow();
 const wizard = $('[data-piar-wizard]');
@@ -393,5 +562,7 @@ if ($('[data-piar-done]')) {
   store.clear();
   initToc();
 }
+const assist = $('form[data-piar-assist]');
+if (assist) initAssist(assist);
 const logo = $('[data-logo-input]');
 if (logo) initLogo(logo);

@@ -16,6 +16,7 @@ use App\Core\Session;
 use App\Services\Ai\Gemini;
 use App\Services\Orders\OrderService;
 use App\Services\Payments\Status;
+use App\Services\Piar\PiarAssist;
 use App\Services\Piar\PiarCredits;
 use App\Services\Piar\PiarPlans;
 use App\Services\Piar\PiarProfile;
@@ -215,6 +216,57 @@ final class PiarTest extends TestCase
         } finally {
             DB::run('DELETE FROM admin_users WHERE id = :id', ['id' => $adminId]);
         }
+    }
+
+    public function testAssistDraftsOneFieldForPaidPlansOnly(): void
+    {
+        $id = $this->login();
+        PiarCredits::grantManual($id, 1, 30);
+        $uuid = $this->uuidFrom($this->generate());
+        $this->assertStringContainsString('data-piar-assist', $this->request('GET', "/piar/$uuid/editar/")->body);
+
+        $sent = null;
+        $sentUrl = '';
+        Gemini::fake(function (string $url, array $headers, array $body) use (&$sent, &$sentUrl): array {
+            $sent = $body;
+            $sentUrl = $url;
+            return ['status' => 200, 'body' => (string) json_encode([
+                'candidates' => [['content' => ['parts' => [['text' => json_encode(['texto' => "- Reunión mensual con la familia\n2. **Cuaderno viajero**"])]]], 'finishReason' => 'STOP']],
+                'usageMetadata' => ['promptTokenCount' => 300, 'candidatesTokenCount' => 40],
+            ])];
+        });
+        $res = $this->request('POST', "/piar/$uuid/asistente/", [
+            'field' => 'compromisos[familia]', 'current' => '', 'instruction' => 'La familia se compromete a revisar la agenda cada noche.',
+            'accion' => 'redactar', 'tono' => 'empatico', 'lenguaje' => 'familias', 'extension' => 'breve',
+        ]);
+        $this->assertSame(200, $res->status);
+        $data = json_decode($res->body, true);
+        $this->assertTrue($data['ok']);
+        $this->assertTrue($data['lines']);
+        $this->assertSame("Reunión mensual con la familia\nCuaderno viajero", $data['texto']);
+        $this->assertStringContainsString('/models/gemini-2.5-flash:generateContent', $sentUrl);
+        $this->assertSame(0, $sent['generationConfig']['thinkingConfig']['thinkingBudget']);
+        $prompt = $sent['contents'][0]['parts'][0]['text'];
+        $this->assertStringContainsString('revisar la agenda', $prompt);
+        $this->assertStringContainsString('para que la familia lo entienda', $prompt);
+        $this->assertSame(1, (int) DB::value('SELECT COUNT(*) FROM piar_assists WHERE customer_id = :c', ['c' => $id]));
+        // No descuenta créditos de PIAR.
+        $this->assertSame(1, (int) DB::value('SELECT used FROM piar_packages WHERE customer_id = :c', ['c' => $id]));
+
+        // Campo inexistente o sin indicaciones: 422.
+        $this->assertSame(422, $this->request('POST', "/piar/$uuid/asistente/", ['field' => 'otra_cosa', 'instruction' => 'x'])->status);
+        $this->assertSame(422, $this->request('POST', "/piar/$uuid/asistente/", ['field' => 'resumen', 'current' => '', 'instruction' => ''])->status);
+
+        // Límite por hora.
+        for ($i = 0; $i < PiarAssist::PER_HOUR; $i++) {
+            DB::insert('piar_assists', ['customer_id' => $id, 'plan_id' => (int) DB::value('SELECT id FROM piar_plans WHERE uuid = :u', ['u' => $uuid]), 'field' => 'resumen', 'action' => 'mejorar']);
+        }
+        $this->assertSame(429, $this->request('POST', "/piar/$uuid/asistente/", ['field' => 'resumen', 'instruction' => 'Más corto'])->status);
+
+        // Una cuenta de prueba no puede usarlo.
+        $this->login('Prueba');
+        $trial = $this->uuidFrom($this->generate());
+        $this->assertSame(403, $this->request('POST', "/piar/$trial/asistente/", ['field' => 'resumen', 'instruction' => 'x'])->status);
     }
 
     public function testTrialIsLimitedToTwoAndItsContentIsEphemeral(): void

@@ -5,14 +5,29 @@
  */
 
 use App\Core\View;
+use App\Services\Piar\PiarAssist;
 use App\Services\Piar\PiarCatalog;
 
 $area = static function (string $name, string $value, string $label, int $rows = 4, bool $lines = false): string {
     $id = 'pe-' . trim((string) preg_replace('/[^a-z0-9]+/', '-', strtolower($name)), '-');
     return '<div class="form__row"><label for="' . e($id) . '">' . e($label) . ($lines ? ' <span class="piar-opt-tag">' . e(t('piar.edit.lines')) . '</span>' : '') . '</label>'
-        . '<textarea id="' . e($id) . '" name="' . e($name) . '" rows="' . $rows . '" data-autogrow>' . e($value) . '</textarea></div>';
+        . '<textarea id="' . e($id) . '" name="' . e($name) . '" rows="' . $rows . '" data-autogrow data-ai-field>' . e($value) . '</textarea></div>';
 };
 $lines = static fn (array $items): string => implode("\n", $items);
+// Configuración del asistente "Redactar con IA" (piar.js lo monta junto a cada cuadro de texto).
+$ai = [
+    'url' => route('piar.assist', ['uuid' => $plan['uuid']]),
+    'options' => PiarAssist::options(),
+    'text' => array_map('t', [
+        'button' => 'piar.assist.button', 'title' => 'piar.assist.title', 'instruction' => 'piar.assist.instruction',
+        'placeholder' => 'piar.assist.placeholder', 'accion' => 'piar.assist.accion', 'tono' => 'piar.assist.tono',
+        'lenguaje' => 'piar.assist.lenguaje', 'extension' => 'piar.assist.extension', 'generate' => 'piar.assist.generate',
+        'working' => 'piar.assist.working', 'result' => 'piar.assist.result', 'replace' => 'piar.assist.replace',
+        'append' => 'piar.assist.append', 'retry' => 'piar.assist.retry', 'discard' => 'piar.assist.discard',
+        'close' => 'piar.assist.close', 'applied' => 'piar.assist.applied', 'error' => 'piar.assist.error',
+        'need' => 'piar.assist.need', 'unsaved' => 'piar.assist.unsaved',
+    ]),
+];
 $categories = ['curricular', 'metodologico', 'evaluacion', 'tiempos', 'materiales', 'comunicacion', 'entorno', 'convivencia'];
 $itemFields = [
     'barreras' => ['tipo' => 'piar.col.tipo', 'descripcion' => 'piar.col.descripcion'],
@@ -31,7 +46,8 @@ $itemFields = [
       <p class="lead"><?= e(t('piar.edit.lead')) ?></p>
     </div>
   </header>
-  <form class="piar-form piar-edit__form" action="<?= e(route('piar.edit', ['uuid' => $plan['uuid']])) ?>" method="post">
+  <p class="piar-assist-intro"><?= icon('spark') ?><span><?= e(t('piar.assist.intro')) ?></span></p>
+  <form class="piar-form piar-edit__form" action="<?= e(route('piar.edit', ['uuid' => $plan['uuid']])) ?>" method="post" data-piar-assist="<?= e((string) json_encode($ai, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)) ?>">
     <?= csrf_field() ?>
     <?php foreach ($sections as $section): $key = $section['key']; $value = $output[$key] ?? null; ?>
     <fieldset class="piar-panel piar-edit__section" id="sec-<?= e($key) ?>">
