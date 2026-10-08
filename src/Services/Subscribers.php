@@ -184,7 +184,7 @@ final class Subscribers
     }
 
     /**
-     * Envía el correo de confirmación respetando el tope global (15/h y 60/día).
+     * Envía el correo de confirmación respetando el tope global (por defecto 15/h y 60/día).
      * Devuelve false si se alcanzó el tope o falló el envío.
      */
     public static function sendConfirmation(array $row): bool
@@ -192,8 +192,11 @@ final class Subscribers
         if ($row === [] || $row['status'] !== 'pending') {
             return false;
         }
-        $allowed = RateLimiter::hit('subscribe-mail', 'global', self::MAIL_CAP_HOUR, 3600)
-            && RateLimiter::hit('subscribe-mail-day', 'global', self::MAIL_CAP_DAY, 86400);
+        // Topes ajustables en .env (SUBSCRIBE_MAIL_CAP_HOUR / _DAY) para endurecerlos durante un ataque.
+        $hour = max(1, (int) \App\Core\Config::get('SUBSCRIBE_MAIL_CAP_HOUR', self::MAIL_CAP_HOUR));
+        $day = max(1, (int) \App\Core\Config::get('SUBSCRIBE_MAIL_CAP_DAY', self::MAIL_CAP_DAY));
+        $allowed = RateLimiter::hit('subscribe-mail', 'global', $hour, 3600)
+            && RateLimiter::hit('subscribe-mail-day', 'global', $day, 86400);
         if (!$allowed) {
             Logger::warning('Tope de correos de confirmación de suscripción alcanzado', ['source' => $row['source_type'] ?? '']);
             return false;
