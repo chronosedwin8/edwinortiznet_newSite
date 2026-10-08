@@ -119,6 +119,8 @@ final class Mailer
         }
         $mail->SMTPKeepAlive = self::$keepAlive;
         $mail->CharSet = PHPMailer::CHARSET_UTF8;
+        // Sin cabecera X-Mailer: anunciar el programa de envío resta puntos en algunos filtros de spam.
+        $mail->XMailer = ' ';
         $mail->setFrom((string) Config::get('MAIL_FROM_ADDRESS'), (string) Config::get('MAIL_FROM_NAME', 'Edwin Ortiz Herazo'));
         return $mail;
     }
