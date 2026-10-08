@@ -47,7 +47,9 @@ HTML,
 <h2>2. Data collected</h2>
 <ul>
 <li><strong>Purchases:</strong> name, email address, identity document number (optional, for invoicing) and phone number (optional).</li>
-<li><strong>Newsletter and waiting list:</strong> email address, language and the form you subscribed from.</li>
+<li><strong>Newsletter and waiting list:</strong> email address, language, the topics you choose (teachers, technology and AI, Excel and office work, Concurso Docente), the page or form you subscribed from and an encrypted code of your IP address (not the IP itself) to prevent abuse.</li>
+<li><strong>Newsletter:</strong> each issue includes a 1×1 pixel image and tracked links that show whether it was opened and which links were clicked. This information is used only to improve the content and is not shared.</li>
+<li><strong>AI tools (PIAR con IA and the AI Exam Generator):</strong> what you type in them is sent to the Google Gemini API to generate the document. I recommend using initials and not including data that identifies students.</li>
 <li><strong>Contact:</strong> name, email address and the message you send.</li>
 <li><strong>Browsing:</strong> IP address and technical data needed for the site's security. If you accept analytics cookies, aggregated usage data through Google Analytics.</li>
 </ul>
@@ -56,7 +58,7 @@ HTML,
 <ul>
 <li>Processing your orders, delivering the files you buy and sending you emails related to your purchase.</li>
 <li>Giving you access to “My account” through single-use links sent to your email.</li>
-<li>Sending you the newsletter with new tutorials, tools and products, only if you subscribed and confirmed.</li>
+<li>Sending you the newsletter with new tutorials, tools and products, only if you subscribed and confirmed, personalized to the topics you chose, and measuring opens and clicks to improve it. You can change your topics, pause the newsletter or unsubscribe at any time with the links at the bottom of every email.</li>
 <li>Letting you know when a product on the waiting list becomes available.</li>
 <li>Answering your messages and support requests.</li>
 <li>Complying with legal and accounting obligations, and preventing fraud and abuse.</li>
@@ -66,7 +68,7 @@ HTML,
 <h2>5. How to exercise your rights</h2>
 <p>Send your request from the contact page, stating your name, the email address you registered with and what you are requesting. Inquiries are answered within a maximum of ten (10) business days, extendable by five (5) additional business days; complaints, within a maximum of fifteen (15) business days, extendable by eight (8) additional business days, in accordance with Articles 14 and 15 of Law 1581 of 2012. You can unsubscribe from the newsletter at any time using the link included in every email.</p>
 <h2>6. Processors and transfers</h2>
-<p>To run the site, providers are used that may process data on behalf of the controller, some of them outside Colombia: the web hosting provider, the email delivery service, the payment gateways (Mercado Pago, Wompi and PayPal) and, if you accept them, Google Analytics and Google AdSense. These providers have their own data protection policies.</p>
+<p>To run the site, providers are used that may process data on behalf of the controller, some of them outside Colombia: the web hosting and email delivery provider (Amazon Web Services), Google’s artificial intelligence service (Gemini API) for the PIAR con IA and AI Exam Generator tools, Cloudflare (Turnstile anti-bot check on forms), the payment gateways (Mercado Pago, Wompi and PayPal) and, if you accept them, Google Analytics and Google AdSense. These providers have their own data protection policies.</p>
 <h2>7. Data of minors</h2>
 <p>The site is not aimed at minors. Purchases and subscriptions must be made by adults.</p>
 <h2>8. Security and retention</h2>

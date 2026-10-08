@@ -48,7 +48,9 @@ HTML,
 <h2>2. Datos que se recogen</h2>
 <ul>
 <li><strong>Compras:</strong> nombre, correo electrónico, documento de identidad (opcional, para la facturación) y teléfono (opcional).</li>
-<li><strong>Suscripción y lista de espera:</strong> correo electrónico, idioma y el formulario desde el que te suscribiste.</li>
+<li><strong>Suscripción y lista de espera:</strong> correo electrónico, idioma, los temas que elijas (docentes, tecnología e IA, Excel y oficina, Concurso Docente), la página o el formulario desde el que te suscribiste y un código cifrado de tu dirección IP (no la IP) para prevenir abusos.</li>
+<li><strong>Boletín:</strong> cada boletín incluye una imagen de 1×1 píxel y enlaces con seguimiento que permiten saber si se abrió y en qué enlaces se hizo clic. Esa información se usa solo para mejorar el contenido y no se comparte.</li>
+<li><strong>Herramientas con inteligencia artificial (PIAR con IA y Generador de exámenes con IA):</strong> lo que escribes en ellas se envía a la API de Google Gemini para generar el documento. Te recomiendo usar iniciales y no incluir datos que identifiquen a estudiantes.</li>
 <li><strong>Contacto:</strong> nombre, correo y el mensaje que envíes.</li>
 <li><strong>Navegación:</strong> dirección IP y datos técnicos necesarios para la seguridad del sitio. Si aceptas las cookies analíticas, datos de uso agregados a través de Google Analytics.</li>
 </ul>
@@ -57,7 +59,7 @@ HTML,
 <ul>
 <li>Procesar tus pedidos, entregar los archivos comprados y enviarte los correos relacionados con la compra.</li>
 <li>Dar acceso a «Mi cuenta» mediante enlaces de un solo uso enviados a tu correo.</li>
-<li>Enviarte, solo si te suscribiste y confirmaste, el boletín con nuevos tutoriales, herramientas y productos.</li>
+<li>Enviarte, solo si te suscribiste y confirmaste, el boletín con nuevos tutoriales, herramientas y productos, personalizado según los temas que elegiste, y medir sus aperturas y clics para mejorarlo. Puedes cambiar tus temas, pausar el boletín o darte de baja en cualquier momento con los enlaces del pie de cada correo.</li>
 <li>Avisarte cuando un producto de la lista de espera esté disponible.</li>
 <li>Responder tus mensajes y solicitudes de soporte.</li>
 <li>Cumplir obligaciones legales y contables, y prevenir fraudes y abusos.</li>
@@ -67,7 +69,7 @@ HTML,
 <h2>5. Cómo ejercer tus derechos</h2>
 <p>Envía tu solicitud desde la página de contacto indicando tu nombre, el correo con el que te registraste y lo que solicitas. Las consultas se atienden en un máximo de diez (10) días hábiles, prorrogables por cinco (5) días hábiles más; los reclamos, en un máximo de quince (15) días hábiles, prorrogables por ocho (8) días hábiles más, conforme a los artículos 14 y 15 de la Ley 1581 de 2012. Puedes darte de baja del boletín en cualquier momento con el enlace que aparece en cada correo.</p>
 <h2>6. Encargados y transferencias</h2>
-<p>Para operar el sitio se usan proveedores que pueden tratar datos por cuenta del responsable, algunos fuera de Colombia: el proveedor de alojamiento web, el servicio de envío de correo, las pasarelas de pago (Mercado Pago, Wompi y PayPal) y, si las aceptas, Google Analytics y Google AdSense. Estos proveedores cuentan con políticas de protección de datos propias.</p>
+<p>Para operar el sitio se usan proveedores que pueden tratar datos por cuenta del responsable, algunos fuera de Colombia: el proveedor de alojamiento web y de envío de correo (Amazon Web Services), el servicio de inteligencia artificial de Google (API de Gemini) para las herramientas PIAR con IA y Generador de exámenes con IA, Cloudflare (verificación anti-bots Turnstile en los formularios), las pasarelas de pago (Mercado Pago, Wompi y PayPal) y, si las aceptas, Google Analytics y Google AdSense. Estos proveedores cuentan con políticas de protección de datos propias.</p>
 <h2>7. Datos de menores de edad</h2>
 <p>El sitio no está dirigido a menores de edad. Las compras y suscripciones deben hacerlas personas mayores de edad.</p>
 <h2>8. Seguridad y conservación</h2>
