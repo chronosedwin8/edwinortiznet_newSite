@@ -57,7 +57,12 @@ final class SubscribeTest extends TestCase
         $this->assertNull(DB::value('SELECT confirmed_at FROM subscribers WHERE email = :e', ['e' => $this->email]));
         preg_match('#/suscripcion/confirmar/([a-f0-9]{64})/#', end(Mailer::$sent)['html'], $m);
         $this->assertNotEmpty($m);
-        $this->assertSame(200, App::handle(Request::create('GET', "/suscripcion/confirmar/{$m[1]}/"))->status);
+        // Abrir el enlace (como hacen los filtros de correo) no confirma: hace falta pulsar el botón.
+        $page = App::handle(Request::create('GET', "/suscripcion/confirmar/{$m[1]}/"));
+        $this->assertSame(200, $page->status);
+        $this->assertStringContainsString('method="post"', $page->body);
+        $this->assertNull(DB::value('SELECT confirmed_at FROM subscribers WHERE email = :e', ['e' => $this->email]));
+        $this->assertSame(200, $this->post("/suscripcion/confirmar/{$m[1]}/", [], false)->status);
         $this->assertNotNull(DB::value('SELECT confirmed_at FROM subscribers WHERE email = :e', ['e' => $this->email]));
         $this->assertSame(200, App::handle(Request::create('GET', "/suscripcion/baja/{$m[1]}/"))->status);
         $this->assertNotNull(DB::value('SELECT unsubscribed_at FROM subscribers WHERE email = :e', ['e' => $this->email]));

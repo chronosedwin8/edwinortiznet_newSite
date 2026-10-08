@@ -269,6 +269,7 @@ return static function (Router $r): void {
         $r->get($p['search'], [SearchController::class, 'results'], 'search', $locale);
         $r->post($p['subscribe'], [SubscribeController::class, 'store'], 'subscribe', $locale);
         $r->get($p['subscribe.confirm'], [SubscribeController::class, 'confirm'], 'subscribe.confirm', $locale);
+        $r->post($p['subscribe.confirm'], [SubscribeController::class, 'confirm'], null, $locale);
         $r->get($p['subscribe.unsubscribe'], [SubscribeController::class, 'unsubscribe'], 'subscribe.unsubscribe', $locale);
     }
 

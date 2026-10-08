@@ -35,6 +35,11 @@ final class Subscribers
         return DB::one('SELECT * FROM subscribers WHERE id = :id', ['id' => $id]) ?? [];
     }
 
+    public static function find(string $token): ?array
+    {
+        return preg_match('/^[a-f0-9]{64}$/', $token) ? DB::one('SELECT * FROM subscribers WHERE token = :t', ['t' => $token]) : null;
+    }
+
     public static function confirm(string $token): ?array
     {
         $row = DB::one('SELECT * FROM subscribers WHERE token = :t', ['t' => $token]);
