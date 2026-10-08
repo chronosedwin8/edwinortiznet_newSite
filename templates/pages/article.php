@@ -36,7 +36,7 @@ $updated = substr((string) $post['updated_at'], 0, 10);
   </figure>
   <?php endif; ?>
 
-  <div class="article__layout wrap">
+  <div class="article__layout wrap<?= count($toc) >= 2 ? '' : ' article__layout--single' ?>">
     <?php if (count($toc) >= 2): ?>
     <aside class="toc" aria-labelledby="toc-title">
       <details class="toc__details">

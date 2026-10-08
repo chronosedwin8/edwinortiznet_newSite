@@ -35,6 +35,8 @@
 .bento__card--2 { --tone: #0fb89a; }
 .bento__card--3 { --tone: #ff6a2b; }
 .bento__card > * { position: relative; z-index: 1; }
+/* Lo decorativo deja pasar el clic al enlace que cubre la tarjeta (::after de .bento__link); los accesos directos sí reciben clic. */
+.bento__icon, .bento__text, .bento__visual, .bento__mark, .bento__go { pointer-events: none; }
 .bento__card:hover, .bento__card:focus-within { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: color-mix(in srgb, var(--tone) 35%, var(--line)); }
 .bento__title { margin: 0; }
 .bento__link { color: inherit; text-decoration: none; }
