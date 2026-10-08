@@ -319,11 +319,26 @@ function initSearch() {
 }
 
 /* ---------- Formularios asíncronos (suscripción, lista de espera) ---------- */
+/* Suscripción: referencia externa (solo sitio y ruta) y UTM de la URL, para saber de dónde llegó cada persona. */
+function fillSubscribeContext(form) {
+  if (!form.matches('[data-sub-ctx]')) return;
+  const set = (name, value) => { const f = form.elements.namedItem(name); if (f && value) f.value = String(value).slice(0, 255); };
+  try {
+    if (document.referrer) {
+      const ref = new URL(document.referrer);
+      if (ref.host !== location.host) set('ref', ref.origin + ref.pathname);
+    }
+    const params = new URLSearchParams(location.search);
+    ['utm_source', 'utm_medium', 'utm_campaign'].forEach((k) => set(k, params.get(k) || ''));
+  } catch { /* URL no válida */ }
+}
+
 function initAsyncForms() {
   document.addEventListener('submit', async (e) => {
     const form = e.target.closest('form[data-async-form]');
     if (!form || !window.fetch) return;
     e.preventDefault();
+    fillSubscribeContext(form);
     const status = $('[data-form-status]', form);
     const button = $('button[type="submit"]', form);
     button && (button.disabled = true);
@@ -333,10 +348,13 @@ function initAsyncForms() {
       });
       const data = await res.json().catch(() => ({}));
       if (status) {
-        status.textContent = data.message || (res.ok ? '✓' : '×');
+        status.textContent = data.message || data.error || (res.ok ? '✓' : '×');
         status.dataset.state = res.ok && data.ok !== false ? 'ok' : 'error';
       }
       if (res.ok) form.reset();
+      // Cloudflare Turnstile: cada token sirve una vez.
+      const widget = $('.cf-turnstile', form);
+      if (widget && window.turnstile) { try { window.turnstile.reset(widget); } catch { /* sin widget */ } }
     } catch {
       if (status) { status.textContent = document.body.dataset.labelNetwork || 'Error'; status.dataset.state = 'error'; }
     } finally {

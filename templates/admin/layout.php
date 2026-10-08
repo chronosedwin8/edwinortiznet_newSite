@@ -16,6 +16,7 @@ $groups = [
     ],
     'admin.group.site' => [
         ['/admin/suscriptores/', 'users', 'admin.subscribers'],
+        ['/admin/boletin/', 'mail', 'admin.newsletter'],
         ['/admin/redirecciones/', 'shuffle', 'admin.redirects'],
         ['/admin/ajustes/', 'gear', 'admin.settings'],
     ],

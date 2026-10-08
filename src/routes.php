@@ -50,6 +50,9 @@ return static function (Router $r): void {
     $r->post('/webhooks/{gateway}', [WebhookController::class, 'handle'], 'webhook');
     $r->get('/webhooks/{gateway}', [WebhookController::class, 'ping']);
     $r->get('/descarga/{token}/', [DownloadController::class, 'download'], 'download');
+    // Boletín: píxel de apertura y clics (redirección firmada con APP_KEY).
+    $r->get('/n/o/{id}/{token}/', [\App\Controllers\NewsletterController::class, 'open'], 'newsletter.open');
+    $r->get('/n/c/{id}/{token}/', [\App\Controllers\NewsletterController::class, 'click'], 'newsletter.click');
 
     // --- Panel ------------------------------------------------------------
     $r->get('/admin/', [AdminController::class, 'dashboard'], 'admin');
@@ -95,8 +98,21 @@ return static function (Router $r): void {
     $r->post('/admin/pedidos/{id}/reenviar/', [AdminOrders::class, 'resend'], 'admin.orders.resend');
     $r->post('/admin/pedidos/{id}/regenerar/', [AdminOrders::class, 'regenerate'], 'admin.orders.regenerate');
     $r->post('/admin/pedidos/{id}/consultar/', [AdminOrders::class, 'check'], 'admin.orders.check');
-    $r->get('/admin/suscriptores/', [AdminMisc::class, 'subscribers'], 'admin.subscribers');
-    $r->get('/admin/suscriptores/exportar/', [AdminMisc::class, 'exportSubscribers'], 'admin.subscribers.export');
+    // Suscriptores y boletín.
+    $subs = \App\Admin\SubscribersController::class;
+    $news = \App\Admin\NewsletterController::class;
+    $r->get('/admin/suscriptores/', [$subs, 'index'], 'admin.subscribers');
+    $r->get('/admin/suscriptores/exportar/', [$subs, 'export'], 'admin.subscribers.export');
+    $r->post('/admin/suscriptores/acciones/', [$subs, 'bulk'], 'admin.subscribers.bulk');
+    $r->get('/admin/boletin/', [$news, 'index'], 'admin.newsletter');
+    $r->get('/admin/boletin/historial/', [$news, 'history'], 'admin.newsletter.history');
+    $r->get('/admin/boletin/ajustes/', [$news, 'settings'], 'admin.newsletter.settings');
+    $r->post('/admin/boletin/ajustes/', [$news, 'saveSettings']);
+    $r->get('/admin/boletin/vista-previa/', [$news, 'preview'], 'admin.newsletter.preview');
+    $r->post('/admin/boletin/preparar/', [$news, 'prepare'], 'admin.newsletter.prepare');
+    $r->post('/admin/boletin/prueba/', [$news, 'test'], 'admin.newsletter.test');
+    $r->post('/admin/boletin/enviar-ahora/', [$news, 'sendNow'], 'admin.newsletter.send_now');
+    $r->post('/admin/boletin/{id}/', [$news, 'action'], 'admin.newsletter.action');
     $r->get('/admin/lista-de-espera/exportar/', [AdminMisc::class, 'exportWaitlist'], 'admin.waitlist.export');
     $r->get('/admin/redirecciones/', [AdminMisc::class, 'redirects'], 'admin.redirects');
     $r->post('/admin/redirecciones/', [AdminMisc::class, 'saveRedirect']);
@@ -203,6 +219,7 @@ return static function (Router $r): void {
             'subscribe' => '/suscripcion/',
             'subscribe.confirm' => '/suscripcion/confirmar/{token}/',
             'subscribe.unsubscribe' => '/suscripcion/baja/{token}/',
+            'subscribe.preferences' => '/suscripcion/preferencias/{token}/',
             'feed' => '/feed/',
             'content' => '/{slug}/',
         ],
@@ -232,6 +249,7 @@ return static function (Router $r): void {
             'subscribe' => '/en/subscribe/',
             'subscribe.confirm' => '/en/subscribe/confirm/{token}/',
             'subscribe.unsubscribe' => '/en/subscribe/unsubscribe/{token}/',
+            'subscribe.preferences' => '/en/subscribe/preferences/{token}/',
             'feed' => '/en/feed/',
             'content' => '/en/{slug}/',
         ],
@@ -271,6 +289,9 @@ return static function (Router $r): void {
         $r->get($p['subscribe.confirm'], [SubscribeController::class, 'confirm'], 'subscribe.confirm', $locale);
         $r->post($p['subscribe.confirm'], [SubscribeController::class, 'confirm'], null, $locale);
         $r->get($p['subscribe.unsubscribe'], [SubscribeController::class, 'unsubscribe'], 'subscribe.unsubscribe', $locale);
+        $r->post($p['subscribe.unsubscribe'], [SubscribeController::class, 'unsubscribe'], null, $locale);
+        $r->get($p['subscribe.preferences'], [SubscribeController::class, 'preferences'], 'subscribe.preferences', $locale);
+        $r->post($p['subscribe.preferences'], [SubscribeController::class, 'preferences'], null, $locale);
     }
 
     // Comodín: entradas, páginas y hubs (va al final).

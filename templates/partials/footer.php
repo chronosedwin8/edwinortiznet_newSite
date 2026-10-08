@@ -44,7 +44,7 @@ $policies = $locale === 'es'
     <section class="site-footer__sub" aria-labelledby="footer-sub">
       <h2 class="site-footer__title" id="footer-sub"><?= e(t('subscribe.footer_title')) ?></h2>
       <p class="site-footer__subtext"><?= e(t('subscribe.text')) ?></p>
-      <?= \App\Core\View::render('partials/subscribe-form', ['source' => 'footer', 'tag' => 'general', 'compact' => true, 'idPrefix' => 'footer']) ?>
+      <?= \App\Core\View::render('partials/subscribe-form', ['source' => 'footer', 'tag' => 'general', 'compact' => true, 'idPrefix' => 'footer', 'sourceType' => 'footer']) ?>
     </section>
   </div>
   <div class="wrap site-footer__bottom">

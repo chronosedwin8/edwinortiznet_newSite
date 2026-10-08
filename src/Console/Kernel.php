@@ -50,6 +50,8 @@ final class Kernel
                 'social:publish' => $this->socialPublish(),
                 'social:connect' => $this->socialConnect(),
                 'social:check' => $this->socialCheck(),
+                'newsletter:run' => $this->newsletterRun(),
+                'newsletter:render' => $this->newsletterRender($options),
                 default => $this->help(),
             };
         } catch (\Throwable $e) {
@@ -60,7 +62,7 @@ final class Kernel
 
     private function help(): int
     {
-        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify, piar:purge, examenes:purge, kit:build [materia…] [--check], social:plan [--sin-ia], social:publish, social:connect, social:check');
+        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify, piar:purge, examenes:purge, kit:build [materia…] [--check], social:plan [--sin-ia], social:publish, social:connect, social:check, newsletter:run, newsletter:render [temas] [archivo.html] [--en]');
         return 0;
     }
 
@@ -300,6 +302,37 @@ final class Kernel
         foreach (\App\Services\Social\Connector::check() as $r) {
             $this->out(sprintf('  %s %s %s', $r['ok'] ? '✔' : '✘', $r['account'], $r['detail']));
         }
+        return 0;
+    }
+
+    /** Boletín (cada 10 minutos): prepara la edición, envía la vista previa y manda los lotes. */
+    private function newsletterRun(): int
+    {
+        foreach (\App\Services\Newsletter\Sender::run() as $line) {
+            $this->out('  ' . $line);
+        }
+        return 0;
+    }
+
+    /** Guarda el HTML del boletín para un perfil (temas separados por coma; vacío = de todo un poco) sin enviarlo. */
+    private function newsletterRender(array $options): int
+    {
+        $args = array_values(array_filter($options, fn ($o) => !str_starts_with($o, '--')));
+        $interests = \App\Services\Newsletter\Interests::normalize($args[0] ?? '');
+        $file = $args[1] ?? Config::storage('logs/boletin-vista-previa.html');
+        $locale = in_array('--en', $options, true) ? 'en' : 'es';
+        $issue = \App\Services\Newsletter\Sender::openIssue();
+        if ($issue === null) {
+            $content = \App\Services\Newsletter\Builder::content(gmdate('Y-m-d H:i:s', time() - 15 * 86400));
+            [$es, $en] = \App\Services\Newsletter\Builder::intro($content, false);
+            $issue = ['issue_key' => 'boletin-' . gmdate('Y-m-d'), 'scheduled_for' => gmdate('Y-m-d H:i:s'), 'subject' => null, 'subject_manual' => 0,
+                'intro_es' => $es, 'intro_en' => $en, 'content' => $content];
+        }
+        $mail = \App\Services\Newsletter\Renderer::render($issue, \App\Services\Newsletter\Builder::personalize($issue, $locale, $interests));
+        file_put_contents($file, $mail['html']);
+        file_put_contents((string) preg_replace('/\.html?$/', '', $file) . '.txt', "Asunto: {$mail['subject']}\n\n" . $mail['text']);
+        $this->out("Asunto: {$mail['subject']}");
+        $this->out("HTML: $file");
         return 0;
     }
 

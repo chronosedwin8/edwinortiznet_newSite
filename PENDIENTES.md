@@ -171,7 +171,7 @@ El simulacro propio se retiró. La página `/herramientas/simulacro-concurso-doc
 5. **Redes sociales:** agrega la URL de tu canal de YouTube y de LinkedIn en *Panel → Ajustes*. Se usan en el marcado `Person` de Google; no se inventaron.
 6. **Logo:** el color de marca `#0E5A6B`, el favicon "EO" y las imágenes Open Graph (`public/assets/img/og-default*.png`) son provisionales hasta que entregues el logo.
 7. **Usuario del panel:** se creó `chronosedwin8@gmail.com` con una contraseña aleatoria, que se te entregó por chat. Cámbiala con `php bin/console admin:create chronosedwin8@gmail.com "Edwin Ortiz Herazo"`.
-8. **Boletín:** el sitio recoge suscriptores con doble confirmación y etiquetas (general, excel, concurso…), pero no envía boletines. Exporta el CSV desde el panel a tu herramienta de correo.
+8. **Boletín:** ya se envía solo cada 15 días desde el sitio (ver sección H).
 
 ## E. Rendimiento
 
@@ -192,6 +192,16 @@ Funciona sin decidir nada: los canales quedan **sin aprobación automática** (l
 4. **Revisión de la app de Meta «Minuevoblog»:** mientras la app esté en modo desarrollo, solo publica en páginas y cuentas en las que tú tienes rol (es tu caso). Si Meta pide revisión de `pages_manage_posts` / `instagram_content_publish` para modo «Live», hay que hacerla desde el panel de desarrolladores.
 5. **Decisiones por defecto que puedes cambiar en el panel:** principal todos los días 18:30 (Tecnología 1 + Instagram, todo menos Concurso Docente, sin los paquetes PIAR-*/EXAM-* como productos sueltos: se promocionan como herramienta); concurso lunes, miércoles y viernes 19:00 (Fundales.com, entradas del Concurso Docente + simulacro; PIAR y exámenes apagados). `/enlaces/` es `noindex` (es un índice de enlaces que ya existen en el sitio).
 6. **Opcional:** `SOCIAL_CRON_TOKEN` para el disparador externo `/cron/redes/{token}/` (EventBridge/Lambda); sin él la ruta responde 404.
+
+## H. Suscriptores con temas y boletín cada 15 días — al desplegar
+
+Decisiones tomadas (se pueden cambiar en *Boletín → Ajustes*): **automático** cada 15 días, ajustado al **martes 7:00 a. m.** (hora de Colombia) — en la práctica, un martes cada dos semanas; 5 artículos y 3 productos/herramientas por correo; introducción con Gemini (una vez por edición, con plantilla si falla). **Un día antes** te llega una copia a `ADMIN_EMAIL` para cancelarla o posponerla desde `/admin/boletin/`. Si prefieres revisar cada edición, cambia el modo a «Preparar y esperar mi aprobación».
+
+1. **Migración `019_subscribers_newsletter.sql`** (la aplica `deploy.sh`): una fila por correo con estado, temas, origen y métricas; marca como `spam` los 53 registros del ataque (fuente `home`, creados el 2026-10-08, con baja). Antes de desplegar se puede comprobar con `SELECT COUNT(*) FROM subscribers WHERE source = 'home' AND unsubscribed_at IS NOT NULL AND created_at >= '2026-10-08' AND created_at < '2026-10-09';` (debe dar 53).
+2. **Cron** (usuario `edwinortiz` en CloudPanel): `*/10 * * * *` → `cd /home/edwinortiz/htdocs/www.edwinortiz.net && php bin/console newsletter:run >> storage/logs/cron.log 2>&1`.
+3. **Primera edición:** con el cron activo, la primera sale el primer martes que deje al menos 22 h de margen (se prepara 24 h antes). Puedes adelantarla con «Preparar la próxima edición ahora» o «Enviar ahora».
+4. **Política de privacidad:** agrega el párrafo del boletín (aperturas y clics, ver texto sugerido en el informe) en *Contenido → Políticas → Privacidad*.
+5. **Opcional:** Cloudflare Turnstile (`TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET`) contra bots en los formularios; avisos de rebote y queja de SES (SNS) para marcar «rebotado» solo (hoy se marca a mano en el panel).
 
 ## F. Cambios hechos en este equipo (XAMPP)
 

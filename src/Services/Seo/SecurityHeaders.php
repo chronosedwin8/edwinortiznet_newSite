@@ -27,17 +27,20 @@ final class SecurityHeaders
             . 'https://*.googlesyndication.com https://*.adtrafficquality.google https://partner.googleadservices.com https://www.google.com';
         $gateways = 'https://checkout.wompi.co https://*.mercadopago.com https://*.mercadopago.com.co https://*.mercadolibre.com '
             . 'https://www.paypal.com https://www.sandbox.paypal.com';
+        // Cloudflare Turnstile (anti-bots) solo cuando está configurado en .env.
+        $turnstile = \App\Services\Turnstile::enabled() ? ' https://challenges.cloudflare.com' : '';
         $directives = [
             "default-src 'self'",
-            "script-src 'self' " . self::scriptHash(self::THEME_SCRIPT) . ' ' . $google,
+            "script-src 'self' " . self::scriptHash(self::THEME_SCRIPT) . ' ' . $google . $turnstile,
             "style-src 'self' 'unsafe-inline'",
             "img-src 'self' data: blob: https:",
             "font-src 'self'",
             "media-src 'self' https:",
             "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com "
-                . 'https://pagead2.googlesyndication.com https://*.adtrafficquality.google',
-            'frame-src https://www.youtube-nocookie.com https://www.youtube.com https://googleads.g.doubleclick.net '
-                . 'https://tpc.googlesyndication.com https://www.google.com https://*.adtrafficquality.google',
+                . 'https://pagead2.googlesyndication.com https://*.adtrafficquality.google' . $turnstile,
+            // 'self': vista previa del boletín en el panel (iframe).
+            "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://googleads.g.doubleclick.net "
+                . 'https://tpc.googlesyndication.com https://www.google.com https://*.adtrafficquality.google' . $turnstile,
             "form-action 'self' $gateways",
             "frame-ancestors 'self'",
             "base-uri 'self'",

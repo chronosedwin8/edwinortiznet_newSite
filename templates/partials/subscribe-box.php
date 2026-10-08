@@ -4,5 +4,5 @@
     <h2 class="subscribe-box__title" id="sub-<?= e($source) ?>-title"><?= e($title ?? t('subscribe.title')) ?></h2>
     <p><?= e($text ?? t('subscribe.text')) ?></p>
   </div>
-  <?= \App\Core\View::render('partials/subscribe-form', ['source' => $source, 'tag' => $tag, 'idPrefix' => 'sub-' . $source]) ?>
+  <?= \App\Core\View::render('partials/subscribe-form', ['source' => $source, 'tag' => $tag, 'idPrefix' => 'sub-' . preg_replace('/[^a-z0-9\-]/i', '-', $source), 'chips' => true]) ?>
 </section>

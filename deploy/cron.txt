@@ -23,3 +23,7 @@
 # Cada mañana (5:20 UTC = 0:20 en Colombia): Redes sociales — llena la cola de los próximos 7 días de cada canal
 # con textos de IA e imágenes, y marca como omitidos los borradores que no se aprobaron a tiempo.
 20 5 * * * cd /var/www/edwinortiz && php bin/console social:plan >> storage/logs/cron.log 2>&1
+
+# Cada 10 minutos: Boletín — prepara la edición un día antes (y envía la vista previa a ADMIN_EMAIL), la pone en cola
+# a la hora programada y envía por lotes (50 por ejecución, ~5 por segundo; nunca dos veces a la misma persona).
+*/10 * * * * cd /var/www/edwinortiz && php bin/console newsletter:run >> storage/logs/cron.log 2>&1

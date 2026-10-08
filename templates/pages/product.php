@@ -131,6 +131,7 @@ $hasVariants = $variants !== [];
             <input id="wl-email" type="email" name="email" required autocomplete="email" placeholder="<?= e(t('subscribe.placeholder')) ?>">
             <button class="btn btn--primary" type="submit"><?= e(t('waitlist.button')) ?></button>
           </div>
+          <?= \App\Core\View::render('partials/turnstile') ?>
           <p class="form-status" data-form-status role="status" aria-live="polite"><?= $waitlisted ? e(t('waitlist.ok')) : '' ?></p>
         </form>
         <?php endif; ?>

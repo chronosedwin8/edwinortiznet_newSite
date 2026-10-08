@@ -32,6 +32,7 @@
       <textarea id="c-message" name="message" rows="6" required minlength="10" maxlength="5000"></textarea>
     </div>
     <p class="form-note"><?= e(t('contact.privacy')) ?> <a href="<?= e(route('policy', ['slug' => \App\Services\I18n\I18n::locale() === 'es' ? 'privacidad' : 'privacy'])) ?>"><?= e(t('footer.privacy')) ?></a></p>
+    <?= \App\Core\View::render('partials/turnstile') ?>
     <button class="btn btn--primary" type="submit"><?= e(t('contact.send')) ?></button>
   </form>
 

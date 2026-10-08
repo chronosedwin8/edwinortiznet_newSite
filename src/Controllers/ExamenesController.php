@@ -217,6 +217,9 @@ final class ExamenesController extends Controller
         if (!RateLimiter::hit('examenes-link', $request->ip(), 8, 3600) || !RateLimiter::hit('examenes-link-mail', $email, 4, 900)) {
             return $this->home(t('form.rate_limited'));
         }
+        if (!\App\Services\Turnstile::passes($request)) {
+            return $this->home(t('form.captcha_failed'));
+        }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL) || mb_strlen($email) > 190) {
             return $this->home(t('examenes.access.bad_email'));
         }

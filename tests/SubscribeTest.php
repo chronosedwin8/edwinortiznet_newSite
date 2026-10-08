@@ -64,8 +64,13 @@ final class SubscribeTest extends TestCase
         $this->assertNull(DB::value('SELECT confirmed_at FROM subscribers WHERE email = :e', ['e' => $this->email]));
         $this->assertSame(200, $this->post("/suscripcion/confirmar/{$m[1]}/", [], false)->status);
         $this->assertNotNull(DB::value('SELECT confirmed_at FROM subscribers WHERE email = :e', ['e' => $this->email]));
+        $this->assertSame('active', DB::value('SELECT status FROM subscribers WHERE email = :e', ['e' => $this->email]));
+        // La baja también es con botón: abrir el enlace no da de baja (los escáneres de enlaces lo abren solos).
         $this->assertSame(200, App::handle(Request::create('GET', "/suscripcion/baja/{$m[1]}/"))->status);
+        $this->assertNull(DB::value('SELECT unsubscribed_at FROM subscribers WHERE email = :e', ['e' => $this->email]));
+        $this->assertSame(200, $this->post("/suscripcion/baja/{$m[1]}/", [], false)->status);
         $this->assertNotNull(DB::value('SELECT unsubscribed_at FROM subscribers WHERE email = :e', ['e' => $this->email]));
+        $this->assertSame('unsubscribed', DB::value('SELECT status FROM subscribers WHERE email = :e', ['e' => $this->email]));
     }
 
     public function testHoneypotAndTooFastSubmissionsAreRejected(): void

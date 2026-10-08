@@ -55,6 +55,7 @@ $sent = $notice !== null && Session::get('examenes_sent') !== null;
             'privacy' => '<a href="' . e(route('policy', ['slug' => 'privacidad'], 'es')) . '" target="_blank">' . e(t('examenes.access.privacy_link')) . '</a>',
         ]) ?></label>
       </div>
+      <?= \App\Core\View::render('partials/turnstile') ?>
       <button class="btn btn--primary btn--lg btn--block" type="submit"><?= icon('mail') ?><?= e(t('examenes.access.submit')) ?></button>
     </form>
   </div>

@@ -206,6 +206,29 @@
 @media (min-width: 860px) { .subscribe-box { grid-template-columns: 1fr 1fr; align-items: center; } }
 .subscribe-form__row { display: flex; flex-wrap: wrap; gap: 10px; }
 .subscribe-form__row input { flex: 1 1 200px; }
+/* Temas del boletín (casillas con forma de chip): formularios, confirmación y preferencias. */
+.interest-chips { border: 0; margin: 0 0 12px; padding: 0; min-width: 0; }
+.interest-chips__legend { padding: 0; margin: 0 0 8px; font-size: var(--step--1); font-weight: 700; }
+.interest-chips__list { display: flex; flex-wrap: wrap; gap: 8px; }
+.interest-chip { position: relative; display: inline-flex; margin: 0; font-weight: 600; cursor: pointer; }
+.interest-chip input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.interest-chip span { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 7px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--text); font-size: var(--step--1); transition: background .15s, border-color .15s; }
+.interest-chip span::before { content: ""; display: inline-grid; place-items: center; width: 15px; height: 15px; border-radius: 4px; border: 1.5px solid currentColor; opacity: .55; flex: none; font-size: 11px; font-weight: 900; line-height: 1; }
+.interest-chip input:checked + span { background: var(--brand); border-color: var(--brand); color: #fff; }
+.interest-chip input:checked + span::before { content: "\2713"; opacity: 1; background: #fff; border-color: #fff; color: var(--brand); }
+.interest-chip input:focus-visible + span { outline: 3px solid color-mix(in srgb, var(--brand) 45%, transparent); outline-offset: 2px; }
+.interest-chips--large .interest-chip span { min-height: 46px; padding: 10px 18px; font-size: 1rem; }
+.subscribe-box .interest-chips__legend { color: #e3ebff; }
+.subscribe-box .interest-chip span { background: rgba(255, 255, 255, .1); border-color: rgba(255, 255, 255, .35); color: #fff; }
+.subscribe-box .interest-chip input:checked + span { background: #fff; border-color: #fff; color: #0a1124; }
+.subscribe-box .interest-chip input:checked + span::before { background: #0a1124; border-color: #0a1124; color: #fff; }
+.sub-page__form { display: grid; gap: 14px; justify-items: start; margin-top: 22px; }
+.sub-page__fields { display: grid; gap: 14px; width: 100%; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+.sub-page__notice { padding: 12px 16px; border-radius: 12px; background: var(--accent-soft); color: var(--accent-strong); font-weight: 650; }
+.sub-page__notice--muted { background: var(--surface-2); color: var(--muted); }
+.sub-page__danger { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); }
+.sub-page__danger h2 { font-size: var(--step-1); }
+.cf-turnstile { margin-top: 10px; }
 
 /* ---------- Formularios ---------- */
 input[type="text"], input[type="email"], input[type="search"], input[type="tel"], input[type="password"], input[type="number"], input[type="url"], select, textarea {

@@ -20,6 +20,8 @@ abstract class Controller
      */
     protected function page(string $template, array $data, array $meta): Response
     {
+        // Origen e intereses por omisión de los formularios de suscripción de esta página.
+        $meta['subscribe'] ??= \App\Services\Newsletter\SubscribeContext::fromPage($template, $data, $meta);
         $meta = Meta::complete($meta);
         View::share('meta', $meta);
         $html = View::page($template, $data, $meta);
@@ -49,6 +51,10 @@ abstract class Controller
         $this->requireCsrf($request);
         if (!AntiSpam::passes($request)) {
             throw new HttpException(422, 'spam');
+        }
+        // Cloudflare Turnstile, solo si TURNSTILE_SITE_KEY y TURNSTILE_SECRET están configuradas.
+        if (!\App\Services\Turnstile::passes($request)) {
+            throw new HttpException(422, 'captcha');
         }
     }
 

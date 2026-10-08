@@ -60,6 +60,8 @@ En este equipo el sitio corre en **http://localhost:8090/** mediante un VirtualH
 | `GA4_ID`, `ADSENSE_*` | Se cargan solo tras aceptar cookies; AdSense solo en artículos (máximo 3 bloques). |
 | `DOWNLOAD_ACCEL=true` | Con Nginx, entrega los archivos con `X-Accel-Redirect`. |
 | `META_APP_ID`, `META_APP_SECRET`, `META_USER_TOKEN`, `SOCIAL_CRON_TOKEN` | Redes sociales: app de Meta «Minuevoblog» (el secreto permite cambiar el token por uno de 60 días y obtener tokens de página que no vencen), token de usuario opcional para `social:connect` y token del disparador externo `/cron/redes/{token}/` (vacío = apagado). |
+| `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET` | Cloudflare Turnstile (opcional, gratis): verificación anti-bots en los formularios que envían correos. Vacío = apagado. |
+| `NEWSLETTER_UNSUBSCRIBE_MAILTO` | Dirección del `mailto:` de la cabecera `List-Unsubscribe` del boletín (por omisión `MAIL_FROM_ADDRESS`; esas bajas se procesan a mano). |
 | `GEMINI_API_KEY`, `GEMINI_MODEL`, `GEMINI_ASSIST_MODEL` | PIAR con IA: clave de la API de Google Gemini (va en la cabecera `x-goog-api-key`), modelo del documento (por defecto `gemini-2.5-pro`) y modelo del asistente «Redactar con IA» por campo (por defecto `gemini-2.5-flash`; 10 usos por cada PIAR de los paquetes vigentes y 8 por hora, respuestas de máximo 1.500 tokens; no descuenta PIAR). Sin clave, la generación se muestra como no disponible. |
 
 ### URLs de webhook que se registran en cada pasarela
@@ -76,7 +78,7 @@ En este equipo el sitio corre en **http://localhost:8090/** mediante un VirtualH
 - **Sitio:** usuario `edwinortiz`, código en `/home/edwinortiz/htdocs/www.edwinortiz.net` (clon de `github.com/chronosedwin8/edwinortiznet_newSite`, rama `main`). Raíz web: `public/`. PHP 8.4-FPM en `127.0.0.1:19006`. Base de datos MariaDB 10.6 `edwinortiz` (las credenciales están solo en el `.env` del servidor).
 - **Nginx:** plantilla propia guardada también en CloudPanel (*Sitio → Vhost*), con PageSpeed y Varnish desactivados para este sitio. Si se edita desde el panel, conservar el front controller y `location /protected-downloads/`.
 - **Desplegar cambios:** `git push` a `main` y luego en el servidor: `sudo -u edwinortiz -H bash /home/edwinortiz/htdocs/www.edwinortiz.net/deploy/deploy.sh` (trae el código, instala dependencias, migra, vacía la caché, regenera el sitemap y comprueba las rutas).
-- **Cron** (usuario `edwinortiz`, visible en CloudPanel): `orders:reconcile` cada 10 minutos y `sitemap:build` a las 3:15.
+- **Cron** (usuario `edwinortiz`, visible en CloudPanel): `orders:reconcile` cada 10 minutos y `sitemap:build` a las 3:15 (y las demás tareas de `deploy/cron.txt`, entre ellas `newsletter:run` cada 10 minutos).
 - **Solo en el servidor (no están en git):** `.env` y `public/cv/` (CV). Las imágenes y los archivos de producto están en S3 (`STORAGE_DISK=s3`); activa el versionado del bucket si quieres poder recuperar archivos borrados.
 - **Respaldo de WordPress:** `/home/edwinortiz/backups/wordpress-*-2026-10-05.*` y copia local en `Documentos\Backups\edwinortiz-wordpress-2026-10-05`.
 
@@ -99,6 +101,8 @@ En este equipo el sitio corre en **http://localhost:8090/** mediante un VirtualH
 | `social:publish` | Tarea programada (cada 5 min): publica en Facebook e Instagram lo aprobado cuya hora ya llegó (3 intentos, aviso por correo). |
 | `social:connect` | Conecta las páginas de Facebook y sus cuentas de Instagram con `META_USER_TOKEN` de `.env` (lo mismo que «Conectar / renovar» en el panel). |
 | `social:check` | Comprueba los tokens guardados y la cuota de publicación de Instagram. |
+| `newsletter:run` | Tarea programada (cada 10 min): boletín — prepara la edición 24 h antes (vista previa a `ADMIN_EMAIL`), la pone en cola a su hora y envía por lotes. |
+| `newsletter:render [temas] [archivo.html] [--en]` | Guarda el HTML (y el texto) del boletín para un perfil de temas (`excel`, `docentes,tecnologia`…; vacío = de todo un poco) sin enviarlo. |
 | `cache:clear` | Vacía la caché de página completa. |
 | `routes:check` | Verifica que todas las URL importadas respondan 200. |
 | `mail:test [correo]` | Envía un correo de prueba con la configuración actual. |
@@ -162,6 +166,15 @@ En este equipo el sitio corre en **http://localhost:8090/** mediante un VirtualH
 - **Publicador** (`social:publish`, cada 5 min): toma cada fila aprobada con un `UPDATE` condicionado (no publica dos veces); Facebook con `POST /{página}/feed` (mensaje + enlace); Instagram crea el contenedor, espera `FINISHED` (si sigue en proceso lo retoma en la siguiente ejecución) y publica; guarda el enlace permanente. Hasta 3 intentos (5 y 20 min); al final, correo a `ADMIN_EMAIL`. Un token inválido (código 190) marca la cuenta «Reconectar» y avisa por correo. Una fila que queda «publicando» más de 15 min pasa a fallida para revisarla a mano.
 - **Disparador externo opcional** (AWS EventBridge → Lambda o cualquier cron HTTP): `GET`/`POST https://www.edwinortiz.net/cron/redes/{SOCIAL_CRON_TOKEN}/` (con la barra final) publica lo pendiente y, una vez al día, planifica; responde JSON. Sin `SOCIAL_CRON_TOKEN` (≥ 32 caracteres) responde 404. El camino principal es el cron del servidor; ambos pueden convivir (bloqueos con `GET_LOCK`).
 
+### Suscriptores y boletín (`/admin/suscriptores/` y `/admin/boletin/`)
+- **Una fila por correo** (migración 019; antes era una por correo + etiqueta, que se fusionaron conservando el mejor estado). `status` = `pending` (falta pulsar el botón) · `active` · `unsubscribed` · `bounced` · `spam`; `paused_until` = pausa elegida por el suscriptor. `tag` y `source` quedan por compatibilidad.
+- **Temas** (`interests`, selección múltiple): `docentes`, `tecnologia`, `excel`, `concurso`; vacío = de todo un poco. **Origen**: `source_type` (footer, home, article, hub, product, tool…), `source_path`, `source_title`, referencia externa y UTM, más el HMAC de la IP (`ip_hash`) para detectar ataques. `SubscribeContext` los calcula en el servidor para cada página (van en campos ocultos: la página sigue en caché) y marca los temas por omisión (hub de Excel → excel; IA para docentes → docentes + tecnología; Concurso → concurso; productos de oficina → excel; de docentes → docentes; PIAR/exámenes → docentes). Los recuadros de suscripción muestran los temas como chips; la **página de confirmación** (POST con botón) los muestra marcados para confirmar y elegir en un paso.
+- **Centro de preferencias** `/suscripcion/preferencias/{token}/` (`/en/subscribe/preferences/{token}/`): temas, idioma, pausa de 1 o 3 meses y baja con motivo. La baja (`/suscripcion/baja/{token}/`) es con botón; el POST con `List-Unsubscribe=One-Click` (Gmail/Yahoo, RFC 8058) no lleva CSRF.
+- **Boletín**: cada 15 días (ajustable; con día de la semana se ajusta al más cercano: 15 días + martes = un martes cada dos semanas) a las 7:00 (Colombia). `newsletter:run` prepara la edición 24 h antes (contenido congelado: artículos desde la edición anterior y oferta de la tienda, con las imágenes JPEG de Open Graph; introducción escrita una vez con Gemini, máximo 3 llamadas por edición, con plantilla de respaldo) y envía la vista previa a `ADMIN_EMAIL`. En modo automático sale sola; en modo «esperar aprobación» espera el botón del panel (a los 7 días sin aprobar se cancela). Cada suscriptor recibe hasta 5 artículos y 3 productos/herramientas de sus temas.
+- **Envío**: `newsletter_sends` con `UNIQUE(issue_id, subscriber_id)`; lotes de 50 por ejecución (~5 por segundo), cada envío se toma con un `UPDATE` condicionado; 3 intentos ante fallos de SMTP; un envío colgado más de 30 min pasa a fallido sin reintento (nunca se duplica). Cabeceras `List-Unsubscribe` (https + mailto), `List-Unsubscribe-Post`, `List-Id` y `Feedback-ID`; versión de texto.
+- **Seguimiento**: píxel `/n/o/{envío}/{firma}/` y clics `/n/c/{envío}/{firma}/?u=destino` firmados con HMAC de `APP_KEY` (no es una redirección abierta). Enlaces con `utm_source=newsletter&utm_medium=email&utm_campaign=boletin-AAAA-MM-DD`. Las aperturas son aproximadas (Apple Mail las precarga).
+- **Panel**: indicadores, filtros por estado/tema/origen/búsqueda, acciones en lote (temas, reenviar confirmación con el tope global de 15/h y 60/día, activo, baja, rebotado, spam, borrar) y CSV completo. *Boletín*: próxima edición (aprobar, enviar ahora, posponer, reprogramar, actualizar contenido, editar asunto e introducción, cancelar), vista previa por perfil de temas y ancho, prueba a tu correo, historial con aperturas, clics, bajas y enlaces más visitados, y ajustes.
+
 ### SEO y rendimiento
 - Title, descripción, canonical, `hreflang` recíproco con `x-default`, Open Graph/Twitter y JSON-LD (`Person`, `WebSite` + `SearchAction`, `Article`, `Product`/`Offer`, `BreadcrumbList`, `FAQPage`, `Course`).
 - Sitemap dinámico con alternativas (sin `noindex`), feeds RSS `/feed/` y `/en/feed/`, `robots.txt`.
@@ -174,6 +187,7 @@ En este equipo el sitio corre en **http://localhost:8090/** mediante un VirtualH
 
 ### Seguridad
 - CSRF con cookie de doble envío firmada; honeypot y marca de tiempo firmada en los formularios públicos; límite de peticiones por IP en acceso, pago, suscripción, búsqueda y contacto.
+- Cloudflare Turnstile opcional (`TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET`) en suscripción, contacto, lista de espera y acceso a PIAR y exámenes; sin claves no se carga nada y la CSP no incluye `challenges.cloudflare.com`.
 - CSP con hash para el único script en línea, HSTS en producción, `X-Content-Type-Options`, `Referrer-Policy` y `Permissions-Policy`.
 - El HTML de artículos y productos pasa por una lista blanca (importador y panel). Las plantillas escapan con `e()`.
 - Panel: Argon2id, bloqueo tras 5 intentos fallidos y cookies `HttpOnly` + `SameSite=Lax` (+ `Secure` en HTTPS).

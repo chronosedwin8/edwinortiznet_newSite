@@ -11,51 +11,15 @@ use App\Core\Response;
 use App\Models\Setting;
 
 /**
- * Suscriptores y lista de espera (CSV), redirecciones y 404, y ajustes.
+ * Lista de espera (CSV), redirecciones y 404, y ajustes. Los suscriptores están en SubscribersController.
  */
 final class MiscController extends AdminBase
 {
-    public function subscribers(Request $request): Response
-    {
-        $this->requireAdmin($request);
-        return $this->view('misc/subscribers', [
-            'subscribers' => DB::all('SELECT * FROM subscribers ORDER BY created_at DESC LIMIT 500'),
-            'byTag' => DB::all('SELECT tag, COUNT(*) AS total, SUM(confirmed_at IS NOT NULL AND unsubscribed_at IS NULL) AS active FROM subscribers GROUP BY tag ORDER BY total DESC'),
-            'waitlist' => DB::all('SELECT t.title, COUNT(*) AS n, MAX(w.created_at) AS last FROM waitlist w JOIN product_translations t ON t.product_id = w.product_id AND t.locale = "es" GROUP BY w.product_id, t.title ORDER BY n DESC'),
-        ], t('admin.subscribers'));
-    }
-
-    private function csv(string $filename, array $header, array $rows): Response
-    {
-        $fh = fopen('php://temp', 'r+');
-        fwrite($fh, "\xEF\xBB\xBF"); // BOM para que Excel abra bien los acentos
-        fputcsv($fh, $header, ';', '"', '');
-        foreach ($rows as $row) {
-            // Evita inyección de fórmulas al abrir en Excel.
-            fputcsv($fh, array_map(fn ($v) => is_string($v) && preg_match('/^[=+\-@]/', $v) ? "'" . $v : $v, array_values($row)), ';', '"', '');
-        }
-        rewind($fh);
-        $body = (string) stream_get_contents($fh);
-        fclose($fh);
-        return new Response($body, 200, [
-            'Content-Type' => 'text/csv; charset=UTF-8',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-            'Cache-Control' => 'private, no-store',
-        ]);
-    }
-
-    public function exportSubscribers(Request $request): Response
-    {
-        $this->requireAdmin($request);
-        $rows = DB::all('SELECT email, locale, tag, source, created_at, confirmed_at, unsubscribed_at FROM subscribers ORDER BY created_at');
-        return $this->csv('suscriptores-' . gmdate('Ymd') . '.csv', ['email', 'idioma', 'etiqueta', 'origen', 'creado', 'confirmado', 'baja'], $rows);
-    }
-
     public function exportWaitlist(Request $request): Response
     {
         $this->requireAdmin($request);
         $rows = DB::all('SELECT w.email, w.locale, t.title, w.created_at FROM waitlist w JOIN product_translations t ON t.product_id = w.product_id AND t.locale = "es" ORDER BY t.title, w.created_at');
-        return $this->csv('lista-de-espera-' . gmdate('Ymd') . '.csv', ['email', 'idioma', 'producto', 'fecha'], $rows);
+        return SubscribersController::csv('lista-de-espera-' . gmdate('Ymd') . '.csv', ['email', 'idioma', 'producto', 'fecha'], $rows);
     }
 
     public function redirects(Request $request): Response
