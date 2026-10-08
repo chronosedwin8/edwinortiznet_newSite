@@ -7,6 +7,7 @@ namespace App\Admin;
 use App\Core\DB;
 use App\Core\Request;
 use App\Core\Response;
+use App\Services\AdminAccess;
 use App\Services\Examenes\ExamCredits;
 
 /**
@@ -25,7 +26,7 @@ final class ExamenesController extends AdminBase
             $params += ['q' => "%$q%", 'q2' => "%$q%"];
         }
         $accounts = DB::all(
-            "SELECT c.id, c.email, c.name, c.created_at, ep.terms_accepted_at, ep.institution,
+            "SELECT c.id, c.email, c.name, c.created_at, ep.terms_accepted_at, ep.institution, " . AdminAccess::sql('c.id') . " AS is_admin,
                 (SELECT COUNT(*) FROM exams x WHERE x.customer_id = c.id AND x.status = 'done') AS exams_done,
                 (SELECT COUNT(*) FROM exams x WHERE x.customer_id = c.id AND x.deleted_at IS NOT NULL) AS exams_deleted,
                 (SELECT COALESCE(SUM(x.ai_questions), 0) FROM exams x WHERE x.customer_id = c.id) AS ai_questions,
@@ -38,24 +39,32 @@ final class ExamenesController extends AdminBase
             $params
         );
         $since = gmdate('Y-m-d H:i:s', time() - 30 * 86400);
+        // Los exámenes de administrador (pruebas) se cuentan aparte; el costo de IA suma todo (es el costo real)
+        // e indica cuánto fue de administrador.
         $stats = DB::one(
-            "SELECT COUNT(*) AS total, SUM(status = 'done') AS done, SUM(status = 'error') AS errors, SUM(created_at > :d) AS last30,
-                COALESCE(SUM(ai_questions), 0) AS questions FROM exams",
+            "SELECT COUNT(*) AS total, SUM(adm = 0 AND status = 'done') AS done, SUM(adm = 0 AND status = 'error') AS errors, SUM(adm = 0 AND created_at > :d) AS last30,
+                COALESCE(SUM(CASE WHEN adm = 0 THEN ai_questions ELSE 0 END), 0) AS questions, SUM(adm = 1 AND status = 'done') AS admin_done
+             FROM (SELECT e.status, e.created_at, e.ai_questions, " . AdminAccess::sql('e.customer_id') . " AS adm FROM exams e) x",
             ['d' => $since]
         ) ?? [];
         $tokens = DB::one(
-            'SELECT COUNT(*) AS calls, COALESCE(SUM(prompt_tokens), 0) AS tin, COALESCE(SUM(output_tokens), 0) AS tout,
+            "SELECT COUNT(*) AS calls, COALESCE(SUM(prompt_tokens), 0) AS tin, COALESCE(SUM(output_tokens), 0) AS tout,
                 COALESCE(SUM(CASE WHEN created_at > :d THEN prompt_tokens ELSE 0 END), 0) AS tin30,
-                COALESCE(SUM(CASE WHEN created_at > :d2 THEN output_tokens ELSE 0 END), 0) AS tout30
-             FROM exam_ai_calls',
-            ['d' => $since, 'd2' => $since]
+                COALESCE(SUM(CASE WHEN created_at > :d2 THEN output_tokens ELSE 0 END), 0) AS tout30,
+                COALESCE(SUM(CASE WHEN created_at > :d3 AND adm = 1 THEN prompt_tokens ELSE 0 END), 0) AS admin_tin30,
+                COALESCE(SUM(CASE WHEN created_at > :d4 AND adm = 1 THEN output_tokens ELSE 0 END), 0) AS admin_tout30
+             FROM (SELECT c.created_at, c.prompt_tokens, c.output_tokens, " . AdminAccess::sql('c.customer_id') . " AS adm FROM exam_ai_calls c) x",
+            ['d' => $since, 'd2' => $since, 'd3' => $since, 'd4' => $since]
         ) ?? [];
         $cost30 = ExamCredits::callCop((int) ($tokens['tin30'] ?? 0), (int) ($tokens['tout30'] ?? 0));
+        $adminCost30 = ExamCredits::callCop((int) ($tokens['admin_tin30'] ?? 0), (int) ($tokens['admin_tout30'] ?? 0));
         return $this->view('examenes/index', [
             'accounts' => $accounts,
             'stats' => $stats,
             'tokens' => $tokens,
             'cost30' => $cost30,
+            'adminCost30' => $adminCost30,
+            'adminEmail' => (string) ($this->admin['email'] ?? ''),
             'plans' => ExamCredits::PLANS,
             'q' => $q,
         ], t('admin.examenes'));

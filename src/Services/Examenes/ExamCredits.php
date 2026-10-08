@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Examenes;
 
 use App\Core\DB;
+use App\Services\AdminAccess;
 
 /**
  * Planes del Generador de exámenes: suscripciones de 30 días que se suman (cada compra crea una nueva).
@@ -32,6 +33,8 @@ final class ExamCredits
         'EXAM-40' => ['exams' => 40, 'versions' => 8, 'questions' => 45, 'extra' => 10, 'cop' => 159900, 'usd' => 44.90],
     ];
     public const POPULAR = 'EXAM-20';
+    /** «Exámenes disponibles» de una cuenta de administrador (no se consumen; ver AdminAccess). */
+    public const ADMIN_EXAMS = 9999;
 
     // ---- Topes de la IA (acotan el peor caso) -------------------------------------------------
     /** Preguntas (unidades pregunta × versión) por llamada de generación. */
@@ -209,13 +212,30 @@ final class ExamCredits
 
     /**
      * Estado de la cuenta para el medidor de uso y los límites del asistente.
-     * @return array{exams:int, used:int, remaining:int, expires_at:?string, has_active:bool, ever_paid:bool, max_versions:int, max_questions:int, ai_extra:int, subscriptions:array}
+     * @return array{exams:int, used:int, remaining:int, expires_at:?string, has_active:bool, ever_paid:bool, max_versions:int, max_questions:int, ai_extra:int, subscriptions:array, admin:bool}
      */
     public static function summary(int $customerId): array
     {
         $subs = self::active($customerId);
         $withCredits = array_values(array_filter($subs, fn ($s) => (int) $s['exams_used'] < (int) $s['exams']));
         $limit = static fn (string $k): int => $withCredits ? max(array_map(fn ($s) => (int) $s[$k], $withCredits)) : 0;
+        if (AdminAccess::isAdmin($customerId)) {
+            // Acceso de administrador (pruebas): sin plan y sin consumir cupo, con los límites del plan más alto.
+            $admin = self::adminLimits();
+            return [
+                'exams' => self::ADMIN_EXAMS,
+                'used' => 0,
+                'remaining' => self::ADMIN_EXAMS,
+                'expires_at' => null,
+                'has_active' => true,
+                'ever_paid' => true,
+                'max_versions' => $admin['versions'],
+                'max_questions' => $admin['questions'],
+                'ai_extra' => $admin['extra'],
+                'subscriptions' => $subs,
+                'admin' => true,
+            ];
+        }
         return [
             'exams' => array_sum(array_map(fn ($s) => (int) $s['exams'], $subs)),
             'used' => array_sum(array_map(fn ($s) => (int) $s['exams_used'], $subs)),
@@ -227,6 +247,21 @@ final class ExamCredits
             'max_questions' => $limit('max_questions'),
             'ai_extra' => $limit('ai_extra'),
             'subscriptions' => $subs,
+            'admin' => false,
+        ];
+    }
+
+    /**
+     * Límites por examen de una cuenta de administrador: los más altos de los planes a la venta
+     * (y todas las versiones posibles).
+     * @return array{versions:int, questions:int, extra:int}
+     */
+    public static function adminLimits(): array
+    {
+        return [
+            'versions' => min(count(ExamCatalog::VERSION_LABELS), max(array_column(self::PLANS, 'versions'))),
+            'questions' => max(array_column(self::PLANS, 'questions')),
+            'extra' => max(array_column(self::PLANS, 'extra')),
         ];
     }
 

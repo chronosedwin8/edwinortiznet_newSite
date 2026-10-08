@@ -160,6 +160,8 @@ return [
     'examenes.meter.buy' => 'Comprar un plan',
     'examenes.meter.buy_more' => 'Sumar otro plan',
     'examenes.meter.demo' => 'Probar el simulador',
+    'examenes.meter.admin_title' => 'Acceso de administrador (pruebas)',
+    'examenes.meter.admin_text' => 'Puedes generar exámenes sin plan y sin descontar cupo, con los límites del plan más alto. Su uso de IA queda registrado en el panel como de administrador.',
 
     // Planes
     'examenes.plans.title' => 'Planes del generador de exámenes',
@@ -212,6 +214,7 @@ return [
     'examenes.new.submitting' => 'Enviando…',
     'examenes.new.time_note' => 'Puedes cerrar la página: el examen queda en tu historial cuando termine.',
     'examenes.new.credits_note' => 'Este examen usa 1 de tus :n exámenes disponibles. Si la IA falla, vuelve a tu plan.',
+    'examenes.new.admin_note' => 'Acceso de administrador (pruebas): este examen no descuenta cupo de ningún plan.',
     'examenes.new.locked_title' => 'Necesitas un plan',
     'examenes.new.locked' => 'Para generar exámenes con IA compra un plan. Mientras tanto, puedes ver cómo queda un examen en el simulador.',
     'examenes.new.locked_paid' => 'Ya usaste los exámenes de tus planes vigentes. Compra otro plan para seguir creando.',

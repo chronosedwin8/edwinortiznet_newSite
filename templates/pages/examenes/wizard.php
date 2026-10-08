@@ -82,7 +82,7 @@ $forms = ['in' => $in, 'examples' => $examples] + compact('subjects', 'grades', 
         <p class="ex-step__lead"><?= e(t('examenes.new.s6_lead')) ?></p>
         <div class="ex-review js-only" data-review aria-live="polite"></div>
         <noscript><p class="ex-muted"><?= e(t('examenes.review.nojs')) ?></p></noscript>
-        <p class="ex-usage-note"><?= icon('notice') ?><span><?= e(t('examenes.new.credits_note', ['n' => (int) $summary['remaining']])) ?></span></p>
+        <p class="ex-usage-note"><?= icon('notice') ?><span><?= e(!empty($summary['admin']) ? t('examenes.new.admin_note') : t('examenes.new.credits_note', ['n' => (int) $summary['remaining']])) ?></span></p>
         <button class="btn btn--buy btn--lg ex-submit" type="submit" data-submit><?= icon('spark') ?><span><?= e(t('examenes.new.submit')) ?></span></button>
         <p class="form-note"><?= e(t('examenes.new.time_note')) ?></p>
       </fieldset>

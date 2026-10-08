@@ -1,9 +1,17 @@
-<?php /** @var array $accounts @var array $stats @var string $q */ ?>
+<?php /** @var array $accounts @var array $stats @var string $q @var string $adminEmail */ ?>
+<section class="panel admin-tool-open">
+  <form method="post" action="<?= e(route('piar.access.admin')) ?>" target="_blank">
+    <?= csrf_field() ?>
+    <button class="btn" type="submit"><?= icon('external') ?><?= e(t('admin.tools.open_as_admin')) ?></button>
+  </form>
+  <p class="muted"><?= e(t('admin.tools.open_as_admin_help', ['email' => $adminEmail])) ?></p>
+</section>
 <section class="kpis">
   <div class="kpi">
     <span class="kpi__label"><span class="kpi__icon"><?= icon('puzzle') ?></span><?= e(t('admin.piar.k_paid')) ?></span>
     <span class="kpi__value"><?= (int) ($stats['paid'] ?? 0) ?></span>
     <span class="kpi__sub"><?= e(t('admin.piar.k_last30', ['n' => (int) ($stats['last30'] ?? 0)])) ?></span>
+    <?php if ((int) ($stats['admin_done'] ?? 0) > 0): ?><span class="kpi__sub"><?= e(t('admin.tools.k_admin', ['n' => (int) $stats['admin_done']])) ?></span><?php endif; ?>
   </div>
   <div class="kpi kpi--accent">
     <span class="kpi__label"><span class="kpi__icon"><?= icon('spark') ?></span><?= e(t('admin.piar.k_trials')) ?></span>
@@ -14,6 +22,8 @@
     <span class="kpi__label"><span class="kpi__icon"><?= icon('chart') ?></span><?= e(t('admin.piar.k_usage')) ?></span>
     <span class="kpi__value"><?= e(number_format((int) ($stats['tin'] ?? 0) + (int) ($stats['tout'] ?? 0), 0, ',', '.')) ?></span>
     <span class="kpi__sub"><?= e(t('admin.piar.k_usage_sub', ['in' => number_format((int) ($stats['tin'] ?? 0), 0, ',', '.'), 'out' => number_format((int) ($stats['tout'] ?? 0), 0, ',', '.')])) ?></span>
+    <span class="kpi__sub"><?= e(t('admin.piar.k_assists', ['n' => number_format((int) ($stats['assists'] ?? 0), 0, ',', '.'), 't' => number_format((int) ($stats['assist_tokens'] ?? 0), 0, ',', '.')])) ?></span>
+    <?php $adminTokens = (int) ($stats['admin_tokens'] ?? 0) + (int) ($stats['assist_admin_tokens'] ?? 0); if ($adminTokens > 0): ?><span class="kpi__sub"><?= e(t('admin.tools.k_admin_tokens', ['n' => number_format($adminTokens, 0, ',', '.')])) ?></span><?php endif; ?>
   </div>
 </section>
 
@@ -49,9 +59,9 @@
   <tbody>
   <?php foreach ($accounts as $a): $active = (int) $a['credits'] > 0; ?>
     <tr>
-      <td><?= e($a['name'] ?: '—') ?><br><small class="muted"><?= e($a['email']) ?><?= $a['institution'] ? ' · ' . e($a['institution']) : '' ?></small><?php if (!$a['terms_accepted_at']): ?><br><span class="tag tag--pending"><?= e(t('admin.piar.no_terms')) ?></span><?php endif; ?></td>
+      <td><?= e($a['name'] ?: '—') ?><br><small class="muted"><?= e($a['email']) ?><?= $a['institution'] ? ' · ' . e($a['institution']) : '' ?></small><?php if (!$a['terms_accepted_at']): ?><br><span class="tag tag--pending"><?= e(t('admin.piar.no_terms')) ?></span><?php endif; ?><?php if ((int) $a['is_admin'] === 1): ?><br><span class="tag tag--warn"><?= e(t('admin.tools.admin_tag')) ?></span><?php endif; ?></td>
       <td><?= (int) $a['trial_used'] ?>/<?= \App\Services\Piar\PiarCredits::TRIAL_LIMIT ?></td>
-      <td><?php if ($active): ?><span class="tag tag--published"><?= (int) $a['used'] ?>/<?= (int) $a['credits'] ?></span><?php else: ?><span class="muted">—</span><?php endif; ?></td>
+      <td><?php if ((int) $a['is_admin'] === 1): ?><span class="muted"><?= e(t('admin.tools.admin_quota')) ?></span><?php elseif ($active): ?><span class="tag tag--published"><?= (int) $a['used'] ?>/<?= (int) $a['credits'] ?></span><?php else: ?><span class="muted">—</span><?php endif; ?></td>
       <td><?= $a['expires_at'] ? e(substr((string) $a['expires_at'], 0, 10)) : '—' ?></td>
       <td><?= (int) $a['plans_done'] ?></td>
       <td><?= $a['last_plan_at'] ? e(substr((string) $a['last_plan_at'], 0, 16)) : '—' ?></td>

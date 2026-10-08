@@ -7,6 +7,7 @@ namespace App\Admin;
 use App\Core\DB;
 use App\Core\Request;
 use App\Core\Response;
+use App\Services\AdminAccess;
 use App\Services\Piar\PiarCredits;
 
 /**
@@ -25,7 +26,7 @@ final class PiarController extends AdminBase
             $params += ['q' => "%$q%", 'q2' => "%$q%"];
         }
         $accounts = DB::all(
-            "SELECT c.id, c.email, c.name, c.created_at, pp.terms_accepted_at, pp.institution,
+            "SELECT c.id, c.email, c.name, c.created_at, pp.terms_accepted_at, pp.institution, " . AdminAccess::sql('c.id') . " AS is_admin,
                 (SELECT COUNT(*) FROM piar_plans x WHERE x.customer_id = c.id AND x.is_trial = 1 AND x.status <> 'error') AS trial_used,
                 (SELECT COUNT(*) FROM piar_plans x WHERE x.customer_id = c.id AND x.is_trial = 0 AND x.status = 'done') AS plans_done,
                 (SELECT COALESCE(SUM(k.credits), 0) FROM piar_packages k WHERE k.customer_id = c.id AND k.revoked_at IS NULL AND k.expires_at > :now) AS credits,
@@ -36,13 +37,22 @@ final class PiarController extends AdminBase
              WHERE $where ORDER BY COALESCE(last_plan_at, pp.created_at, c.created_at) DESC LIMIT 300",
             $params + ['now2' => DB::now()]
         );
+        // Las cuentas de administrador (pruebas) no cuentan como ventas ni pruebas: se muestran aparte.
+        // Los tokens sí suman todo (es el costo real) e indican cuántos fueron de administrador.
         $stats = DB::one(
-            "SELECT COUNT(*) AS total, SUM(status = 'done' AND is_trial = 0) AS paid, SUM(is_trial = 1 AND status <> 'error') AS trials,
-                SUM(status = 'error') AS errors, SUM(created_at > :d) AS last30, COALESCE(SUM(prompt_tokens), 0) AS tin, COALESCE(SUM(output_tokens), 0) AS tout
-             FROM piar_plans",
+            "SELECT COUNT(*) AS total, SUM(adm = 0 AND status = 'done' AND is_trial = 0) AS paid, SUM(adm = 0 AND is_trial = 1 AND status <> 'error') AS trials,
+                SUM(adm = 0 AND status = 'error') AS errors, SUM(adm = 0 AND created_at > :d) AS last30,
+                SUM(adm = 1 AND status = 'done') AS admin_done, COALESCE(SUM(CASE WHEN adm = 1 THEN prompt_tokens + output_tokens ELSE 0 END), 0) AS admin_tokens,
+                COALESCE(SUM(prompt_tokens), 0) AS tin, COALESCE(SUM(output_tokens), 0) AS tout
+             FROM (SELECT p.status, p.is_trial, p.created_at, p.prompt_tokens, p.output_tokens, " . AdminAccess::sql('p.customer_id') . " AS adm FROM piar_plans p) x",
             ['d' => gmdate('Y-m-d H:i:s', time() - 30 * 86400)]
         ) ?? [];
-        return $this->view('piar/index', ['accounts' => $accounts, 'stats' => $stats, 'q' => $q], t('admin.piar'));
+        $stats += DB::one(
+            "SELECT COUNT(*) AS assists, COALESCE(SUM(prompt_tokens + output_tokens), 0) AS assist_tokens,
+                COALESCE(SUM(CASE WHEN " . AdminAccess::sql('a.customer_id') . " THEN prompt_tokens + output_tokens ELSE 0 END), 0) AS assist_admin_tokens
+             FROM piar_assists a"
+        ) ?? [];
+        return $this->view('piar/index', ['accounts' => $accounts, 'stats' => $stats, 'q' => $q, 'adminEmail' => (string) ($this->admin['email'] ?? '')], t('admin.piar'));
     }
 
     public function grant(Request $request): Response

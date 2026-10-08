@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Piar;
 
 use App\Core\DB;
+use App\Services\AdminAccess;
 use App\Services\Ai\Gemini;
 use RuntimeException;
 
@@ -18,6 +19,8 @@ final class PiarAssist
 {
     public const PER_PIAR = 10;
     public const PER_HOUR = 8;
+    /** Redacciones «disponibles» de una cuenta de administrador (sin cupo de paquete; ver AdminAccess). */
+    public const ADMIN_LEFT = 9999;
     private const MAX_INSTRUCTION = 1500;
     private const MAX_CURRENT = 6000;
 
@@ -97,10 +100,18 @@ final class PiarAssist
     /**
      * Cupo del asistente: PER_PIAR usos por cada PIAR de los paquetes vigentes, contados desde el
      * inicio del paquete vigente más antiguo (solo los usos que devolvieron texto).
-     * @return array{total:int, used:int, left:int, hour:int}
+     * Administrador (pruebas): sin cupo de paquete (admin = true, left = ADMIN_LEFT); el límite por hora sigue.
+     * @return array{total:int, used:int, left:int, hour:int, admin:bool}
      */
     public static function quota(int $customerId): array
     {
+        if (AdminAccess::isAdmin($customerId)) {
+            $row = DB::one(
+                'SELECT SUM(ok = 1 AND created_at > :d) AS used, SUM(created_at > :h) AS hour FROM piar_assists WHERE customer_id = :c AND created_at > :d2',
+                ['d' => gmdate('Y-m-d H:i:s', time() - PiarCredits::DAYS * 86400), 'h' => gmdate('Y-m-d H:i:s', time() - 3600), 'c' => $customerId, 'd2' => gmdate('Y-m-d H:i:s', time() - PiarCredits::DAYS * 86400)]
+            );
+            return ['total' => self::ADMIN_LEFT, 'used' => (int) ($row['used'] ?? 0), 'left' => self::ADMIN_LEFT, 'hour' => (int) ($row['hour'] ?? 0), 'admin' => true];
+        }
         $packages = PiarCredits::active($customerId);
         $total = self::PER_PIAR * array_sum(array_map(static fn (array $p): int => (int) $p['credits'], $packages));
         $since = $packages !== [] ? min(array_column($packages, 'starts_at')) : gmdate('Y-m-d H:i:s');
@@ -109,7 +120,7 @@ final class PiarAssist
             ['s' => $since, 'h' => gmdate('Y-m-d H:i:s', time() - 3600), 'c' => $customerId, 'd' => gmdate('Y-m-d H:i:s', time() - (PiarCredits::DAYS + 1) * 86400)]
         );
         $used = (int) ($row['used'] ?? 0);
-        return ['total' => $total, 'used' => $used, 'left' => max(0, $total - $used), 'hour' => (int) ($row['hour'] ?? 0)];
+        return ['total' => $total, 'used' => $used, 'left' => max(0, $total - $used), 'hour' => (int) ($row['hour'] ?? 0), 'admin' => false];
     }
 
     /** null si puede usar el asistente; si no, 'quota' (sin cupo en el paquete) u 'hour' (límite por hora). */

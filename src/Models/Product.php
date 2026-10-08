@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Core\Config;
 use App\Core\DB;
 
 /**
@@ -142,9 +143,46 @@ final class Product
         );
     }
 
-    public static function images(int $productId): array
+    /**
+     * Imágenes de la galería, con el texto alternativo del idioma (alt_en en inglés si existe) y sus tamaños
+     * (srcset, miniatura y versión grande; ver imageSizes()).
+     * @return list<array{url: string, alt: ?string, width: ?int, height: ?int, srcset: ?string, thumb: string, full: string}>
+     */
+    public static function images(int $productId, ?string $locale = null): array
     {
-        return DB::all('SELECT url, alt, width, height FROM product_images WHERE product_id = :id ORDER BY sort, id', ['id' => $productId]);
+        $rows = DB::all('SELECT url, alt, alt_en, width, height FROM product_images WHERE product_id = :id ORDER BY sort, id', ['id' => $productId]);
+        return array_map(static function (array $img) use ($locale): array {
+            if ($locale === 'en' && trim((string) $img['alt_en']) !== '') {
+                $img['alt'] = $img['alt_en'];
+            }
+            unset($img['alt_en']);
+            return $img + self::imageSizes((string) $img['url']);
+        }, $rows);
+    }
+
+    /**
+     * Tamaños de una imagen WebP del repositorio nombrada {nombre}-{ancho}.webp (p. ej. …-1200.webp): si en public/
+     * existen otros anchos con el mismo nombre, devuelve el srcset, la miniatura (el más pequeño) y la versión grande
+     * (el más ancho, para ampliar). Para cualquier otra URL, la misma imagen en los tres usos.
+     * @return array{srcset: ?string, thumb: string, full: string}
+     */
+    public static function imageSizes(string $url): array
+    {
+        $out = ['srcset' => null, 'thumb' => $url, 'full' => $url];
+        if (!preg_match('#^(/assets/[A-Za-z0-9/_.-]+?)-(\d{3,4})\.webp$#', $url, $m) || str_contains($m[1], '..')) {
+            return $out;
+        }
+        $widths = array_values(array_filter(
+            [320, 360, 480, 640, 800, 960, 1200, 1440, 1600, 1800],
+            static fn (int $w): bool => is_file(Config::root('public' . $m[1] . "-$w.webp"))
+        ));
+        if (count($widths) < 2) {
+            return $out;
+        }
+        $out['srcset'] = implode(', ', array_map(static fn (int $w): string => "{$m[1]}-$w.webp {$w}w", $widths));
+        $out['thumb'] = "{$m[1]}-{$widths[0]}.webp";
+        $out['full'] = "{$m[1]}-" . end($widths) . '.webp';
+        return $out;
     }
 
     public static function files(int $productId): array

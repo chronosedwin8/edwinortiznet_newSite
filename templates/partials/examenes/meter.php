@@ -1,5 +1,16 @@
 <?php
-/** Medidor de uso del plan. @var array $summary */
+/** Medidor de uso del plan; a un administrador, su aviso y los límites de sus exámenes. @var array $summary */
+if (!empty($summary['admin'])): ?>
+<div class="ex-meter ex-meter--admin">
+  <div class="ex-meter__head"><p class="ex-meter__title"><?= icon('gear') ?><span><?= e(t('examenes.meter.admin_title')) ?></span></p></div>
+  <p class="ex-meter__note"><?= e(t('examenes.meter.admin_text')) ?></p>
+  <ul class="ex-meter__limits">
+    <li><?= icon('layers') ?><span><?= e(t('examenes.meter.versions', ['n' => $summary['max_versions']])) ?></span></li>
+    <li><?= icon('list') ?><span><?= e(t('examenes.meter.questions', ['n' => $summary['max_questions']])) ?></span></li>
+    <li><?= icon('spark') ?><span><?= e(t('examenes.meter.extra', ['n' => $summary['ai_extra']])) ?></span></li>
+  </ul>
+</div>
+<?php return; endif;
 $paid = $summary['has_active'];
 $total = max(1, (int) $summary['exams']);
 $used = (int) $summary['used'];

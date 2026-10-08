@@ -181,12 +181,15 @@ return [
     'piar.meter.empty' => 'Usaste todos los PIAR de tu paquete. Compra otro para seguir: se suma por 30 días.',
     'piar.meter.buy' => 'Ver paquetes',
     'piar.meter.buy_more' => 'Comprar más',
+    'piar.meter.admin_title' => 'Acceso de administrador (pruebas)',
+    'piar.meter.admin_text' => 'Puedes crear PIAR completos (guardados, editables y en PDF) sin paquete y sin descontar créditos. Su uso de IA queda registrado en el panel como de administrador.',
 
     // Asistente
     'piar.new.title' => 'Nuevo PIAR',
     'piar.new.lead' => 'Completa lo que sepas: entre más concreto, mejor será el borrador. Solo el grado y la condición son obligatorios.',
     'piar.new.trial_note' => 'Estás usando la prueba gratis: verás el PIAR en pantalla, pero no se guardará ni podrás descargarlo.',
     'piar.new.credits_note' => 'Este PIAR descontará 1 de tus :n disponibles.',
+    'piar.new.admin_note' => 'Acceso de administrador (pruebas): este PIAR se guarda completo y no descuenta créditos.',
     'piar.new.locked_title' => 'No tienes PIAR disponibles',
     'piar.new.locked_trial' => 'Ya usaste tu PIAR de prueba. Con un paquete puedes crear, guardar, editar y descargar tus PIAR.',
     'piar.new.locked_paid' => 'Usaste todos los PIAR de tu paquete. Compra otro para seguir: se suma a tu cuenta por 30 días.',
@@ -408,6 +411,7 @@ return [
     'piar.assist.limit' => 'Llegaste al límite del asistente (:hour usos por hora). Inténtalo un poco más tarde.',
     'piar.assist.quota_out' => 'Ya usaste todas las redacciones con IA de tu paquete. Se renuevan al comprar un nuevo paquete; mientras tanto puedes seguir editando a mano.',
     'piar.assist.quota' => 'Redacciones con IA disponibles en tu paquete: :left de :total.',
+    'piar.assist.admin_quota' => 'Acceso de administrador (pruebas): redacciones sin cupo de paquete (máximo :hour por hora).',
     'piar.assist.left' => 'Te quedan :n redacciones con IA.',
     'piar.price.f_ai' => ':n redacciones con IA en el editor',
 

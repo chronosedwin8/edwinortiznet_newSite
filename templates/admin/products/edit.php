@@ -75,9 +75,10 @@ $action = $isNew ? '/admin/productos/nuevo/' : '/admin/productos/' . (int) $prod
       <label for="pr-sort"><?= e(t('admin.field.sort')) ?></label>
       <input id="pr-sort" name="sort" type="number" value="<?= (int) $product['sort'] ?>">
       <label for="pr-tut"><?= e(t('admin.field.tutorial')) ?></label>
-      <select id="pr-tut" name="tutorial_post_id"><option value="0">—</option>
+      <select id="pr-tut" name="tutorial_post_id" aria-describedby="pr-tut-hint"><option value="0">—</option>
         <?php foreach ($tutorials as $tu): ?><option value="<?= (int) $tu['id'] ?>"<?= (int) $product['tutorial_post_id'] === (int) $tu['id'] ? ' selected' : '' ?>><?= e($tu['title']) ?></option><?php endforeach; ?>
       </select>
+      <p class="hint" id="pr-tut-hint"><?= e(t('admin.hint.tutorial')) ?></p>
       <label for="pr-cover"><?= e(t('admin.field.cover')) ?></label>
       <input id="pr-cover" name="cover_url" maxlength="500" value="<?= e((string) $product['cover_url']) ?>" data-media-input data-alt-target="pr-cover-alt">
       <label for="pr-cover-alt"><?= e(t('admin.field.cover_alt')) ?></label>
@@ -97,41 +98,72 @@ $action = $isNew ? '/admin/productos/nuevo/' : '/admin/productos/' . (int) $prod
 </form>
 
 <?php if (!$isNew): ?>
-<section class="panel">
-  <h2><?= e(t('admin.files')) ?></h2>
-  <?php if ($files): ?>
-  <table class="data">
-    <thead><tr><th><?= e(t('admin.field.label')) ?></th><th><?= e(t('admin.field.storage')) ?></th><th><?= e(t('admin.field.source')) ?></th><th><?= e(t('admin.field.size')) ?></th></tr></thead>
+<section class="panel" id="archivos">
+  <h2><?= e(t('admin.files')) ?><?= $files ? ' (' . count($files) . ')' : '' ?></h2>
+  <?php if ($files): $replaceId ??= 0;
+      $size = static fn (?int $b): string => $b === null ? '—' : ($b >= 1048576
+          ? \App\Services\I18n\I18n::number($b / 1048576, 1, 'es') . ' MB'
+          : \App\Services\I18n\I18n::number(max(1, $b / 1024), 0, 'es') . ' KB'); ?>
+  <p class="hint"><?= e(t('admin.files.help')) ?></p>
+  <div class="table-wrap">
+  <table class="data data--cards">
+    <thead><tr>
+      <th><?= e(t('admin.field.label')) ?></th><th><?= e(t('admin.field.variant')) ?></th><th><?= e(t('admin.field.size')) ?></th>
+      <th><?= e(t('admin.field.storage')) ?></th><th><?= e(t('admin.field.version')) ?></th><th><?= e(t('admin.files.updated')) ?></th><th class="col-actions"><span class="visually-hidden"><?= e(t('admin.files.actions')) ?></span></th>
+    </tr></thead>
     <tbody>
-    <?php foreach ($files as $f): ?>
-      <tr>
-        <td><?= e($f['label']) ?><?= $f['version'] ? ' · v' . e($f['version']) : '' ?><?php if (!empty($f['variant'])): ?> <span class="tag" title="<?= e(t('admin.field.variant')) ?>"><?= e($f['variant']) ?></span><?php endif; ?></td>
-        <td><?php if ($f['storage_path']): ?><span class="tag tag--<?= ($f['storage_disk'] ?? 'local') === 's3' ? 'published' : 'warn' ?>"><?= e(t(($f['storage_disk'] ?? 'local') === 's3' ? 'admin.files.in_s3' : 'admin.files.in_server')) ?></span> <code><?= e($f['storage_path']) ?></code><?php else: ?><span class="tag tag--warn"><?= e(t('admin.files.missing')) ?></span><?php endif; ?></td>
-        <td><small class="muted"><?= e((string) $f['source_url']) ?></small></td>
-        <td><?= $f['bytes'] ? e(\App\Services\I18n\I18n::number(((int) $f['bytes']) / 1024, 0, 'es')) . ' KB' : '' ?></td>
+    <?php foreach ($files as $f): $disk = ($f['storage_disk'] ?? 'local') === 's3' ? 's3' : 'local'; ?>
+      <tr<?= (int) $f['id'] === $replaceId ? ' class="is-selected"' : '' ?>>
+        <td>
+          <strong><?= e($f['label']) ?></strong>
+          <?php if ($f['storage_path']): ?><br><code class="muted"><?= e(basename((string) $f['storage_path'])) ?></code><?php endif; ?>
+          <?php if (!empty($f['source_url']) && empty($f['storage_path'])): ?><br><small class="muted"><?= e((string) $f['source_url']) ?></small><?php endif; ?>
+        </td>
+        <td data-label="<?= e(t('admin.field.variant')) ?>"><?php if (!empty($f['variant'])): ?><span class="tag tag--plain"><?= e($f['variant']) ?></span><?php else: ?><span class="muted"><?= e(t('admin.files.all_buyers')) ?></span><?php endif; ?></td>
+        <td data-label="<?= e(t('admin.field.size')) ?>"><?= e($size($f['bytes'] !== null ? (int) $f['bytes'] : null)) ?></td>
+        <td data-label="<?= e(t('admin.field.storage')) ?>">
+          <?php if (!$f['storage_path']): ?><span class="tag tag--warn"><?= e(t('admin.files.missing')) ?></span>
+          <?php else: ?><span class="tag tag--<?= $disk === 's3' ? 'published' : 'plain' ?>"><?= e(t($disk === 's3' ? 'admin.files.in_s3' : 'admin.files.in_server')) ?></span>
+            <?php if (!$f['available']): ?><span class="tag tag--error"><?= e(t('admin.files.not_found')) ?></span><?php endif; ?>
+          <?php endif; ?>
+        </td>
+        <td data-label="<?= e(t('admin.field.version')) ?>"><?= $f['version'] ? e($f['version']) : '—' ?></td>
+        <td data-label="<?= e(t('admin.files.updated')) ?>"><time datetime="<?= e(str_replace(' ', 'T', (string) $f['updated_at'])) ?>"><?= e(substr((string) $f['updated_at'], 0, 16)) ?></time></td>
+        <td class="col-actions">
+          <div class="file-actions">
+            <?php if ($f['available']): ?>
+            <a class="btn btn--small" href="<?= e(route('admin.products.file', ['id' => (int) $product['id'], 'file' => (int) $f['id']])) ?>" download><?= icon('download') ?><?= e(t('admin.files.download')) ?></a>
+            <?php endif; ?>
+            <a class="btn btn--small btn--ghost" href="?reemplazar=<?= (int) $f['id'] ?>#subir"><?= icon('upload') ?><?= e(t('admin.files.replace_one')) ?></a>
+          </div>
+        </td>
       </tr>
     <?php endforeach; ?>
     </tbody>
   </table>
+  </div>
   <?php endif; ?>
+  <?php $replacing = null; foreach ($files as $f) { if ((int) $f['id'] === ($replaceId ?? 0)) { $replacing = $f; } } ?>
+  <h3 id="subir"><?= e($replacing ? t('admin.files.replace_title', ['file' => $replacing['label'] . (!empty($replacing['variant']) ? ' (' . $replacing['variant'] . ')' : '')]) : t('admin.files.upload')) ?></h3>
+  <?php if ($replacing): ?><p class="hint"><?= e(t('admin.files.replace_help')) ?></p><?php endif; ?>
   <form method="post" action="<?= e(route('admin.products.upload', ['id' => (int) $product['id']])) ?>" enctype="multipart/form-data" class="admin-form inline-form">
     <?= csrf_field() ?>
-    <label for="up-file"><?= e(t('admin.files.upload')) ?></label>
+    <label for="up-file"><?= e(t('admin.files.file')) ?></label>
     <input id="up-file" type="file" name="file" required>
     <label for="up-label"><?= e(t('admin.field.label')) ?></label>
-    <input id="up-label" name="label" maxlength="190">
+    <input id="up-label" name="label" maxlength="190" value="<?= e((string) ($replacing['label'] ?? '')) ?>">
     <label for="up-version"><?= e(t('admin.field.version')) ?></label>
-    <input id="up-version" name="version" maxlength="40">
+    <input id="up-version" name="version" maxlength="40" placeholder="<?= e(date('Y.m.d')) ?>">
     <label for="up-variant"><?= e(t('admin.field.variant')) ?></label>
-    <input id="up-variant" name="variant" maxlength="40" list="up-variants" aria-describedby="up-variant-hint">
+    <input id="up-variant" name="variant" maxlength="40" list="up-variants" aria-describedby="up-variant-hint" value="<?= e((string) ($replacing['variant'] ?? '')) ?>">
     <datalist id="up-variants"><?php foreach (array_unique(array_filter(array_column($files, 'variant'))) as $v): ?><option value="<?= e($v) ?>"><?php endforeach; ?></datalist>
     <?php if ($files): ?>
     <label for="up-replace"><?= e(t('admin.files.replace')) ?></label>
     <select id="up-replace" name="replace_id"><option value="0"><?= e(t('admin.files.add_new')) ?></option>
-      <?php foreach ($files as $f): ?><option value="<?= (int) $f['id'] ?>"><?= e($f['label']) ?></option><?php endforeach; ?>
+      <?php foreach ($files as $f): ?><option value="<?= (int) $f['id'] ?>"<?= $replacing && (int) $f['id'] === (int) $replacing['id'] ? ' selected' : '' ?>><?= e($f['label'] . (!empty($f['variant']) ? ' · ' . $f['variant'] : '') . ($f['version'] ? ' · v' . $f['version'] : '')) ?></option><?php endforeach; ?>
     </select>
     <?php endif; ?>
-    <button class="btn" type="submit"><?= e(t('admin.files.upload_button')) ?></button>
+    <button class="btn" type="submit"><?= icon('upload') ?><?= e(t($replacing ? 'admin.files.replace_button' : 'admin.files.upload_button')) ?></button>
     <p class="hint"><?= e(t('admin.hint.upload')) ?></p>
     <p class="hint" id="up-variant-hint"><?= e(t('admin.hint.variant')) ?></p>
   </form>

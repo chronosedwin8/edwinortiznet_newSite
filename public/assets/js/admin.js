@@ -37,6 +37,11 @@ const T = {
   draftFound: 'Hay cambios sin guardar de una sesión anterior.', restore: 'Recuperar', discard: 'Descartar',
   pick: 'Elegir imagen', noImage: 'Sin imagen', question: 'Pregunta', answer: 'Respuesta', addFaq: 'Agregar pregunta', up: 'Subir', down: 'Bajar',
   cmdNo: 'Sin resultados', ok: 'Aceptar',
+  carousel: 'Carrusel de imágenes', carouselEdit: 'Editar carrusel', carouselRemove: 'Quitar', carouselRemoveQ: '¿Quitar este carrusel del contenido? Las imágenes siguen en la biblioteca.',
+  carouselImages: ':n imágenes', carouselHint: 'Ordena las imágenes (arrastra o usa las flechas) y escribe el texto alternativo de cada una. El pie de foto es opcional.',
+  carouselEmpty: 'Todavía no hay imágenes. Agrega al menos dos.', carouselMin: 'El carrusel necesita al menos dos imágenes.', addImages: 'Agregar imágenes',
+  selectImages: 'Elegir imágenes para el carrusel', add: 'Agregar', addN: 'Agregar (:n)', insertCarousel: 'Insertar carrusel', saveCarousel: 'Guardar carrusel',
+  autoplay: 'Avance automático', autoplayOff: 'Desactivado (recomendado)', autoplayEvery: 'Cada :n segundos', imageN: 'Imagen :n',
   seo: {
     title: 'Título SEO entre 50 y 60 caracteres', desc: 'Meta descripción entre 120 y 160 caracteres', kwTitle: 'Palabra clave en el título SEO',
     kwDesc: 'Palabra clave en la meta descripción', kwFirst: 'Palabra clave en el primer párrafo', kwH2: 'Palabra clave en algún H2',
@@ -449,12 +454,27 @@ function mediaPicker() {
   let selected = null;
   let page = 1;
   let resolver = null;
+  // Selección múltiple (carrusel): se conserva el orden en que se eligen.
+  let multi = false;
+  const picked = new Map();
   const grid = $('[data-lib-grid]', dlg);
   const fields = $('[data-fields]', dlg);
   const insertBtn = $('[data-insert]', dlg);
   const altInput = $('[data-alt]', dlg);
+  const heading = $('.modal__head h2', dlg);
+  const urlTab = $('[data-pane="url"]', dlg);
 
+  const paintPicked = () => {
+    $$('button.media-card', grid).forEach((b) => b.setAttribute('aria-pressed', String(picked.has(Number(b.dataset.id)))));
+    insertBtn.disabled = picked.size === 0;
+    insertBtn.textContent = picked.size ? T.addN.replace(':n', picked.size) : T.add;
+  };
   const choose = (item) => {
+    if (multi) {
+      if (item) { if (picked.has(item.id)) picked.delete(item.id); else picked.set(item.id, item); }
+      paintPicked();
+      return;
+    }
     selected = item;
     $$('button.media-card', grid).forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.id) === item?.id)));
     fields.hidden = !item;
@@ -466,9 +486,10 @@ function mediaPicker() {
     b.type = 'button';
     b.className = 'media-card';
     b.dataset.id = item.id;
+    b.setAttribute('aria-pressed', String(multi ? picked.has(item.id) : selected?.id === item.id));
     b.innerHTML = `<img src="${esc(item.thumb)}" alt="" loading="lazy"><span class="media-card__body"><span class="media-card__name">${esc(item.name || item.url)}</span><span class="media-card__meta">${item.width}×${item.height}</span></span>`;
     b.addEventListener('click', () => choose(item));
-    b.addEventListener('dblclick', () => { choose(item); if (altInput.value.trim()) insertBtn.click(); else altInput.focus(); });
+    b.addEventListener('dblclick', () => { if (multi) return; choose(item); if (altInput.value.trim()) insertBtn.click(); else altInput.focus(); });
     return b;
   };
   const load = async (reset = false) => {
@@ -496,8 +517,10 @@ function mediaPicker() {
     if (!items.length) return;
     $('[data-pane="lib"]', dlg).click();
     grid.querySelector('p.muted')?.remove();
-    items.reverse().forEach((it) => grid.prepend(card(it)));
-    choose(items[items.length - 1]);
+    if (multi) items.forEach((it) => picked.set(it.id, it));
+    [...items].reverse().forEach((it) => grid.prepend(card(it)));
+    if (multi) { paintPicked(); insertBtn.focus(); return; }
+    choose(items[0]);
     altInput.focus();
   });
   $('[data-url]', dlg).addEventListener('input', (e) => {
@@ -509,6 +532,7 @@ function mediaPicker() {
   });
   const finish = (value) => { const r = resolver; resolver = null; dlg.close(); r?.(value); };
   insertBtn.addEventListener('click', () => {
+    if (multi) { if (picked.size) finish([...picked.values()]); return; }
     if (!selected) return;
     if (!altInput.value.trim()) { altInput.focus(); altInput.setCustomValidity(T.alt); altInput.reportValidity(); return; }
     altInput.setCustomValidity('');
@@ -518,7 +542,13 @@ function mediaPicker() {
   dlg.addEventListener('close', () => { if (resolver) finish(null); });
 
   mediaDialog = {
-    open({ caption = true } = {}) {
+    open({ caption = true, multiple = false } = {}) {
+      multi = multiple;
+      picked.clear();
+      heading.textContent = multi ? T.selectImages : T.insertImage;
+      urlTab.hidden = multi;
+      insertBtn.textContent = multi ? T.add : T.insert;
+      selected = null;
       choose(null);
       altInput.value = '';
       $('[data-cap]', dlg).value = '';
@@ -636,6 +666,164 @@ const figureHtml = (img) => {
 };
 
 /* ======================================================================
+   Carrusel de imágenes (.carousel-gallery): marcado, lectura y diálogo
+   Forma guardada (la misma que acepta HtmlCleaner y muestra carousel.js en el sitio):
+   <div class="carousel-gallery" [data-autoplay="s"]><figure class="carousel-gallery__item"><img …><figcaption>…</figcaption></figure>…</div>
+   ====================================================================== */
+const carouselHtml = (items, autoplay = 0) => `<div class="carousel-gallery"${autoplay ? ` data-autoplay="${Number(autoplay)}"` : ''}>${items.map((it) => {
+  const dims = it.width && it.height ? ` width="${Number(it.width)}" height="${Number(it.height)}"` : '';
+  const srcset = it.srcset ? ` srcset="${esc(it.srcset)}" sizes="(min-width: 760px) 720px, 100vw"` : '';
+  // El pie que no se tocó conserva su formato (negritas, enlaces); el editado se guarda como texto.
+  const cap = it.captionHtml && it.caption === it.captionText ? it.captionHtml : esc(it.caption || '');
+  return `\n<figure class="carousel-gallery__item"><img src="${esc(it.url)}" alt="${esc(it.alt)}"${dims}${srcset} loading="lazy" decoding="async">${cap.trim() ? `<figcaption>${cap}</figcaption>` : ''}</figure>`;
+}).join('')}\n</div>`;
+
+function readCarousel(gallery) {
+  const items = $$('figure', gallery).map((f) => {
+    const img = $('img', f);
+    if (!img) return null;
+    const cap = $('figcaption', f);
+    const caption = (cap?.textContent || '').replace(/\s+/g, ' ').trim();
+    return {
+      url: img.getAttribute('src') || '', thumb: img.getAttribute('src') || '', alt: (img.getAttribute('alt') || '').trim(),
+      width: Number(img.getAttribute('width')) || 0, height: Number(img.getAttribute('height')) || 0, srcset: img.getAttribute('srcset') || '',
+      caption, captionText: caption, captionHtml: cap ? cap.innerHTML.trim() : '',
+    };
+  }).filter(Boolean);
+  return { items, autoplay: Number(gallery.dataset.autoplay) || 0 };
+}
+
+const fromMedia = (it) => ({ url: it.url, thumb: it.thumb || it.url, alt: it.alt || '', caption: '', width: it.width || 0, height: it.height || 0, srcset: it.srcset || '' });
+
+/** Ordenar, texto alternativo y pie por imagen, agregar más (subir o biblioteca) y avance automático. */
+function carouselDialog(initial = [], autoplay = 0, editing = false) {
+  const dlg = document.createElement('dialog');
+  dlg.className = 'modal cg-dialog';
+  dlg.setAttribute('aria-labelledby', 'cgd-title');
+  dlg.innerHTML = `
+    <div class="modal__head"><h2 id="cgd-title">${esc(T.carousel)}</h2><button type="button" class="icon-btn" data-close aria-label="${esc(T.close)}">${icon('close')}</button></div>
+    <div class="modal__body">
+      <p class="hint" id="cgd-hint">${esc(T.carouselHint)}</p>
+      <ol class="cg-list" data-list aria-describedby="cgd-hint"></ol>
+      <p class="muted cg-empty" data-empty>${esc(T.carouselEmpty)}</p>
+      <div class="cg-dialog__opts">
+        <button type="button" class="btn btn--ghost btn--small" data-add>${icon('plus')}${esc(T.addImages)}</button>
+        <div><label for="cgd-auto">${esc(T.autoplay)}</label><select id="cgd-auto" class="field" data-auto>
+          <option value="0">${esc(T.autoplayOff)}</option>${[5, 8, 12].map((n) => `<option value="${n}">${esc(T.autoplayEvery.replace(':n', n))}</option>`).join('')}</select></div>
+      </div>
+    </div>
+    <div class="modal__foot"><span class="muted cg-dialog__count" data-count aria-live="polite"></span><button type="button" class="btn btn--ghost" data-close>${esc(T.cancel)}</button><button type="button" class="btn" data-ok>${esc(editing ? T.saveCarousel : T.insertCarousel)}</button></div>`;
+  body.append(dlg);
+  const list = $('[data-list]', dlg);
+  const auto = $('[data-auto]', dlg);
+  if ([...auto.options].some((o) => Number(o.value) === autoplay)) auto.value = String(autoplay);
+  else if (autoplay) auto.insertAdjacentHTML('beforeend', `<option value="${autoplay}" selected>${esc(T.autoplayEvery.replace(':n', autoplay))}</option>`);
+  let seq = 0;
+
+  const renumber = () => {
+    const rows = $$('.cg-row', list);
+    rows.forEach((li, i) => {
+      const n = T.imageN.replace(':n', i + 1);
+      $('.cg-row__num', li).textContent = i + 1;
+      $('[data-up]', li).setAttribute('aria-label', `${T.up}: ${n}`);
+      $('[data-down]', li).setAttribute('aria-label', `${T.down}: ${n}`);
+      $('[data-del]', li).setAttribute('aria-label', `${T.remove}: ${n}`);
+      $('[data-up]', li).disabled = i === 0;
+      $('[data-down]', li).disabled = i === rows.length - 1;
+    });
+    $('[data-empty]', dlg).hidden = rows.length > 0;
+    $('[data-count]', dlg).textContent = rows.length ? T.carouselImages.replace(':n', rows.length) : '';
+  };
+  const row = (item) => {
+    const k = ++seq;
+    const li = document.createElement('li');
+    li.className = 'cg-row';
+    li.item = item;
+    li.innerHTML = `<span class="cg-row__handle" title="${esc(T.carouselHint)}">${icon('drag')}<b class="cg-row__num"></b></span>
+      <img class="cg-row__thumb" src="${esc(item.thumb || item.url)}" alt="">
+      <div class="cg-row__fields">
+        <label for="cgd-alt-${k}">${esc(T.alt)}</label><input id="cgd-alt-${k}" class="field" data-alt maxlength="255" required value="${esc(item.alt)}">
+        <label for="cgd-cap-${k}">${esc(T.caption)}</label><input id="cgd-cap-${k}" class="field" data-cap maxlength="255" value="${esc(item.caption)}">
+      </div>
+      <div class="cg-row__tools"><button type="button" class="icon-btn icon-btn--sm" data-up>${icon('arrow-up')}</button><button type="button" class="icon-btn icon-btn--sm" data-down>${icon('arrow-down')}</button><button type="button" class="icon-btn icon-btn--sm" data-del>${icon('trash')}</button></div>`;
+    list.append(li);
+  };
+  const add = (items) => { items.forEach(row); renumber(); };
+  add(initial);
+
+  list.addEventListener('click', (e) => {
+    const li = e.target.closest('.cg-row');
+    if (!li) return;
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    if (btn.matches('[data-del]')) {
+      const focusTo = li.nextElementSibling || li.previousElementSibling;
+      li.remove();
+      renumber();
+      ($('[data-del]', focusTo || dlg) || $('[data-add]', dlg)).focus();
+      return;
+    }
+    if (btn.matches('[data-up]') && li.previousElementSibling) li.previousElementSibling.before(li);
+    if (btn.matches('[data-down]') && li.nextElementSibling) li.nextElementSibling.after(li);
+    renumber();
+    if (btn.disabled) $(btn.matches('[data-up]') ? '[data-down]' : '[data-up]', li).focus(); else btn.focus();
+  });
+  // Arrastrar para ordenar: solo desde el asa (así se puede seleccionar texto en los campos).
+  let dragging = null;
+  list.addEventListener('pointerdown', (e) => { const h = e.target.closest('.cg-row__handle'); if (h) h.closest('.cg-row').draggable = true; });
+  list.addEventListener('dragstart', (e) => {
+    dragging = e.target.closest('.cg-row');
+    if (!dragging) return;
+    dragging.classList.add('is-drag');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', '');
+  });
+  list.addEventListener('dragover', (e) => {
+    if (!dragging) return;
+    e.preventDefault();
+    const li = e.target.closest('.cg-row');
+    if (!li || li === dragging) return;
+    const r = li.getBoundingClientRect();
+    if (e.clientY > r.top + r.height / 2) li.after(dragging); else li.before(dragging);
+  });
+  list.addEventListener('dragend', () => {
+    if (!dragging) return;
+    dragging.classList.remove('is-drag');
+    dragging.draggable = false;
+    dragging = null;
+    renumber();
+  });
+
+  $('[data-add]', dlg).addEventListener('click', async () => {
+    const items = await pickImage({ multiple: true });
+    if (items?.length) {
+      add(items.map(fromMedia));
+      const first = $$('.cg-row', list)[$$('.cg-row', list).length - items.length];
+      $('[data-alt]', first)?.focus();
+    }
+  });
+
+  return new Promise((resolve) => {
+    let result = null;
+    $$('[data-close]', dlg).forEach((b) => b.addEventListener('click', () => dlg.close()));
+    $('[data-ok]', dlg).addEventListener('click', () => {
+      const rows = $$('.cg-row', list);
+      if (rows.length < 2) { toast(T.carouselMin, true); $('[data-add]', dlg).focus(); return; }
+      const missing = rows.map((li) => $('[data-alt]', li)).find((input) => !input.value.trim());
+      if (missing) { missing.setCustomValidity(T.alt); missing.reportValidity(); missing.addEventListener('input', () => missing.setCustomValidity(''), { once: true }); return; }
+      result = {
+        autoplay: Number(auto.value) || 0,
+        items: rows.map((li) => ({ ...li.item, alt: $('[data-alt]', li).value.trim(), caption: $('[data-cap]', li).value.replace(/\s+/g, ' ').trim() })),
+      };
+      dlg.close();
+    });
+    dlg.addEventListener('close', () => { dlg.remove(); resolve(result); });
+    dlg.showModal();
+    ($('[data-alt]', list) && initial.length ? $$('[data-alt]', list).find((i) => !i.value.trim()) || $('[data-ok]', dlg) : $('[data-add]', dlg)).focus();
+  });
+}
+
+/* ======================================================================
    Editor de texto enriquecido
    ====================================================================== */
 const ALLOWED = new Set(['P', 'H2', 'H3', 'H4', 'UL', 'OL', 'LI', 'A', 'STRONG', 'EM', 'BLOCKQUOTE', 'PRE', 'CODE', 'BR', 'HR', 'TABLE', 'THEAD', 'TBODY', 'TFOOT', 'TR', 'TH', 'TD', 'CAPTION', 'IMG', 'FIGURE', 'FIGCAPTION']);
@@ -750,8 +938,8 @@ class RichEditor {
 
     const tools = this.basic
       ? ['bold', 'italic', 'link', '|', 'ul', 'ol', '~', 'source']
-      : ['block', '|', 'bold', 'italic', '|', 'link', 'unlink', '|', 'ul', 'ol', 'quote', '|', 'image', 'video', 'table', 'hr', 'notice', 'marker', '|', 'undo', 'redo', '~', 'source', 'full'];
-    const icons = { bold: 'bold', italic: 'italic', link: 'link', unlink: 'unlink', ul: 'list', ol: 'list-ol', quote: 'quote', image: 'image', video: 'video', table: 'table', hr: 'minus', notice: 'notice', marker: 'layers', undo: 'undo', redo: 'redo', source: 'code', full: 'maximize' };
+      : ['block', '|', 'bold', 'italic', '|', 'link', 'unlink', '|', 'ul', 'ol', 'quote', '|', 'image', 'carousel', 'video', 'table', 'hr', 'notice', 'marker', '|', 'undo', 'redo', '~', 'source', 'full'];
+    const icons = { bold: 'bold', italic: 'italic', link: 'link', unlink: 'unlink', ul: 'list', ol: 'list-ol', quote: 'quote', image: 'image', carousel: 'grid', video: 'video', table: 'table', hr: 'minus', notice: 'notice', marker: 'layers', undo: 'undo', redo: 'redo', source: 'code', full: 'maximize' };
     for (const t of tools) {
       if (t === '|') { bar.insertAdjacentHTML('beforeend', '<span class="rte__sep"></span>'); continue; }
       if (t === '~') { bar.insertAdjacentHTML('beforeend', '<span class="rte__spacer"></span>'); continue; }
@@ -786,12 +974,19 @@ class RichEditor {
     area.addEventListener('drop', (e) => this.drop(e));
     area.addEventListener('click', (e) => {
       $$('img.is-selected', area).forEach((i) => i.classList.remove('is-selected'));
+      const cg = e.target.closest('[data-cg-edit], [data-cg-remove]');
+      if (cg) { e.preventDefault(); this.carouselAction(cg); return; }
       const img = e.target.closest('img');
-      if (img) img.classList.add('is-selected');
+      if (img && !img.closest('.rte-carousel')) img.classList.add('is-selected');
       const a = e.target.closest('a');
       if (a && (e.ctrlKey || e.metaKey)) window.open(a.href, '_blank', 'noopener');
     });
-    area.addEventListener('dblclick', (e) => { const img = e.target.closest('img'); if (img && !img.closest('.lite-yt')) this.editImage(img); });
+    area.addEventListener('dblclick', (e) => {
+      const block = e.target.closest('.rte-carousel');
+      if (block) { this.editCarousel(block); return; }
+      const img = e.target.closest('img');
+      if (img && !img.closest('.lite-yt')) this.editImage(img);
+    });
     area.addEventListener('keydown', (e) => {
       const mod = e.ctrlKey || e.metaKey;
       if (mod && e.key.toLowerCase() === 'k') { e.preventDefault(); this.command('link'); }
@@ -812,13 +1007,20 @@ class RichEditor {
   /** HTML limpio que se guarda en el textarea original. */
   serialize() {
     const root = this.area.cloneNode(true);
+    $$('.rte-carousel', root).forEach((block) => {
+      const gallery = $('.carousel-gallery', block);
+      const data = gallery ? readCarousel(gallery) : { items: [] };
+      const tpl = document.createElement('template');
+      tpl.innerHTML = data.items.length ? carouselHtml(data.items, data.autoplay) : '';
+      block.replaceWith(...tpl.content.childNodes);
+    });
     $$('[contenteditable]', root).forEach((el) => el.removeAttribute('contenteditable'));
     $$('.is-selected', root).forEach((el) => el.classList.remove('is-selected'));
     $$('p.marker', root).forEach((el) => el.removeAttribute('class'));
     $$('[style]', root).forEach((el) => el.removeAttribute('style'));
-    $$('div', root).forEach((d) => { const p = document.createElement('p'); p.append(...d.childNodes); d.replaceWith(p); });
+    $$('div:not(.carousel-gallery)', root).forEach((d) => { const p = document.createElement('p'); p.append(...d.childNodes); d.replaceWith(p); });
     // Un párrafo no puede contener bloques (el navegador a veces deja <p><ul>…</ul></p>): se separan.
-    const BLOCK = /^(P|UL|OL|TABLE|H2|H3|H4|FIGURE|BLOCKQUOTE|PRE|HR)$/;
+    const BLOCK = /^(P|UL|OL|TABLE|H2|H3|H4|FIGURE|BLOCKQUOTE|PRE|HR|DIV)$/;
     [...root.querySelectorAll('p')].reverse().forEach((p) => {
       if (![...p.children].some((c) => BLOCK.test(c.tagName))) return;
       const out = [];
@@ -838,7 +1040,7 @@ class RichEditor {
       else if (el.lastChild?.nodeName === 'BR') el.lastChild.remove();
     });
     $$('[class=""]', root).forEach((el) => el.removeAttribute('class'));
-    return root.innerHTML.replace(/<(p|h2|h3|h4|ul|ol|figure|blockquote|table|pre|hr)([\s>])/g, '\n<$1$2').trim();
+    return root.innerHTML.replace(/<(p|h2|h3|h4|ul|ol|figure|blockquote|table|pre|hr|div)([\s>])/g, '\n<$1$2').replace(/\n{2,}(<figure class="carousel-gallery__item")/g, '\n$1').trim();
   }
 
   sync() {
@@ -906,6 +1108,22 @@ class RichEditor {
 
   decorate() {
     $$('.lite-yt', this.area).forEach((f) => { f.contentEditable = 'false'; });
+    // Carrusel: bloque no editable con vista previa en tira y botones «Editar carrusel» / «Quitar».
+    $$('.carousel-gallery', this.area).forEach((g) => {
+      let block = g.closest('.rte-carousel');
+      if (!block) {
+        block = document.createElement('div');
+        block.className = 'rte-carousel';
+        block.contentEditable = 'false';
+        block.innerHTML = `<div class="rte-carousel__bar">${icon('grid')}<strong>${esc(T.carousel)}</strong><span class="muted" data-cg-count></span>
+          <span class="rte-carousel__actions"><button type="button" class="btn btn--ghost btn--small" data-cg-edit>${esc(T.carouselEdit)}</button><button type="button" class="btn btn--ghost btn--small" data-cg-remove>${icon('trash')}${esc(T.carouselRemove)}</button></span></div>`;
+        g.before(block);
+        block.append(g);
+      }
+      $('[data-cg-count]', block).textContent = `· ${T.carouselImages.replace(':n', $$('figure', g).length)}`;
+      $$('img', g).forEach((img) => { img.draggable = false; });
+      if (block.parentElement === this.area && !block.nextElementSibling) block.after(Object.assign(document.createElement('p'), { innerHTML: '<br>' }));
+    });
     $$('p', this.area).forEach((p) => { if (MARKER.test(p.textContent)) p.classList.add('marker'); });
   }
 
@@ -989,6 +1207,15 @@ class RichEditor {
         const img = await pickImage({ caption: true });
         this.range = range;
         if (img) this.insertBlock(figureHtml(img));
+        else this.restore();
+        break;
+      }
+      case 'carousel': {
+        const range = this.range;
+        const picked = await pickImage({ multiple: true });
+        const data = picked?.length ? await carouselDialog(picked.map(fromMedia)) : null;
+        this.range = range;
+        if (data) this.insertBlock(carouselHtml(data.items, data.autoplay) + '<p><br></p>');
         else this.restore();
         break;
       }
@@ -1076,6 +1303,30 @@ class RichEditor {
     if (pos) { const sel = getSelection(); sel.removeAllRanges(); sel.addRange(pos); this.save(); }
     const items = await uploadFiles(files);
     for (const it of items) this.insertBlock(figureHtml({ ...it, alt: it.alt || '' }));
+  }
+
+  async carouselAction(btn) {
+    const block = btn.closest('.rte-carousel');
+    if (!block) return;
+    if (btn.matches('[data-cg-edit]')) { this.editCarousel(block); return; }
+    const ok = typeof HTMLDialogElement === 'function' ? await confirmDialog(T.carouselRemoveQ, T.carouselRemove) : window.confirm(T.carouselRemoveQ);
+    if (!ok) return;
+    block.remove();
+    this.sync();
+  }
+
+  async editCarousel(block) {
+    const gallery = $('.carousel-gallery', block);
+    if (!gallery) return;
+    const { items, autoplay } = readCarousel(gallery);
+    const data = await carouselDialog(items, autoplay, true);
+    if (!data) return;
+    const tpl = document.createElement('template');
+    tpl.innerHTML = carouselHtml(data.items, data.autoplay);
+    gallery.replaceWith(tpl.content.firstElementChild);
+    this.decorate();
+    this.sync();
+    $('[data-cg-edit]', block)?.focus();
   }
 
   async editImage(img) {

@@ -139,7 +139,7 @@ final class ContentController extends Controller
             'published' => $post['published_at'] ? gmdate('c', strtotime($post['published_at'] . ' UTC')) : null,
             'modified' => $post['updated_at'] ? gmdate('c', strtotime($post['updated_at'] . ' UTC')) : null,
             'ads' => empty($post['no_ads']),
-            'scripts' => ['js/article.js'],
+            'scripts' => ['js/article.js', ...ContentRenderer::scripts($rendered['html'])],
             'jsonld' => [[
                 '@context' => 'https://schema.org',
                 '@type' => 'Article',
@@ -162,9 +162,10 @@ final class ContentController extends Controller
     {
         $path = post_path($post);
         $crumbs = [[t('nav.home'), route('home')], [$post['title'], $path]];
+        $html = ContentRenderer::render($post)['html'];
         return $this->page('pages/page', [
             'post' => $post,
-            'html' => ContentRenderer::render($post)['html'],
+            'html' => $html,
             'crumbs' => $crumbs,
         ], [
             'title' => $post['seo_title'] ?: $post['title'],
@@ -174,6 +175,7 @@ final class ContentController extends Controller
             'alternates' => Post::alternates($post),
             'breadcrumbs' => $crumbs,
             'image' => $post['cover_url'] ?: null,
+            'scripts' => ContentRenderer::scripts($html),
             'body_class' => 'page-page',
         ]);
     }

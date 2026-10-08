@@ -127,21 +127,39 @@ final class DownloadService
                 || strtotime($grant['expires_at'] . ' UTC') < time() || (int) $grant['downloads'] >= (int) $grant['max_downloads']) {
                 return 'download.expired';
             }
-            $inS3 = ($grant['storage_disk'] ?? 'local') === 's3';
-            if (empty($grant['storage_path']) || ($inS3 ? !S3::configured() : !is_file(self::path((string) $grant['storage_path'])))) {
+            if (!self::available($grant)) {
                 return 'download.unavailable';
             }
             DB::run('UPDATE download_grants SET downloads = downloads + 1 WHERE id = :id', ['id' => (int) $grant['id']]);
             DB::insert('download_log', ['grant_id' => (int) $grant['id'], 'ip' => $request->ip(), 'user_agent' => $request->userAgent()]);
-            if ($inS3) {
-                $url = S3::presignedGet(self::S3_PREFIX . $grant['storage_path'], self::S3_LINK_SECONDS, basename((string) $grant['storage_path']));
-                return Response::redirect($url, 302)
-                    ->header('Cache-Control', 'private, no-store')
-                    ->header('Referrer-Policy', 'no-referrer')
-                    ->header('X-Robots-Tag', 'noindex');
-            }
-            return self::fileResponse((string) $grant['storage_path']);
+            return self::deliver($grant);
         });
+    }
+
+    /** ¿Se puede entregar el archivo? (fila de product_files o con sus columnas storage_path y storage_disk). */
+    public static function available(array $file): bool
+    {
+        if (empty($file['storage_path'])) {
+            return false;
+        }
+        return ($file['storage_disk'] ?? 'local') === 's3' ? S3::configured() : is_file(self::path((string) $file['storage_path']));
+    }
+
+    /**
+     * Entrega un archivo de producto ya validado: redirección a una URL firmada de S3 que vence en minutos
+     * o el archivo local en streaming. Llamar solo si available() es true.
+     */
+    public static function deliver(array $file): Response
+    {
+        $storagePath = (string) $file['storage_path'];
+        if (($file['storage_disk'] ?? 'local') === 's3') {
+            $url = S3::presignedGet(self::S3_PREFIX . $storagePath, self::S3_LINK_SECONDS, basename($storagePath));
+            return Response::redirect($url, 302)
+                ->header('Cache-Control', 'private, no-store')
+                ->header('Referrer-Policy', 'no-referrer')
+                ->header('X-Robots-Tag', 'noindex');
+        }
+        return self::fileResponse($storagePath);
     }
 
     public static function fileResponse(string $storagePath): Response

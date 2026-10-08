@@ -10,6 +10,7 @@ use App\Core\RateLimiter;
 use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
+use App\Services\AdminAccess;
 use App\Services\Ai\Gemini;
 use App\Services\Examenes\ExamCatalog;
 use App\Services\Examenes\ExamContent;
@@ -166,10 +167,10 @@ final class ExamenesController extends Controller
 
     // ------------------------------------------------------------------ acceso
 
+    /** Administrador con sesión en el panel (para entrar sin enlace mágico). */
     private static function admin(): ?array
     {
-        $id = Session::get('admin_id');
-        return is_int($id) ? DB::one('SELECT id, email, name FROM admin_users WHERE id = :id', ['id' => $id]) : null;
+        return AdminAccess::sessionAdmin();
     }
 
     public function dashboard(Request $request): Response
@@ -202,11 +203,7 @@ final class ExamenesController extends Controller
         if ($admin === null) {
             return $this->redirect(route('examenes'));
         }
-        $customerId = ExamCredits::customerFor(strtolower((string) $admin['email']), (string) $admin['name']);
-        ExamProfile::acceptTerms($customerId);
-        Session::regenerate();
-        Session::set('admin_id', (int) $admin['id']);
-        Session::set('customer_id', $customerId);
+        ExamProfile::acceptTerms(AdminAccess::enterAsCustomer($admin));
         return $this->redirect(route('examenes'));
     }
 

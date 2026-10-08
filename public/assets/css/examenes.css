@@ -141,6 +141,10 @@
 .ex-meter__title { margin: 0; font-weight: 800; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brand); }
 .ex-meter__date { display: inline-flex; align-items: center; gap: 5px; margin: 0; font-size: .85rem; color: var(--muted); }
 .ex-meter__date .icon { width: 16px; height: 16px; }
+/* Acceso de administrador (pruebas): aviso en lugar del contador del plan. */
+.ex-meter--admin { border-color: color-mix(in srgb, var(--brand) 45%, var(--line)); background: color-mix(in srgb, var(--brand) 6%, var(--surface)); }
+.ex-meter--admin .ex-meter__title { display: inline-flex; align-items: center; gap: 6px; }
+.ex-meter--admin .ex-meter__title .icon { width: 16px; height: 16px; }
 .ex-meter__nums { display: flex; align-items: baseline; gap: 10px; margin: 8px 0 10px; }
 .ex-meter__nums strong { font-family: var(--font-head); font-size: var(--step-3); font-weight: 800; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
 .ex-meter__nums span { color: var(--muted); font-size: .92rem; }

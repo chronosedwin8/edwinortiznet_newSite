@@ -10,6 +10,7 @@ use App\Core\RateLimiter;
 use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
+use App\Services\AdminAccess;
 use App\Services\Ai\Gemini;
 use App\Services\I18n\I18n;
 use App\Services\Mail\MailTemplates;
@@ -174,8 +175,7 @@ final class PiarController extends Controller
     /** Administrador con sesión en el panel (para entrar sin enlace mágico). */
     private static function admin(): ?array
     {
-        $id = Session::get('admin_id');
-        return is_int($id) ? DB::one('SELECT id, email, name FROM admin_users WHERE id = :id', ['id' => $id]) : null;
+        return AdminAccess::sessionAdmin();
     }
 
     /** Atajo para el administrador: entra con la cuenta PIAR de su mismo correo (la crea si no existe). */
@@ -187,12 +187,7 @@ final class PiarController extends Controller
         if ($admin === null) {
             return $this->redirect(route('piar'));
         }
-        $customerId = PiarCredits::customerFor(strtolower((string) $admin['email']), (string) $admin['name']);
-        PiarProfile::ensure($customerId);
-        PiarProfile::acceptTerms($customerId);
-        Session::regenerate();
-        Session::set('admin_id', (int) $admin['id']);
-        Session::set('customer_id', $customerId);
+        PiarProfile::acceptTerms(AdminAccess::enterAsCustomer($admin));
         return $this->redirect(route('piar'));
     }
 
@@ -462,9 +457,11 @@ final class PiarController extends Controller
             return $json(['ok' => false, 'error' => t('piar.assist.forbidden')], 403);
         }
         $blocked = PiarAssist::blocked((int) $id);
+        // Administrador: sin cupo de paquete (left = null deja el aviso de acceso de administrador), con el límite por hora.
+        $left = static fn (): ?int => ($q = PiarAssist::quota((int) $id))['admin'] ? null : $q['left'];
         if ($blocked !== null || !RateLimiter::hit('piar-assist', $request->ip(), 20, 3600)) {
             $message = $blocked === 'quota' ? t('piar.assist.quota_out') : t('piar.assist.limit', ['hour' => PiarAssist::PER_HOUR]);
-            return $json(['ok' => false, 'error' => $message, 'left' => PiarAssist::quota((int) $id)['left']], 429);
+            return $json(['ok' => false, 'error' => $message, 'left' => $left()], 429);
         }
         @set_time_limit(120);
         try {
@@ -472,7 +469,7 @@ final class PiarController extends Controller
         } catch (\RuntimeException $e) {
             return $json(['ok' => false, 'error' => $e->getMessage()], 422);
         }
-        return $json(['ok' => true, 'left' => PiarAssist::quota((int) $id)['left']] + $result);
+        return $json(['ok' => true, 'left' => $left()] + $result);
     }
 
     public function pdf(Request $request, string $uuid): Response

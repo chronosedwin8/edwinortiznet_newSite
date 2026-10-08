@@ -47,7 +47,7 @@ $itemFields = [
       <p class="lead"><?= e(t('piar.edit.lead')) ?></p>
     </div>
   </header>
-  <p class="piar-assist-intro"><?= icon('spark') ?><span><?= e(t('piar.assist.intro')) ?> <strong data-ai-quota><?= e(t('piar.assist.quota', ['left' => $assistQuota['left'], 'total' => $assistQuota['total']])) ?></strong></span></p>
+  <p class="piar-assist-intro"><?= icon('spark') ?><span><?= e(t('piar.assist.intro')) ?> <strong data-ai-quota><?= e($assistQuota['admin'] ? t('piar.assist.admin_quota', ['hour' => PiarAssist::PER_HOUR]) : t('piar.assist.quota', ['left' => $assistQuota['left'], 'total' => $assistQuota['total']])) ?></strong></span></p>
   <form class="piar-form piar-edit__form" action="<?= e(route('piar.edit', ['uuid' => $plan['uuid']])) ?>" method="post" data-piar-assist="<?= e((string) json_encode($ai, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)) ?>">
     <?= csrf_field() ?>
     <?php foreach ($sections as $section): $key = $section['key']; $value = $output[$key] ?? null; ?>

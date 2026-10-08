@@ -8,8 +8,14 @@ $locale = I18n::locale();
 $soon = !$product['purchasable'];
 $gallery = $images;
 if (!empty($product['cover_url'])) {
-    array_unshift($gallery, ['url' => $product['cover_url'], 'alt' => $product['cover_alt'] ?: $product['title'], 'width' => $product['cover_width'], 'height' => $product['cover_height']]);
+    // La portada va primero; si también está entre las imágenes (importadas de WordPress), no se repite.
+    $gallery = array_values(array_filter($gallery, static fn (array $img): bool => $img['url'] !== $product['cover_url']));
+    $coverSizes = \App\Models\Product::imageSizes((string) $product['cover_url']);
+    array_unshift($gallery, ['url' => $product['cover_url'], 'alt' => $product['cover_alt'] ?: $product['title'], 'width' => $product['cover_width'], 'height' => $product['cover_height'],
+        'srcset' => ($product['cover_srcset'] ?? '') ?: $coverSizes['srcset'], 'thumb' => $coverSizes['thumb'], 'full' => $coverSizes['full']]);
 }
+$total = count($gallery);
+$ratio = $gallery && !empty($gallery[0]['width']) && !empty($gallery[0]['height']) ? (int) $gallery[0]['width'] . ' / ' . (int) $gallery[0]['height'] : '3 / 2';
 $checkoutUrl = route('checkout', ['items' => (string) $product['id']]);
 $variants ??= [];
 $hasVariants = $variants !== [];
@@ -19,25 +25,41 @@ $hasVariants = $variants !== [];
   <div class="product__grid">
     <div class="product__media">
       <?php if ($gallery): ?>
-      <div class="gallery-main" data-gallery>
-        <?php foreach ($gallery as $i => $img): ?>
-        <figure class="gallery-main__item"<?= $i > 0 ? ' hidden' : '' ?> data-gallery-item="<?= $i ?>">
-          <img src="<?= e($img['url']) ?>" alt="<?= e($img['alt'] ?: $product['title']) ?>"
-               <?php if ($img['width'] && $img['height']): ?>width="<?= (int) $img['width'] ?>" height="<?= (int) $img['height'] ?>"<?php endif; ?>
-               <?php if ($i === 0 && !empty($product['cover_srcset'])): ?>srcset="<?= e($product['cover_srcset']) ?>" sizes="<?= e(\App\Services\Seo\Assets::PRODUCT_SIZES) ?>"<?php endif; ?>
-               <?= $i === 0 ? 'fetchpriority="high"' : 'loading="lazy"' ?> decoding="async">
-        </figure>
-        <?php endforeach; ?>
+      <?php /* Carrusel: sin JS es una franja con desplazamiento horizontal (deslizar) y miniaturas que enlazan a cada imagen; product.js añade flechas, contador, teclado y ampliación. */ ?>
+      <div class="pgallery" data-pgallery role="region" aria-roledescription="<?= e(t('product.gallery.carousel')) ?>" aria-label="<?= e(t('product.gallery')) ?>"
+           style="--pg-ratio: <?= e($ratio) ?>" data-label-close="<?= e(t('product.gallery.close')) ?>" data-label-prev="<?= e(t('product.gallery.prev')) ?>" data-label-next="<?= e(t('product.gallery.next')) ?>" data-label-status="<?= e(t('product.gallery.n_of')) ?>">
+        <div class="pgallery__stage">
+          <ul class="pgallery__track" id="pg-track" data-pgallery-track<?= $total > 1 ? ' tabindex="0"' : '' ?>>
+            <?php foreach ($gallery as $i => $img): $n = $i + 1; ?>
+            <li class="pgallery__slide" id="pg-<?= $n ?>" data-pgallery-slide<?php if ($total > 1): ?> role="group" aria-roledescription="<?= e(t('product.gallery.slide')) ?>" aria-label="<?= e(t('product.gallery.n_of', ['n' => $n, 'total' => $total])) ?>"<?php endif; ?>>
+              <a class="pgallery__zoom" href="<?= e($img['full'] ?? $img['url']) ?>" data-pgallery-zoom>
+                <img src="<?= e($img['url']) ?>" alt="<?= e($img['alt'] ?: $product['title']) ?>"
+                     <?php if (!empty($img['width']) && !empty($img['height'])): ?>width="<?= (int) $img['width'] ?>" height="<?= (int) $img['height'] ?>"<?php endif; ?>
+                     <?php if (!empty($img['srcset'])): ?>srcset="<?= e($img['srcset']) ?>" sizes="<?= e(\App\Services\Seo\Assets::PRODUCT_SIZES) ?>"<?php endif; ?>
+                     <?= $i === 0 ? 'fetchpriority="high"' : 'loading="lazy"' ?> decoding="async">
+                <span class="visually-hidden"><?= e(t('product.gallery.zoom')) ?></span>
+              </a>
+            </li>
+            <?php endforeach; ?>
+          </ul>
+          <?php if ($total > 1): ?>
+          <button type="button" class="pgallery__nav pgallery__nav--prev js-only" data-pgallery-prev aria-controls="pg-track" aria-label="<?= e(t('product.gallery.prev')) ?>"><?= icon('chevron-left') ?></button>
+          <button type="button" class="pgallery__nav pgallery__nav--next js-only" data-pgallery-next aria-controls="pg-track" aria-label="<?= e(t('product.gallery.next')) ?>"><?= icon('chevron-right') ?></button>
+          <p class="pgallery__counter js-only" aria-hidden="true"><span data-pgallery-current>1</span> / <?= $total ?></p>
+          <?php endif; ?>
+          <span class="pgallery__hint js-only" aria-hidden="true"><?= icon('maximize') ?></span>
+        </div>
+        <?php if ($total > 1): ?>
+        <p class="visually-hidden" data-pgallery-status aria-live="polite" aria-atomic="true"></p>
+        <ol class="gallery-thumbs" aria-label="<?= e(t('product.gallery.thumbs')) ?>">
+          <?php foreach ($gallery as $i => $img): ?>
+          <li><a class="gallery-thumbs__btn" href="#pg-<?= $i + 1 ?>" data-pgallery-thumb="<?= $i ?>" aria-label="<?= e(t('product.image_n', ['n' => $i + 1])) ?>"<?= $i === 0 ? ' aria-current="true"' : '' ?>>
+            <img src="<?= e($img['thumb'] ?? $img['url']) ?>" alt="" width="96" height="64" loading="lazy" decoding="async">
+          </a></li>
+          <?php endforeach; ?>
+        </ol>
+        <?php endif; ?>
       </div>
-      <?php if (count($gallery) > 1): ?>
-      <ul class="gallery-thumbs" aria-label="<?= e(t('product.gallery')) ?>">
-        <?php foreach ($gallery as $i => $img): ?>
-        <li><button type="button" class="gallery-thumbs__btn" data-gallery-show="<?= $i ?>" aria-label="<?= e(t('product.image_n', ['n' => $i + 1])) ?>"<?= $i === 0 ? ' aria-current="true"' : '' ?>>
-          <img src="<?= e($img['url']) ?>" alt="" width="96" height="64" loading="lazy" decoding="async">
-        </button></li>
-        <?php endforeach; ?>
-      </ul>
-      <?php endif; ?>
       <?php endif; ?>
       <?php if (!empty($product['video_url']) && ($vid = \App\Services\Importer\HtmlCleaner::youtubeId($product['video_url']))): ?>
         <?= \App\Services\Importer\HtmlCleaner::liteYoutube($vid, $product['title']) ?>
@@ -55,6 +77,13 @@ $hasVariants = $variants !== [];
 
       <div class="buy-box" id="buy">
         <?= View::render('partials/price', ['product' => $product, 'size' => 'lg']) ?>
+        <?php if ($tutorial): /* Artículo guía o tutorial del producto (products.tutorial_post_id): qué trae y cómo funciona, antes de comprar. */ ?>
+        <a class="buy-guide" href="<?= e(post_path($tutorial)) ?>">
+          <span class="buy-guide__icon"><?= icon('eye') ?></span>
+          <span class="buy-guide__text"><strong><?= e(t('product.guide.title')) ?></strong> <small><?= e($tutorial['title']) ?></small></span>
+          <?= icon('arrow', 'icon buy-guide__arrow') ?>
+        </a>
+        <?php endif; ?>
         <?php if (!$soon && $hasVariants): ?>
         <form class="buy-box__form" id="buy-form" action="<?= e(route('checkout')) ?>" method="get" data-variant-form>
           <fieldset class="variant-picker" aria-describedby="variant-help">
@@ -169,12 +198,6 @@ $hasVariants = $variants !== [];
       <h2 id="ref-title"><?= e(t('product.refund')) ?></h2>
       <p><?= e(t('product.refund_text')) ?> <a href="<?= e(route('policy', ['slug' => $locale === 'es' ? 'reembolsos' : 'refunds'])) ?>"><?= e(t('product.refund_link')) ?></a></p>
     </section>
-    <?php if ($tutorial): ?>
-    <section class="detail-card" aria-labelledby="tut-title">
-      <h2 id="tut-title"><?= e(t('product.tutorial')) ?></h2>
-      <p><a href="<?= e(post_path($tutorial)) ?>"><?= e($tutorial['title']) ?></a></p>
-    </section>
-    <?php endif; ?>
   </aside>
 </div>
 

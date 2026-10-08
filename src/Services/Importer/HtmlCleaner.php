@@ -19,7 +19,7 @@ final class HtmlCleaner
     private const ALLOWED = [
         'p', 'h2', 'h3', 'h4', 'ul', 'ol', 'li', 'a', 'img', 'figure', 'figcaption',
         'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td', 'caption',
-        'blockquote', 'pre', 'code', 'strong', 'em', 'br', 'hr', 'video', 'span',
+        'blockquote', 'pre', 'code', 'strong', 'em', 'br', 'hr', 'video', 'span', 'div',
     ];
     private const RENAME = ['b' => 'strong', 'i' => 'em', 'h1' => 'h2', 'h5' => 'h4', 'h6' => 'h4', 'kbd' => 'code', 'tt' => 'code'];
     private const DROP = [
@@ -27,7 +27,11 @@ final class HtmlCleaner
         'link', 'meta', 'canvas', 'audio', 'template', 'head', 'title', 'iframe-placeholder',
     ];
     /** Clases propias que sobreviven al saneado. */
-    private const CLASSES = ['lite-yt', 'lite-yt__link', 'lite-yt__play', 'gallery', 'table-wrap', 'embed-link', 'btn-link', 'notice', 'video'];
+    private const CLASSES = ['lite-yt', 'lite-yt__link', 'lite-yt__play', 'gallery', 'table-wrap', 'embed-link', 'btn-link', 'notice', 'video', 'carousel-gallery', 'carousel-gallery__item'];
+    /** Clases que solo valen en una etiqueta (las del carrusel de imágenes). */
+    private const CLASS_TAGS = ['carousel-gallery' => 'div', 'carousel-gallery__item' => 'figure'];
+    /** Carrusel de imágenes: el único <div> que sobrevive al saneado (ver carousels()). */
+    public const CAROUSEL = 'carousel-gallery';
     private const ATTRS = [
         'a' => ['href', 'title', 'rel', 'target', 'class', 'data-yt', 'download'],
         'img' => ['src', 'alt', 'width', 'height', 'srcset', 'sizes', 'loading', 'decoding'],
@@ -38,6 +42,7 @@ final class HtmlCleaner
         'video' => ['src', 'poster', 'controls', 'preload', 'playsinline', 'width', 'height'],
         'span' => ['class'],
         'p' => ['class'],
+        'div' => ['class', 'data-autoplay'],
         'h2' => ['id'], 'h3' => ['id'], 'h4' => ['id'],
     ];
 
@@ -256,6 +261,10 @@ final class HtmlCleaner
                 $this->unwrap($node);
                 continue;
             }
+            if ($tag === 'div' && !self::isCarousel($node)) {
+                $this->unwrap($node);
+                continue;
+            }
             if (!in_array($tag, self::ALLOWED, true)) {
                 $this->unwrap($node);
                 continue;
@@ -318,11 +327,22 @@ final class HtmlCleaner
                 continue;
             }
             if ($name === 'class') {
-                $classes = array_values(array_intersect(preg_split('/\s+/', (string) $attr->nodeValue) ?: [], self::CLASSES));
+                $classes = array_values(array_filter(
+                    array_intersect(preg_split('/\s+/', (string) $attr->nodeValue) ?: [], self::CLASSES),
+                    fn (string $c): bool => !isset(self::CLASS_TAGS[$c]) || self::CLASS_TAGS[$c] === $tag
+                ));
                 $classes ? $node->setAttribute('class', implode(' ', $classes)) : $node->removeAttribute('class');
             }
             if (in_array($name, ['width', 'height'], true) && !ctype_digit((string) $attr->nodeValue)) {
                 $node->removeAttribute($attr->nodeName);
+            }
+            if ($name === 'data-autoplay') {
+                $seconds = trim((string) $attr->nodeValue);
+                if (ctype_digit($seconds) && (int) $seconds >= 3 && (int) $seconds <= 30) {
+                    $node->setAttribute('data-autoplay', (string) (int) $seconds);
+                } else {
+                    $node->removeAttribute($attr->nodeName);
+                }
             }
             if (in_array($name, ['src', 'href', 'poster'], true)) {
                 $value = trim((string) $attr->nodeValue);
@@ -477,8 +497,157 @@ final class HtmlCleaner
         return $url . '?' . http_build_query($query) . (isset($parts['fragment']) ? '#' . $parts['fragment'] : '');
     }
 
+    private static function isCarousel(DOMElement $el): bool
+    {
+        return in_array(self::CAROUSEL, preg_split('/\s+/', (string) $el->getAttribute('class')) ?: [], true);
+    }
+
+    /**
+     * Carrusel de imágenes del contenido. Única forma que se guarda:
+     *
+     *   <div class="carousel-gallery" [data-autoplay="3..30"]>
+     *     <figure class="carousel-gallery__item"><img …><figcaption>…</figcaption></figure>
+     *     …
+     *   </div>
+     *
+     * Solo en el nivel superior del contenido; dentro, solo figuras con una imagen y un pie opcional
+     * (texto e inline). Las figuras anidadas (galerías de WordPress), las imágenes sueltas y los párrafos
+     * de solo imágenes se convierten en diapositivas; cualquier otro bloque se mueve detrás del carrusel
+     * para no perder texto. Con menos de dos imágenes queda como figuras normales. Así nunca hay <p>, <h2>
+     * ni <div> dentro: la tabla de contenido, la tarjeta de producto y los anuncios no pueden caer dentro.
+     */
+    private function carousels(DOMElement $root, DOMDocument $doc): void
+    {
+        $xpath = new DOMXPath($doc);
+        $blank = static fn (string $text): bool => trim(str_replace("\u{00A0}", ' ', $text)) === '';
+        foreach (iterator_to_array($xpath->query('.//div', $root) ?: []) as $div) {
+            /** @var DOMElement $div */
+            if ($div->parentNode === null || !self::isCarousel($div)) {
+                continue;
+            }
+            $slides = [];
+            $after = [];
+            $collect = function (DOMNode $node) use (&$collect, &$slides, &$after, $doc, $blank): void {
+                if ($node instanceof DOMText) {
+                    if (!$blank($node->textContent)) {
+                        $p = $doc->createElement('p');
+                        $p->appendChild($node->cloneNode());
+                        $after[] = $p;
+                    }
+                    return;
+                }
+                if (!$node instanceof DOMElement) {
+                    return;
+                }
+                $tag = strtolower($node->tagName);
+                if ($tag === 'img') {
+                    $slides[] = [$node, null];
+                    return;
+                }
+                if ($tag === 'figure' && !in_array('lite-yt', preg_split('/\s+/', (string) $node->getAttribute('class')) ?: [], true)) {
+                    if ($node->getElementsByTagName('figure')->length > 0) {
+                        foreach (iterator_to_array($node->childNodes) as $child) {
+                            $collect($child);
+                        }
+                        return;
+                    }
+                    $img = $node->getElementsByTagName('img')->item(0);
+                    $cap = null;
+                    foreach ($node->childNodes as $child) {
+                        if ($child instanceof DOMElement && strtolower($child->tagName) === 'figcaption') {
+                            $cap = $child;
+                        }
+                    }
+                    if ($img !== null) {
+                        $slides[] = [$img, $cap];
+                    } elseif (!$blank($node->textContent)) {
+                        $after[] = $node;
+                    }
+                    return;
+                }
+                if (in_array($tag, ['p', 'a', 'div', 'strong', 'em'], true) && $node->getElementsByTagName('img')->length > 0 && $blank($node->textContent)) {
+                    foreach (iterator_to_array($node->getElementsByTagName('img')) as $img) {
+                        $slides[] = [$img, null];
+                    }
+                    return;
+                }
+                if ($tag === 'br') {
+                    return;
+                }
+                $after[] = $node;
+            };
+            foreach (iterator_to_array($div->childNodes) as $child) {
+                $collect($child);
+            }
+
+            $parent = $div->parentNode;
+            if ($parent !== $root || count($slides) < 2) {
+                // Fuera del nivel superior o con menos de dos imágenes: figuras normales.
+                foreach ($slides as [$img, $cap]) {
+                    $figure = $doc->createElement('figure');
+                    $figure->appendChild($img);
+                    if ($cap !== null && !$blank($cap->textContent)) {
+                        $figure->appendChild($cap);
+                    }
+                    $parent->insertBefore($figure, $div);
+                }
+                foreach ($after as $node) {
+                    $parent->insertBefore($node, $div);
+                }
+                $parent->removeChild($div);
+                continue;
+            }
+
+            $clean = $doc->createElement('div');
+            $clean->setAttribute('class', self::CAROUSEL);
+            if ($div->hasAttribute('data-autoplay')) {
+                $clean->setAttribute('data-autoplay', $div->getAttribute('data-autoplay'));
+            }
+            foreach ($slides as [$img, $cap]) {
+                $figure = $doc->createElement('figure');
+                $figure->setAttribute('class', 'carousel-gallery__item');
+                $figure->appendChild($img);
+                if ($cap !== null) {
+                    // El pie solo lleva texto e inline: los bloques se desenvuelven.
+                    foreach (iterator_to_array($xpath->query('.//*', $cap) ?: []) as $el) {
+                        /** @var DOMElement $el */
+                        if (!in_array(strtolower($el->tagName), ['a', 'strong', 'em', 'code', 'br'], true)) {
+                            if ($el->previousSibling !== null) {
+                                $el->parentNode?->insertBefore($doc->createTextNode(' '), $el);
+                            }
+                            $this->unwrap($el);
+                        }
+                    }
+                    $cap->removeAttribute('class');
+                    if (!$blank($cap->textContent)) {
+                        $figure->appendChild($cap);
+                    }
+                }
+                $clean->appendChild($doc->createTextNode("\n"));
+                $clean->appendChild($figure);
+            }
+            $clean->appendChild($doc->createTextNode("\n"));
+            $parent->replaceChild($clean, $div);
+            $next = $clean->nextSibling;
+            foreach ($after as $node) {
+                $parent->insertBefore($node, $next);
+            }
+        }
+        // Una figura marcada como diapositiva fuera de un carrusel pierde la marca.
+        foreach (iterator_to_array($xpath->query('.//figure[@class]', $root) ?: []) as $figure) {
+            /** @var DOMElement $figure */
+            $parent = $figure->parentNode;
+            $classes = preg_split('/\s+/', trim($figure->getAttribute('class'))) ?: [];
+            if (in_array('carousel-gallery__item', $classes, true) && (!$parent instanceof DOMElement || !self::isCarousel($parent))) {
+                $classes = array_diff($classes, ['carousel-gallery__item']);
+                $classes ? $figure->setAttribute('class', implode(' ', $classes)) : $figure->removeAttribute('class');
+            }
+        }
+    }
+
     private function postProcess(DOMElement $root, DOMDocument $doc, array $context): void
     {
+        $this->carousels($root, $doc);
         $xpath = new DOMXPath($doc);
         // Tablas con desplazamiento horizontal propio.
         foreach (iterator_to_array($xpath->query('.//table', $root) ?: []) as $table) {

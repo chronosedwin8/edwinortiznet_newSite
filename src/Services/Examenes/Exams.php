@@ -6,6 +6,7 @@ namespace App\Services\Examenes;
 
 use App\Core\DB;
 use App\Core\Logger;
+use App\Services\AdminAccess;
 
 /**
  * Exámenes generados. Flujo: create() reserva un examen del plan y deja la fila «pending»; generate() llama a
@@ -167,7 +168,16 @@ final class Exams
         return DB::transaction(function () use ($customerId, $input, $header): array {
             ExamProfile::ensure($customerId);
             DB::one('SELECT customer_id FROM exam_profiles WHERE customer_id = :c FOR UPDATE', ['c' => $customerId]);
-            $sub = ExamCredits::reserve($customerId, (int) $input['versiones'], self::unique($input));
+            if (AdminAccess::isAdmin($customerId)) {
+                // Administrador (pruebas): sin plan y sin consumir cupo (subscription_id NULL), con los límites del plan más alto.
+                $limits = ExamCredits::adminLimits();
+                if ((int) $input['versiones'] > $limits['versions'] || self::unique($input) > $limits['questions']) {
+                    return ['exam' => null, 'error' => 'limits'];
+                }
+                $sub = ['id' => null];
+            } else {
+                $sub = ExamCredits::reserve($customerId, (int) $input['versiones'], self::unique($input));
+            }
             if ($sub === null) {
                 $summary = ExamCredits::summary($customerId);
                 return ['exam' => null, 'error' => !$summary['has_active'] ? 'no_plan' : ($summary['remaining'] === 0 ? 'no_credits' : 'limits')];
@@ -176,7 +186,7 @@ final class Exams
             $id = DB::insert('exams', [
                 'uuid' => $uuid,
                 'customer_id' => $customerId,
-                'subscription_id' => (int) $sub['id'],
+                'subscription_id' => $sub['id'] !== null ? (int) $sub['id'] : null,
                 'status' => 'pending',
                 'title' => mb_substr($input['tema'], 0, 190),
                 'subject' => $input['materia'],
@@ -423,19 +433,29 @@ final class Exams
 
     /**
      * Cupo de IA del examen: preguntas que aún puede escribir la IA y solicitudes restantes.
-     * @return array{ok:bool, reason:?string, left:int, requests_left:int, unique:int, unique_max:int, variants:int}
+     * @return array{ok:bool, reason:?string, left:int, requests_left:int, unique:int, unique_max:int, variants:int, cap:int}
      */
     public static function aiQuota(array $exam): array
     {
+        $admin = AdminAccess::isAdmin((int) $exam['customer_id']);
         $sub = !empty($exam['subscription_id']) ? DB::one('SELECT * FROM exam_subscriptions WHERE id = :id', ['id' => (int) $exam['subscription_id']]) : null;
         $content = self::content($exam);
         $variants = $exam['mode'] === 'distintas' ? (int) $exam['versions'] : 1;
-        $max = $sub ? (int) $sub['max_questions'] : 0;
-        $cap = $sub ? $max + (int) $sub['ai_extra'] : 0;
+        if ($admin) {
+            // Administrador (pruebas): los límites del plan más alto, sin depender de un plan vigente.
+            $limits = ExamCredits::adminLimits();
+            $max = max($limits['questions'], $sub ? (int) $sub['max_questions'] : 0);
+            $cap = $max + max($limits['extra'], $sub ? (int) $sub['ai_extra'] : 0);
+        } else {
+            $max = $sub ? (int) $sub['max_questions'] : 0;
+            $cap = $sub ? $max + (int) $sub['ai_extra'] : 0;
+        }
         $left = max(0, $cap - (int) $exam['ai_questions']);
         $requests = max(0, ExamCredits::EDIT_REQUESTS - (int) $exam['ai_requests']);
         $reason = null;
-        if ($sub === null || $sub['revoked_at'] !== null) {
+        if ($admin) {
+            $reason = $requests === 0 ? 'requests' : ($left < $variants ? 'quota' : null);
+        } elseif ($sub === null || $sub['revoked_at'] !== null) {
             $reason = 'no_plan';
         } elseif (!ExamCredits::summary((int) $exam['customer_id'])['has_active']) {
             $reason = 'expired';
@@ -452,6 +472,7 @@ final class Exams
             'unique' => count($content['slots']) * $variants,
             'unique_max' => $max,
             'variants' => $variants,
+            'cap' => $cap,
         ];
     }
 
@@ -502,8 +523,7 @@ final class Exams
             return ['added' => 0, 'error' => 'type_max'];
         }
         // Reserva atómica del cupo (dos pestañas a la vez no lo pueden exceder).
-        $sub = DB::one('SELECT max_questions, ai_extra FROM exam_subscriptions WHERE id = :id', ['id' => (int) $exam['subscription_id']]);
-        $cap = (int) $sub['max_questions'] + (int) $sub['ai_extra'];
+        $cap = $quota['cap'];
         $reserved = DB::run(
             'UPDATE exams SET ai_questions = ai_questions + :u, ai_requests = ai_requests + 1
              WHERE id = :id AND ai_questions + :u2 <= :cap AND ai_requests < :max',

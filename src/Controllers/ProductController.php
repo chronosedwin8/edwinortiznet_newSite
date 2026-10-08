@@ -24,7 +24,7 @@ final class ProductController extends Controller
         if ($product === null) {
             $this->notFound();
         }
-        $images = Product::images((int) $product['id']);
+        $images = Product::images((int) $product['id'], $locale);
         $tutorial = null;
         if ($product['tutorial_post_id']) {
             $tutorial = Post::find((int) $product['tutorial_post_id']);

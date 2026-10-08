@@ -82,6 +82,7 @@ return static function (Router $r): void {
     $r->get('/admin/productos/{id}/', [AdminProducts::class, 'edit'], 'admin.products.edit');
     $r->post('/admin/productos/{id}/', [AdminProducts::class, 'update']);
     $r->post('/admin/productos/{id}/archivo/', [AdminProducts::class, 'upload'], 'admin.products.upload');
+    $r->get('/admin/productos/{id}/archivos/{file:id}/', [AdminProducts::class, 'downloadFile'], 'admin.products.file');
     $r->get('/admin/familias/', [AdminProducts::class, 'families'], 'admin.families');
     $r->post('/admin/familias/', [AdminProducts::class, 'saveFamilies']);
     $r->get('/admin/familias/nueva/', [AdminProducts::class, 'createFamily'], 'admin.families.create');

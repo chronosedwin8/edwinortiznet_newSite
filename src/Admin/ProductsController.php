@@ -72,8 +72,14 @@ final class ProductsController extends AdminBase
         return $this->view('products/edit', [
             'product' => $product,
             'translations' => $translations,
-            'files' => DB::all('SELECT * FROM product_files WHERE product_id = :id ORDER BY id', ['id' => (int) $id]),
+            // Todas las variantes, agrupadas: primero los archivos para todos y luego por variante.
+            'files' => array_map(
+                static fn (array $f): array => $f + ['available' => DownloadService::available($f)],
+                DB::all('SELECT * FROM product_files WHERE product_id = :id ORDER BY (variant IS NOT NULL AND variant <> ""), variant, id', ['id' => (int) $id])
+            ),
             'packItems' => array_map('intval', DB::column('SELECT product_id FROM pack_items WHERE pack_id = :id', ['id' => (int) $id])),
+            // «Reemplazar» en la lista de archivos: deja elegido ese archivo en el formulario de subida.
+            'replaceId' => (int) ($request->query['reemplazar'] ?? 0),
         ] + $this->options(), $translations['es']['title'] ?? t('admin.products'));
     }
 
@@ -239,20 +245,44 @@ final class ProductsController extends AdminBase
             }
             $disk = 'local';
         }
-        $data = ['storage_path' => $relative, 'storage_disk' => $disk, 'bytes' => $bytes, 'version' => self::str($request, 'version', 40), 'label' => self::str($request, 'label', 190) ?? $name];
+        $replace = (int) ($request->post['replace_id'] ?? 0);
+        $replacing = $replace > 0 && DB::value('SELECT id FROM product_files WHERE id = :id AND product_id = :p', ['id' => $replace, 'p' => $productId]) !== null;
+        // Nueva versión de un archivo existente: sin nombre ni variante se conservan los actuales, y sin versión se usa la fecha.
+        $data = ['storage_path' => $relative, 'storage_disk' => $disk, 'bytes' => $bytes,
+            'version' => self::str($request, 'version', 40) ?? ($replacing ? date('Y.m.d') : null)];
+        $label = self::str($request, 'label', 190);
+        if ($label !== null || !$replacing) {
+            $data['label'] = $label ?? $name;
+        }
         // Variante opcional (p. ej. la materia): clave en minúsculas; al reemplazar sin indicarla se conserva la actual.
         $variant = preg_replace('/[^a-z0-9_-]/', '', strtolower((string) self::str($request, 'variant', 40)));
         if ($variant !== '') {
             $data['variant'] = $variant;
         }
-        $replace = (int) ($request->post['replace_id'] ?? 0);
-        if ($replace > 0 && DB::value('SELECT id FROM product_files WHERE id = :id AND product_id = :p', ['id' => $replace, 'p' => $productId]) !== null) {
+        if ($replacing) {
             DB::update('product_files', $data, ['id' => $replace]);
         } else {
             DB::insert('product_files', $data + ['product_id' => $productId]);
         }
         $this->saved();
         return $this->back($back, self::withNotified(t('admin.products.uploaded'), $productId));
+    }
+
+    /**
+     * Descarga para el administrador cualquier archivo del producto (todas las variantes), para revisarlo antes
+     * de reemplazarlo: local en streaming o redirección a una URL firmada de S3. No consume descargas de pedidos.
+     */
+    public function downloadFile(Request $request, string $id, string $file): Response
+    {
+        $this->requireAdmin($request);
+        $row = DB::one('SELECT * FROM product_files WHERE id = :f AND product_id = :p', ['f' => (int) $file, 'p' => (int) $id]);
+        if ($row === null) {
+            throw HttpException::notFound();
+        }
+        if (!DownloadService::available($row)) {
+            return $this->fail("/admin/productos/$id/", t('admin.files.unavailable', ['file' => $row['label']]));
+        }
+        return DownloadService::deliver($row);
     }
 
     public function families(Request $request): Response

@@ -13,6 +13,7 @@ use App\Core\RateLimiter;
 use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
+use App\Services\AdminAccess;
 use App\Services\Ai\Gemini;
 use App\Services\Orders\OrderService;
 use App\Services\Payments\Status;
@@ -216,6 +217,109 @@ final class PiarTest extends TestCase
         } finally {
             DB::run('DELETE FROM admin_users WHERE id = :id', ['id' => $adminId]);
         }
+    }
+
+    public function testAdminAccountHasFullAccessWithoutPackages(): void
+    {
+        $email = 'admin-' . bin2hex(random_bytes(3)) . self::DOMAIN;
+        $adminId = (int) DB::insert('admin_users', ['email' => strtoupper($email), 'name' => 'Admin prueba', 'password_hash' => 'x']);
+        AdminAccess::reset();
+        try {
+            $id = PiarCredits::customerFor($email, 'Admin');
+            PiarProfile::acceptTerms($id);
+            Session::set('customer_id', $id);
+            $this->assertTrue(AdminAccess::isAdmin($id), 'El correo coincide sin distinguir mayúsculas');
+            $summary = PiarCredits::summary($id);
+            $this->assertTrue($summary['admin']);
+            $this->assertTrue($summary['has_active']);
+            $dash = $this->request('GET', '/piar/');
+            $this->assertStringContainsString('Acceso de administrador (pruebas)', $dash->body);
+
+            // PIAR completos (no de prueba), más de uno, sin paquete y sin consumir créditos ni la prueba.
+            $uuid = $this->uuidFrom($this->generate());
+            $second = $this->uuidFrom($this->generate());
+            $plan = PiarPlans::find($uuid, $id);
+            $this->assertSame('done', $plan['status']);
+            $this->assertSame(0, (int) $plan['is_trial']);
+            $this->assertNull($plan['package_id']);
+            $this->assertNull($plan['purge_after']);
+            $this->assertSame('done', PiarPlans::find($second, $id)['status']);
+            $this->assertSame(0, (int) DB::value('SELECT COUNT(*) FROM piar_packages WHERE customer_id = :c', ['c' => $id]));
+            $this->assertSame(0, PiarCredits::trialUsed($id));
+            $this->assertCount(2, PiarPlans::history($id));
+            // El modelo y los tokens se registran (monitoreo de costos).
+            $this->assertSame('gemini-2.5-pro', $plan['model']);
+            $this->assertSame(3400, (int) $plan['output_tokens']);
+
+            // Guardado, editable y en PDF.
+            $this->assertSame(200, $this->request('GET', "/piar/$uuid/editar/")->status);
+            $this->assertSame(303, $this->request('POST', "/piar/$uuid/editar/", ['resumen' => 'Editado por el admin'])->status);
+            $this->assertSame('Editado por el admin', PiarPlans::output(PiarPlans::find($uuid, $id))['resumen']);
+            $pdf = $this->request('GET', "/piar/$uuid/pdf/");
+            $this->assertSame('application/pdf', $pdf->headers['Content-Type'] ?? null);
+
+            // Perfil con logo (normalmente exige paquete vigente).
+            $tmp = tempnam(sys_get_temp_dir(), 'logo');
+            $img = imagecreatetruecolor(40, 20);
+            imagepng($img, $tmp);
+            $profile = App::handle(Request::create('POST', '/piar/perfil/', ['_csrf' => $this->csrf, 'institution' => 'IE Admin', 'city' => 'Cartagena'], ['REMOTE_ADDR' => $this->ip], [Csrf::COOKIE => $this->csrf], null, ['logo' => ['tmp_name' => $tmp, 'error' => UPLOAD_ERR_OK, 'size' => filesize($tmp), 'name' => 'logo.png']]));
+            $this->assertSame(303, $profile->status);
+            $saved = PiarProfile::get($id);
+            $this->assertSame('IE Admin', $saved['institution']);
+            $this->assertNotEmpty($saved['logo_key']);
+            PiarProfile::removeLogo($id);
+            @unlink($tmp);
+
+            // «Redactar con IA» sin cupo de paquete: responde sin contador (left null) y registra el uso.
+            Gemini::fake(fn (): array => ['status' => 200, 'body' => (string) json_encode([
+                'candidates' => [['content' => ['parts' => [['text' => json_encode(['texto' => 'Texto del asistente'])]]], 'finishReason' => 'STOP']],
+                'usageMetadata' => ['promptTokenCount' => 300, 'candidatesTokenCount' => 40],
+            ])]);
+            $this->assertStringContainsString('máximo ' . PiarAssist::PER_HOUR . ' por hora', $this->request('GET', "/piar/$uuid/editar/")->body);
+            $res = $this->request('POST', "/piar/$uuid/asistente/", ['field' => 'resumen', 'instruction' => 'Más corto']);
+            $this->assertSame(200, $res->status);
+            $data = json_decode($res->body, true);
+            $this->assertTrue($data['ok']);
+            $this->assertNull($data['left']);
+            $this->assertSame(40, (int) DB::value('SELECT output_tokens FROM piar_assists WHERE customer_id = :c', ['c' => $id]));
+            // Sigue el límite por hora.
+            for ($i = 1; $i < PiarAssist::PER_HOUR; $i++) {
+                DB::insert('piar_assists', ['customer_id' => $id, 'plan_id' => (int) $plan['id'], 'field' => 'resumen', 'action' => 'mejorar']);
+            }
+            $this->assertSame(429, $this->request('POST', "/piar/$uuid/asistente/", ['field' => 'resumen', 'instruction' => 'x'])->status);
+
+            // Panel: atajo a la herramienta, cuenta marcada y uso de administrador aparte.
+            Session::set('admin_id', $adminId);
+            $panel = $this->request('GET', '/admin/piar/?q=' . rawurlencode($email));
+            $this->assertSame(200, $panel->status);
+            $this->assertStringContainsString('Abrir la herramienta como administrador', $panel->body);
+            $this->assertStringContainsString('/piar/acceso/admin/', $panel->body);
+            $this->assertStringContainsString('Administrador (pruebas)', $panel->body);
+            $this->assertStringContainsString('de administrador (pruebas)', $panel->body);
+            Session::forget('admin_id');
+
+            // Si deja de ser administrador, vuelve a las reglas normales (la prueba gratis).
+            DB::run('DELETE FROM admin_users WHERE id = :id', ['id' => $adminId]);
+            AdminAccess::reset();
+            $this->assertFalse(PiarCredits::summary($id)['admin']);
+            $this->assertFalse(PiarAssist::quota($id)['admin']);
+        } finally {
+            DB::run('DELETE FROM admin_users WHERE id = :id', ['id' => $adminId]);
+            AdminAccess::reset();
+        }
+
+        // Un docente normal sin paquete: una prueba y luego a los planes; el asistente no está disponible.
+        Gemini::fake(fn (): array => ['status' => 200, 'body' => (string) json_encode([
+            'candidates' => [['content' => ['parts' => [['text' => json_encode(self::sampleOutput(), JSON_UNESCAPED_UNICODE)]]], 'finishReason' => 'STOP']],
+            'usageMetadata' => ['promptTokenCount' => 1200, 'candidatesTokenCount' => 3400],
+        ])]);
+        $other = $this->login('Normal');
+        $this->assertFalse(PiarCredits::summary($other)['admin']);
+        $trial = $this->uuidFrom($this->generate());
+        $this->assertSame(1, (int) PiarPlans::find($trial, $other)['is_trial']);
+        $this->assertSame('/piar/planes/', $this->generate()->headers['Location']);
+        $this->assertSame(403, $this->request('POST', "/piar/$trial/asistente/", ['field' => 'resumen', 'instruction' => 'x'])->status);
+        $this->assertSame(0, PiarAssist::quota($other)['left']);
     }
 
     public function testAssistDraftsOneFieldForPaidPlansOnly(): void

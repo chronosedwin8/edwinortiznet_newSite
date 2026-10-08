@@ -8,6 +8,9 @@
 <title><?= e(t('admin.preview')) ?></title>
 <style><?= \App\Services\Seo\Assets::criticalCss() ?></style>
 <link rel="stylesheet" href="<?= e(asset('css/main.css')) ?>">
+<?php foreach (\App\Services\Content\ContentRenderer::scripts($html) as $script): ?>
+<script type="module" src="<?= e(asset($script)) ?>"></script>
+<?php endforeach; ?>
 </head>
 <body>
 <main class="wrap page">

@@ -13,6 +13,7 @@ use App\Core\RateLimiter;
 use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
+use App\Services\AdminAccess;
 use App\Services\Ai\Gemini;
 use App\Services\Examenes\ExamCatalog;
 use App\Services\Examenes\ExamContent;
@@ -260,6 +261,130 @@ final class ExamenesTest extends TestCase
         $this->assertSame('/examenes/planes/', $res->headers['Location']);
         $this->assertSame(0, (int) DB::value('SELECT COUNT(*) FROM exams WHERE customer_id = :c', ['c' => $id]));
         $this->assertSame(0, $this->geminiCalls);
+    }
+
+    /** Usuario del panel de prueba (se borra en el finally de cada prueba). */
+    private static function adminUser(string $email): int
+    {
+        $id = (int) DB::insert('admin_users', ['email' => $email, 'name' => 'Admin prueba', 'password_hash' => 'x']);
+        AdminAccess::reset();
+        return $id;
+    }
+
+    public function testAdminShortcutOnExamsAccessPage(): void
+    {
+        $email = 'admin-' . bin2hex(random_bytes(3)) . self::DOMAIN;
+        $adminId = self::adminUser($email);
+        try {
+            $this->assertStringNotContainsString('Entrar como administrador', $this->request('GET', '/examenes/')->body);
+            Session::set('admin_id', $adminId);
+            $access = $this->request('GET', '/examenes/');
+            $this->assertStringContainsString('Entrar como administrador', $access->body);
+            $this->assertStringContainsString('/examenes/acceso/admin/', $access->body);
+
+            $res = $this->request('POST', '/examenes/acceso/admin/');
+            $this->assertSame(303, $res->status);
+            $this->assertSame('/examenes/', $res->headers['Location']);
+            $customerId = (int) DB::value('SELECT id FROM customers WHERE email = :e', ['e' => $email]);
+            $this->assertGreaterThan(0, $customerId, 'El atajo crea la cuenta del correo del administrador');
+            $this->assertSame($customerId, Session::get('customer_id'));
+            $this->assertSame($adminId, Session::get('admin_id'), 'Conserva la sesión del panel');
+            $this->assertNotNull(ExamProfile::get($customerId)['terms_accepted_at']);
+            $dash = $this->request('GET', '/examenes/');
+            $this->assertSame(200, $dash->status);
+            $this->assertStringContainsString('Acceso de administrador (pruebas)', $dash->body);
+
+            // El panel enlaza la herramienta y marca la cuenta como de administrador.
+            $panel = $this->request('GET', '/admin/examenes/?q=' . rawurlencode($email));
+            $this->assertSame(200, $panel->status);
+            $this->assertStringContainsString('Abrir la herramienta como administrador', $panel->body);
+            $this->assertStringContainsString('Administrador (pruebas)', $panel->body);
+
+            // Sin sesión del panel el atajo no hace nada.
+            Session::forget('admin_id');
+            Session::forget('customer_id');
+            $this->request('POST', '/examenes/acceso/admin/');
+            $this->assertNull(Session::get('customer_id'));
+        } finally {
+            DB::run('DELETE FROM admin_users WHERE id = :id', ['id' => $adminId]);
+            AdminAccess::reset();
+        }
+    }
+
+    public function testAdminGeneratesWithoutPlanAndWithoutConsumingQuota(): void
+    {
+        $email = 'admin-' . bin2hex(random_bytes(3)) . self::DOMAIN;
+        $adminId = self::adminUser($email);
+        try {
+            // Cuenta con el correo del administrador (en mayúsculas en el panel: no distingue).
+            DB::run('UPDATE admin_users SET email = :e WHERE id = :id', ['e' => strtoupper($email), 'id' => $adminId]);
+            $id = ExamCredits::customerFor($email, 'Admin');
+            ExamProfile::acceptTerms($id);
+            Session::set('customer_id', $id);
+            $this->assertTrue(AdminAccess::isAdmin($id));
+
+            $summary = ExamCredits::summary($id);
+            $limits = ExamCredits::adminLimits();
+            $this->assertTrue($summary['admin']);
+            $this->assertSame(max(array_column(ExamCredits::PLANS, 'versions')), $limits['versions']);
+            $this->assertSame(max(array_column(ExamCredits::PLANS, 'questions')), $summary['max_questions']);
+            $this->assertStringNotContainsString('Necesitas un plan', $this->request('GET', '/examenes/nuevo/')->body);
+
+            // Genera sin plan, con el máximo de versiones del plan más alto, y no crea ni consume suscripciones.
+            $uuid = $this->uuidFrom($this->create(['versiones' => (string) $limits['versions']]));
+            $exam = self::exam($uuid);
+            $this->assertSame('done', $exam['status']);
+            $this->assertNull($exam['subscription_id']);
+            $this->assertSame($limits['versions'], (int) $exam['versions']);
+            $this->assertSame(0, (int) DB::value('SELECT COUNT(*) FROM exam_subscriptions WHERE customer_id = :c', ['c' => $id]));
+            $this->uuidFrom($this->create());
+            $this->assertSame(2, (int) DB::value('SELECT COUNT(*) FROM exams WHERE customer_id = :c AND status = "done"', ['c' => $id]));
+            $this->assertSame(ExamCredits::ADMIN_EXAMS, ExamCredits::summary($id)['remaining']);
+            // El modelo y los tokens se registran igual (monitoreo de costos).
+            $this->assertGreaterThan(0, (int) $exam['output_tokens']);
+            $this->assertNotEmpty($exam['model']);
+            $this->assertGreaterThan(0, (int) DB::value('SELECT COUNT(*) FROM exam_ai_calls WHERE customer_id = :c AND output_tokens > 0', ['c' => $id]));
+
+            // Ni siquiera el administrador pasa de los límites del plan más alto.
+            $over = $this->create(['modo' => 'distintas', 'versiones' => (string) $limits['versions'], 'tipos' => ['unica' => '10', 'vf' => '0', 'problema' => '0']]);
+            $this->assertSame(303, $over->status);
+            $this->assertSame('/examenes/nuevo/', $over->headers['Location']);
+            $this->assertSame(2, (int) DB::value('SELECT COUNT(*) FROM exams WHERE customer_id = :c', ['c' => $id]));
+
+            // IA del editor sin plan: con el cupo extra del plan más alto.
+            $quota = Exams::aiQuota($exam);
+            $this->assertTrue($quota['ok']);
+            $this->assertSame($limits['questions'] + $limits['extra'] - (int) $exam['ai_questions'], $quota['left']);
+            $add = $this->request('POST', "/examenes/$uuid/ia/", ['type' => 'vf', 'count' => '1']);
+            $this->assertSame(200, $add->status);
+            $this->assertTrue(json_decode($add->body, true)['ok']);
+            $this->assertSame(1, (int) self::exam($uuid)['ai_requests']);
+            $this->assertSame(200, $this->request('GET', "/examenes/$uuid/pdf/")->status);
+
+            // Panel: las generaciones de administrador no cuentan como ventas; aparecen aparte.
+            Session::set('admin_id', $adminId);
+            $panel = $this->request('GET', '/admin/examenes/?q=' . rawurlencode($email));
+            $this->assertSame(200, $panel->status);
+            $this->assertStringContainsString('Administrador (pruebas)', $panel->body);
+            $this->assertStringContainsString('de administrador (pruebas)', $panel->body);
+            Session::forget('admin_id');
+
+            // Si deja de ser administrador, vuelve a necesitar un plan.
+            DB::run('DELETE FROM admin_users WHERE id = :id', ['id' => $adminId]);
+            AdminAccess::reset();
+            $this->assertFalse(ExamCredits::summary($id)['admin']);
+            $this->assertSame('/examenes/planes/', $this->create()->headers['Location']);
+            $this->assertFalse(Exams::aiQuota(self::exam($uuid))['ok']);
+        } finally {
+            DB::run('DELETE FROM admin_users WHERE id = :id', ['id' => $adminId]);
+            AdminAccess::reset();
+        }
+
+        // Un docente normal sigue sin poder generar sin plan.
+        $other = $this->login('Normal');
+        $this->assertFalse(ExamCredits::summary($other)['admin']);
+        $this->assertSame('/examenes/planes/', $this->create()->headers['Location']);
+        $this->assertSame(0, (int) DB::value('SELECT COUNT(*) FROM exams WHERE customer_id = :c', ['c' => $other]));
     }
 
     // ------------------------------------------------------------------ pedidos

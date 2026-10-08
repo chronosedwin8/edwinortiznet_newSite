@@ -48,6 +48,7 @@ final class ContentRenderer
         }, $html) ?? $html;
 
         $html = self::describeGenericLinks($html);
+        $html = self::carousels($html);
         // Miniaturas de YouTube: 320 px en pantallas pequeñas, 480 px en el resto.
         $html = (string) preg_replace(
             '#src="https://i\.ytimg\.com/vi/([A-Za-z0-9_-]{11})/hqdefault\.jpg"#',
@@ -152,7 +153,73 @@ final class ContentRenderer
         } else {
             $at = $end + 4;
         }
+        $at = self::outsideCarousel($html, $at); // defensa: el carrusel no lleva <p> ni <h2> dentro
         return substr($html, 0, $at) . $snippet . substr($html, $at);
+    }
+
+    /**
+     * Carruseles de imágenes guardados como <div class="carousel-gallery"><figure class="carousel-gallery__item">…
+     * (forma que garantiza HtmlCleaner): se añade la semántica del patrón «carrusel» de WAI-ARIA, la proporción
+     * común de las diapositivas (--cg-ratio, la imagen más alta, sin pasar de 1:1, para que nada se recorte ni salte)
+     * y los textos que usa carousel.js. Sin JavaScript queda una tira desplazable con scroll-snap.
+     */
+    public static function carousels(string $html): string
+    {
+        if (!str_contains($html, '<div class="carousel-gallery"')) {
+            return $html;
+        }
+        $index = 0;
+        return (string) preg_replace_callback('#<div class="carousel-gallery"([^>]*)>(.*?)</div>#s', function (array $m) use (&$index): string {
+            $index++;
+            $total = preg_match_all('#<figure class="carousel-gallery__item"#', $m[2]);
+            $ratio = null;
+            if (preg_match_all('#<img\b[^>]*?\swidth="(\d+)"[^>]*?\sheight="(\d+)"#', $m[2], $dims, PREG_SET_ORDER)) {
+                foreach ($dims as [, $w, $h]) {
+                    if ((int) $w > 0 && (int) $h > 0 && ($ratio === null || (int) $h / (int) $w > $ratio[1] / $ratio[0])) {
+                        $ratio = [(int) $w, (int) $h];
+                    }
+                }
+            }
+            if ($ratio !== null && $ratio[1] > $ratio[0]) {
+                $ratio = [1, 1];
+            }
+            $i = 0;
+            $slides = (string) preg_replace_callback('#<figure class="carousel-gallery__item">#', function () use (&$i, $total): string {
+                $i++;
+                return '<figure class="carousel-gallery__item" role="group" aria-roledescription="' . e(t('carousel.slide')) . '" aria-label="'
+                    . e(t('carousel.slide_of', ['i' => $i, 'n' => $total])) . '">';
+            }, $m[2]);
+            $attrs = ' id="carrusel-' . $index . '" role="region" aria-roledescription="' . e(t('carousel.role')) . '"'
+                . ' aria-label="' . e(t('carousel.label', ['n' => $total])) . '" tabindex="0"'
+                . ($ratio !== null ? ' style="--cg-ratio: ' . $ratio[0] . ' / ' . $ratio[1] . '"' : '')
+                . ' data-label-prev="' . e(t('carousel.prev')) . '" data-label-next="' . e(t('carousel.next')) . '"'
+                . ' data-label-goto="' . e(t('carousel.goto')) . '" data-label-status="' . e(t('carousel.status')) . '"'
+                . ' data-label-pause="' . e(t('carousel.pause')) . '" data-label-play="' . e(t('carousel.play')) . '"';
+            return '<div class="carousel-gallery"' . $m[1] . $attrs . '>' . $slides . '</div>';
+        }, $html);
+    }
+
+    /** Scripts que necesita el HTML ya renderizado (carousel.js solo si hay carruseles). */
+    public static function scripts(string $html): array
+    {
+        return str_contains($html, '<div class="carousel-gallery"') ? ['js/carousel.js'] : [];
+    }
+
+    /** Si $pos cae dentro de un carrusel, devuelve la posición justo después de su cierre. */
+    public static function outsideCarousel(string $html, int $pos): int
+    {
+        $offset = 0;
+        while (($start = stripos($html, '<div class="carousel-gallery"', $offset)) !== false && $start < $pos) {
+            $close = stripos($html, '</div>', $start);
+            if ($close === false) {
+                return $pos;
+            }
+            if ($pos < $close + 6) {
+                return $close + 6;
+            }
+            $offset = $close + 6;
+        }
+        return $pos;
     }
 
     /** Máximo tres bloques, con espacio reservado (no mueven el contenido). */
@@ -182,6 +249,7 @@ final class ContentRenderer
         }
         krsort($inserts);
         foreach ($inserts as $pos => $snippet) {
+            $pos = self::outsideCarousel($html, $pos);
             $html = substr($html, 0, $pos) . $snippet . substr($html, $pos);
         }
         return $html;

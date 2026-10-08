@@ -227,7 +227,7 @@ $year = (int) gmdate('Y');
         <p class="piar-step__lead"><?= e(t('piar.new.s6_lead')) ?></p>
         <div class="piar-review js-only" data-review aria-live="polite"></div>
         <noscript><p class="piar-muted"><?= e(t('piar.review.nojs')) ?></p></noscript>
-        <p class="piar-usage-note"><?= icon('notice') ?><span><?= e($isTrial ? t('piar.new.trial_note') : t('piar.new.credits_note', ['n' => (int) $summary['remaining']])) ?></span></p>
+        <p class="piar-usage-note"><?= icon('notice') ?><span><?= e(!empty($summary['admin']) ? t('piar.new.admin_note') : ($isTrial ? t('piar.new.trial_note') : t('piar.new.credits_note', ['n' => (int) $summary['remaining']]))) ?></span></p>
         <div class="piar-check piar-check--consent">
           <input id="pf-autorizacion" type="checkbox" name="autorizacion" value="1" required data-no-draft>
           <label for="pf-autorizacion"><?= e(t('piar.f.autorizacion')) ?></label>

@@ -64,6 +64,7 @@ final class App
     {
         Csrf::reset();
         View::reset();
+        \App\Services\AdminAccess::reset();
         I18n::setLocale(self::localeFromPath($request->path));
         \App\Services\Seo\Meta::setPath($request->path);
         try {

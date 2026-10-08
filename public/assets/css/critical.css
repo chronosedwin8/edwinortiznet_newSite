@@ -363,9 +363,21 @@ main:focus { outline: none; }
 .product { padding-block: clamp(20px, 4vw, 44px); }
 .product__grid { display: grid; gap: 32px; }
 .product__title { font-size: var(--step-3); }
-.gallery-main { border-radius: var(--radius-lg); overflow: hidden; background: var(--surface-2); border: 1px solid var(--line); box-shadow: var(--shadow); }
-.gallery-main__item { margin: 0; }
-.gallery-main img { width: 100%; height: auto; }
+.product__grid > * { min-width: 0; }
+/* Galería del producto: franja con scroll-snap (deslizable sin JS); flechas, contador y ampliación con product.js. */
+.pgallery__stage { position: relative; border-radius: var(--radius-lg); overflow: hidden; background: var(--surface-2); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.pgallery__track { display: flex; margin: 0; padding: 0; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; overscroll-behavior-x: contain; scrollbar-width: none; }
+.pgallery__track::-webkit-scrollbar { display: none; }
+.pgallery__slide { flex: 0 0 100%; margin: 0; scroll-snap-align: start; scroll-snap-stop: always; aspect-ratio: var(--pg-ratio, 3 / 2); max-height: min(78vh, 760px); }
+.pgallery__zoom { display: block; height: 100%; cursor: zoom-in; }
+.pgallery__slide img { width: 100%; height: 100%; object-fit: contain; }
+.pgallery__nav, .pgallery__counter, .pgallery__hint { position: absolute; z-index: 2; }
+.buy-guide { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding: 12px 14px; border-radius: var(--radius); background: var(--brand-soft); color: var(--text); text-decoration: none; border: 1px solid color-mix(in srgb, var(--brand) 22%, transparent); }
+.buy-guide__icon { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--brand); color: #fff; }
+.buy-guide__text { flex: 1; min-width: 0; display: grid; gap: 2px; line-height: 1.3; }
+.buy-guide__text strong { font-size: 1rem; font-weight: 750; }
+.buy-guide__text small { color: var(--muted); font-size: .84rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.buy-guide__arrow { flex: none; color: var(--brand); }
 .buy-box { position: relative; margin-top: 22px; padding: 22px; border-radius: var(--radius-lg); box-shadow: var(--shadow); border: 1.5px solid transparent; background: linear-gradient(var(--surface), var(--surface)) padding-box, var(--grad) border-box; }
 .buy-box__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
 .buy-box__note { margin: 12px 0 0; font-size: var(--step--1); color: var(--muted); }

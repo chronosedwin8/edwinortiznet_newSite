@@ -1,5 +1,11 @@
 <?php
-/** Medidor de uso: prueba (x/1) o paquete (usados/total y vencimiento). @var array $summary */
+/** Medidor de uso: prueba (x/1) o paquete (usados/total y vencimiento); a un administrador, su aviso. @var array $summary */
+if (!empty($summary['admin'])): ?>
+<div class="piar-meter piar-meter--paid piar-meter--admin">
+  <div class="piar-meter__head"><p class="piar-meter__title"><?= icon('gear') ?><span><?= e(t('piar.meter.admin_title')) ?></span></p></div>
+  <p class="piar-meter__note"><?= e(t('piar.meter.admin_text')) ?></p>
+</div>
+<?php return; endif;
 $paid = $summary['has_active'];
 $total = $paid ? max(1, (int) $summary['credits']) : \App\Services\Piar\PiarCredits::TRIAL_LIMIT;
 $used = $paid ? (int) $summary['used'] : (int) $summary['trial_used'];

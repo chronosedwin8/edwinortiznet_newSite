@@ -1,9 +1,17 @@
-<?php /** @var array $accounts @var array $stats @var array $tokens @var float $cost30 @var array $plans @var string $q */ ?>
+<?php /** @var array $accounts @var array $stats @var array $tokens @var float $cost30 @var float $adminCost30 @var array $plans @var string $q @var string $adminEmail */ ?>
+<section class="panel admin-tool-open">
+  <form method="post" action="<?= e(route('examenes.access.admin')) ?>" target="_blank">
+    <?= csrf_field() ?>
+    <button class="btn" type="submit"><?= icon('external') ?><?= e(t('admin.tools.open_as_admin')) ?></button>
+  </form>
+  <p class="muted"><?= e(t('admin.tools.open_as_admin_help', ['email' => $adminEmail])) ?></p>
+</section>
 <section class="kpis">
   <div class="kpi">
     <span class="kpi__label"><span class="kpi__icon"><?= icon('list-ol') ?></span><?= e(t('admin.examenes.k_done')) ?></span>
     <span class="kpi__value"><?= (int) ($stats['done'] ?? 0) ?></span>
     <span class="kpi__sub"><?= e(t('admin.examenes.k_last30', ['n' => (int) ($stats['last30'] ?? 0), 'e' => (int) ($stats['errors'] ?? 0)])) ?></span>
+    <?php if ((int) ($stats['admin_done'] ?? 0) > 0): ?><span class="kpi__sub"><?= e(t('admin.tools.k_admin', ['n' => (int) $stats['admin_done']])) ?></span><?php endif; ?>
   </div>
   <div class="kpi kpi--accent">
     <span class="kpi__label"><span class="kpi__icon"><?= icon('spark') ?></span><?= e(t('admin.examenes.k_questions')) ?></span>
@@ -14,6 +22,7 @@
     <span class="kpi__label"><span class="kpi__icon"><?= icon('chart') ?></span><?= e(t('admin.examenes.k_cost')) ?></span>
     <span class="kpi__value"><?= e(money(round($cost30), 'COP', 'es')) ?></span>
     <span class="kpi__sub"><?= e(t('admin.examenes.k_cost_sub', ['in' => number_format((int) ($tokens['tin30'] ?? 0), 0, ',', '.'), 'out' => number_format((int) ($tokens['tout30'] ?? 0), 0, ',', '.')])) ?></span>
+    <?php if ($adminCost30 > 0): ?><span class="kpi__sub"><?= e(t('admin.tools.k_admin_cost', ['cost' => money(round($adminCost30), 'COP', 'es')])) ?></span><?php endif; ?>
   </div>
 </section>
 
@@ -51,8 +60,8 @@
   <tbody>
   <?php foreach ($accounts as $a): ?>
     <tr>
-      <td><?= e($a['name'] ?: '—') ?><br><small class="muted"><?= e($a['email']) ?><?= $a['institution'] ? ' · ' . e($a['institution']) : '' ?></small><?php if (!$a['terms_accepted_at']): ?><br><span class="tag tag--pending"><?= e(t('admin.piar.no_terms')) ?></span><?php endif; ?></td>
-      <td><?php if ((int) $a['quota'] > 0): ?><span class="tag tag--published"><?= (int) $a['used'] ?>/<?= (int) $a['quota'] ?></span><?php else: ?><span class="muted">—</span><?php endif; ?></td>
+      <td><?= e($a['name'] ?: '—') ?><br><small class="muted"><?= e($a['email']) ?><?= $a['institution'] ? ' · ' . e($a['institution']) : '' ?></small><?php if (!$a['terms_accepted_at']): ?><br><span class="tag tag--pending"><?= e(t('admin.piar.no_terms')) ?></span><?php endif; ?><?php if ((int) $a['is_admin'] === 1): ?><br><span class="tag tag--warn"><?= e(t('admin.tools.admin_tag')) ?></span><?php endif; ?></td>
+      <td><?php if ((int) $a['is_admin'] === 1): ?><span class="muted"><?= e(t('admin.tools.admin_quota')) ?></span><?php elseif ((int) $a['quota'] > 0): ?><span class="tag tag--published"><?= (int) $a['used'] ?>/<?= (int) $a['quota'] ?></span><?php else: ?><span class="muted">—</span><?php endif; ?></td>
       <td><?= $a['expires_at'] ? e(substr((string) $a['expires_at'], 0, 10)) : '—' ?></td>
       <td><?= (int) $a['exams_done'] ?><?php if ((int) $a['exams_deleted'] > 0): ?> <small class="muted"><?= e(t('admin.examenes.deleted_n', ['n' => (int) $a['exams_deleted']])) ?></small><?php endif; ?></td>
       <td><?= (int) $a['ai_questions'] ?></td>

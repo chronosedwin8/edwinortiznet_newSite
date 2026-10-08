@@ -7,6 +7,7 @@ namespace App\Services\Piar;
 use App\Core\DB;
 use App\Core\Logger;
 use App\Core\RateLimiter;
+use App\Services\AdminAccess;
 use App\Services\Ai\Gemini;
 
 /**
@@ -102,9 +103,11 @@ final class PiarPlans
             PiarProfile::ensure($customerId);
             DB::one('SELECT customer_id FROM piar_profiles WHERE customer_id = :c FOR UPDATE', ['c' => $customerId]);
 
-            $packageId = PiarCredits::reserve($customerId);
+            // Administrador (pruebas): PIAR completo sin paquete; no consume créditos ni la prueba (package_id NULL).
+            $isAdmin = AdminAccess::isAdmin($customerId);
+            $packageId = $isAdmin ? null : PiarCredits::reserve($customerId);
             $isTrial = false;
-            if ($packageId === null) {
+            if ($packageId === null && !$isAdmin) {
                 if (PiarCredits::active($customerId) !== []) {
                     return ['plan' => null, 'error' => 'no_credits'];
                 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Piar;
 
 use App\Core\DB;
+use App\Services\AdminAccess;
 
 /**
  * Créditos del PIAR con IA: prueba gratis (2 por cuenta, de por vida) y paquetes mensuales
@@ -15,6 +16,8 @@ use App\Core\DB;
 final class PiarCredits
 {
     public const TRIAL_LIMIT = 1;
+    /** «PIAR disponibles» de una cuenta de administrador (no se consumen; ver AdminAccess). */
+    public const ADMIN_REMAINING = 9999;
     public const DAYS = 30;
     /** SKU => PIAR por paquete. */
     public const SKUS = ['PIAR-5' => 5, 'PIAR-10' => 10, 'PIAR-20' => 20];
@@ -151,7 +154,7 @@ final class PiarCredits
 
     /**
      * Estado de la cuenta para el medidor de uso.
-     * @return array{trial_used:int, trial_left:int, credits:int, used:int, remaining:int, expires_at:?string, has_active:bool, ever_paid:bool, packages:array}
+     * @return array{trial_used:int, trial_left:int, credits:int, used:int, remaining:int, expires_at:?string, has_active:bool, ever_paid:bool, packages:array, admin:bool}
      */
     public static function summary(int $customerId): array
     {
@@ -160,6 +163,22 @@ final class PiarCredits
         $used = array_sum(array_map(fn ($p) => (int) $p['used'], $packages));
         $trialUsed = self::trialUsed($customerId);
         $withCredits = array_values(array_filter($packages, fn ($p) => (int) $p['used'] < (int) $p['credits']));
+        if (AdminAccess::isAdmin($customerId)) {
+            // Acceso de administrador (pruebas): PIAR completos sin paquete y sin consumir cupo.
+            return [
+                'trial_used' => 0,
+                'trial_left' => 0,
+                'credits' => $credits,
+                'used' => $used,
+                'remaining' => self::ADMIN_REMAINING,
+                'expires_at' => null,
+                'last_expires_at' => null,
+                'has_active' => true,
+                'ever_paid' => true,
+                'packages' => $packages,
+                'admin' => true,
+            ];
+        }
         return [
             'trial_used' => min(self::TRIAL_LIMIT, $trialUsed),
             'trial_left' => max(0, self::TRIAL_LIMIT - $trialUsed),
@@ -171,6 +190,7 @@ final class PiarCredits
             'has_active' => $packages !== [],
             'ever_paid' => $packages !== [] || DB::value('SELECT id FROM piar_packages WHERE customer_id = :c LIMIT 1', ['c' => $customerId]) !== null,
             'packages' => $packages,
+            'admin' => false,
         ];
     }
 
