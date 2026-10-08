@@ -18,6 +18,9 @@ $tag = static function (?array $p) use ($labels): string {
     }
     return isset($p['interests'][0]) ? (string) $labels[$p['interests'][0]] : '';
 };
+
+// Gmail convierte «edwinortiz.net» en un enlace azul (ilegible sobre el encabezado): se enlaza explícitamente con el color del texto.
+$siteLink = static fn (string $html, string $color): string => str_replace('edwinortiz.net', '<a href="https://www.edwinortiz.net/" style="color:' . $color . ';text-decoration:none;">edwinortiz.net</a>', $html);
 ?>
 <!doctype html>
 <html lang="<?= $locale === 'en' ? 'en' : 'es-CO' ?>" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -89,7 +92,7 @@ $tag = static function (?array $p) use ($labels): string {
             </td>
             <td valign="middle" style="padding-left:12px;<?= $font ?>">
               <a href="<?= e($homeUrl) ?>" style="color:#ffffff;font-size:19px;font-weight:700;line-height:24px;">Edwin Ortiz Herazo</a><br>
-              <span style="color:#dfe7ff;font-size:13px;line-height:18px;"><?= e($s['kicker']) ?> · <?= e($date) ?></span>
+              <span style="color:#dfe7ff;font-size:13px;line-height:18px;"><?= $siteLink(e($s['kicker']), '#dfe7ff') ?> · <?= e($date) ?></span>
             </td>
           </tr>
         </table>
@@ -208,7 +211,7 @@ $tag = static function (?array $p) use ($labels): string {
         <?php elseif ($testNote): ?>
         <p class="t-muted" style="margin:0 0 6px;color:#6b778c;"><?= e($testNote) ?></p>
         <?php endif; ?>
-        <p class="t-muted" style="margin:0;color:#6b778c;">Edwin Ortiz Herazo · edwinortiz.net · <?= e($address) ?> · <?= e($contact) ?></p>
+        <p class="t-muted" style="margin:0;color:#6b778c;">Edwin Ortiz Herazo · <?= $siteLink('edwinortiz.net', '#6b778c') ?> · <?= e($address) ?> · <?= e($contact) ?></p>
       </td></tr>
     </table>
     <!--[if mso]></td></tr></table><![endif]-->
