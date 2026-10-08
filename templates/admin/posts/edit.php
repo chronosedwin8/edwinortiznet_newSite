@@ -117,6 +117,29 @@ $publicUrl = $post['type'] === 'policy' ? route('policy', ['slug' => $post['slug
       <div class="box__body"><ol class="outline" data-outline></ol></div>
     </details>
 
+    <?php if (!$isNew && $post['locale'] === 'es' && in_array($post['type'], ['post', 'page'], true)):
+        try { $socialChannels = \App\Services\Social\Channels::all(true); } catch (\Throwable) { $socialChannels = []; } ?>
+    <?php if ($socialChannels): ?>
+    <details class="box">
+      <summary><?= e(t('admin.social.schedule_box')) ?></summary>
+      <div class="box__body">
+        <?php if ($post['status'] !== 'published'): ?>
+        <p class="hint"><?= e(t('admin.social.schedule_unpublished')) ?></p>
+        <?php else: ?>
+        <p class="hint"><?= e(t('admin.social.schedule_help')) ?></p>
+        <label for="p-social-channel"><?= e(t('admin.social.channels')) ?></label>
+        <select id="p-social-channel" name="channel_id" form="social-schedule">
+          <?php foreach ($socialChannels as $sc): ?><option value="<?= (int) $sc['id'] ?>"><?= e($sc['name']) ?></option><?php endforeach; ?>
+        </select>
+        <label for="p-social-date"><?= e(t('admin.social.date_local')) ?></label>
+        <input id="p-social-date" type="datetime-local" name="scheduled_local" form="social-schedule" required
+               value="<?= e(\App\Services\Social\Schedule::toLocal(gmdate('Y-m-d H:i:s', time() + 86400), 'Y-m-d') . 'T' . $socialChannels[0]['schedule']['time']) ?>">
+        <button class="btn btn--small btn--block" type="submit" form="social-schedule"><?= icon('share') ?><?= e(t('admin.social.schedule_btn')) ?></button>
+        <?php endif; ?>
+      </div>
+    </details>
+    <?php endif; endif; ?>
+
     <?php if (!$isNew): ?>
     <details class="box box--danger">
       <summary><?= e(t('admin.danger_zone')) ?></summary>
@@ -132,6 +155,12 @@ $publicUrl = $post['type'] === 'policy' ? route('policy', ['slug' => $post['slug
     <?php endif; ?>
   </aside>
 </form>
+<?php if (!empty($socialChannels) && $post['status'] === 'published'): ?>
+<form id="social-schedule" method="post" action="<?= e(route('admin.social.schedule')) ?>" hidden>
+  <?= csrf_field() ?>
+  <input type="hidden" name="post_id" value="<?= (int) $post['id'] ?>">
+</form>
+<?php endif; ?>
 <?php if (!$isNew && empty($protected)): ?>
 <form id="delete-post" method="post" action="<?= e(route('admin.posts.delete')) ?>" data-delete-form hidden>
   <?= csrf_field() ?>

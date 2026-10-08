@@ -1,0 +1,59 @@
+/* Panel · Redes sociales: cola con vista previa por red, historial y ajustes. Usa los tokens de admin.css. */
+.sq-notice { display: flex; gap: 10px; align-items: center; padding: 12px 16px; border-radius: var(--radius); background: var(--warn-soft); color: var(--warn); font-weight: 600; margin: 0 0 18px; }
+.sq-notice a { color: inherit; }
+.sq-head { margin-top: 4px; }
+.sq-head .tabs { margin-bottom: 0; }
+.sq-head__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.sq-head__actions form { margin: 0; }
+.sq-meta { margin: -8px 0 18px; font-size: .86rem; }
+.sq-section-title { margin: 28px 0 12px; }
+
+.sq-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 16px 18px; margin-bottom: 18px; box-shadow: var(--shadow-sm); scroll-margin-top: 80px; }
+.sq-card:target { border-color: var(--brand); box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 16%, transparent); }
+.sq-card__when { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0; color: var(--muted); font-weight: 700; font-size: .86rem; }
+.sq-card__when time { color: var(--text); font-variant-numeric: tabular-nums; }
+.sq-card__title { font-size: 1.05rem; margin: 6px 0 14px; line-height: 1.35; }
+.sq-card__title a { color: var(--text); text-decoration: none; }
+.sq-card__title a:hover { color: var(--brand); text-decoration: underline; }
+
+.sq-form { margin: 0; }
+.sq-nets { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); align-items: start; }
+.sq-net { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; background: var(--surface-2); min-width: 0; }
+.sq-net__name { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: .9rem; margin: 0 0 10px; }
+.sq-net__name small { color: var(--muted); font-weight: 600; }
+.sq-net__img { display: block; width: 100%; height: auto; border-radius: 10px; aspect-ratio: 1.91 / 1; object-fit: cover; background: var(--surface-3); }
+.sq-net--ig .sq-net__img { aspect-ratio: 4 / 5; max-width: 300px; margin-inline: auto; }
+.sq-net__noimg { padding: 30px 10px; text-align: center; border: 1px dashed var(--line-2); border-radius: 10px; color: var(--muted); margin: 0; }
+.sq-net__text { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .86rem; line-height: 1.5; margin-top: 10px; max-height: 300px; overflow-y: auto; padding-right: 4px; }
+.sq-net__meta { color: var(--muted); font-size: .78rem; margin: 8px 0 0; }
+.sq-net__error { display: flex; gap: 6px; align-items: flex-start; color: var(--err); font-size: .82rem; margin: 8px 0 0; overflow-wrap: anywhere; }
+.sq-edit { margin-top: 10px; }
+.sq-edit summary { cursor: pointer; font-weight: 700; font-size: .86rem; color: var(--brand); }
+.sq-edit textarea { font-size: .86rem; }
+
+.sq-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; margin-top: 14px; }
+.sq-actions .btn { margin-top: 0; }
+.sq-actions form { margin: 0; }
+.sq-actions--fields { padding-top: 12px; border-top: 1px dashed var(--line); }
+.sq-actions--end { justify-content: flex-end; margin-top: 10px; }
+.admin-form .sq-inline { display: grid; gap: 4px; margin: 0; font-size: .8rem; min-width: 0; flex: 1 1 220px; max-width: 420px; }
+.sq-inline select, .sq-inline input { width: 100%; }
+
+.sq-history td { vertical-align: top; }
+.sq-inline-form { margin-top: 6px; }
+
+.sq-steps { padding-left: 20px; margin: 0 0 8px; display: grid; gap: 6px; font-size: .9rem; }
+.sq-steps code { font-size: .78rem; }
+.sq-grid { display: grid; gap: 8px 28px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+.sq-fieldset { border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 14px 14px; margin: 0 0 14px; min-width: 0; }
+.sq-fieldset legend { font-weight: 800; padding: 0 6px; }
+.sq-checks { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.admin-form .sq-checks label.check { margin: 4px 0; }
+.sq-label { font-weight: 700; font-size: .86rem; margin: 14px 0 4px; }
+
+@media (max-width: 600px) {
+  .sq-card { padding: 14px 12px; }
+  .sq-head__actions { width: 100%; }
+  .sq-head__actions form, .sq-head__actions .btn { flex: 1 1 auto; }
+  .admin-form .sq-inline { max-width: none; }
+}

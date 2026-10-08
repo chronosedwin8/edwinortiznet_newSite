@@ -15,3 +15,11 @@
 # Cada 15 minutos: Generador de exámenes — da por fallidas las generaciones colgadas (devuelve el examen al plan)
 # y vacía el contenido de los exámenes borrados hace más de 30 días (el cupo usado no se devuelve).
 */15 * * * * cd /var/www/edwinortiz && php bin/console examenes:purge >> storage/logs/cron.log 2>&1
+
+# Cada 5 minutos: Redes sociales — publica en Facebook e Instagram lo aprobado cuya hora ya llegó
+# (reintenta hasta 3 veces y avisa por correo si falla o si un token deja de funcionar).
+*/5 * * * * cd /var/www/edwinortiz && php bin/console social:publish >> storage/logs/cron.log 2>&1
+
+# Cada mañana (5:20 UTC = 0:20 en Colombia): Redes sociales — llena la cola de los próximos 7 días de cada canal
+# con textos de IA e imágenes, y marca como omitidos los borradores que no se aprobaron a tiempo.
+20 5 * * * cd /var/www/edwinortiz && php bin/console social:plan >> storage/logs/cron.log 2>&1

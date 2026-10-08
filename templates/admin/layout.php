@@ -5,6 +5,7 @@ $groups = [
         ['/admin/contenido/', 'file', 'admin.posts'],
         ['/admin/secciones/', 'layers', 'admin.hubs'],
         ['/admin/medios/', 'image', 'admin.media'],
+        ['/admin/redes/', 'share', 'admin.social'],
     ],
     'admin.group.shop' => [
         ['/admin/productos/', 'box', 'admin.products'],

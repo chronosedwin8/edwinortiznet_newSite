@@ -182,6 +182,17 @@ El simulacro propio se retiró. La página `/herramientas/simulacro-concurso-doc
 - El límite del artículo es la imagen de portada: un PNG de 150–200 KB servido desde S3.
 - **Qué decidir:** si autorizas servir las imágenes por una CDN con WebP (por ejemplo CloudFront con optimización de imágenes), el artículo pasaría con margen de 95. El plan pedía no mover las imágenes de S3, por eso no se hizo.
 
+## G. Redes sociales (Facebook e Instagram) — al desplegar
+
+Funciona sin decidir nada: los canales quedan **sin aprobación automática** (lo planificado espera en borrador hasta que lo apruebes en `/admin/redes/`).
+
+1. **Desplegar:** migración `018_social.sql` (la aplica `deploy.sh`), luego `php bin/console seed 21_redes` y `php bin/console social:connect` (con `META_APP_ID`, `META_APP_SECRET` y `META_USER_TOKEN` en el `.env` del servidor) o pegar el token en *Redes sociales → Conexión y canales*. La carpeta `public/social/` debe poder escribirla PHP.
+2. **Cron en CloudPanel** (usuario `edwinortiz`): `*/5 * * * *` → `social:publish` y `20 5 * * *` → `social:plan` (ver `deploy/cron.txt`).
+3. **Bio de Instagram:** pon `https://www.edwinortiz.net/enlaces/`.
+4. **Revisión de la app de Meta «Minuevoblog»:** mientras la app esté en modo desarrollo, solo publica en páginas y cuentas en las que tú tienes rol (es tu caso). Si Meta pide revisión de `pages_manage_posts` / `instagram_content_publish` para modo «Live», hay que hacerla desde el panel de desarrolladores.
+5. **Decisiones por defecto que puedes cambiar en el panel:** principal todos los días 18:30 (Tecnología 1 + Instagram, todo menos Concurso Docente, sin los paquetes PIAR-*/EXAM-* como productos sueltos: se promocionan como herramienta); concurso lunes, miércoles y viernes 19:00 (Fundales.com, entradas del Concurso Docente + simulacro; PIAR y exámenes apagados). `/enlaces/` es `noindex` (es un índice de enlaces que ya existen en el sitio).
+6. **Opcional:** `SOCIAL_CRON_TOKEN` para el disparador externo `/cron/redes/{token}/` (EventBridge/Lambda); sin él la ruta responde 404.
+
 ## F. Cambios hechos en este equipo (XAMPP)
 
 - `C:\xampp\php\php.ini`: se activaron `intl`, `gd`, `sodium` y `opcache`. Respaldo: `php.ini.bak-edwinortiz`.

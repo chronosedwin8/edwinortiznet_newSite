@@ -156,6 +156,24 @@ return static function (Router $r): void {
     $r->get('/examenes/{uuid:token}/pdf/', [\App\Controllers\ExamenesController::class, 'pdf'], 'examenes.pdf');
     $r->post('/examenes/{uuid:token}/borrar/', [\App\Controllers\ExamenesController::class, 'destroy'], 'examenes.delete');
 
+    // --- Redes sociales (publicación automática en Facebook e Instagram) ---
+    $social = \App\Admin\SocialController::class;
+    $r->get('/admin/redes/', [$social, 'queue'], 'admin.social');
+    $r->get('/admin/redes/historial/', [$social, 'history'], 'admin.social.history');
+    $r->get('/admin/redes/ajustes/', [$social, 'settings'], 'admin.social.settings');
+    $r->post('/admin/redes/conectar/', [$social, 'connectMeta'], 'admin.social.connect');
+    $r->post('/admin/redes/comprobar/', [$social, 'check'], 'admin.social.check');
+    $r->post('/admin/redes/planificar/', [$social, 'plan'], 'admin.social.plan');
+    $r->post('/admin/redes/aprobar-semana/', [$social, 'approveWeek'], 'admin.social.approve_week');
+    $r->post('/admin/redes/programar/', [$social, 'schedulePost'], 'admin.social.schedule');
+    $r->post('/admin/redes/canales/{id}/', [$social, 'saveChannel'], 'admin.social.channel');
+    $r->post('/admin/redes/grupo/{token}/', [$social, 'group'], 'admin.social.group');
+    // Disparador externo opcional (AWS EventBridge/Lambda): planifica y publica. El token va en SOCIAL_CRON_TOKEN.
+    $r->get('/cron/redes/{token}/', [\App\Controllers\SocialCronController::class, 'run'], 'social.cron');
+    $r->post('/cron/redes/{token}/', [\App\Controllers\SocialCronController::class, 'run']);
+    // «Enlace en la bio» de Instagram (solo español).
+    $r->get('/enlaces/', [\App\Controllers\LinksController::class, 'index'], 'links', 'es');
+
     // --- Rutas por idioma -------------------------------------------------
     $locales = [
         'es' => [

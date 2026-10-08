@@ -1,0 +1,23 @@
+/* «Enlace en la bio» (/enlaces/): una columna para el celular, dos desde tableta. */
+.links { max-width: 760px; padding-block: 28px 56px; }
+.links__head { text-align: center; display: grid; justify-items: center; gap: 8px; margin-bottom: 22px; }
+.links__mark { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 18px; background: var(--grad); color: #fff; font: 800 1.35rem/1 var(--font-head); box-shadow: var(--shadow); }
+.links__title { font: 800 var(--step-2)/1.15 var(--font-head); margin: 6px 0 0; }
+.links__lead { color: var(--muted); margin: 0; max-width: 44ch; }
+.links__sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 30px; }
+.links__btn { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 52px; padding: 10px 14px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); color: var(--text); font-weight: 700; text-decoration: none; box-shadow: var(--shadow-sm); transition: border-color .2s, transform .2s; }
+.links__btn:hover, .links__btn:focus-visible { border-color: var(--brand); transform: translateY(-1px); }
+.links__subtitle { font: 800 var(--step-1)/1.2 var(--font-head); margin: 0 0 14px; }
+.links__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.links__card { display: grid; grid-template-columns: 132px 1fr; align-items: center; gap: 14px; padding: 10px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); color: var(--text); text-decoration: none; box-shadow: var(--shadow-sm); transition: border-color .2s; }
+.links__card:hover, .links__card:focus-visible { border-color: var(--brand); }
+.links__img { width: 100%; height: auto; aspect-ratio: 1.91 / 1; object-fit: cover; border-radius: 10px; background: var(--surface-2); }
+.links__body { display: grid; gap: 4px; min-width: 0; }
+.links__kicker { color: var(--accent-strong); font-size: var(--step--1); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.links__name { font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
+@media (max-width: 420px) {
+  .links__card { grid-template-columns: 104px 1fr; gap: 12px; }
+}
+@media (min-width: 720px) {
+  .links__sections { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

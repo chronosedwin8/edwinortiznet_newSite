@@ -671,4 +671,14 @@ return array_merge(require __DIR__ . '/admin.es.php', require __DIR__ . '/piar.e
     'error.429.text' => 'Espera un momento antes de volver a intentarlo.',
     'error.500.title' => 'Algo salió mal',
     'error.500.text' => 'Ocurrió un error inesperado. Ya quedó registrado; inténtalo de nuevo en un rato.',
+    // Enlace en la bio de Instagram (/enlaces/)
+    'links.title' => 'Enlaces',
+    'links.description' => 'Lo último que compartí en redes: artículos, plantillas y herramientas de Edwin Ortiz Herazo.',
+    'links.heading' => 'Edwin Ortiz Herazo',
+    'links.lead' => 'Excel, inteligencia artificial para docentes y Concurso Docente. Aquí está lo último que compartí en redes.',
+    'links.sections' => 'Secciones del sitio',
+    'links.latest' => 'Lo último que compartí',
+    'links.blog' => 'Blog',
+    'links.shop' => 'Tienda',
+    'links.tools' => 'Herramientas gratis',
 ]);

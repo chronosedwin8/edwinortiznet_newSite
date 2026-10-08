@@ -602,4 +602,14 @@ return [
     'error.429.text' => 'Please wait a moment before trying again.',
     'error.500.title' => 'Something went wrong',
     'error.500.text' => 'An unexpected error occurred. It has been logged; please try again later.',
+    // Instagram link in bio (/enlaces/, Spanish only)
+    'links.title' => 'Links',
+    'links.description' => 'The latest I shared on social media: articles, templates and tools by Edwin Ortiz Herazo.',
+    'links.heading' => 'Edwin Ortiz Herazo',
+    'links.lead' => 'Excel, AI for teachers and the teacher exam. Here is the latest I shared on social media.',
+    'links.sections' => 'Site sections',
+    'links.latest' => 'Latest shared',
+    'links.blog' => 'Blog',
+    'links.shop' => 'Shop',
+    'links.tools' => 'Free tools',
 ];

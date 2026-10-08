@@ -46,6 +46,10 @@ final class Kernel
                 'piar:purge' => $this->piarPurge(),
                 'examenes:purge' => $this->examenesPurge(),
                 'kit:build' => $this->kitBuild($options),
+                'social:plan' => $this->socialPlan($options),
+                'social:publish' => $this->socialPublish(),
+                'social:connect' => $this->socialConnect(),
+                'social:check' => $this->socialCheck(),
                 default => $this->help(),
             };
         } catch (\Throwable $e) {
@@ -56,7 +60,7 @@ final class Kernel
 
     private function help(): int
     {
-        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify, piar:purge, examenes:purge, kit:build [materia…] [--check]');
+        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify, piar:purge, examenes:purge, kit:build [materia…] [--check], social:plan [--sin-ia], social:publish, social:connect, social:check');
         return 0;
     }
 
@@ -257,6 +261,46 @@ final class Kernel
             Cache::flushPages();
         }
         return $failed > 0 ? 1 : 0;
+    }
+
+    /** Redes sociales: llena la cola de los próximos 7 días de cada canal (una vez al día). --sin-ia usa la plantilla. */
+    private function socialPlan(array $options): int
+    {
+        foreach (\App\Services\Social\Planner::run(\App\Services\Social\Planner::DAYS_AHEAD, !in_array('--sin-ia', $options, true)) as $line) {
+            $this->out('  ' . $line);
+        }
+        return 0;
+    }
+
+    /** Redes sociales: publica lo aprobado cuya hora ya llegó (cada 5 minutos). */
+    private function socialPublish(): int
+    {
+        foreach (\App\Services\Social\Publisher::run() as $line) {
+            $this->out('  ' . $line);
+        }
+        return 0;
+    }
+
+    /** Redes sociales: conecta las páginas y cuentas de Instagram con META_USER_TOKEN de .env (sin mostrarlo). */
+    private function socialConnect(): int
+    {
+        if ((string) Config::get('META_USER_TOKEN', '') === '') {
+            $this->out('Falta META_USER_TOKEN en .env (o conecta desde el panel: /admin/redes/ajustes/).');
+            return 1;
+        }
+        $r = \App\Services\Social\Connector::connectMeta((string) Config::get('META_USER_TOKEN'));
+        $this->out(sprintf('Meta: %d página(s), %d cuenta(s) de Instagram. Token de usuario: %s.', $r['pages'], $r['instagram'], $r['user_expires_at'] ? 'vence ' . $r['user_expires_at'] . ' UTC' : 'no vence'));
+        $this->out('  ' . implode(', ', $r['names']));
+        return 0;
+    }
+
+    /** Redes sociales: comprueba los tokens y la cuota de publicación de cada cuenta. */
+    private function socialCheck(): int
+    {
+        foreach (\App\Services\Social\Connector::check() as $r) {
+            $this->out(sprintf('  %s %s %s', $r['ok'] ? '✔' : '✘', $r['account'], $r['detail']));
+        }
+        return 0;
     }
 
     private function mailTest(array $options): int

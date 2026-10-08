@@ -20,6 +20,9 @@
 # Imágenes para compartir (JPEG) generadas a partir de las portadas WebP
 /public/og/
 
+# Imágenes generadas para Facebook e Instagram (src/Services/Social/ImageMaker.php)
+/public/social/
+
 # Generador de exámenes: dependencias de compilación de tex2svg y logos subidos (sin S3)
 /tools/tex2svg/node_modules/
 /storage/examenes/
