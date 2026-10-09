@@ -34,7 +34,8 @@ final class ContentRenderer
             if ($products === []) {
                 return '';
             }
-            return View::render('partials/product-grid', ['products' => $products, 'compact' => true]);
+            // Tarjetas horizontales a todo el ancho del artículo (imagen a la izquierda en pantallas medianas y grandes).
+            return implode('', array_map(static fn (array $p): string => View::render('partials/product-inline', ['product' => $p]), $products));
         }, $html) ?? $html;
 
         $html = preg_replace_callback('#<p>\s*\{\{articulos:([a-z0-9-]*)\}\}\s*</p>|\{\{articulos:([a-z0-9-]*)\}\}#u', function (array $m) use ($post, $locale): string {
