@@ -53,7 +53,7 @@ $publicUrl = $post['type'] === 'policy' ? route('policy', ['slug' => $post['slug
       <legend><?= e(t('admin.field.publish')) ?></legend>
       <label for="p-status"><?= e(t('admin.f.status')) ?></label>
       <select id="p-status" name="status">
-        <?php foreach (['published', 'draft', 'noindex'] as $st): ?><option value="<?= $st ?>"<?= $post['status'] === $st ? ' selected' : '' ?>><?= e(t("admin.status.$st")) ?></option><?php endforeach; ?>
+        <?php foreach (['published', 'draft', 'noindex', 'scheduled'] as $st): ?><option value="<?= $st ?>"<?= $post['status'] === $st ? ' selected' : '' ?>><?= e(t("admin.status.$st")) ?></option><?php endforeach; ?>
       </select>
       <label for="p-type"><?= e(t('admin.f.type')) ?></label>
       <select id="p-type" name="type">

@@ -109,6 +109,7 @@ return [
     'admin.status.published' => 'Publicado',
     'admin.status.draft' => 'Borrador',
     'admin.status.noindex' => 'Publicado sin indexar',
+    'admin.status.scheduled' => 'Programado',
     'admin.pstatus.active' => 'A la venta',
     'admin.pstatus.coming_soon' => 'Disponible pronto',
     'admin.pstatus.hidden' => 'Oculto',

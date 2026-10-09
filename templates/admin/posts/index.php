@@ -11,7 +11,7 @@
   </label>
   <label><?= e(t('admin.f.status')) ?>
     <select name="status"><option value=""><?= e(t('admin.all')) ?></option>
-      <?php foreach (['published', 'draft', 'noindex'] as $st): ?><option value="<?= $st ?>"<?= $filters['status'] === $st ? ' selected' : '' ?>><?= e(t("admin.status.$st")) ?></option><?php endforeach; ?>
+      <?php foreach (['published', 'draft', 'noindex', 'scheduled'] as $st): ?><option value="<?= $st ?>"<?= $filters['status'] === $st ? ' selected' : '' ?>><?= e(t("admin.status.$st")) ?></option><?php endforeach; ?>
     </select>
   </label>
   <label class="check"><input type="checkbox" name="review" value="1"<?= $filters['review'] ? ' checked' : '' ?>> <?= e(t('admin.f.review')) ?></label>

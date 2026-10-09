@@ -28,7 +28,7 @@ final class PostsController extends AdminBase
         $filters = [
             'locale' => in_array($request->query['locale'] ?? '', ['es', 'en'], true) ? $request->query['locale'] : '',
             'type' => in_array($request->query['type'] ?? '', ['post', 'page', 'policy'], true) ? $request->query['type'] : '',
-            'status' => in_array($request->query['status'] ?? '', ['published', 'draft', 'noindex'], true) ? $request->query['status'] : '',
+            'status' => in_array($request->query['status'] ?? '', ['published', 'draft', 'noindex', 'scheduled'], true) ? $request->query['status'] : '',
             'review' => !empty($request->query['review']),
             'seo' => !empty($request->query['seo']),
             'q' => is_string($request->query['q'] ?? null) ? trim($request->query['q']) : '',
@@ -148,7 +148,7 @@ final class PostsController extends AdminBase
             'cover_alt' => self::str($request, 'cover_alt', 255),
             'hub_id' => ($h = (int) ($request->post['hub_id'] ?? 0)) > 0 ? $h : null,
             'related_product_id' => ($p = (int) ($request->post['related_product_id'] ?? 0)) > 0 ? $p : null,
-            'status' => in_array($request->post['status'] ?? '', ['published', 'draft', 'noindex'], true) ? $request->post['status'] : 'draft',
+            'status' => in_array($request->post['status'] ?? '', ['published', 'draft', 'noindex', 'scheduled'], true) ? $request->post['status'] : 'draft',
             'seo_title' => self::str($request, 'seo_title', 190),
             'seo_description' => self::str($request, 'seo_description', 320),
             'seo_auto' => !empty($request->post['seo_auto']) ? 1 : 0,

@@ -35,6 +35,7 @@ final class Kernel
                 'downloads:check' => $this->downloadsCheck(),
                 'downloads:fetch' => $this->downloadsFetch(),
                 'sitemap:build' => $this->sitemap(),
+                'posts:publish-due' => $this->postsPublishDue(),
                 'admin:create' => $this->adminCreate($options),
                 'orders:reconcile' => $this->reconcile(),
                 'cache:clear' => $this->cacheClear(),
@@ -62,7 +63,7 @@ final class Kernel
 
     private function help(): int
     {
-        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify, piar:purge, examenes:purge, kit:build [materia…] [--check], social:plan [--sin-ia], social:publish, social:connect, social:check, newsletter:run, newsletter:render [temas] [archivo.html] [--en]');
+        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, posts:publish-due, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify, piar:purge, examenes:purge, kit:build [materia…] [--check], social:plan [--sin-ia], social:publish, social:connect, social:check, newsletter:run, newsletter:render [temas] [archivo.html] [--en]');
         return 0;
     }
 
@@ -143,6 +144,21 @@ final class Kernel
         }
         \App\Core\Cache::flushPages();
         return $this->downloadsCheck();
+    }
+
+    /** Publica las entradas programadas cuya hora ya llegó (cron cada 5 minutos). */
+    private function postsPublishDue(): int
+    {
+        $due = DB::all("SELECT id, slug, locale FROM posts WHERE status = 'scheduled' AND published_at <= UTC_TIMESTAMP()");
+        if ($due === []) {
+            return 0;
+        }
+        DB::run("UPDATE posts SET status = 'published' WHERE status = 'scheduled' AND published_at <= UTC_TIMESTAMP()");
+        foreach ($due as $p) {
+            $this->out("  Publicada: {$p['locale']}/{$p['slug']}");
+        }
+        $this->out(Cache::flushPages() . ' página(s) eliminadas de la caché.');
+        return $this->sitemap();
     }
 
     private function sitemap(): int
