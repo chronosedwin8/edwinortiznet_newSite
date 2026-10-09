@@ -108,7 +108,7 @@ Nunca escribas nombres de estudiantes ni de empleados: usa el código.</code></p
    SUMA(Ventas[Total]) y debe dar 0.</code></pre>
 <p>Lo que deberías ver en la hoja, y lo que debes revisar fórmula por fórmula:</p>
 <pre><code>Resumen (A3):
-=PIVOTARPOR(Ventas[Categoría]; TEXTO(Ventas[Fecha]; "aaaa-mm"); Ventas[Total]; SUMA)
+=PIVOTARPOR(Ventas[Categoría]; AÑO(Ventas[Fecha]) * 100 + MES(Ventas[Fecha]); Ventas[Total]; SUMA)
 
 Días de inventario (columna en Inventario):
 =LET(prom; SUMAR.SI.CONJUNTO(Ventas[Unidades]; Ventas[Producto]; [@Producto];
@@ -117,7 +117,7 @@ Días de inventario (columna en Inventario):
 
 Control:
 =SUMA(Ventas[Total]) - TOMAR(A3#; -1; -1)</code></pre>
-<p>En inglés: PIVOTBY, TEXT, SUMIFS, TODAY, ROUND y TAKE (en inglés el formato es "yyyy-mm"). Si el control no da cero, no presentes el informe. Y cuando el análisis te diga qué productos rotan, el siguiente paso suele ser operativo: etiquetar el inventario con el <a href="/producto/generador-de-etiquetas-para-inventario-de-activos-fijos-en-excel-con-qr-y-codigos-de-barras/">generador de etiquetas con QR y códigos de barras</a> o facturar con la <a href="/producto/factura-con-envio-por-correo-al-cliente/">factura con envío por correo al cliente</a>. Ahí no hace falta IA: hace falta una plantilla que no falle.</p>
+<p>En inglés: PIVOTBY, YEAR, MONTH, SUMIFS, TODAY, ROUND y TAKE. El mes va como AÑO*100+MES (202603 es marzo de 2026) y no con TEXTO(Ventas[Fecha]; "aaaa-mm"), porque los códigos de fecha de TEXTO dependen de la configuración regional de Windows: en un equipo configurado para Colombia, «aaaa» devuelve el nombre del día. Si el control no da cero, no presentes el informe. Y cuando el análisis te diga qué productos rotan, el siguiente paso suele ser operativo: etiquetar el inventario con el <a href="/producto/generador-de-etiquetas-para-inventario-de-activos-fijos-en-excel-con-qr-y-codigos-de-barras/">generador de etiquetas con QR y códigos de barras</a> o facturar con la <a href="/producto/factura-con-envio-por-correo-al-cliente/">factura con envío por correo al cliente</a>. Ahí no hace falta IA: hace falta una plantilla que no falle.</p>
 
 <h3>Finanzas y contabilidad: conciliación bancaria</h3>
 <p>Con las tablas <em>Banco</em> y <em>Libro</em>, el prompt:</p>

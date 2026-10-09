@@ -83,14 +83,14 @@ casos de prueba con el resultado que debería obtener.</code></pre>
 <h2>Ejemplos prácticos para pymes y profesionales</h2>
 <h3>Ventas por ciudad y mes, con y sin funciones nuevas</h3>
 <p>Este es el resumen que más me piden los comerciantes. En Microsoft 365, una sola fórmula reemplaza la tabla dinámica y se actualiza sola:</p>
-<pre><code>=PIVOTARPOR(Ventas[Ciudad]; TEXTO(Ventas[Fecha]; "aaaa-mm"); Ventas[Total]; SUMA)</code></pre>
+<pre><code>=PIVOTARPOR(Ventas[Ciudad]; AÑO(Ventas[Fecha]) * 100 + MES(Ventas[Fecha]); Ventas[Total]; SUMA)</code></pre>
 <p>PIVOTARPOR (PIVOTBY en inglés) recibe lo que va en filas, lo que va en columnas, los valores y la función. Si solo necesitas una lista por ciudad, AGRUPARPOR (GROUPBY) es aún más corta, y puedes pedir el porcentaje de cada ciudad sobre el total:</p>
 <pre><code>=AGRUPARPOR(Ventas[Ciudad]; Ventas[Total]; SUMA)
 =AGRUPARPOR(Ventas[Ciudad]; Ventas[Total]; PORCENTAJEDE)</code></pre>
 <p>¿Excel 2019 o 2021? Escribe las ciudades en A2:A6 y el primer día de cada mes en B1:M1, y usa SUMAR.SI.CONJUNTO (SUMIFS):</p>
 <pre><code>=SUMAR.SI.CONJUNTO(Ventas[Total]; Ventas[Ciudad]; $A2;
     Ventas[Fecha]; ">="&B$1; Ventas[Fecha]; "<="&FIN.MES(B$1; 0))</code></pre>
-<p>Un detalle: «aaaa-mm» es el código de Excel en español; en inglés es «yyyy-mm». La IA lo olvida si no le dices tu idioma.</p>
+<p>Un detalle: agrupo el mes con AÑO*100+MES (202603 es marzo de 2026) y no con TEXTO(Ventas[Fecha]; "aaaa-mm"), porque los códigos de fecha de TEXTO dependen de la configuración regional de Windows: en un equipo configurado para Colombia, «aaaa» devuelve el nombre del día y el año se escribe «yyyy». La IA casi siempre propone TEXTO; compruébalo antes de confiar.</p>
 <p>Si prefieres las tablas dinámicas de toda la vida, que siguen siendo la herramienta más rápida para explorar, en este video de mi canal te muestro cómo dominarlas paso a paso:</p>
 {{yt:HjR1u-3KGik|Video de Edwin Ortiz: el secreto para dominar las tablas dinámicas en Excel}}
 

@@ -81,14 +81,14 @@ three test cases with the result I should get.</code></pre>
 <h2>Practical examples for small businesses and professionals</h2>
 <h3>Sales by city and month, with and without the new functions</h3>
 <p>This is the summary shop owners ask me for most. In Microsoft 365, a single formula replaces the PivotTable and updates itself:</p>
-<pre><code>=PIVOTBY(Sales[City], TEXT(Sales[Date], "yyyy-mm"), Sales[Total], SUM)</code></pre>
+<pre><code>=PIVOTBY(Sales[City], YEAR(Sales[Date]) * 100 + MONTH(Sales[Date]), Sales[Total], SUM)</code></pre>
 <p>PIVOTBY takes what goes in rows, what goes in columns, the values and the function. If you only need a list by city, GROUPBY is even shorter, and you can ask for each city’s share of the total:</p>
 <pre><code>=GROUPBY(Sales[City], Sales[Total], SUM)
 =GROUPBY(Sales[City], Sales[Total], PERCENTOF)</code></pre>
 <p>Excel 2019 or 2021? Type the cities in A2:A6 and the first day of each month in B1:M1, and use SUMIFS:</p>
 <pre><code>=SUMIFS(Sales[Total], Sales[City], $A2,
     Sales[Date], ">="&B$1, Sales[Date], "<="&EOMONTH(B$1, 0))</code></pre>
-<p>One detail: format codes and separators depend on your Excel language; in Spanish Excel the code is “aaaa-mm” and arguments are separated by semicolons. AI forgets this if you don’t tell it your language.</p>
+<p>One detail: I group months with YEAR*100+MONTH (202603 is March 2026) instead of TEXT(Sales[Date], "yyyy-mm"), because TEXT date codes depend on your Windows regional settings, and on a PC set to another language the wrong code can return a weekday name. Separators change too: Spanish Excel uses semicolons. AI forgets this if you don’t tell it your language and region.</p>
 <p>If you prefer good old PivotTables, which are still the fastest tool for exploring, in this video from my channel (in Spanish) I show you how to master them step by step:</p>
 {{yt:HjR1u-3KGik|Video by Edwin Ortiz, in Spanish: the secret to mastering PivotTables in Excel}}
 

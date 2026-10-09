@@ -104,7 +104,7 @@ Never write student or employee names: use the ID code.</code></pre>
    it must be 0.</code></pre>
 <p>What you should see in the sheet, and what you must review formula by formula:</p>
 <pre><code>Summary (A3):
-=PIVOTBY(Sales[Category], TEXT(Sales[Date], "yyyy-mm"), Sales[Total], SUM)
+=PIVOTBY(Sales[Category], YEAR(Sales[Date]) * 100 + MONTH(Sales[Date]), Sales[Total], SUM)
 
 Days of stock (column in Inventory):
 =LET(avg, SUMIFS(Sales[Units], Sales[Product], [@Product],
