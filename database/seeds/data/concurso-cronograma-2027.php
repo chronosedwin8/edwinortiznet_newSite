@@ -48,7 +48,7 @@ return [
 
 <h2>Cuántas vacantes hay y para qué cargos</h2>
 <p>La OPEC preliminar que la CNSC publicó en agosto para observaciones habla de <strong>más de 28.000 vacantes</strong> en instituciones educativas oficiales, y algunos medios señalan que la cifra podría acercarse a 30.000. En julio, al cerrar la planeación, el {$ext('https://www.mineducacion.gov.co/portal/salaprensa/Comunicados/429606:Avanza-el-nuevo-proceso-de-seleccion-docente-con-26-741-vacantes-para-fortalecer-la-educacion-publica-del-pais', 'Ministerio de Educación')} hablaba de 26.741. Es normal que el número cambie: la oferta definitiva solo se conoce cuando salen los acuerdos, así que no te cases con una cifra exacta.</p>
-<p>Los cargos incluyen docentes de aula, docentes orientadores, rectores, coordinadores y directores rurales. Además, la CNSC recibió más de 15.000 observaciones ciudadanas a los proyectos de acuerdo, lo que puede traer ajustes en las reglas finales. Puedes consultar la oferta preliminar en SIMO, en la sección de proyectos de acuerdo, buscando el proceso de docentes y directivos docentes 2026 (población mayoritaria).</p>
+<p>Los cargos incluyen docentes de aula, docentes orientadores, rectores, coordinadores y directores rurales. Además, la CNSC recibió unos 11.500 comentarios ciudadanos a los proyectos de acuerdo (según su matriz oficial de respuestas de septiembre de 2026), lo que puede traer ajustes en las reglas finales. Puedes consultar la oferta preliminar en SIMO, en la sección de proyectos de acuerdo, buscando el proceso de docentes y directivos docentes 2026 (población mayoritaria).</p>
 
 <h2>A quién afecta y cómo</h2>
 <ul>
