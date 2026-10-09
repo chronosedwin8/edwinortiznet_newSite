@@ -1,0 +1,61 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Core\DB;
+use App\Services\Importer\HtmlCleaner;
+use App\Services\Importer\WxrImporter;
+
+/*
+ * Tutorial de Excel «El archivo CSV que destruye tus datos» (semana 1 del plan editorial; hub Excel; producto relacionado: Aplicativo
+ * para combinar datos de Excel en documentos separados, SKU COMBIPRE2015). Probado en Excel 16 con configuración regional de Colombia
+ * el 9 de octubre de 2026. Se inserta PROGRAMADO: posts:publish-due lo publica el jueves 15 de octubre de 2026 a las 7:00 a. m. de
+ * Bogotá. Idempotente.
+ */
+return static function (): string {
+    $files = ['csv-excel-fechas-cedulas-pesos'];
+    $hubId = (int) DB::value('SELECT id FROM hubs WHERE `key` = "excel"');
+    $productId = DB::value('SELECT id FROM products WHERE sku = "COMBIPRE2015"');
+    $public = dirname(__DIR__, 2) . '/public';
+    $cleaner = new HtmlCleaner();
+    $count = 0;
+
+    foreach ($files as $key) {
+        $a = require __DIR__ . "/data/$key.php";
+        $html = $cleaner->sanitize($a['content_html'], ['title' => $a['title'], 'slug' => $a['slug']]);
+        $text = HtmlCleaner::toText($html);
+        $size = @getimagesize($public . $a['cover'] . '-960.webp') ?: [960, 540];
+        $data = [
+            'type' => 'post',
+            'locale' => 'es',
+            'translation_group' => WxrImporter::uuid('analisis-' . $key),
+            'slug' => $a['slug'],
+            'title' => $a['title'],
+            'excerpt' => $a['excerpt'],
+            'content_html' => $html,
+            'content_text' => $text,
+            'cover_url' => $a['cover'] . '-960.webp',
+            'cover_alt' => $a['cover_alt'],
+            'cover_width' => $size[0],
+            'cover_height' => $size[1],
+            'cover_srcset' => implode(', ', array_map(fn (int $w) => "{$a['cover']}-$w.webp {$w}w", [640, 960, 1440])),
+            'hub_id' => $hubId ?: null,
+            'related_product_id' => $productId !== null ? (int) $productId : null,
+            'seo_title' => $a['seo_title'],
+            'seo_description' => $a['seo_description'],
+            'seo_auto' => 0,
+            'focus_keyword' => $a['focus_keyword'],
+            'reading_minutes' => HtmlCleaner::readingMinutes($text),
+            'needs_review' => 0,
+            'updated_at' => gmdate('Y-m-d H:i:s'),
+        ];
+        $existing = DB::one('SELECT id FROM posts WHERE locale = "es" AND slug = :s', ['s' => $a['slug']]);
+        if ($existing === null) {
+            DB::insert('posts', $data + ['published_at' => $a['published_at'], 'status' => 'scheduled']);
+        } else {
+            DB::update('posts', $data, ['id' => (int) $existing['id']]);
+        }
+        $count++;
+    }
+    return "$count artículo(s) sobre importar CSV en Excel (programado)";
+};
