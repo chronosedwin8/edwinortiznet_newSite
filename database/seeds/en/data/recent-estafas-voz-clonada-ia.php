@@ -110,7 +110,7 @@ return [
         'title' => '"My Boss Called and It Sounded Like His Voice": How AI Voice Scams Work and How to Avoid Them',
         'excerpt' => 'A few seconds of audio can clone a voice. What the FBI, the Arup case and Colombian figures say, the warning signs and a verification protocol for companies, schools and families.',
         'seo_title' => 'AI Voice Cloning Scams: How to Avoid Them',
-        'seo_description' => 'How AI voice-cloning scams work, the warning signs and a verification protocol for payments, companies, schools and families, with data from the FBI and Colombia.',
+        'seo_description' => 'How AI voice-cloning scams work, the warning signs and a verification protocol for payments, companies, schools and families, with FBI and Colombian data.',
         'focus_keyword' => 'AI voice cloning scams',
         'cover' => '/assets/img/articulos/estafas-voz-clonada-ia/estafas-voz-clonada-ia-portada-en',
         'cover_alt' => 'Phone screen showing an incoming call from "Boss / Principal", a voice waveform and the message "I need a transfer now. Don\'t tell anyone", with alerts for familiar voice, urgency and secrecy and the advice to hang up and call back.',

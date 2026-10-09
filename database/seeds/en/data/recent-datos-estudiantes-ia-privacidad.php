@@ -96,7 +96,7 @@ return [
         'seo_description' => 'Student data privacy in educational AI: what the law says in Colombia, a real case and ten criteria for responsible use in schools.',
         'focus_keyword' => 'student data privacy AI',
         'cover' => '/assets/img/articulos/datos-estudiantes-ia-privacidad/datos-estudiantes-ia-privacidad-portada-en',
-        'cover_alt' => 'Cover reading "How far can a school go collecting student data to personalize with AI?" with a list: academic data with a clear purpose and health with maximum protection ticked, and emotions and profiles without human review crossed out.',
+        'cover_alt' => 'Cover "How far can a school go collecting student data to personalize with AI?" with a list: academic and health data protected, and emotions and profiles without human review crossed out.',
         'content_html' => $html,
     ],
 ];

@@ -148,7 +148,7 @@ return [
         'title' => 'AI Agents With Access to Your Systems: Smart Automation or a New Security Risk?',
         'excerpt' => 'The difference between a chatbot and an agent that executes actions, real cases of excessive agency, a framework of permissions, human approval and traceability, a matrix to decide what to automate and a code example.',
         'seo_title' => 'AI Agents With Access to Your Systems: Risks',
-        'seo_description' => 'What an AI agent is, the risks of giving it access to your systems and how to control it with permissions, human approval and traceability. With matrix and code.',
+        'seo_description' => 'What an AI agent is, the risks of giving it access to your systems and how to control it with permissions, human approval and logging. With matrix and code.',
         'focus_keyword' => 'AI agents security',
         'cover' => '/assets/img/articulos/agentes-ia-acceso-sistemas/agentes-ia-acceso-sistemas-portada-en',
         'cover_alt' => 'Cover reading "AI agents with access to your systems: automation or a new risk?" with a card going from text to action: chatbot answers, assistant suggests, agent executes and the risk is permissions.',

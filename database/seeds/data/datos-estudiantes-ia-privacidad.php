@@ -90,11 +90,11 @@ return [
     'slug' => 'colegio-datos-estudiantes-ia-personalizar-aprendizaje-privacidad',
     'title' => '¿Hasta dónde puede llegar un colegio al recopilar datos de sus estudiantes para personalizar el aprendizaje con IA?',
     'excerpt' => 'Qué datos de estudiantes se recopilan, qué dicen la Ley 1581 y la Circular 002 de 2024 de la SIC, el caso PowerSchool y diez criterios para un uso responsable de los datos educativos.',
-    'seo_title' => 'Datos de estudiantes e IA: ¿hasta dónde puede llegar un colegio?',
+    'seo_title' => 'Datos de estudiantes e IA: ¿hasta dónde llega un colegio?',
     'seo_description' => 'Privacidad de datos de estudiantes en la IA educativa: qué dice la ley en Colombia, un caso real y diez criterios para un uso responsable en colegios.',
     'focus_keyword' => 'privacidad de datos de estudiantes IA',
     'cover' => '/assets/img/articulos/datos-estudiantes-ia-privacidad/datos-estudiantes-ia-privacidad-portada',
-    'cover_alt' => 'Portada con el título «¿Hasta dónde puede un colegio recopilar datos de sus estudiantes para personalizar con IA?» y una lista: datos académicos con finalidad clara y salud con protección máxima marcados, y emociones y perfiles sin revisión humana descartados.',
+    'cover_alt' => 'Portada «¿Hasta dónde puede un colegio recopilar datos de sus estudiantes para personalizar con IA?» con una lista: datos académicos y de salud protegidos, y emociones y perfiles sin revisión humana descartados.',
     'published_at' => '2026-10-28 12:00:00',
     'content_html' => $html,
 ];
