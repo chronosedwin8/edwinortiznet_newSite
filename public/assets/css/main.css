@@ -303,9 +303,9 @@ body:has(.lang-banner:not([hidden])) .whatsapp-float { bottom: 72px; }
 .inline-posts { margin: 1.8em 0; padding: 20px 22px; border-radius: var(--radius); background: var(--surface-2); }
 .inline-posts__title { font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 8px; }
 .inline-posts ul { margin: 0; padding-left: 1.1em; }
-.product-inline { position: relative; display: grid; grid-template-columns: 88px 1fr; align-items: start; gap: 16px; margin: 2em 0; padding: 18px; border-radius: var(--radius-lg); border: 1.5px solid transparent; background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(120deg, var(--action), #f5a524 40%, var(--brand)) border-box; box-shadow: var(--shadow); }
+.product-inline { position: relative; display: grid; grid-template-columns: 1fr; align-items: start; gap: 16px; margin: 2em 0; padding: 18px; border-radius: var(--radius-lg); border: 1.5px solid transparent; background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(120deg, var(--action), #f5a524 40%, var(--brand)) border-box; box-shadow: var(--shadow); }
 .product-inline > :only-child { grid-column: 1 / -1; }
-.product-inline__img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius); }
+.product-inline__img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius); background: var(--surface-2, #eef1f7); }
 .product-inline .eyebrow { margin-bottom: .3em; color: var(--action-hover); }
 .product-inline__title { font-family: var(--font-head); font-size: var(--step-1); font-weight: 750; line-height: 1.15; margin-bottom: .4em; }
 .product-inline__title a { color: var(--text); text-decoration: none; }
