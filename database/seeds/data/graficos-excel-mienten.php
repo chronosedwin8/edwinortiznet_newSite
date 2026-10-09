@@ -133,7 +133,7 @@ return [
     'title' => 'Las gráficas de Excel también pueden mentir: cinco errores que distorsionan tus conclusiones',
     'excerpt' => 'Cinco errores en gráficos de Excel (eje truncado, escalas distintas, datos elegidos, correlación sin causa y ejes dobles) con su versión corregida, una macro de VBA que detecta ejes truncados y una lista de comprobación.',
     'seo_title' => 'Gráficas de Excel que mienten: 5 errores y cómo corregirlos',
-    'seo_description' => 'Cinco errores en gráficos de Excel que distorsionan conclusiones (eje truncado, escalas, correlación y ejes dobles), con ejemplos, macro de VBA y lista de comprobación.',
+    'seo_description' => 'Cinco errores en gráficos de Excel (eje truncado, escalas, correlación y ejes dobles) con ejemplos, macro de VBA y lista de comprobación para corregirlos.',
     'focus_keyword' => 'gráficas de Excel engañosas',
     'cover' => '/assets/img/articulos/graficos-excel-mienten/graficos-excel-mienten-portada',
     'cover_alt' => 'Portada con el título «Las gráficas de Excel también pueden mentir: cinco errores que distorsionan tus conclusiones» y una lista de comprobación: eje en cero, escalas comparables y periodo completo marcados, y confundir correlación con causa descartado.',
