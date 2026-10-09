@@ -390,7 +390,7 @@ final class Kernel
         RateLimiter::disable();
         Config::set('PAGE_CACHE', 'false');
         $paths = [];
-        foreach (DB::all("SELECT slug, locale, type FROM posts WHERE status <> 'draft' AND type IN ('post','page')") as $row) {
+        foreach (DB::all("SELECT slug, locale, type FROM posts WHERE status NOT IN ('draft','scheduled') AND type IN ('post','page')") as $row) {
             $paths[] = ($row['locale'] === 'en' ? '/en/' : '/') . $row['slug'] . '/';
         }
         foreach (DB::all("SELECT pt.slug, pt.locale FROM product_translations pt JOIN products p ON p.id = pt.product_id") as $row) {
