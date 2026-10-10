@@ -1,0 +1,24 @@
+id,tipo,solicitante,aprobador,creada,respondida,estado
+S-001,Compra,Docente 1,Coordinación,2027-01-04 15:00,2027-01-04 19:00,Aprobada
+S-002,Compra,Docente 2,Coordinación,2027-01-04 22:00,2027-01-05 04:00,Aprobada
+S-003,Compra,Docente 3,Coordinación,2027-01-05 05:00,2027-01-05 10:00,Aprobada
+S-004,Compra,Docente 4,Coordinación,2027-01-05 12:00,2027-01-05 20:00,Aprobada
+S-005,Compra,Docente 5,Coordinación,2027-01-05 19:00,2027-01-06 05:00,Aprobada
+S-006,Compra,Docente 6,Rectoría,2027-01-06 02:00,2027-01-07 08:00,Aprobada
+S-007,Compra,Docente 7,Rectoría,2027-01-06 09:00,2027-01-08 13:00,Aprobada
+S-008,Compra,Docente 8,Rectoría,2027-01-06 16:00,2027-01-09 14:00,Aprobada
+S-009,Compra,Docente 9,Rectoría,2027-01-06 23:00,2027-01-08 01:00,Aprobada
+S-010,Compra,Docente 10,Rectoría,2027-01-07 06:00,2027-01-11 00:00,Aprobada
+S-011,Permiso,Docente 11,Coordinación,2027-01-07 13:00,2027-01-07 15:00,Aprobada
+S-012,Permiso,Docente 12,Coordinación,2027-01-07 20:00,2027-01-07 23:00,Aprobada
+S-013,Permiso,Docente 13,Coordinación,2027-01-08 03:00,2027-01-08 04:00,Aprobada
+S-014,Permiso,Docente 14,Coordinación,2027-01-08 10:00,2027-01-08 15:00,Aprobada
+S-015,Permiso,Docente 15,Coordinación,2027-01-08 17:00,2027-01-08 21:00,Aprobada
+S-016,Permiso,Docente 16,Coordinación,2027-01-09 00:00,2027-01-09 03:00,Aprobada
+S-017,Espacio,Docente 17,Coordinación,2027-01-09 07:00,2027-01-09 17:00,Aprobada
+S-018,Espacio,Docente 18,Coordinación,2027-01-09 14:00,2027-01-10 02:00,Aprobada
+S-019,Espacio,Docente 19,Coordinación,2027-01-09 21:00,2027-01-10 17:00,Aprobada
+S-020,Espacio,Docente 20,Secretaría,2027-01-10 04:00,2027-01-10 10:00,Aprobada
+S-021,Espacio,Docente 21,Secretaría,2027-01-10 11:00,2027-01-10 19:00,Aprobada
+S-022,Permiso,Docente 22,Coordinación,2027-01-11 15:00,,Pendiente
+S-023,Compra,Docente 23,Rectoría,2027-01-08 08:00,,Pendiente
