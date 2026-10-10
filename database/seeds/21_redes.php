@@ -13,6 +13,10 @@ use App\Services\Social\Channels;
  *   todos los días a las 18:30 (hora de Colombia), todo el contenido menos el hub del Concurso Docente.
  * - concurso: página de Facebook «Fundales.com», lunes, miércoles y viernes a las 19:00, entradas del hub del
  *   Concurso Docente y el simulacro (PIAR y exámenes se pueden activar en el panel).
+ * - miaulaweb: página de Facebook «Miaulaweb», todos los días a las 12:30: tecnología educativa, pedagogía y
+ *   Concurso Docente (hubs de docentes y del concurso) y las herramientas PIAR, exámenes y Fundales.
+ * - tecnozona: página de Facebook «Mi TecnoZona», todos los días a las 20:00: tecnología y Excel (todo menos el
+ *   Concurso Docente), productos de oficina y las herramientas QR y número a letras.
  * Modo por defecto: sin aprobación automática (Edwin aprueba la cola de la semana).
  */
 return static function (): string {
@@ -42,6 +46,32 @@ return static function (): string {
                 'skus' => [],
                 'exclude_skus' => [],
                 'tools' => ['fundales'],
+            ],
+        ],
+        'miaulaweb' => [
+            'name' => 'Miaulaweb (tecnología educativa y Concurso Docente)',
+            'schedule' => ['days' => [1, 2, 3, 4, 5, 6, 7], 'time' => '12:30', 'tz' => 'America/Bogota'],
+            'content' => [
+                'types' => ['post', 'product', 'tool'],
+                'hubs_include' => ['ia-para-docentes', 'concurso-docente'],
+                'hubs_exclude' => [],
+                'audiences' => ['docente', 'concurso'],
+                'skus' => [],
+                'exclude_skus' => ['PIAR-*', 'EXAM-*'],
+                'tools' => ['piar', 'examenes', 'fundales'],
+            ],
+        ],
+        'tecnozona' => [
+            'name' => 'Mi TecnoZona (tecnología y Excel)',
+            'schedule' => ['days' => [1, 2, 3, 4, 5, 6, 7], 'time' => '20:00', 'tz' => 'America/Bogota'],
+            'content' => [
+                'types' => ['post', 'page', 'product', 'tool'],
+                'hubs_include' => [],
+                'hubs_exclude' => ['concurso-docente'],
+                'audiences' => ['oficina'],
+                'skus' => [],
+                'exclude_skus' => ['PIAR-*', 'EXAM-*'],
+                'tools' => ['qr', 'words'],
             ],
         ],
     ];
