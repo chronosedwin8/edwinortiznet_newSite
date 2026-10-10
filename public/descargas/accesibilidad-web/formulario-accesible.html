@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Inscripción a talleres</title>
+</head>
+<body>
+<h1>Inscripción a talleres</h1>
+<h2>Datos del estudiante</h2>
+<img src="logo.png" alt="Logo del colegio San Martín">
+<form action="/inscribir" method="post">
+  <label for="nombre">Nombre completo</label>
+  <input type="text" id="nombre" name="nombre" autocomplete="name" required>
+  <label for="correo">Correo electrónico</label>
+  <input type="email" id="correo" name="correo" autocomplete="email" required>
+  <label for="taller">Taller</label>
+  <select id="taller" name="taller"><option>Robótica</option></select>
+  <button type="submit">Enviar inscripción</button>
+</form>
+<a href="reglamento.pdf">Leer el reglamento de talleres (PDF)</a>
+<a href="mapa.html"><img src="icono.png" alt="Mapa del colegio"></a>
+</body>
+</html>
