@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Siete preguntas antes de pegar datos en una IA gratuita». Fuentes verificadas el 9 de octubre de 2026: centro de ayuda de OpenAI (controles de datos), cobertura de la política de privacidad de Gemini (no se accedió a la página original), prensa sobre el caso Samsung (abr.-may. 2023), Ley 1581 de 2012, TALIS 2024. Script de anonimización probado con texto ficticio; matriz verificada en Excel.
+// "Siete preguntas antes de pegar datos en una IA gratuita". Fuentes verificadas el 9 de octubre de 2026: centro de ayuda de OpenAI (controles de datos), cobertura de la política de privacidad de Gemini (no se accedió a la página original), prensa sobre el caso Samsung (abr.-may. 2023), Ley 1581 de 2012, TALIS 2024. Script de anonimización probado con texto ficticio; matriz verificada en Excel.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/datos-en-ia-gratuita/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -23,7 +23,7 @@ $html = <<<'HTML'
 <h2>Qué puede pasar con lo que pegas</h2>
 <p>Cada herramienta tiene sus propias reglas, que cambian con el tiempo; por eso conviene leerlas, y el principio es siempre el mismo: <strong>no des por hecho lo que no has verificado</strong>. Dos ejemplos de lo que se ha documentado:</p>
 <ul>
-<li><strong>Uso para entrenar el modelo.</strong> En ChatGPT, según el centro de ayuda de OpenAI, existe un ajuste («Mejorar el modelo para todos») que, apagado, hace que tus conversaciones nuevas no se usen para entrenar sus modelos; sigue habiendo historial. Los controles disponibles dependen de si has iniciado sesión, del plan y de la configuración del espacio de trabajo, y no pude confirmar con las fuentes consultadas cuál es el valor por defecto para usuarios gratuitos: <strong>revísalo en tu propia cuenta</strong>.</li>
+<li><strong>Uso para entrenar el modelo.</strong> En ChatGPT, según el centro de ayuda de OpenAI, existe un ajuste ("Mejorar el modelo para todos") que, apagado, hace que tus conversaciones nuevas no se usen para entrenar sus modelos; sigue habiendo historial. Los controles disponibles dependen de si has iniciado sesión, del plan y de la configuración del espacio de trabajo, y no pude confirmar con las fuentes consultadas cuál es el valor por defecto para usuarios gratuitos: <strong>revísalo en tu propia cuenta</strong>.</li>
 <li><strong>Revisión humana y retención.</strong> Según la cobertura de la política de privacidad de Gemini (no pude acceder a la página original de Google), las conversaciones que revisan personas, junto con datos asociados como idioma, tipo de dispositivo y ubicación, <strong>no se borran cuando eliminas tu actividad</strong>, sino que se conservan hasta tres años; desactivar la actividad evita que los chats futuros se revisen, pero Google igual los mantiene unas 72 horas. Verifica los detalles actuales en la página oficial.</li>
 </ul>
 <p>Y un caso conocido: en abril de 2023, ingenieros de Samsung subieron código interno a ChatGPT; según la prensa, la empresa prohibió después el uso de IA generativa en sus equipos y redes por el temor de que los datos quedaran en servidores externos, difíciles de recuperar y borrar. Si le pasó a una multinacional con sus propias reglas, puede pasarle a un colegio o a una pyme.</p>
@@ -39,11 +39,11 @@ $html = <<<'HTML'
 <li><strong>¿Tengo autorización?</strong> De la institución y, si hay datos de menores, de las familias o de quienes los representan.</li>
 <li><strong>Si estos datos se filtraran, ¿qué pasaría?</strong> Piensa en el peor caso para las personas, no para ti.</li>
 </ol>
-<p>La hoja «Siete_preguntas» te deja evaluar hasta tres herramientas, cuenta las respuestas «Sí» y da un veredicto: <em>«No sé» cuenta como «No»</em> y, si la pregunta 1 o la 6 es «No», el veredicto es «No pegues estos datos» sin importar el puntaje (lo probé con varios escenarios: con las siete en «Sí» dice «Puedes continuar»; con seis y sin autorización, «No pegues estos datos»).</p>
+<p>La hoja "Siete_preguntas" te deja evaluar hasta tres herramientas, cuenta las respuestas "Sí" y da un veredicto: <em>"No sé" cuenta como "No"</em> y, si la pregunta 1 o la 6 es "No", el veredicto es "No pegues estos datos" sin importar el puntaje (lo probé con varios escenarios: con las siete en "Sí" dice "Puedes continuar"; con seis y sin autorización, "No pegues estos datos").</p>
 
 <h2>La matriz: tipo de dato por tipo de herramienta</h2>
 {{img:matriz}}
-<p>No todo dato va en toda herramienta. La matriz del libro combina cuatro tipos de dato (público, interno no personal, personal, sensible o de menores) con tres tipos de herramienta (gratuita con cuenta personal, cuenta institucional con términos de organización y modelo local o privado) y da una de tres respuestas: <strong>Permitido</strong>, <strong>Condicionado</strong> o <strong>No</strong>. Una calculadora lo resuelve y baja el nivel de riesgo si los datos están realmente anonimizados. Por ejemplo, datos personales en una herramienta gratuita con cuenta personal dan «No»; los mismos datos en una cuenta institucional dan «Condicionado»: solo con política, autorización, finalidad definida y revisión humana. «Condicionado» no significa libre.</p>
+<p>No todo dato va en toda herramienta. La matriz del libro combina cuatro tipos de dato (público, interno no personal, personal, sensible o de menores) con tres tipos de herramienta (gratuita con cuenta personal, cuenta institucional con términos de organización y modelo local o privado) y da una de tres respuestas: <strong>Permitido</strong>, <strong>Condicionado</strong> o <strong>No</strong>. Una calculadora lo resuelve y baja el nivel de riesgo si los datos están realmente anonimizados. Por ejemplo, datos personales en una herramienta gratuita con cuenta personal dan "No"; los mismos datos en una cuenta institucional dan "Condicionado": solo con política, autorización, finalidad definida y revisión humana. "Condicionado" no significa libre.</p>
 <p>El marco legal importa: la Ley 1581 de 2012 regula el tratamiento de datos personales y restringe el de niños, niñas y adolescentes, y la Superintendencia de Industria y Comercio ha emitido instrucciones sobre el tratamiento de datos personales en sistemas de inteligencia artificial (ver <a href="/colegio-datos-estudiantes-ia-personalizar-aprendizaje-privacidad/">datos de estudiantes y personalización con IA</a>). Si tu institución tiene una política de IA, aplícala; si no, es buen momento para crearla (ver la <a href="/politica-institucional-ia-colegios-que-permitir-condicionar-no-autorizar/">política institucional de IA para colegios</a>).</p>
 
 <h2>Anonimizar de verdad: un ejemplo y sus límites</h2>
@@ -57,8 +57,8 @@ reporta un diagnóstico reciente.</code></pre>
 Acudiente: [PERSONA] (celular [TELEFONO], correo [CORREO]).
 Observación del docente: [PERSONA] presenta dificultades de atención y su familia
 reporta un diagnóstico reciente.</code></pre>
-<p>Funcionó con lo mecánico, pero fíjate en lo que <strong>no</strong> hizo: la última línea sigue diciendo que la persona (ahora «[PERSONA]») presenta dificultades de atención y un diagnóstico reciente. Eso es un <strong>dato sensible</strong> sobre una niña cuyo curso, edad o contexto podrían bastar para identificarla; cambiar el nombre no lo anonimiza. Por eso el script es una ayuda, no una garantía: <strong>no detecta direcciones, apodos ni combinaciones de datos «inocentes» que juntos identifican a alguien</strong>, y siempre hay que revisar el resultado a mano. Y si el dato es sensible, la mejor anonimización es no pegarlo: descríbelo en general («un estudiante con dificultades de atención») o redacta esa parte tú.</p>
-<p>Una técnica más segura: <strong>pídele a la IA la plantilla, no el caso</strong>. «Redacta un informe para la familia con estas secciones: avances, dificultades, recomendaciones», y llena tú los datos reales fuera de la herramienta.</p>
+<p>Funcionó con lo mecánico, pero fíjate en lo que <strong>no</strong> hizo: la última línea sigue diciendo que la persona (ahora "[PERSONA]") presenta dificultades de atención y un diagnóstico reciente. Eso es un <strong>dato sensible</strong> sobre una niña cuyo curso, edad o contexto podrían bastar para identificarla; cambiar el nombre no lo anonimiza. Por eso el script es una ayuda, no una garantía: <strong>no detecta direcciones, apodos ni combinaciones de datos "inocentes" que juntos identifican a alguien</strong>, y siempre hay que revisar el resultado a mano. Y si el dato es sensible, la mejor anonimización es no pegarlo: descríbelo en general ("un estudiante con dificultades de atención") o redacta esa parte tú.</p>
+<p>Una técnica más segura: <strong>pídele a la IA la plantilla, no el caso</strong>. "Redacta un informe para la familia con estas secciones: avances, dificultades, recomendaciones", y llena tú los datos reales fuera de la herramienta.</p>
 
 <h2>Qué hacer en vez de pegar</h2>
 <ul>
@@ -89,7 +89,7 @@ reporta un diagnóstico reciente.</code></pre>
 <h3>¿Qué ley aplica en Colombia?</h3>
 <p>La Ley 1581 de 2012 de protección de datos personales, con reglas especiales para los datos de niños, niñas y adolescentes, y las instrucciones de la Superintendencia de Industria y Comercio. Consulta con tu asesor jurídico qué aplica a tu caso.</p>
 
-<p class="notice"><strong>Antes del próximo informe.</strong> Descarga la <a href="/descargas/datos-en-ia/matriz-siete-preguntas-datos-en-ia.xlsx">matriz de siete preguntas</a>, evalúa la herramienta que más usas y revisa la hoja «Que_quitar». Si trabajas con texto, prueba el <a href="/descargas/datos-en-ia/anonimizar_texto.py">script de anonimización</a> con el <a href="/descargas/datos-en-ia/ejemplo_texto.txt">texto de ejemplo</a>, recordando que no sustituye tu criterio.</p>
+<p class="notice"><strong>Antes del próximo informe.</strong> Descarga la <a href="/descargas/datos-en-ia/matriz-siete-preguntas-datos-en-ia.xlsx">matriz de siete preguntas</a>, evalúa la herramienta que más usas y revisa la hoja "Que_quitar". Si trabajas con texto, prueba el <a href="/descargas/datos-en-ia/anonimizar_texto.py">script de anonimización</a> con el <a href="/descargas/datos-en-ia/ejemplo_texto.txt">texto de ejemplo</a>, recordando que no sustituye tu criterio.</p>
 
 <h2>Para pensar</h2>
 <p>Las herramientas gratuitas no son gratuitas: se pagan con atención o con datos. <strong>¿Es aceptable que el trabajo docente, ya sobrecargado, dependa de herramientas que obligan a decidir entre ahorrar tiempo y proteger los datos de los estudiantes? ¿Y quién debería asumir el costo de ofrecer alternativas seguras: cada docente, cada colegio o el Estado?</strong></p>
@@ -110,7 +110,7 @@ return [
     'seo_description' => 'Siete preguntas y una matriz para decidir qué datos pegar en una IA gratuita, con un script de anonimización probado, sus límites y el marco de la Ley 1581.',
     'focus_keyword' => 'datos en una IA gratuita privacidad',
     'cover' => '/assets/img/articulos/datos-en-ia-gratuita/datos-en-ia-gratuita-portada',
-    'cover_alt' => 'Portada «Siete preguntas antes de pegar datos en una IA gratuita» con una tarjeta de cuatro de las preguntas: qué datos voy a pegar, puedo quitarlos, usan mis chats para entrenar y tengo autorización.',
+    'cover_alt' => 'Portada "Siete preguntas antes de pegar datos en una IA gratuita" con una tarjeta de cuatro de las preguntas: qué datos voy a pegar, puedo quitarlos, usan mis chats para entrenar y tengo autorización.',
     'published_at' => '2026-12-08 12:00:00',
     'content_html' => $html,
 ];

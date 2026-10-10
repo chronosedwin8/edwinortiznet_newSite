@@ -299,7 +299,7 @@ td.qn { width: <?= $f * 2.1 ?>pt; font-weight: bold; color: #0e5a6b; }
 </table>
 
 <?php
-// Soluciones: en «barajar» una sola vez (numeración de la versión A); en «distintas», por versión.
+// Soluciones: en "barajar" una sola vez (numeración de la versión A); en "distintas", por versión.
 $solVersions = $mode === 'distintas' ? $versions : [$versions[0]];
 ?>
 <div class="kh2"><?= e(t('examenes.pdf.solutions')) ?></div>

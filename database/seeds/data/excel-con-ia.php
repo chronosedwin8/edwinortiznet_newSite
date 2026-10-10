@@ -21,20 +21,20 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>Hay una escena que se repite en casi todas las oficinas, rectorías y salas de profesores que conozco: alguien abre un Excel enorme, suspira y dice «esto lo debería hacer la inteligencia artificial». Y tiene razón a medias. La IA ya escribe en segundos fórmulas que antes costaban una tarde, explica un <em>#¡VALOR!</em> que nadie entendía y clasifica mil comentarios en minutos. Pero también inventa funciones que no existen, suma la columna equivocada con total seguridad o recibe, sin que nadie lo note, los datos personales de quinientos estudiantes.</p>
+<p>Hay una escena que se repite en casi todas las oficinas, rectorías y salas de profesores que conozco: alguien abre un Excel enorme, suspira y dice "esto lo debería hacer la inteligencia artificial". Y tiene razón a medias. La IA ya escribe en segundos fórmulas que antes costaban una tarde, explica un <em>#¡VALOR!</em> que nadie entendía y clasifica mil comentarios en minutos. Pero también inventa funciones que no existen, suma la columna equivocada con total seguridad o recibe, sin que nadie lo note, los datos personales de quinientos estudiantes.</p>
 <p>Llevo más de veinte años enseñando matemáticas y tecnología y construyendo plantillas de Excel para empresas y colegios. Lo que he aprendido usando IA con hojas de cálculo cabe en una frase: <strong>la IA hace menos necesario memorizar fórmulas, pero hace más necesario entender tus datos</strong>. Quien sabe qué pregunta hacer, cómo está organizada su tabla y cómo comprobar una respuesta, obtiene resultados excelentes. Quien no, obtiene errores más rápido.</p>
 <p>Esta guía es práctica de principio a fin: herramientas actuales, una receta de prompt, fórmulas reales para pymes, profesionales, docentes y directivos, un nivel experto con Python y, al final, un regalo para que lo pruebes con tus propios archivos.</p>
 
 {{img:flujo}}
 
 <h2>Antes de pedirle nada a la IA: un libro que se deje ayudar</h2>
-<p>Ningún asistente, por bueno que sea, entiende un libro con celdas combinadas, encabezados en tres filas, totales mezclados con datos y una columna que dice «ver nota». Antes de abrir cualquier chat, revisa estas cinco reglas; hoy valen el doble, porque la IA lee tu archivo como lo leería un compañero nuevo.</p>
+<p>Ningún asistente, por bueno que sea, entiende un libro con celdas combinadas, encabezados en tres filas, totales mezclados con datos y una columna que dice "ver nota". Antes de abrir cualquier chat, revisa estas cinco reglas; hoy valen el doble, porque la IA lee tu archivo como lo leería un compañero nuevo.</p>
 <ol>
 <li><strong>Una tabla, una fila por registro.</strong> Una venta, un estudiante en un área o un movimiento bancario por fila. Convierte el rango en tabla con Ctrl+T y ponle un nombre claro, como <em>Ventas</em> o <em>Notas</em>.</li>
-<li><strong>Encabezados únicos y sin celdas combinadas.</strong> «Total» y «Fecha» le dicen a la IA qué hay en cada columna; «Columna1» no le dice nada.</li>
+<li><strong>Encabezados únicos y sin celdas combinadas.</strong> "Total" y "Fecha" le dicen a la IA qué hay en cada columna; "Columna1" no le dice nada.</li>
 <li><strong>Separa entradas, cálculos y resultados.</strong> Las tasas, metas y escalas van en celdas o tablas propias, no escondidas dentro de una fórmula como <code>*0,19</code>. Si el IVA cambia, cambias una celda, no doscientas.</li>
-<li><strong>Un tipo de dato por columna.</strong> Si en la columna de fechas hay textos como «pendiente», cualquier análisis, humano o artificial, se rompe.</li>
-<li><strong>Deja contexto escrito.</strong> Una hoja «Léeme» con el origen de los datos, la fecha de corte y el significado de cada código.</li>
+<li><strong>Un tipo de dato por columna.</strong> Si en la columna de fechas hay textos como "pendiente", cualquier análisis, humano o artificial, se rompe.</li>
+<li><strong>Deja contexto escrito.</strong> Una hoja "Léeme" con el origen de los datos, la fecha de corte y el significado de cada código.</li>
 </ol>
 
 <h2>El mapa: qué IA hay hoy para Excel y qué necesitas para usarla</h2>
@@ -54,7 +54,7 @@ $html = <<<'HTML'
 <p>¿Y si en tu colegio o empresa tienen Excel 2019 o 2021 sin Copilot? No pasa nada: un chat externo bien usado, más las fórmulas clásicas, te lleva muy lejos. Casi todos los ejemplos de esta guía traen una alternativa para versiones anteriores.</p>
 
 <h2>La receta de prompt para Excel</h2>
-<p>La mayoría de las respuestas malas vienen de preguntas pobres. «Hazme una fórmula para sumar las ventas» obliga a la IA a adivinar seis cosas. Esta es la receta que uso, con seis ingredientes:</p>
+<p>La mayoría de las respuestas malas vienen de preguntas pobres. "Hazme una fórmula para sumar las ventas" obliga a la IA a adivinar seis cosas. Esta es la receta que uso, con seis ingredientes:</p>
 {{img:receta}}
 <pre><code>Actúa como experto en Excel. Uso Microsoft 365 en español (separador ;).
 
@@ -75,9 +75,9 @@ FORMATO: la fórmula en un bloque, explicación parte por parte y tres
 casos de prueba con el resultado que debería obtener.</code></pre>
 <p>Fíjate en lo que no lleva: ni una fila real. La IA no necesita ver los datos de tus clientes para escribir la fórmula; necesita la estructura, el objetivo y las reglas. Otros prompts que uso a diario:</p>
 <ul>
-<li><strong>Para explicar un error:</strong> «Esta fórmula devuelve #N/D en algunas filas: [fórmula]. El Código es texto en Clientes y número en Pedidos. Dame la causa probable y dos soluciones».</li>
-<li><strong>Para auditar un modelo:</strong> «Te describo las hojas y fórmulas clave de mi presupuesto. Busca constantes dentro de fórmulas, referencias mal fijadas, rangos que no crecen y referencias circulares. Dame una tabla con hallazgo, celda y riesgo».</li>
-<li><strong>Para aprender, no solo copiar:</strong> «Explícame esta fórmula como si fuera tu estudiante de once y luego dame un ejercicio parecido para practicar».</li>
+<li><strong>Para explicar un error:</strong> "Esta fórmula devuelve #N/D en algunas filas: [fórmula]. El Código es texto en Clientes y número en Pedidos. Dame la causa probable y dos soluciones".</li>
+<li><strong>Para auditar un modelo:</strong> "Te describo las hojas y fórmulas clave de mi presupuesto. Busca constantes dentro de fórmulas, referencias mal fijadas, rangos que no crecen y referencias circulares. Dame una tabla con hallazgo, celda y riesgo".</li>
+<li><strong>Para aprender, no solo copiar:</strong> "Explícame esta fórmula como si fuera tu estudiante de once y luego dame un ejercicio parecido para practicar".</li>
 </ul>
 
 <h2>Ejemplos prácticos para pymes y profesionales</h2>
@@ -90,7 +90,7 @@ casos de prueba con el resultado que debería obtener.</code></pre>
 <p>¿Excel 2019 o 2021? Escribe las ciudades en A2:A6 y el primer día de cada mes en B1:M1, y usa SUMAR.SI.CONJUNTO (SUMIFS):</p>
 <pre><code>=SUMAR.SI.CONJUNTO(Ventas[Total]; Ventas[Ciudad]; $A2;
     Ventas[Fecha]; ">="&B$1; Ventas[Fecha]; "<="&FIN.MES(B$1; 0))</code></pre>
-<p>Un detalle: agrupo el mes con AÑO*100+MES (202603 es marzo de 2026) y no con TEXTO(Ventas[Fecha]; "aaaa-mm"), porque los códigos de fecha de TEXTO dependen de la configuración regional de Windows: en un equipo configurado para Colombia, «aaaa» devuelve el nombre del día y el año se escribe «yyyy». La IA casi siempre propone TEXTO; compruébalo antes de confiar.</p>
+<p>Un detalle: agrupo el mes con AÑO*100+MES (202603 es marzo de 2026) y no con TEXTO(Ventas[Fecha]; "aaaa-mm"), porque los códigos de fecha de TEXTO dependen de la configuración regional de Windows: en un equipo configurado para Colombia, "aaaa" devuelve el nombre del día y el año se escribe "yyyy". La IA casi siempre propone TEXTO; compruébalo antes de confiar.</p>
 <p>Si prefieres las tablas dinámicas de toda la vida, que siguen siendo la herramienta más rápida para explorar, en este video de mi canal te muestro cómo dominarlas paso a paso:</p>
 {{yt:HjR1u-3KGik|Video de Edwin Ortiz: el secreto para dominar las tablas dinámicas en Excel}}
 
@@ -134,7 +134,7 @@ Celular válido:  =REGEXEXTRACCION(C2; "3\d{9}")</code></pre>
     REGEXPRUEBA(A2; "precio|caro|costos"; 1); "Precio";
     REGEXPRUEBA(A2; "atenci|amable|grosero"; 1); "Atención";
     VERDADERO; "Otro")</code></pre>
-<p>REGEXPRUEBA (REGEXTEST) devuelve VERDADERO si encuentra el patrón; el 1 final ignora mayúsculas. Funciona hasta que alguien escribe «nunca más les compro, una vergüenza»: ninguna palabra clave, y es el comentario que más importa. Ahí un modelo de lenguaje vale la pena, porque entiende la intención; más adelante verás cómo usarlo con la descarga gratuita o con Python.</p>
+<p>REGEXPRUEBA (REGEXTEST) devuelve VERDADERO si encuentra el patrón; el 1 final ignora mayúsculas. Funciona hasta que alguien escribe "nunca más les compro, una vergüenza": ninguna palabra clave, y es el comentario que más importa. Ahí un modelo de lenguaje vale la pena, porque entiende la intención; más adelante verás cómo usarlo con la descarga gratuita o con Python.</p>
 
 <h2>Ejemplos para docentes y directivos docentes</h2>
 <h3>Niveles de desempeño del Decreto 1290</h3>
@@ -182,7 +182,7 @@ q1, q3 = df["Total"].quantile([0.25, 0.75])
 iqr = q3 - q1
 atipicas = df[(df["Total"] < q1 - 1.5 * iqr) | (df["Total"] > q3 + 1.5 * iqr)]
 atipicas.sort_values("Total", ascending=False)</code></pre>
-<p>Y para un directivo que quiere saber cuánto pesan las inasistencias en el promedio, una regresión simple. Fíjate en las dos líneas de limpieza: convierten las notas escritas como texto («3,5») y descartan las imposibles (un 45 que debía ser 4,5):</p>
+<p>Y para un directivo que quiere saber cuánto pesan las inasistencias en el promedio, una regresión simple. Fíjate en las dos líneas de limpieza: convierten las notas escritas como texto ("3,5") y descartan las imposibles (un 45 que debía ser 4,5):</p>
 <pre><code># Celda 1: promedio e inasistencias por estudiante, y el modelo
 import statsmodels.formula.api as smf
 notas = xl("Notas[#Todo]", headers=True)
@@ -196,7 +196,7 @@ f"Pendiente: {pendiente:.3f}  R²: {modelo.rsquared:.2f}"
 
 # Celda 2, debajo de la anterior: el gráfico
 sns.regplot(data=res, x="Inasistencias", y="Promedio")</code></pre>
-<p>La pendiente dice cuánto baja el promedio por cada inasistencia y el R², qué tanto lo explican las inasistencias solas. Que haya relación no prueba causalidad; esa conversación le toca al equipo docente. Las celdas de Python se ejecutan en orden, de izquierda a derecha y de arriba abajo, por eso la segunda puede usar <code>res</code>; y para ver un resultado como celdas normales, cambia la salida a «Valor de Excel» en el menú de la celda.</p>
+<p>La pendiente dice cuánto baja el promedio por cada inasistencia y el R², qué tanto lo explican las inasistencias solas. Que haya relación no prueba causalidad; esa conversación le toca al equipo docente. Las celdas de Python se ejecutan en orden, de izquierda a derecha y de arriba abajo, por eso la segunda puede usar <code>res</code>; y para ver un resultado como celdas normales, cambia la salida a "Valor de Excel" en el menú de la celda.</p>
 <h3>Camino 2: Python fuera de Excel, con IA por lotes</h3>
 <p>Para miles de filas, llamadas a un modelo de lenguaje o informes semanales, conviene un script en tu computador con pandas y openpyxl. Este es el esqueleto que uso para clasificar comentarios con Gemini y devolver un informe en Excel:</p>
 <pre><code>import os
@@ -222,14 +222,14 @@ with pd.ExcelWriter("informe.xlsx", engine="openpyxl") as w:
     resumen.to_excel(w, sheet_name="Resumen", index=False)
     df.to_excel(w, sheet_name="Detalle", index=False)
     w.sheets["Detalle"].freeze_panes = "A2"</code></pre>
-<p>Tres decisiones de diseño que importan más que el código: la respuesta se valida contra la lista de categorías (si el modelo inventa una, la fila queda en «Revisar»), los comentarios no llevan nombre ni documento del cliente y el resultado vuelve a Excel, donde lo revisa una persona. Sirve para equipos de analítica, áreas de calidad que leen PQRS e instituciones que analizan su autoevaluación anual. Para ejecutarlo instala <code>pip install pandas openpyxl google-genai</code>; el script completo de la descarga gratuita va más allá: limpia los datos con bitácora, calcula indicadores, detecta atípicos, pronostica seis meses, clasifica por lotes con caché y escribe un reporte con gráficos.</p>
+<p>Tres decisiones de diseño que importan más que el código: la respuesta se valida contra la lista de categorías (si el modelo inventa una, la fila queda en "Revisar"), los comentarios no llevan nombre ni documento del cliente y el resultado vuelve a Excel, donde lo revisa una persona. Sirve para equipos de analítica, áreas de calidad que leen PQRS e instituciones que analizan su autoevaluación anual. Para ejecutarlo instala <code>pip install pandas openpyxl google-genai</code>; el script completo de la descarga gratuita va más allá: limpia los datos con bitácora, calcula indicadores, detecta atípicos, pronostica seis meses, clasifica por lotes con caché y escribe un reporte con gráficos.</p>
 
 <h2>Privacidad: lo que nunca debes pegar en un chat</h2>
 <p>En Colombia, la Ley 1581 de 2012 protege los datos personales, da un tratamiento especial a los datos sensibles, como los de salud, y exige respetar el interés superior de niños, niñas y adolescentes. Pegar una lista de estudiantes con su diagnóstico en un chatbot gratuito no es un atajo: es un problema. Los términos de la API gratuita de Gemini dicen que Google puede usar lo que envías para mejorar sus productos, que revisores humanos pueden leerlo y piden expresamente no enviar información sensible, confidencial o personal. En los servicios de pago, Google no usa tus solicitudes para mejorar sus productos.</p>
 <ul>
 <li><strong>Comparte la estructura, no los registros.</strong> Nombres de columnas, tipos de dato y dos filas inventadas bastan para escribir casi cualquier fórmula.</li>
 <li><strong>Anonimiza cuando necesites datos reales.</strong> Reemplaza nombres por códigos (<code>="EST-"&amp;TEXTO(FILA()-1; "000")</code>) y guarda la tabla de equivalencias solo en tu equipo.</li>
-<li><strong>Agrega antes de compartir.</strong> «Curso 9B: 12 estudiantes en Bajo en Matemáticas» es útil para la IA y no identifica a nadie.</li>
+<li><strong>Agrega antes de compartir.</strong> "Curso 9B: 12 estudiantes en Bajo en Matemáticas" es útil para la IA y no identifica a nadie.</li>
 <li><strong>Usa las cuentas de tu institución.</strong> Las versiones empresariales suelen proteger mejor los datos que las cuentas gratuitas.</li>
 </ul>
 
@@ -272,7 +272,7 @@ with pd.ExcelWriter("informe.xlsx", engine="openpyxl") as w:
 <p>Para usar las macros necesitas la pestaña Programador. Si no la ves en tu Excel, en este video corto de mi canal te muestro cómo activarla:</p>
 {{yt:dSOczB7xhTs|Video de Edwin Ortiz: cómo habilitar la pestaña Programador o Desarrollador en Excel}}
 <p>Encuentras muchos más tutoriales en <a href="https://www.youtube.com/playlist?list=PLNXKSKL0wyTL1WgcYIoZ8tYBCQblXsvJZ" target="_blank" rel="noopener">mi lista de reproducción de Excel en YouTube</a>: fórmulas desde cero, macros, formularios, gráficos, códigos QR y facturas.</p>
-<p class="notice"><strong>¿Te sirvió esta guía?</strong> Cuéntamelo en la sección <a href="#reacciones">«¿Te sirvió este artículo?»</a>, justo debajo: tu reacción me ayuda a saber qué ejemplos ampliar. Y si conoces a alguien que vive peleando con Excel, compártele el enlace; seguro le ahorra unas cuantas horas.</p>
+<p class="notice"><strong>¿Te sirvió esta guía?</strong> Cuéntamelo en la sección <a href="#reacciones">"¿Te sirvió este artículo?"</a>, justo debajo: tu reacción me ayuda a saber qué ejemplos ampliar. Y si conoces a alguien que vive peleando con Excel, compártele el enlace; seguro le ahorra unas cuantas horas.</p>
 
 <h2>Preguntas frecuentes</h2>
 <h3>¿Necesito Copilot para usar IA con Excel?</h3>
@@ -291,7 +291,7 @@ HTML;
 $download = <<<'HTML'
 <p class="notice"><strong>Descarga gratis: Excel con IA.</strong> El módulo de macros <strong>ExcelConIA.bas</strong> para Excel 2016 a Microsoft 365 en Windows, un libro de datos ficticios (Ventas, Notas y Encuesta, con errores puestos a propósito para practicar), un script de Python que hace el análisis completo y una guía de instalación. Sin registro y sin costo.</p>
 <ul>
-<li><strong>PerfilarDatos:</strong> haces clic dentro de tu tabla y crea la hoja «Perfil de datos» con el tipo, los vacíos, los valores únicos y las estadísticas de cada columna, más alertas de tipos mezclados, números como texto, espacios sobrantes, atípicos y filas duplicadas.</li>
+<li><strong>PerfilarDatos:</strong> haces clic dentro de tu tabla y crea la hoja "Perfil de datos" con el tipo, los vacíos, los valores únicos y las estadísticas de cada columna, más alertas de tipos mezclados, números como texto, espacios sobrantes, atípicos y filas duplicadas.</li>
 <li><strong>GenerarPromptIA:</strong> te pregunta qué quieres lograr y arma un prompt con la estructura y las estadísticas de la tabla, nunca con sus filas, que pide limpieza, cinco preguntas de análisis, fórmulas para tu versión de Excel y el código en pandas. Queda en el portapapeles, listo para pegar en ChatGPT, Gemini, Copilot o Claude.</li>
 <li><strong>Funciones con IA:</strong> <code>=IA("Resume en 10 palabras"; A2)</code>, <code>=IA_CLASIFICAR(B2; $H$2:$H$6)</code> e <code>=IA_EXTRAER(C2; "correo")</code> llaman a Google Gemini con tu propia clave gratuita de Google AI Studio, que guardas con la macro <strong>ConfigurarIA</strong>. Las respuestas quedan en memoria para no repetir consultas, y <strong>LimpiarCacheIA</strong> las borra.</li>
 </ul>

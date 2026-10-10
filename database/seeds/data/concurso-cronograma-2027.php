@@ -23,7 +23,7 @@ return [
     'cover_alt' => 'Portada: Concurso Docente, el cronograma se movió a 2027. Calendario con inscripción de personas con discapacidad (dic. 2026 a ene. 2027), inscripciones generales (ene. a feb. 2027) y pruebas escritas (2.º semestre de 2027)',
     'published_at' => '2026-10-08 16:00:00',
     'content_html' => <<<HTML
-<p>Desde hace meses me llegan mensajes con la misma pregunta: «profe, ¿por fin cuándo abren las inscripciones?». Muchos colegas ya tenían todo listo para finales de 2026: los documentos escaneados, el empleo escogido y hasta el dinero de los derechos de participación guardado. Ahora la respuesta cambió: <strong>las inscripciones del Concurso Docente 2026 se movieron para el arranque de 2027</strong> y las pruebas escritas quedaron para el segundo semestre de ese año.</p>
+<p>Desde hace meses me llegan mensajes con la misma pregunta: "profe, ¿por fin cuándo abren las inscripciones?". Muchos colegas ya tenían todo listo para finales de 2026: los documentos escaneados, el empleo escogido y hasta el dinero de los derechos de participación guardado. Ahora la respuesta cambió: <strong>las inscripciones del Concurso Docente 2026 se movieron para el arranque de 2027</strong> y las pruebas escritas quedaron para el segundo semestre de ese año.</p>
 <p>Antes de escribir esto revisé lo que publicaron la CNSC y los medios nacionales, porque en estos días circulan muchas cifras y fechas que no tienen respaldo. Te cuento qué está confirmado, qué todavía no y, sobre todo, cómo convertir esta espera en una ventaja.</p>
 
 <p class="notice"><strong>En resumen.</strong> El concurso no se canceló ni se suspendió: se ajustó. Las personas con discapacidad se inscriben primero, de forma gratuita, entre diciembre de 2026 y enero de 2027; las inscripciones generales van de enero a febrero de 2027, y las pruebas escritas se aplicarán en el segundo semestre de 2027. Las fechas exactas saldrán en los acuerdos definitivos de la CNSC.</p>
@@ -43,7 +43,7 @@ return [
 <tr><td>Verificación de requisitos, antecedentes y entrevista</td><td>Después de las pruebas escritas</td><td>Sin fechas publicadas todavía.</td></tr>
 </tbody>
 </table>
-<p>Fuentes: CNSC, según {$ext('https://www.rtvcnoticias.com/actualidad/educacion/el-cronograma-del-concurso-docente-2026-se-movio-2027-aqui-le-contamos-las', 'RTVC Noticias')}, Portafolio y El Espectador (septiembre de 2026). Ojo con esto: la convocatoria sigue en etapa de planeación y <strong>hoy nadie puede inscribirse</strong>. Si alguien te ofrece «inscribirte ya» o «asegurarte un cupo», desconfía: el único canal es {$ext('https://simo.cnsc.gov.co/', 'SIMO')}, y la información oficial se publica en {$ext('https://www.cnsc.gov.co/', 'cnsc.gov.co')}.</p>
+<p>Fuentes: CNSC, según {$ext('https://www.rtvcnoticias.com/actualidad/educacion/el-cronograma-del-concurso-docente-2026-se-movio-2027-aqui-le-contamos-las', 'RTVC Noticias')}, Portafolio y El Espectador (septiembre de 2026). Ojo con esto: la convocatoria sigue en etapa de planeación y <strong>hoy nadie puede inscribirse</strong>. Si alguien te ofrece "inscribirte ya" o "asegurarte un cupo", desconfía: el único canal es {$ext('https://simo.cnsc.gov.co/', 'SIMO')}, y la información oficial se publica en {$ext('https://www.cnsc.gov.co/', 'cnsc.gov.co')}.</p>
 {$img('concurso-cronograma-linea-tiempo', 707, 'Línea de tiempo de agosto de 2026 a diciembre de 2027: sismo de 7,4 el 10 de agosto, OPEC preliminar el 19 de agosto, Decreto Legislativo 1384 el 9 de septiembre; inscripción gratuita de personas con discapacidad de diciembre a enero, inscripciones generales de enero a febrero de 2027 y pruebas escritas en el segundo semestre de 2027. Debajo, las cinco etapas en orden: aptitudes y competencias básicas eliminatoria con 60 puntos para docentes y 70 para directivos, psicotécnica clasificatoria, verificación de requisitos mínimos, valoración de antecedentes y entrevista', 'La ruta del concurso tras el ajuste: las fechas exactas llegarán con los acuerdos definitivos.')}
 
 <h2>Cuántas vacantes hay y para qué cargos</h2>
@@ -96,11 +96,11 @@ return [
 <li>Para la reserva de discapacidad, el soporte que pida el acuerdo. Hoy, en Colombia, el documento oficial es el certificado de discapacidad que se tramita según la Resolución 1239 de 2022 del Ministerio de Salud; si no lo tienes, empieza el trámite ya.</li>
 <li>Tu hoja de vida en SIMO actualizada y un correo que revises a diario, porque por ahí llegan las citaciones.</li>
 </ul>
-<p>Guarda todo en PDF con nombres claros, como «titulo-licenciatura.pdf» o «certificacion-sed-2019-2024.pdf», en una carpeta en la nube.</p>
+<p>Guarda todo en PDF con nombres claros, como "titulo-licenciatura.pdf" o "certificacion-sed-2019-2024.pdf", en una carpeta en la nube.</p>
 
 <h2>Errores comunes que veo cada concurso</h2>
 <ul>
-<li><strong>Bajar el ritmo porque «todavía falta mucho».</strong> El tiempo extra solo sirve si se usa. Fija desde ya un horario fijo de estudio, aunque sean 45 minutos diarios.</li>
+<li><strong>Bajar el ritmo porque "todavía falta mucho".</strong> El tiempo extra solo sirve si se usa. Fija desde ya un horario fijo de estudio, aunque sean 45 minutos diarios.</li>
 <li><strong>Elegir el empleo a la carrera.</strong> Inscribirse en un cargo para el que no cumples el requisito exacto de título es la forma más triste de quedar fuera: pasas la prueba y te eliminan en la verificación.</li>
 <li><strong>Certificaciones incompletas.</strong> Sin fechas exactas o sin funciones, la experiencia no se cuenta como esperas.</li>
 <li><strong>Estudiar solo normas.</strong> La prueba evalúa competencias. Más que recitar artículos, tienes que saber aplicarlos a un caso.</li>

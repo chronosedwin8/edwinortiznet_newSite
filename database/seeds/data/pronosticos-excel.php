@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Pronósticos en Excel: tendencia, estacionalidad y cuándo no confiar en el resultado». Prueba retrospectiva ejecutada en Microsoft Excel 16 (es-CO) con datos ficticios: MAPE ETS 12 meses 3,0 %, tendencia lineal 11,1 %, ingenuo estacional 13,0 %, ETS automático 15,4 %. Verificado el 9 de octubre de 2026.
+// "Pronósticos en Excel: tendencia, estacionalidad y cuándo no confiar en el resultado". Prueba retrospectiva ejecutada en Microsoft Excel 16 (es-CO) con datos ficticios: MAPE ETS 12 meses 3,0 %, tendencia lineal 11,1 %, ingenuo estacional 13,0 %, ETS automático 15,4 %. Verificado el 9 de octubre de 2026.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/pronosticos-excel/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -16,8 +16,8 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>Pronosticar ventas, matrículas o consumo parece una tarea para especialistas, pero Excel trae funciones y herramientas que lo hacen con unos pocos clics. El problema es que <strong>un pronóstico siempre produce un número</strong>, y un número bien presentado inspira confianza aunque el método sea inadecuado. La pregunta importante no es «¿qué dice Excel?», sino «¿cómo sé si puedo creerle?».</p>
-<p>En este artículo hago algo poco común en este tipo de textos: una <strong>prueba retrospectiva</strong>. Entreno cuatro métodos con 24 meses de datos ficticios, pronostico los 12 meses siguientes y comparo con lo que realmente «ocurrió». Los resultados salieron en Microsoft Excel (versión 16, configuración regional es-CO) y el <a href="/descargas/pronosticos-excel/pronosticos-excel-ejercicios.xlsx">libro de ejercicios con soluciones</a> es descargable. Verificado el 9 de octubre de 2026.</p>
+<p>Pronosticar ventas, matrículas o consumo parece una tarea para especialistas, pero Excel trae funciones y herramientas que lo hacen con unos pocos clics. El problema es que <strong>un pronóstico siempre produce un número</strong>, y un número bien presentado inspira confianza aunque el método sea inadecuado. La pregunta importante no es "¿qué dice Excel?", sino "¿cómo sé si puedo creerle?".</p>
+<p>En este artículo hago algo poco común en este tipo de textos: una <strong>prueba retrospectiva</strong>. Entreno cuatro métodos con 24 meses de datos ficticios, pronostico los 12 meses siguientes y comparo con lo que realmente "ocurrió". Los resultados salieron en Microsoft Excel (versión 16, configuración regional es-CO) y el <a href="/descargas/pronosticos-excel/pronosticos-excel-ejercicios.xlsx">libro de ejercicios con soluciones</a> es descargable. Verificado el 9 de octubre de 2026.</p>
 <p class="notice"><strong>Resumen.</strong> En la prueba, el pronóstico ETS con la estacionalidad indicada (12 meses) tuvo un error medio de 3,0 %; la tendencia lineal, 11,1 %; el método ingenuo estacional, 13,0 %; y el mismo ETS con la estacionalidad <em>detectada automáticamente</em>, 15,4 %. La lección: <strong>tendencia y estacionalidad importan, el modo automático no siempre acierta, y ningún pronóstico se acepta sin probarlo con datos que no usó para aprender</strong>. Son datos ficticios: el resultado ilustra el método, no es una regla general.</p>
 
 <h2>Tendencia y estacionalidad: de qué hablamos</h2>
@@ -46,7 +46,7 @@ $html = <<<'HTML'
 =FORECAST.ETS(A28, B$4:B$27, A$4:A$27, 12)
 =FORECAST.ETS(A28, B$4:B$27, A$4:A$27)
 =FORECAST.ETS.SEASONALITY(B$4:B$27, A$4:A$27)</code></pre>
-<p>Cada fórmula pronostica la fecha de A28 usando solo los datos de las filas 4 a 27 (los 24 meses de entrenamiento), de modo que el método no «ve» el futuro.</p>
+<p>Cada fórmula pronostica la fecha de A28 usando solo los datos de las filas 4 a 27 (los 24 meses de entrenamiento), de modo que el método no "ve" el futuro.</p>
 
 <h2>Los resultados</h2>
 {{img:prueba}}
@@ -65,7 +65,7 @@ $html = <<<'HTML'
 
 <h2>Los siete errores más comunes</h2>
 <ol>
-<li><strong>Extrapolar una recta sobre datos estacionales.</strong> La tendencia lineal da un número «razonable» que ignora los picos.</li>
+<li><strong>Extrapolar una recta sobre datos estacionales.</strong> La tendencia lineal da un número "razonable" que ignora los picos.</li>
 <li><strong>Confiar en la estacionalidad automática sin revisarla.</strong> Compara lo que detecta con lo que sabes del negocio.</li>
 <li><strong>No hacer una prueba retrospectiva.</strong> Si no pronosticas un periodo que ya conoces, no sabes si el método sirve.</li>
 <li><strong>Muy poca historia.</strong> Para estimar estacionalidad se necesitan al menos dos ciclos completos; con 12 meses no hay cómo distinguirla del ruido.</li>
@@ -76,8 +76,8 @@ $html = <<<'HTML'
 <p>Y una advertencia sobre los gráficos: un pronóstico graficado con un eje recortado o con dos escalas distintas puede engañar tanto como los de <a href="/graficas-de-excel-mienten-cinco-errores-distorsionan-conclusiones/">las gráficas que mienten</a>.</p>
 
 <h2>El libro de ejercicios</h2>
-<p>El archivo trae los 36 meses de datos, la prueba retrospectiva ya construida (con las cuatro fórmulas y los errores por mes), cinco ejercicios y sus soluciones. Algunos ejercicios: calcular el índice estacional de cada mes (en el ejemplo, enero ronda 1,24 y mayo 0,79 respecto al promedio); pronosticar enero de 2025 con intervalo de confianza; sustituir el método ingenuo por «mes del año anterior más el crecimiento promedio»; y simular un choque (una caída del 40 % en abril) para ver cómo se degradan los pronósticos. Esa última práctica enseña lo más importante: <strong>los modelos aprenden del pasado y no avisan cuando el pasado deja de servir</strong>.</p>
-<p>También puedes usar el asistente de Excel («Datos», «Hoja de previsión») que aplica ETS y dibuja el intervalo; los resultados dependen de lo que detecte, y vale la pena aplicar la misma prueba retrospectiva.</p>
+<p>El archivo trae los 36 meses de datos, la prueba retrospectiva ya construida (con las cuatro fórmulas y los errores por mes), cinco ejercicios y sus soluciones. Algunos ejercicios: calcular el índice estacional de cada mes (en el ejemplo, enero ronda 1,24 y mayo 0,79 respecto al promedio); pronosticar enero de 2025 con intervalo de confianza; sustituir el método ingenuo por "mes del año anterior más el crecimiento promedio"; y simular un choque (una caída del 40 % en abril) para ver cómo se degradan los pronósticos. Esa última práctica enseña lo más importante: <strong>los modelos aprenden del pasado y no avisan cuando el pasado deja de servir</strong>.</p>
+<p>También puedes usar el asistente de Excel ("Datos", "Hoja de previsión") que aplica ETS y dibuja el intervalo; los resultados dependen de lo que detecte, y vale la pena aplicar la misma prueba retrospectiva.</p>
 
 <h2>Colombia, Latinoamérica y el mundo</h2>
 <p>Pronosticar bien tiene un valor práctico enorme en entornos de poca holgura: un colegio que estima matrículas para contratar docentes, una tienda que decide cuánto inventario comprar antes de la temporada escolar, una pyme que planea su flujo de caja. En Colombia, la estacionalidad del calendario escolar (calendario A y B), las primas de junio y diciembre y los días festivos crean patrones muy marcados que un buen pronóstico debe respetar; y las variaciones del dólar o de la inflación pueden romper la tendencia. Para <strong>directivos y administradores</strong>, el pronóstico es una ayuda para decidir, no una promesa; para <strong>docentes</strong> de matemáticas o tecnología, es un excelente caso para enseñar a evaluar modelos con datos reales; para las <strong>familias</strong> y la comunidad, entender que una estimación tiene margen de error ayuda a leer mejor las cifras que se presentan.</p>
@@ -99,7 +99,7 @@ $html = <<<'HTML'
 <h3>¿Un pronóstico predice el futuro?</h3>
 <p>No: proyecta patrones del pasado. Si el contexto cambia (un cierre, una crisis, una nueva política), el pronóstico pierde validez.</p>
 
-<p class="notice"><strong>Pruébalo con tus datos.</strong> Descarga el <a href="/descargas/pronosticos-excel/pronosticos-excel-ejercicios.xlsx">libro de pronósticos</a>, resuelve los ejercicios y reemplaza los datos ficticios por tus ventas, matrículas o consumo; luego compara los cuatro métodos en la hoja «Pronostico» antes de creer en un número. Requiere Excel 2016 o posterior (funciones ETS).</p>
+<p class="notice"><strong>Pruébalo con tus datos.</strong> Descarga el <a href="/descargas/pronosticos-excel/pronosticos-excel-ejercicios.xlsx">libro de pronósticos</a>, resuelve los ejercicios y reemplaza los datos ficticios por tus ventas, matrículas o consumo; luego compara los cuatro métodos en la hoja "Pronostico" antes de creer en un número. Requiere Excel 2016 o posterior (funciones ETS).</p>
 
 <h2>Para pensar</h2>
 <p>Un pronóstico bien presentado se ve como un hecho, aunque sea una apuesta informada. <strong>¿Quién debe responder cuando una decisión importante (contratar docentes, comprar inventario, cerrar una sede) se toma con un pronóstico que resultó equivocado: quien hizo el modelo, quien lo presentó o quien decidió sin preguntar por el margen de error? Y si los modelos aprenden del pasado, ¿cómo evitamos que nos encierren en él justo cuando el futuro necesita ser distinto?</strong></p>
@@ -120,7 +120,7 @@ return [
     'seo_description' => 'Pronósticos en Excel con FORECAST.ETS y tendencia lineal: prueba retrospectiva con errores medidos, errores comunes y libro de ejercicios descargable.',
     'focus_keyword' => 'pronósticos en Excel',
     'cover' => '/assets/img/articulos/pronosticos-excel/pronosticos-excel-portada',
-    'cover_alt' => 'Portada «Pronósticos en Excel: tendencia, estacionalidad y cuándo no confiar en el resultado» con una tarjeta: 3,0 % frente a 15,4 % de error medio de ETS con la estacionalidad indicada frente a la automática, ingenuo 13,0 % y tendencia lineal 11,1 %.',
+    'cover_alt' => 'Portada "Pronósticos en Excel: tendencia, estacionalidad y cuándo no confiar en el resultado" con una tarjeta: 3,0 % frente a 15,4 % de error medio de ETS con la estacionalidad indicada frente a la automática, ingenuo 13,0 % y tendencia lineal 11,1 %.',
     'published_at' => '2026-11-19 12:00:00',
     'content_html' => $html,
 ];

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Ransomware: qué hacer en los primeros 60 minutos». Fuentes verificadas el 9 de octubre de 2026: guía #StopRansomware de CISA/FBI/NSA/MS-ISAC (cisa.gov/stopransomware/ransomware-guide), Verizon DBIR 2025 (vía cobertura especializada), Ley 1273 de 2009, Ley 1581 de 2012 y guías sobre el reporte a la SIC (15 días hábiles; confirmar vigente).
+// "Ransomware: qué hacer en los primeros 60 minutos". Fuentes verificadas el 9 de octubre de 2026: guía #StopRansomware de CISA/FBI/NSA/MS-ISAC (cisa.gov/stopransomware/ransomware-guide), Verizon DBIR 2025 (vía cobertura especializada), Ley 1273 de 2009, Ley 1581 de 2012 y guías sobre el reporte a la SIC (15 días hábiles; confirmar vigente).
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/ransomware-60-minutos/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -16,12 +16,12 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>Un lunes por la mañana, un computador de la secretaría muestra una pantalla roja: «Tus archivos han sido cifrados. Paga para recuperarlos». En minutos, otros equipos empiezan a fallar. Lo que ocurra en la primera hora decide si el incidente se queda en una molestia grave o se convierte en semanas sin notas, sin cobros y con los datos de estudiantes en manos de extorsionistas.</p>
+<p>Un lunes por la mañana, un computador de la secretaría muestra una pantalla roja: "Tus archivos han sido cifrados. Paga para recuperarlos". En minutos, otros equipos empiezan a fallar. Lo que ocurra en la primera hora decide si el incidente se queda en una molestia grave o se convierte en semanas sin notas, sin cobros y con los datos de estudiantes en manos de extorsionistas.</p>
 <p>La mayoría de colegios y pequeñas empresas no tienen un protocolo: improvisan. Este artículo propone uno para los <strong>primeros 60 minutos</strong>, minuto a minuto, basado en la lista de respuesta de la guía #StopRansomware de CISA, el FBI, la NSA y MS-ISAC, adaptado a un colegio o una pyme colombiana. Incluye un <a href="/descargas/ransomware/protocolo-60-minutos-ransomware.xlsx">libro descargable</a> con la lista de acciones, los contactos, el registro del incidente y el orden de restauración. Datos verificados el 9 de octubre de 2026.</p>
 <p class="notice"><strong>Resumen.</strong> En los primeros minutos: <strong>aísla sin apagar</strong>, <strong>avisa por teléfono</strong> (no por canales que pueden estar comprometidos), <strong>protege los respaldos</strong> y <strong>registra todo</strong>. No pagues sin asesoría, no restaures sin verificar la copia y no improvises la comunicación. Esto es una guía general: adáptala con tu proveedor de TI y un asesor jurídico; no sustituye ayuda profesional.</p>
 
 <h2>Qué es y qué tan frecuente es</h2>
-<p>El ransomware es un programa malicioso que cifra los archivos de una organización y exige un pago a cambio de la clave. Hoy es habitual que, además, los atacantes <strong>roben</strong> los datos antes de cifrarlos y amenacen con publicarlos (la «doble extorsión»); por eso restaurar un respaldo no siempre cierra el problema.</p>
+<p>El ransomware es un programa malicioso que cifra los archivos de una organización y exige un pago a cambio de la clave. Hoy es habitual que, además, los atacantes <strong>roben</strong> los datos antes de cifrarlos y amenacen con publicarlos (la "doble extorsión"); por eso restaurar un respaldo no siempre cierra el problema.</p>
 <p>Según el informe Verizon DBIR 2025 (que analiza incidentes de 2024, a nivel mundial), el ransomware estuvo presente en el <strong>44 %</strong> de las brechas analizadas, frente al 32 % del año anterior; el 64 % de las víctimas no pagó el rescate, y la mediana de los pagos fue de unos <strong>115.000 dólares</strong>. En las brechas de pequeñas y medianas empresas, el ransomware apareció en el <strong>88 %</strong>. (Cifras tomadas de la cobertura especializada del informe; consulta el informe original.) No hay razones para creer que un colegio o una pyme colombiana esté fuera de la mira: los atacantes suelen buscar a quien tiene menos defensas y datos valiosos.</p>
 {{img:datos}}
 
@@ -47,7 +47,7 @@ $html = <<<'HTML'
 </ul>
 <h3>De 30 a 45 minutos: evaluar</h3>
 <ul>
-<li>Clasifica los sistemas por criticidad con la hoja «Inventario_critico»: ¿qué sostiene las operaciones del día? Eso se restaura primero.</li>
+<li>Clasifica los sistemas por criticidad con la hoja "Inventario_critico": ¿qué sostiene las operaciones del día? Eso se restaura primero.</li>
 <li>Pregunta: <strong>¿hay datos personales afectados?</strong> Si los hay, se activan obligaciones de reporte.</li>
 </ul>
 <h3>De 45 a 60 minutos: notificar y decidir</h3>
@@ -63,7 +63,7 @@ $html = <<<'HTML'
 <li><strong>Pagar a toda prisa.</strong> La guía de CISA no recomienda pagar y advierte que el pago no garantiza que recuperes tus datos ni que no los filtren; además, financia a los delincuentes. Antes de cualquier decisión, consulta a las autoridades y a un asesor jurídico, que también te dirán si existe un descifrador público para esa variante.</li>
 <li><strong>Apagar y reiniciar todo</strong> sin criterio, perdiendo evidencia.</li>
 <li><strong>Restaurar sin verificar</strong> que la copia está limpia y que se cerró la puerta de entrada.</li>
-<li><strong>Borrar archivos</strong> «para limpiar»: destruye evidencia y puede complicar la recuperación.</li>
+<li><strong>Borrar archivos</strong> "para limpiar": destruye evidencia y puede complicar la recuperación.</li>
 <li><strong>Comunicar a medias</strong> o negar el incidente a quienes tienen derecho a saberlo.</li>
 </ul>
 
@@ -124,7 +124,7 @@ return [
     'seo_description' => 'Protocolo de los primeros 60 minutos ante un ransomware en un colegio o pyme: aislar, avisar, registrar y notificar, con libro descargable y marco colombiano.',
     'focus_keyword' => 'ransomware qué hacer primeros minutos',
     'cover' => '/assets/img/articulos/ransomware-60-minutos/ransomware-60-minutos-portada',
-    'cover_alt' => 'Portada «Ransomware: qué hacer en los primeros 60 minutos y qué no hacer» con una lista: aislar el equipo de la red, llamar por teléfono al responsable y proteger los respaldos, marcados; pagar sin consultar, descartado.',
+    'cover_alt' => 'Portada "Ransomware: qué hacer en los primeros 60 minutos y qué no hacer" con una lista: aislar el equipo de la red, llamar por teléfono al responsable y proteger los respaldos, marcados; pagar sin consultar, descartado.',
     'published_at' => '2026-11-24 12:00:00',
     'content_html' => $html,
 ];

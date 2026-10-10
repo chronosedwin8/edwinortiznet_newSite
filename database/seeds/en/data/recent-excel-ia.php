@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of the practical guide «Excel con inteligencia artificial». Key is the Spanish slug.
+// English version of the practical guide "Excel con inteligencia artificial". Key is the Spanish slug.
 // Nowdoc keeps formulas ($, <, &) literal; <pre><code> blocks are escaped automatically and figures/videos
 // are inserted from {{img:…}} and {{yt:…}} markers.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {

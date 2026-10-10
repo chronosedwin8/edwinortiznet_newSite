@@ -9,4 +9,4 @@ $subject = "Lista de espera: {$product['title']} ($count)";
   <li>Idioma: <?= e($locale) ?></li>
   <li>Personas esperando este producto: <?= (int) $count ?></li>
 </ul>
-<p>Cuando el producto quede a la venta (estado «A la venta» y archivo subido), el sitio les escribe a todos automáticamente.</p>
+<p>Cuando el producto quede a la venta (estado "A la venta" y archivo subido), el sitio les escribe a todos automáticamente.</p>

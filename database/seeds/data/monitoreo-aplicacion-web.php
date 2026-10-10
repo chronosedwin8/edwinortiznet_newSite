@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Qué monitorear en una aplicación web». Fuentes verificadas el 10 de octubre de 2026: Beyer et al., Site Reliability Engineering (Google), cuatro señales doradas; umbrales de Core Web Vitals (web.dev). Monitor en Python probado contra sitio local, puerto cerrado y ruta 404; calculadora de disponibilidad verificada en Excel.
+// "Qué monitorear en una aplicación web". Fuentes verificadas el 10 de octubre de 2026: Beyer et al., Site Reliability Engineering (Google), cuatro señales doradas; umbrales de Core Web Vitals (web.dev). Monitor en Python probado contra sitio local, puerto cerrado y ruta 404; calculadora de disponibilidad verificada en Excel.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/monitoreo-aplicacion-web/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -18,11 +18,11 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 $html = <<<'HTML'
 <p>Una aplicación web de un colegio, una pyme o un emprendimiento deja de funcionar un viernes a las seis de la tarde. El formulario de inscripción no carga, los pagos no se registran. Nadie se entera hasta el lunes, cuando una madre llama enojada. <strong>El peor monitoreo es el que consiste en esperar a que los usuarios avisen.</strong></p>
 <p>Este artículo explica qué monitorear en una aplicación web (las señales esenciales, los umbrales de ejemplo, qué alertas sirven y cuáles solo hacen ruido), con un <a href="/descargas/monitoreo-web/monitor_basico.py">monitor básico en Python</a> que probé y un <a href="/descargas/monitoreo-web/plan-monitoreo-aplicacion-web.xlsx">plan de monitoreo descargable en Excel</a> con una calculadora de disponibilidad. Datos verificados el 10 de octubre de 2026.</p>
-<p class="notice"><strong>Resumen.</strong> Monitorea primero lo que le duele al usuario: <strong>¿está disponible?, ¿responde rápido?, ¿falla?, ¿se está llenando?</strong> (las «cuatro señales doradas» de Google: latencia, tráfico, errores y saturación), más las señales de tu negocio (¿se están completando los pagos y las inscripciones?). Cada alerta debe tener un responsable con nombre, un umbral y un primer paso. Una meta de disponibilidad del 99,9 % permite unos 43 minutos caído al mes: decide la meta por el daño que causa una caída, no por prestigio.</p>
+<p class="notice"><strong>Resumen.</strong> Monitorea primero lo que le duele al usuario: <strong>¿está disponible?, ¿responde rápido?, ¿falla?, ¿se está llenando?</strong> (las "cuatro señales doradas" de Google: latencia, tráfico, errores y saturación), más las señales de tu negocio (¿se están completando los pagos y las inscripciones?). Cada alerta debe tener un responsable con nombre, un umbral y un primer paso. Una meta de disponibilidad del 99,9 % permite unos 43 minutos caído al mes: decide la meta por el daño que causa una caída, no por prestigio.</p>
 
 <h2>Las cuatro señales doradas (y las de tu negocio)</h2>
 {{img:senales}}
-<p>El libro «Site Reliability Engineering» de Google propone, para monitorear cualquier sistema orientado a usuarios, cuatro señales: <strong>latencia</strong> (cuánto tarda en responder, separando respuestas correctas de fallidas, porque un error rápido engaña), <strong>tráfico</strong> (cuánta demanda recibe), <strong>errores</strong> (qué porcentaje de solicitudes falla, ya sea de forma explícita o silenciosa) y <strong>saturación</strong> (qué tan lleno está el recurso más limitado). Con eso se cubre lo técnico. Pero una aplicación puede estar «arriba» y no servir: un formulario que carga pero no guarda, un pago que se cobra y no se registra. Por eso hay que agregar <strong>señales de negocio</strong>: pagos iniciados contra confirmados, inscripciones por hora, correos enviados. Esas son las que de verdad dicen si el sistema cumple su trabajo (ver <a href="/integraciones-fallan-en-silencio-api-webhooks-reintentos-alertas/">integraciones que fallan en silencio</a>).</p>
+<p>El libro "Site Reliability Engineering" de Google propone, para monitorear cualquier sistema orientado a usuarios, cuatro señales: <strong>latencia</strong> (cuánto tarda en responder, separando respuestas correctas de fallidas, porque un error rápido engaña), <strong>tráfico</strong> (cuánta demanda recibe), <strong>errores</strong> (qué porcentaje de solicitudes falla, ya sea de forma explícita o silenciosa) y <strong>saturación</strong> (qué tan lleno está el recurso más limitado). Con eso se cubre lo técnico. Pero una aplicación puede estar "arriba" y no servir: un formulario que carga pero no guarda, un pago que se cobra y no se registra. Por eso hay que agregar <strong>señales de negocio</strong>: pagos iniciados contra confirmados, inscripciones por hora, correos enviados. Esas son las que de verdad dicen si el sistema cumple su trabajo (ver <a href="/integraciones-fallan-en-silencio-api-webhooks-reintentos-alertas/">integraciones que fallan en silencio</a>).</p>
 
 <h2>El plan de monitoreo: diez señales para empezar</h2>
 <table>
@@ -40,12 +40,12 @@ $html = <<<'HTML'
 <tr><td><strong>Certificados y dominios</strong></td><td>Días para el vencimiento</td><td>Menos de 21 días</td><td>Media</td></tr>
 </tbody>
 </table>
-<p>Los umbrales de la última columna son ejemplos que debes ajustar a tu caso; los de Core Web Vitals (LCP, INP y CLS) son los umbrales de «bueno» que publica Google en web.dev. El libro trae esta tabla con columnas para quién recibe la alerta, cómo se mide y si ya está implementada: con diez señales y ninguna implementada, el resumen dice «0 de 10» y avisa que las dos críticas (disponibilidad y pagos) aún no están cubiertas.</p>
+<p>Los umbrales de la última columna son ejemplos que debes ajustar a tu caso; los de Core Web Vitals (LCP, INP y CLS) son los umbrales de "bueno" que publica Google en web.dev. El libro trae esta tabla con columnas para quién recibe la alerta, cómo se mide y si ya está implementada: con diez señales y ninguna implementada, el resumen dice "0 de 10" y avisa que las dos críticas (disponibilidad y pagos) aún no están cubiertas.</p>
 
 <h2>¿Cuánto tiempo caído es aceptable? La calculadora</h2>
-<p>Una meta de disponibilidad se traduce en minutos. La hoja «Calculadora_disponibilidad» calcula, con la fórmula <em>minutos del periodo × (1 − meta)</em>, el tiempo caído permitido:</p>
+<p>Una meta de disponibilidad se traduce en minutos. La hoja "Calculadora_disponibilidad" calcula, con la fórmula <em>minutos del periodo × (1 − meta)</em>, el tiempo caído permitido:</p>
 {{img:disponibilidad}}
-<p>Un 99 % permite unas 7,2 horas caído al mes (casi un día completo cada tres meses); un 99,9 %, unos 43 minutos; un 99,99 %, poco más de 4 minutos. La lección: <strong>cada «nueve» extra cuesta mucho más</strong> (redundancia, procesos, personal de guardia). Para una página informativa de un colegio, el 99 % puede bastar; para el recaudo de pensiones en la última semana de plazo, quizá no. La meta se fija según lo que cuesta una caída a los usuarios.</p>
+<p>Un 99 % permite unas 7,2 horas caído al mes (casi un día completo cada tres meses); un 99,9 %, unos 43 minutos; un 99,99 %, poco más de 4 minutos. La lección: <strong>cada "nueve" extra cuesta mucho más</strong> (redundancia, procesos, personal de guardia). Para una página informativa de un colegio, el 99 % puede bastar; para el recaudo de pensiones en la última semana de plazo, quizá no. La meta se fija según lo que cuesta una caída a los usuarios.</p>
 
 <h2>Un monitor básico en Python (probado)</h2>
 <p>Para entender cómo funciona un monitor de disponibilidad, escribí uno de unas 70 líneas (solo biblioteca estándar): hace N comprobaciones HTTP, mide el tiempo de respuesta y calcula disponibilidad, mediana y percentil 95, y lanza una alerta tras tres fallos consecutivos. Lo probé contra mi propio sitio local, contra un puerto sin servicio y contra una ruta que responde 404:</p>
@@ -61,21 +61,21 @@ $ python monitor_basico.py http://localhost:59999/ 6 0.1      # puerto donde no 
 $ python monitor_basico.py http://localhost:8090/ruta-inexistente/ 4 0.1   # responde 404
   ALERTA: 3 fallos consecutivos (404) en http://localhost:8090/ruta-inexistente/
   comprobaciones: 4 | disponibilidad: 0.0 % | alertas: 1</code></pre>
-<p>Fíjate en dos detalles. Primero, <strong>el 404 cuenta como fallo</strong>: una página que «responde» pero con error no está sirviendo. Segundo, la alerta salta con <strong>tres fallos seguidos</strong>, no con el primero: un solo fallo puede ser un tropiezo de red y alertar por todo genera ruido que la gente aprende a ignorar. Esto es una demostración, no un sistema de producción: un monitor real mide desde varios lugares, guarda historia, tiene notificaciones confiables y no corre en el mismo servidor que vigila (si el servidor cae, el monitor cae con él).</p>
+<p>Fíjate en dos detalles. Primero, <strong>el 404 cuenta como fallo</strong>: una página que "responde" pero con error no está sirviendo. Segundo, la alerta salta con <strong>tres fallos seguidos</strong>, no con el primero: un solo fallo puede ser un tropiezo de red y alertar por todo genera ruido que la gente aprende a ignorar. Esto es una demostración, no un sistema de producción: un monitor real mide desde varios lugares, guarda historia, tiene notificaciones confiables y no corre en el mismo servidor que vigila (si el servidor cae, el monitor cae con él).</p>
 
 <h2>Alertas que sirven, alertas que estorban</h2>
 <ul>
-<li><strong>Una alerta, un responsable con nombre.</strong> «Alguien del equipo» no es nadie.</li>
+<li><strong>Una alerta, un responsable con nombre.</strong> "Alguien del equipo" no es nadie.</li>
 <li><strong>Cada alerta dice qué hacer primero.</strong> Una alerta que obliga a investigar desde cero a las tres de la mañana se ignora.</li>
-<li><strong>Alerta por síntomas, no por causas.</strong> «Los pagos no llegan» importa más que «la CPU está al 80 %».</li>
-<li><strong>Niveles de severidad:</strong> crítica (15 minutos, llamada), alta (1 hora, mensaje), media (1 día, correo) e informativa (tablero). La hoja «Alertas» del libro los trae con tiempos y canales sugeridos.</li>
+<li><strong>Alerta por síntomas, no por causas.</strong> "Los pagos no llegan" importa más que "la CPU está al 80 %".</li>
+<li><strong>Niveles de severidad:</strong> crítica (15 minutos, llamada), alta (1 hora, mensaje), media (1 día, correo) e informativa (tablero). La hoja "Alertas" del libro los trae con tiempos y canales sugeridos.</li>
 <li><strong>Si una alerta se ignora tres veces, se arregla la causa o se elimina.</strong></li>
 <li><strong>Prueba las alertas críticas</strong> apagando algo a propósito: una alerta que nunca se probó probablemente no suena cuando hace falta.</li>
 </ul>
 
 <h2>Lo que casi todos olvidan</h2>
 <ol>
-<li><strong>Los trabajos programados.</strong> Un respaldo que dejó de correr hace dos semanas no avisa por sí solo. La solución es el «latido»: la tarea avisa al terminar, y se alerta si el aviso no llega a tiempo.</li>
+<li><strong>Los trabajos programados.</strong> Un respaldo que dejó de correr hace dos semanas no avisa por sí solo. La solución es el "latido": la tarea avisa al terminar, y se alerta si el aviso no llega a tiempo.</li>
 <li><strong>Los certificados y dominios.</strong> Un certificado vencido derriba el sitio de un día para otro; se evita con un calendario o un monitor de vencimiento (ver <a href="/riesgo-oculto-excel-auditoria-control-versiones/">el riesgo de lo que nadie revisa</a>).</li>
 <li><strong>La experiencia real.</strong> Que el servidor responda en 200 ms no significa que en el celular de una familia con conexión lenta la página cargue en tres segundos; la medición con dispositivos reales (Core Web Vitals) lo muestra (ver <a href="/accesibilidad-web-formularios-contraste-teclado-checklist-colegios-pymes/">accesibilidad web</a>).</li>
 <li><strong>El respaldo y su restauración.</strong> Si lo único que se monitorea es la caída, falta el plan para cuando ocurre (ver <a href="/ransomware-que-hacer-primeros-60-minutos-protocolo-colegio-pyme/">ransomware: los primeros 60 minutos</a>).</li>
@@ -95,7 +95,7 @@ $ python monitor_basico.py http://localhost:8090/ruta-inexistente/ 4 0.1   # res
 <h3>¿Qué son las cuatro señales doradas?</h3>
 <p>Latencia, tráfico, errores y saturación: las cuatro métricas que, según el libro de Site Reliability Engineering de Google, conviene medir en cualquier sistema orientado a usuarios.</p>
 <h3>¿Qué disponibilidad debo prometer?</h3>
-<p>La que justifique el daño de una caída. 99 % permite unas 7,2 horas al mes; 99,9 %, unos 43 minutos; 99,99 %, unos 4 minutos. Cada «nueve» extra cuesta más.</p>
+<p>La que justifique el daño de una caída. 99 % permite unas 7,2 horas al mes; 99,9 %, unos 43 minutos; 99,99 %, unos 4 minutos. Cada "nueve" extra cuesta más.</p>
 <h3>¿Por qué no alertar con el primer fallo?</h3>
 <p>Un solo fallo puede ser un tropiezo de red; alertar por todo genera ruido y la gente deja de hacer caso. Alerta tras varios fallos seguidos.</p>
 <h3>¿Puedo monitorear desde el mismo servidor?</h3>
@@ -122,7 +122,7 @@ return [
     'seo_description' => 'Qué monitorear en una aplicación web: señales esenciales, umbrales, alertas útiles, calculadora de disponibilidad y un monitor en Python con plan descargable.',
     'focus_keyword' => 'qué monitorear en una aplicación web',
     'cover' => '/assets/img/articulos/monitoreo-aplicacion-web/monitoreo-aplicacion-web-portada',
-    'cover_alt' => 'Portada «Qué monitorear en una aplicación web para enterarte antes que tus usuarios» con una tarjeta: 43 minutos al mes es todo el tiempo caído que permite una meta de disponibilidad del 99,9 %.',
+    'cover_alt' => 'Portada "Qué monitorear en una aplicación web para enterarte antes que tus usuarios" con una tarjeta: 43 minutos al mes es todo el tiempo caído que permite una meta de disponibilidad del 99,9 %.',
     'published_at' => '2026-12-15 12:00:00',
     'content_html' => $html,
 ];

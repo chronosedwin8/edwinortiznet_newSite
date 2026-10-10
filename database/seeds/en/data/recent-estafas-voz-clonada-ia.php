@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «Me llamó mi jefe y parecía su voz»: AI voice-cloning scams and a verification protocol. Key is the Spanish slug.
+// English version of "Me llamó mi jefe y parecía su voz": AI voice-cloning scams and a verification protocol. Key is the Spanish slug.
 // Figures (FBI IC3 2024, Arup case, UCL study, FTC, Colombian figures and Ley 2502 de 2025) checked on October 9, 2026, with linked sources.
 // Status and publication date are carried over from the Spanish post by en/02_recent_posts.php (scheduled for Tuesday, October 13, 2026, 7:00 a.m. Bogotá time).
 $img = static function (string $name, int $h960, string $alt, string $caption): string {

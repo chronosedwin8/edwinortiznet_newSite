@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Accesibilidad web: formularios, contraste y teclado». Fuentes verificadas el 9 de octubre de 2026: WebAIM Million 2025; WCAG 2.2 (W3C); Resolución 1519 de 2020 del MinTIC (vía informes de entidades que la citan; no se accedió al texto oficial del anexo); Ley 1346 de 2009. Script y formularios de ejemplo ejecutados; contrastes calculados con la fórmula de WCAG.
+// "Accesibilidad web: formularios, contraste y teclado". Fuentes verificadas el 9 de octubre de 2026: WebAIM Million 2025; WCAG 2.2 (W3C); Resolución 1519 de 2020 del MinTIC (vía informes de entidades que la citan; no se accedió al texto oficial del anexo); Ley 1346 de 2009. Script y formularios de ejemplo ejecutados; contrastes calculados con la fórmula de WCAG.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/accesibilidad-web/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -16,7 +16,7 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>Un colegio abre las inscripciones a talleres con un formulario en línea. Una madre con baja visión no logra leer los campos, que están en gris claro sobre blanco; un padre que usa un lector de pantalla oye «campo de texto, campo de texto» sin saber qué se le pide; un estudiante con una lesión en la mano no puede usar el ratón y el botón «Enviar» no se alcanza con el teclado. Nadie quiso excluirlos: simplemente no se pensó en ellos.</p>
+<p>Un colegio abre las inscripciones a talleres con un formulario en línea. Una madre con baja visión no logra leer los campos, que están en gris claro sobre blanco; un padre que usa un lector de pantalla oye "campo de texto, campo de texto" sin saber qué se le pide; un estudiante con una lesión en la mano no puede usar el ratón y el botón "Enviar" no se alcanza con el teclado. Nadie quiso excluirlos: simplemente no se pensó en ellos.</p>
 <p>La accesibilidad web no es un adorno para unos pocos: <strong>beneficia a todos</strong> (quien usa el celular al sol, quien tiene una conexión lenta, quien se lastimó el brazo) y, en muchos casos, es una obligación legal. Este artículo explica los tres frentes que más fallan (formularios, contraste y teclado), con datos verificados, código de un ejemplo malo y uno bueno, un <a href="/descargas/accesibilidad-web/revisar_accesibilidad_basica.py">script en Python que detecta problemas comunes</a> y una <a href="/descargas/accesibilidad-web/lista-accesibilidad-web.xlsx">lista de verificación en Excel</a>. Datos verificados el 9 de octubre de 2026.</p>
 <p class="notice"><strong>Resumen.</strong> Los fallos de accesibilidad más frecuentes son simples de corregir: <strong>contraste bajo, imágenes sin texto alternativo, campos sin etiqueta y enlaces vacíos</strong> (WebAIM Million 2025). Un formulario accesible tiene etiquetas visibles, se maneja solo con el teclado, comunica los errores en texto y tiene contraste de al menos 4,5:1. Una revisión automática ayuda, pero no demuestra que una página sea accesible: hay que probarla con el teclado, con zoom y, si es posible, con un lector de pantalla.</p>
 
@@ -49,17 +49,17 @@ $html = <<<'HTML'
 <h2>Frente 2: contraste</h2>
 <p>WCAG pide una relación de contraste de al menos <strong>4,5:1</strong> para el texto normal y de <strong>3:1</strong> para el texto grande. La relación se calcula a partir de la luminancia relativa de los dos colores. Calculé varios con el script, sobre fondo blanco:</p>
 {{img:contraste}}
-<p>El gris <code>#767676</code> es, de hecho, el más claro sobre blanco que cumple 4,5:1 (4,54:1); un solo paso más claro, <code>#777777</code>, ya no (4,48:1), y el gris «elegante» <code>#AAAAAA</code> queda en 2,32:1, que muchas personas no pueden leer, y casi nadie en pantalla al sol. Además, no uses solo el color para informar (por ejemplo, un campo con error solo en rojo) y revisa también los estados: enlaces, botones deshabilitados y texto sobre imágenes.</p>
+<p>El gris <code>#767676</code> es, de hecho, el más claro sobre blanco que cumple 4,5:1 (4,54:1); un solo paso más claro, <code>#777777</code>, ya no (4,48:1), y el gris "elegante" <code>#AAAAAA</code> queda en 2,32:1, que muchas personas no pueden leer, y casi nadie en pantalla al sol. Además, no uses solo el color para informar (por ejemplo, un campo con error solo en rojo) y revisa también los estados: enlaces, botones deshabilitados y texto sobre imágenes.</p>
 
 <h2>Frente 3: teclado</h2>
 <p>Muchas personas navegan sin ratón: usuarios de lectores de pantalla, de teclados adaptados o con temblores. La prueba es simple y no requiere herramientas: <strong>desconecta el ratón y recorre tu página con Tab</strong>. Debes poder llegar a todo lo interactivo, en un orden lógico, y <strong>ver siempre dónde está el foco</strong>. Los errores típicos: <code>&lt;div onclick&gt;</code> que no recibe el foco, <code>tabindex</code> positivos que alteran el orden, menús que solo abren con el ratón y ventanas emergentes que atrapan el foco. WCAG 2.2 sumó, entre otros, que el foco no quede oculto tras una barra fija y que los objetivos táctiles tengan al menos 24 por 24 píxeles.</p>
 
 <h2>Un script que encuentra lo básico</h2>
-<p>Escribí un script de unas 130 líneas en Python (solo biblioteca estándar) que revisa un HTML y detecta ocho problemas frecuentes: imágenes sin <code>alt</code>, campos sin etiqueta, falta de idioma o título, enlaces vacíos o genéricos («haz clic aquí»), botones sin texto, saltos de encabezados, <code>tabindex</code> positivos y <code>div</code> con clic, además de calcular contrastes. Lo probé con el formulario malo (con tres campos sin etiqueta y texto gris) y con el bueno:</p>
+<p>Escribí un script de unas 130 líneas en Python (solo biblioteca estándar) que revisa un HTML y detecta ocho problemas frecuentes: imágenes sin <code>alt</code>, campos sin etiqueta, falta de idioma o título, enlaces vacíos o genéricos ("haz clic aquí"), botones sin texto, saltos de encabezados, <code>tabindex</code> positivos y <code>div</code> con clic, además de calcular contrastes. Lo probé con el formulario malo (con tres campos sin etiqueta y texto gris) y con el bueno:</p>
 <pre><code>formulario-inaccesible.html: 14 problema(s) detectado(s)
  - Salto de encabezados: de h1 a h3
  - Imagen sin atributo alt: logo.png
- - Enlace con texto genérico: «Haz clic aquí»
+ - Enlace con texto genérico: "Haz clic aquí"
  - tabindex positivo (3) en <div>: altera el orden natural del teclado
  - <div> con onclick: no es accesible por teclado; usa <button>
  - Falta el idioma de la página (<html lang="es">)
@@ -103,7 +103,7 @@ formulario-accesible.html: 0 problema(s) detectado(s)</code></pre>
 <p class="notice"><strong>Esta semana:</strong> prueba tu formulario más importante con el teclado y mide el contraste de sus textos. Descarga la <a href="/descargas/accesibilidad-web/lista-accesibilidad-web.xlsx">lista de verificación</a> y ejecuta el <a href="/descargas/accesibilidad-web/revisar_accesibilidad_basica.py">script</a> sobre tu HTML (también están los dos <a href="/descargas/accesibilidad-web/formulario-inaccesible.html">formularios</a> <a href="/descargas/accesibilidad-web/formulario-accesible.html">de ejemplo</a>).</p>
 
 <h2>Para pensar</h2>
-<p>La accesibilidad suele tratarse como un costo extra que se deja «para después». <strong>¿Es la inaccesibilidad de un servicio educativo una forma de discriminación aunque nadie la haya querido? Y si una institución recibe a todos pero su formulario de inscripción solo funciona para quien ve, usa ratón y tiene buena conexión, ¿a quién estamos eligiendo sin darnos cuenta?</strong></p>
+<p>La accesibilidad suele tratarse como un costo extra que se deja "para después". <strong>¿Es la inaccesibilidad de un servicio educativo una forma de discriminación aunque nadie la haya querido? Y si una institución recibe a todos pero su formulario de inscripción solo funciona para quien ve, usa ratón y tiene buena conexión, ¿a quién estamos eligiendo sin darnos cuenta?</strong></p>
 HTML;
 
 $html = $code($html);
@@ -121,7 +121,7 @@ return [
     'seo_description' => 'Cómo hacer accesibles tus formularios y páginas: etiquetas, contraste 4,5:1 y teclado, con datos de WebAIM, script en Python y lista de verificación.',
     'focus_keyword' => 'accesibilidad web formularios',
     'cover' => '/assets/img/articulos/accesibilidad-web/accesibilidad-web-portada',
-    'cover_alt' => 'Portada «Accesibilidad web: formularios, contraste y teclado que todas las personas puedan usar» con una lista: cada campo con su etiqueta, uso solo con teclado y contraste de 4,5:1, marcados; un placeholder como etiqueta, descartado.',
+    'cover_alt' => 'Portada "Accesibilidad web: formularios, contraste y teclado que todas las personas puedan usar" con una lista: cada campo con su etiqueta, uso solo con teclado y contraste de 4,5:1, marcados; un placeholder como etiqueta, descartado.',
     'published_at' => '2026-12-01 12:00:00',
     'content_html' => $html,
 ];

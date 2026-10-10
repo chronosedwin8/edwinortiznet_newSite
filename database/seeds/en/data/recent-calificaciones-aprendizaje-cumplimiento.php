@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «¿Las calificaciones miden lo que aprende un estudiante o su capacidad para cumplir con las reglas del colegio?». Key is the
+// English version of "¿Las calificaciones miden lo que aprende un estudiante o su capacidad para cumplir con las reglas del colegio?". Key is the
 // Spanish slug. Checked on October 9, 2026. The Valentina and Mateo case is hypothetical. Status and date come from the Spanish post via
 // en/02_recent_posts.php (scheduled for Wednesday, October 21, 2026, 7:00 a.m. Bogotá time).
 $img = static function (string $name, int $h960, string $alt, string $caption): string {

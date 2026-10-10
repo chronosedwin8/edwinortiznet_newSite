@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Listas desplegables dependientes en Excel: el método clásico y el moderno». Todo probado en Microsoft Excel 16 (es-CO): ORDENAR/UNICOS/FILTRAR con validación =$H$3#, nombres definidos con INDIRECTO y celda de verificación (combinación válida o inválida tras cambiar la primera lista). Datos ficticios. Verificado el 9 de octubre de 2026.
+// "Listas desplegables dependientes en Excel: el método clásico y el moderno". Todo probado en Microsoft Excel 16 (es-CO): ORDENAR/UNICOS/FILTRAR con validación =$H$3#, nombres definidos con INDIRECTO y celda de verificación (combinación válida o inválida tras cambiar la primera lista). Datos ficticios. Verificado el 9 de octubre de 2026.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/listas-dependientes/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -16,12 +16,12 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>Un formulario en Excel que recoge datos de estudiantes, clientes o inventarios tiene un enemigo constante: <strong>lo que cada persona escribe a su manera</strong>. «Medellín», «medellin», «Medellin.» y «MED» son el mismo municipio para una persona y cuatro valores distintos para Excel (ver <a href="/cuando-excel-deja-de-ser-solucion-siete-senales-necesitas-base-de-datos/">cuándo Excel deja de ser la solución</a>). La defensa más simple son las <strong>listas desplegables</strong>, y la más útil son las <strong>dependientes</strong>: al elegir un departamento, la siguiente lista solo ofrece sus municipios.</p>
+<p>Un formulario en Excel que recoge datos de estudiantes, clientes o inventarios tiene un enemigo constante: <strong>lo que cada persona escribe a su manera</strong>. "Medellín", "medellin", "Medellin." y "MED" son el mismo municipio para una persona y cuatro valores distintos para Excel (ver <a href="/cuando-excel-deja-de-ser-solucion-siete-senales-necesitas-base-de-datos/">cuándo Excel deja de ser la solución</a>). La defensa más simple son las <strong>listas desplegables</strong>, y la más útil son las <strong>dependientes</strong>: al elegir un departamento, la siguiente lista solo ofrece sus municipios.</p>
 <p>Este artículo explica dos métodos para encadenar listas: el <strong>clásico</strong> (nombres definidos e <code>INDIRECTO</code>, que funciona en cualquier versión) y el <strong>moderno</strong> (<code>UNICOS</code>, <code>FILTRAR</code> y referencias al derrame, para Excel 2021 y Microsoft 365). Incluye una <a href="/descargas/listas-dependientes/listas-desplegables-dependientes.xlsx">plantilla descargable</a> con ambos métodos, probada en Microsoft Excel 16 (es-CO), y la verificación que casi nadie agrega. Verificado el 9 de octubre de 2026.</p>
 <p class="notice"><strong>Resumen.</strong> Una lista dependiente se construye con una sola tabla fuente y se encadena con una fórmula. El método moderno se actualiza solo cuando agregas filas y no se rompe con espacios en los nombres; el clásico funciona en cualquier versión. Ambos tienen una debilidad: <strong>si cambias la primera lista, el valor de la segunda se queda</strong> y puede quedar una combinación imposible. La solución es una celda de verificación que confirme que la combinación existe. Todo esto se probó con datos ficticios de departamentos, municipios e instituciones.</p>
 
 <h2>La fuente: una sola tabla</h2>
-<p>Antes de cualquier fórmula, una tabla ordenada en la hoja «Listas» con una fila por combinación:</p>
+<p>Antes de cualquier fórmula, una tabla ordenada en la hoja "Listas" con una fila por combinación:</p>
 <table>
 <thead><tr><th>Departamento</th><th>Municipio</th><th>Institución (ficticia)</th></tr></thead>
 <tbody>
@@ -45,8 +45,8 @@ $html = <<<'HTML'
 =SORT(UNIQUE(Listas!A2:A25))
 =SORT(UNIQUE(FILTER(Listas!B2:B25, Listas!A2:A25=B4, "")))
 =FILTER(Listas!C2:C25, (Listas!A2:A25=B4)*(Listas!B2:B25=B5), "")</code></pre>
-<p>Después, en <em>Datos, Validación de datos</em>, se elige <em>Lista</em> y como origen se usa la referencia al derrame, con el signo <code>#</code>: <code>=$H$3#</code> para el departamento (B4), <code>=$I$3#</code> para el municipio (B5) y <code>=$J$3#</code> para la institución (B6). El <code>#</code> significa «todo el rango que derrama esa fórmula», así la lista crece o se encoge sola. Comprobé que al elegir Antioquia, la segunda lista ofrece Envigado, Itagüí y Medellín; y al cambiar a Atlántico, Barranquilla, Malambo y Soledad.</p>
-<p>Ventajas: no hay nombres definidos ni rangos que ajustar, las listas salen ordenadas y sin repetidos, y agregar datos en «Listas» actualiza todo (si el rango de las fórmulas lo cubre; usar una tabla de Excel como fuente lo hace automático).</p>
+<p>Después, en <em>Datos, Validación de datos</em>, se elige <em>Lista</em> y como origen se usa la referencia al derrame, con el signo <code>#</code>: <code>=$H$3#</code> para el departamento (B4), <code>=$I$3#</code> para el municipio (B5) y <code>=$J$3#</code> para la institución (B6). El <code>#</code> significa "todo el rango que derrama esa fórmula", así la lista crece o se encoge sola. Comprobé que al elegir Antioquia, la segunda lista ofrece Envigado, Itagüí y Medellín; y al cambiar a Atlántico, Barranquilla, Malambo y Soledad.</p>
+<p>Ventajas: no hay nombres definidos ni rangos que ajustar, las listas salen ordenadas y sin repetidos, y agregar datos en "Listas" actualiza todo (si el rango de las fórmulas lo cubre; usar una tabla de Excel como fuente lo hace automático).</p>
 
 <h2>Método clásico: nombres definidos e INDIRECTO</h2>
 <p>Funciona en cualquier versión de Excel. La idea: cada departamento tiene su propia columna de municipios, y a cada columna se le da un <strong>nombre definido igual al del departamento</strong> (en <em>Fórmulas, Administrador de nombres</em>). Así, la validación del municipio usa:</p>
@@ -56,21 +56,21 @@ $html = <<<'HTML'
 ' Validación de la lista de municipios (B4): INDIRECTO convierte el texto de B3 en el nombre
 =INDIRECTO($B$3)          ' español
 =INDIRECT($B$3)           ' inglés</code></pre>
-<p>Si B3 dice «Antioquia», <code>INDIRECTO</code> devuelve el rango con ese nombre, y la lista muestra sus municipios. Es el método de toda la vida, pero tiene mañas que probé:</p>
+<p>Si B3 dice "Antioquia", <code>INDIRECTO</code> devuelve el rango con ese nombre, y la lista muestra sus municipios. Es el método de toda la vida, pero tiene mañas que probé:</p>
 <ul>
-<li>Los <strong>nombres definidos no admiten espacios</strong>: un «Norte de Santander» exige un nombre como «Norte_de_Santander» y una fórmula <code>INDIRECTO(SUSTITUIR(B3;" ";"_"))</code>.</li>
+<li>Los <strong>nombres definidos no admiten espacios</strong>: un "Norte de Santander" exige un nombre como "Norte_de_Santander" y una fórmula <code>INDIRECTO(SUSTITUIR(B3;" ";"_"))</code>.</li>
 <li>Cada vez que agregas un departamento, hay que crear su nombre y ampliar la lista de encabezados.</li>
 <li>Si el departamento está vacío, <code>INDIRECTO</code> da error y la lista del municipio no abre.</li>
 </ul>
 
 <h2>La verificación que casi nadie agrega</h2>
-<p>Con cualquiera de los dos métodos hay un problema: <strong>si eliges Antioquia y Envigado, y después cambias el departamento a Atlántico, Excel deja «Envigado» en la celda del municipio</strong>. La validación solo controla lo que se escribe, no lo que ya estaba. Probé exactamente ese caso: el resultado es una combinación imposible que nadie nota. La solución es una celda de verificación:</p>
+<p>Con cualquiera de los dos métodos hay un problema: <strong>si eliges Antioquia y Envigado, y después cambias el departamento a Atlántico, Excel deja "Envigado" en la celda del municipio</strong>. La validación solo controla lo que se escribe, no lo que ya estaba. Probé exactamente ese caso: el resultado es una combinación imposible que nadie nota. La solución es una celda de verificación:</p>
 <pre><code>=SI(CONTAR.SI.CONJUNTO(Listas!A2:A25; B4; Listas!B2:B25; B5; Listas!C2:C25; B6)=1;
     "Combinación válida"; "Revisar: la combinación no existe")
 
 =IF(COUNTIFS(Listas!A2:A25, B4, Listas!B2:B25, B5, Listas!C2:C25, B6)=1,
     "Combinación válida", "Revisar: la combinación no existe")</code></pre>
-<p>En la prueba, con Antioquia, Envigado e «I. E. Ejemplo 03» la verificación dice «Combinación válida»; al cambiar el departamento a Atlántico y dejar lo demás, dice «Revisar: la combinación no existe» (y el formato condicional la pone en rojo). Para el método clásico, la verificación equivalente usa <code>CONTAR.SI(INDIRECTO(B3); B4)</code>. Si el formulario alimenta una base de datos o un informe, <strong>condiciona el envío a que la verificación sea válida</strong>.</p>
+<p>En la prueba, con Antioquia, Envigado e "I. E. Ejemplo 03" la verificación dice "Combinación válida"; al cambiar el departamento a Atlántico y dejar lo demás, dice "Revisar: la combinación no existe" (y el formato condicional la pone en rojo). Para el método clásico, la verificación equivalente usa <code>CONTAR.SI(INDIRECTO(B3); B4)</code>. Si el formulario alimenta una base de datos o un informe, <strong>condiciona el envío a que la verificación sea válida</strong>.</p>
 
 <h2>Clásico o moderno: cuál elegir</h2>
 {{img:comparacion}}
@@ -86,7 +86,7 @@ $html = <<<'HTML'
 
 <h2>Errores frecuentes y cómo evitarlos</h2>
 <ol>
-<li><strong>Dejar la validación en modo «Advertencia» o «Información»:</strong> permite escribir cualquier cosa. En <em>Mensaje de error</em>, el estilo debe ser <em>Detener</em>.</li>
+<li><strong>Dejar la validación en modo "Advertencia" o "Información":</strong> permite escribir cualquier cosa. En <em>Mensaje de error</em>, el estilo debe ser <em>Detener</em>.</li>
 <li><strong>Copiar y pegar sobre las celdas con validación:</strong> el pegado reemplaza la regla. Protege la hoja o pega solo valores.</li>
 <li><strong>Escribir las listas a mano en cada formulario:</strong> usa una sola fuente.</li>
 <li><strong>Olvidar la verificación</strong> y confiar en que la validación lo cubre todo.</li>
@@ -103,7 +103,7 @@ $html = <<<'HTML'
 <p>Cuando el volumen crece y varias personas editan a la vez, es la señal de pasar a una base de datos (ver las siete señales) o a una herramienta específica.</p>
 
 <h2>Colombia, Latinoamérica y el mundo</h2>
-<p>En el mundo, la validación de datos es de las prácticas más baratas y efectivas de calidad de datos. En Colombia y Latinoamérica el reto es doble: los separadores de lista y las funciones en español (<code>;</code> en lugar de <code>,</code>, <code>FILTRAR</code> en lugar de <code>FILTER</code>), que hacen que las fórmulas de tutoriales en inglés fallen al copiarlas, y la normalización de nombres (tildes, «Bogotá D. C.», «Norte de Santander»), que la lista desplegable resuelve de raíz. Para <strong>docentes y secretarías</strong> que arman listados de asistencia, para <strong>pymes</strong> con pedidos por sede y para <strong>quienes enseñan Excel</strong>, esta técnica es de las más rentables: una lista bien hecha evita horas de limpieza después (ver <a href="/csv-excel-fechas-cedulas-pesos-importar-correctamente/">importar CSV correctamente</a>).</p>
+<p>En el mundo, la validación de datos es de las prácticas más baratas y efectivas de calidad de datos. En Colombia y Latinoamérica el reto es doble: los separadores de lista y las funciones en español (<code>;</code> en lugar de <code>,</code>, <code>FILTRAR</code> en lugar de <code>FILTER</code>), que hacen que las fórmulas de tutoriales en inglés fallen al copiarlas, y la normalización de nombres (tildes, "Bogotá D. C.", "Norte de Santander"), que la lista desplegable resuelve de raíz. Para <strong>docentes y secretarías</strong> que arman listados de asistencia, para <strong>pymes</strong> con pedidos por sede y para <strong>quienes enseñan Excel</strong>, esta técnica es de las más rentables: una lista bien hecha evita horas de limpieza después (ver <a href="/csv-excel-fechas-cedulas-pesos-importar-correctamente/">importar CSV correctamente</a>).</p>
 
 <h2>Plantillas para trabajar con orden</h2>
 <p>Si quieres un listado de asistencia con controles ya armados, o plantillas de facturación con numeración automática, estas opciones están listas para usar, con soporte opcional. Y hay una <a href="/descargas/excel-con-ia/excel-con-ia.zip">guía gratuita de Excel con IA</a> para pedir ayuda con tus fórmulas, verificando siempre el resultado.</p>
@@ -122,7 +122,7 @@ $html = <<<'HTML'
 <h3>¿Qué hago con nombres con espacios en el método clásico?</h3>
 <p>Los nombres definidos no admiten espacios: usa guion bajo en el nombre y SUSTITUIR en la fórmula INDIRECTO.</p>
 
-<p class="notice"><strong>Pruébalo ahora.</strong> Descarga la <a href="/descargas/listas-dependientes/listas-desplegables-dependientes.xlsx">plantilla de listas dependientes</a>, cambia los datos de la hoja «Listas» por los tuyos y conserva la celda de verificación. Incluye ambos métodos y una hoja de problemas y soluciones. El método moderno requiere Excel 2021 o Microsoft 365.</p>
+<p class="notice"><strong>Pruébalo ahora.</strong> Descarga la <a href="/descargas/listas-dependientes/listas-desplegables-dependientes.xlsx">plantilla de listas dependientes</a>, cambia los datos de la hoja "Listas" por los tuyos y conserva la celda de verificación. Incluye ambos métodos y una hoja de problemas y soluciones. El método moderno requiere Excel 2021 o Microsoft 365.</p>
 
 <h2>Para pensar</h2>
 <p>Una lista desplegable evita que cada persona escriba el dato a su manera, pero también decide qué opciones existen. <strong>¿Quién debería controlar las listas de un formulario (quien lo diseña, quien lo usa o quien responde por los datos)? Y cuando una lista no incluye la realidad de alguien (un municipio nuevo, un nombre distinto), ¿es la lista la que debe cambiar o la persona la que debe ajustarse?</strong></p>
@@ -143,7 +143,7 @@ return [
     'seo_description' => 'Cómo crear listas desplegables dependientes en Excel con INDIRECTO y con FILTRAR y UNICOS, con verificación de combinaciones y plantilla descargable.',
     'focus_keyword' => 'listas desplegables dependientes en Excel',
     'cover' => '/assets/img/articulos/listas-dependientes/listas-dependientes-portada',
-    'cover_alt' => 'Portada «Listas desplegables dependientes en Excel: el método clásico y el moderno» con una tarjeta de tres listas encadenadas: departamento Antioquia, municipio Envigado, institución I. E. Ejemplo 03 y la verificación «Combinación válida».',
+    'cover_alt' => 'Portada "Listas desplegables dependientes en Excel: el método clásico y el moderno" con una tarjeta de tres listas encadenadas: departamento Antioquia, municipio Envigado, institución I. E. Ejemplo 03 y la verificación "Combinación válida".',
     'published_at' => '2026-12-03 12:00:00',
     'content_html' => $html,
 ];

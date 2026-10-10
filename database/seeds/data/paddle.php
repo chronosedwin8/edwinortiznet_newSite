@@ -17,7 +17,7 @@ return [
 <p>No es una reseña patrocinada ni un ataque gratuito. Es la experiencia de alguien que crea software educativo, intentó usar Paddle para venderlo y terminó con la cuenta cerrada de forma definitiva, sin una explicación concreta y sin posibilidad de volver a intentarlo.</p>
 
 <h2>Por qué Paddle parece la opción perfecta para vender software</h2>
-<p>Paddle no es una pasarela tradicional. Funciona como <strong>«Merchant of Record»</strong> (comerciante registrado): técnicamente, Paddle le vende tu producto al cliente y después te paga a ti. Para un desarrollador independiente eso suena muy bien:</p>
+<p>Paddle no es una pasarela tradicional. Funciona como <strong>"Merchant of Record"</strong> (comerciante registrado): técnicamente, Paddle le vende tu producto al cliente y después te paga a ti. Para un desarrollador independiente eso suena muy bien:</p>
 <ul>
 <li><strong>Se encarga de los impuestos internacionales.</strong> Calcula y declara impuestos como el IVA europeo o los impuestos de venta en otros países, algo muy difícil de manejar por tu cuenta.</li>
 <li><strong>Suscripciones, licencias y facturas</strong> resueltas para productos de software.</li>
@@ -79,7 +79,7 @@ return [
 <li><strong>Los servicios son difíciles de verificar.</strong> Una licencia de software se entrega igual a todos; un servicio depende de personas, plazos y acuerdos, y genera más reclamos y contracargos.</li>
 <li><strong>La IA todavía es un terreno incierto</strong> en derechos de autor, contenido generado y privacidad, y algunas plataformas prefieren excluirla antes que evaluar cada caso.</li>
 <li><strong>Su mercado principal no es Latinoamérica.</strong> Eso explica el idioma, los medios de pago y el tipo de soporte.</li>
-<li><strong>Los intentos repetidos se leen como riesgo.</strong> Para un sistema automatizado, muchos envíos del mismo dominio parecen alguien intentando «colarse», no un comerciante que busca cumplir.</li>
+<li><strong>Los intentos repetidos se leen como riesgo.</strong> Para un sistema automatizado, muchos envíos del mismo dominio parecen alguien intentando "colarse", no un comerciante que busca cumplir.</li>
 </ul>
 <p>Todo eso es comprensible desde su lado. Lo que no lo es: que estas condiciones no se presenten con claridad antes de que inviertas tiempo, que no haya con quién hablar y que el intento de cumplir termine en un cierre permanente.</p>
 

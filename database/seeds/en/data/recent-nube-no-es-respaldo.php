@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «Tener archivos en la nube no significa tener un respaldo: siete mitos…». Key is the Spanish slug. Data checked on October 9, 2026
+// English version of "Tener archivos en la nube no significa tener un respaldo: siete mitos…". Key is the Spanish slug. Data checked on October 9, 2026
 // (OneDrive and Google Drive retention, Veeam Ransomware Trends 2024, Microsoft Services Agreement backup clause, 3-2-1 rule). The PowerShell restore-check
 // script was tested with a restore missing one file, altering one and adding one. Status and date come from the Spanish post via en/02_recent_posts.php
 // (scheduled for Tuesday, November 3, 2026, 7:00 a.m. Bogotá time).

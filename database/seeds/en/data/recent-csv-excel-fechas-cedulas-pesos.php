@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «El archivo CSV que destruye tus datos». Key is the Spanish slug. Tested in Microsoft Excel 16 with Colombian regional
+// English version of "El archivo CSV que destruye tus datos". Key is the Spanish slug. Tested in Microsoft Excel 16 with Colombian regional
 // settings on October 9, 2026 (double click, Power Query, NUMBERVALUE, DATE, TEXT and CSV UTF-8 export). Status and date are carried over from
 // the Spanish post by en/02_recent_posts.php (scheduled for Thursday, October 15, 2026, 7:00 a.m. Bogotá time).
 $img = static function (string $name, int $h960, string $alt, string $caption): string {

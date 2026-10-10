@@ -22,5 +22,5 @@ $hasService = (bool) array_filter($order['items'], fn ($i) => in_array($i['produ
 <p>Para los cursos o servicios de tu pedido te escribiré a este correo para coordinar el acceso.</p>
 <?php endif; ?>
 <p><a href="<?= e($orderUrl) ?>" style="display:inline-block;background:#E8A013;color:#1d1400;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:bold;">Ver mi pedido y descargas</a></p>
-<p>Si un enlace vence, entra a «Mi cuenta» con este mismo correo y genera uno nuevo. Si tienes cualquier problema con la instalación, responde a este correo o escríbeme desde la página de contacto con la referencia <?= e($order['reference']) ?>.</p>
+<p>Si un enlace vence, entra a "Mi cuenta" con este mismo correo y genera uno nuevo. Si tienes cualquier problema con la instalación, responde a este correo o escríbeme desde la página de contacto con la referencia <?= e($order['reference']) ?>.</p>
 <p>Un abrazo,<br>Edwin Ortiz Herazo</p>

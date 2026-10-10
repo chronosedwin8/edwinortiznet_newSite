@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «¿Hasta dónde puede llegar un colegio al recopilar datos de sus estudiantes para personalizar el aprendizaje con IA?». Key is the
+// English version of "¿Hasta dónde puede llegar un colegio al recopilar datos de sus estudiantes para personalizar el aprendizaje con IA?". Key is the
 // Spanish slug. Sources checked on October 9, 2026 (Colombia Law 1581 of 2012, Decree 1074 of 2015, SIC External Circular 002 of 2024, EU Regulation
 // 2024/1689, PowerSchool breach). Not legal advice. Status and date come from the Spanish post via en/02_recent_posts.php (scheduled for Wednesday,
 // October 28, 2026, 7:00 a.m. Bogotá time).

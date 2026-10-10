@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «Las gráficas de Excel también pueden mentir…». Key is the Spanish slug. All charts were made in Microsoft Excel 16 (VBA macro)
+// English version of "Las gráficas de Excel también pueden mentir…". Key is the Spanish slug. All charts were made in Microsoft Excel 16 (VBA macro)
 // with hypothetical data; the RevisarEjes macro was tested on three column charts and flagged only the truncated one. In the correlation example
 // (invented data) CORREL gave 0.998 and RSQ 0.996. Status and date come from the Spanish post via en/02_recent_posts.php (scheduled for Thursday,
 // November 5, 2026, 7:00 a.m. Bogotá time).

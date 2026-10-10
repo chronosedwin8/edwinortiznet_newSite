@@ -19,7 +19,7 @@ $tag = static function (?array $p) use ($labels): string {
     return isset($p['interests'][0]) ? (string) $labels[$p['interests'][0]] : '';
 };
 
-// Gmail convierte «edwinortiz.net» en un enlace azul (ilegible sobre el encabezado): se enlaza explícitamente con el color del texto.
+// Gmail convierte "edwinortiz.net" en un enlace azul (ilegible sobre el encabezado): se enlaza explícitamente con el color del texto.
 $siteLink = static fn (string $html, string $color): string => str_replace('edwinortiz.net', '<a href="https://www.edwinortiz.net/" style="color:' . $color . ';text-decoration:none;">edwinortiz.net</a>', $html);
 ?>
 <!doctype html>

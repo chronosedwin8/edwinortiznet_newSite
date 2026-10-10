@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «¿Cuándo Excel deja de ser la solución? Siete señales de que necesitas una base de datos». Fuentes verificadas el 9 de octubre de 2026: especificaciones y límites de Excel y de Access (Microsoft), Ley 1581 de 2012. Ejemplo SQL probado con SQLite; libro de autoevaluación con datos ficticios.
+// "¿Cuándo Excel deja de ser la solución? Siete señales de que necesitas una base de datos". Fuentes verificadas el 9 de octubre de 2026: especificaciones y límites de Excel y de Access (Microsoft), Ley 1581 de 2012. Ejemplo SQL probado con SQLite; libro de autoevaluación con datos ficticios.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/excel-base-de-datos/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -21,14 +21,14 @@ $html = <<<'HTML'
 <p class="notice"><strong>Resumen.</strong> Los límites técnicos de Excel (más de un millón de filas por hoja) rara vez son el problema real; los problemas reales son <strong>la edición simultánea, los datos repetidos que no coinciden, la falta de permisos y de auditoría, la integridad y la integración con otras aplicaciones</strong>. Si reconoces cuatro o más señales, conviene planear una migración; con una o dos, a menudo basta reforzar controles.</p>
 
 <h2>Lo que Excel hace muy bien</h2>
-<p>Antes de migrar, reconozcamos sus fortalezas: análisis rápido, cálculos, gráficos, prototipos, informes y modelos de «qué pasaría si». Para una persona o un equipo pequeño con turnos claros y datos que no son sensibles, Excel es una solución excelente. El error no es usar Excel: es <strong>seguir usándolo como base de datos cuando el proceso ya exige otra cosa</strong>.</p>
+<p>Antes de migrar, reconozcamos sus fortalezas: análisis rápido, cálculos, gráficos, prototipos, informes y modelos de "qué pasaría si". Para una persona o un equipo pequeño con turnos claros y datos que no son sensibles, Excel es una solución excelente. El error no es usar Excel: es <strong>seguir usándolo como base de datos cuando el proceso ya exige otra cosa</strong>.</p>
 <p>Los límites técnicos existen, pero suelen estar lejos. Según las especificaciones oficiales de Microsoft, una hoja admite <strong>1.048.576 filas y 16.384 columnas</strong>, y una celda puede contener hasta <strong>32.767 caracteres</strong>; una base de datos de Access está limitada a <strong>2 GB</strong> (incluidos todos sus objetos). Casi nadie choca con las filas antes de chocar con las siete señales siguientes.</p>
 {{img:limites}}
 
 <h2>Las siete señales</h2>
 <ol>
-<li><strong>Varias personas editan a la vez y se pisan.</strong> Aparecen archivos «final», «final_v2» y «final_definitivo». Excel permite coautoría en archivos guardados en la nube de Microsoft, pero no ofrece las reglas, los bloqueos por registro y la trazabilidad de una base de datos.</li>
-<li><strong>El mismo dato está escrito de varias formas.</strong> «Ferretería El Tornillo», «Ferreteria El Tornillo» y «FERRETERÍA EL TORNILLO» son para Excel tres clientes distintos (más abajo, el ejemplo).</li>
+<li><strong>Varias personas editan a la vez y se pisan.</strong> Aparecen archivos "final", "final_v2" y "final_definitivo". Excel permite coautoría en archivos guardados en la nube de Microsoft, pero no ofrece las reglas, los bloqueos por registro y la trazabilidad de una base de datos.</li>
+<li><strong>El mismo dato está escrito de varias formas.</strong> "Ferretería El Tornillo", "Ferreteria El Tornillo" y "FERRETERÍA EL TORNILLO" son para Excel tres clientes distintos (más abajo, el ejemplo).</li>
 <li><strong>Necesitas permisos por persona o auditoría.</strong> Que el docente de quinto vea solo sus estudiantes, o saber quién cambió una nota y cuándo, es difícil de lograr en un libro compartido.</li>
 <li><strong>El archivo es lento, pesado o frágil.</strong> Tarda minutos en abrir, se cuelga o ya se acerca a cientos de miles de filas con fórmulas pesadas.</li>
 <li><strong>Necesitas impedir datos incoherentes.</strong> Pedidos de clientes que no existen, códigos duplicados, fechas imposibles. Una base de datos puede rechazarlos por regla; Excel solo avisa si alguien configuró la validación y nadie la borra.</li>
@@ -41,7 +41,7 @@ $html = <<<'HTML'
 <pre><code>-- Archivo plano: cliente como texto libre
 SELECT cliente, COUNT(*) AS pedidos, SUM(valor) AS total
 FROM pedidos_plano GROUP BY cliente;
--- Resultado: 5 «clientes» (Ferretería, Ferreteria, FERRETERÍA, Papelería, Papeleria)
+-- Resultado: 5 "clientes" (Ferretería, Ferreteria, FERRETERÍA, Papelería, Papeleria)
 -- Cada uno con 1 o 2 pedidos y totales parciales.</code></pre>
 <p>La solución no es más disciplina al digitar (nadie escribe siempre igual) sino <strong>modelar los datos</strong>: una tabla de clientes con un código único y una tabla de pedidos que apunta a ese código.</p>
 <pre><code>CREATE TABLE clientes(
@@ -60,7 +60,7 @@ FROM pedidos p JOIN clientes c ON c.id = p.cliente_id
 GROUP BY c.nombre;
 -- Ferretería El Tornillo | 3 | 570000
 -- Papelería Central      | 3 | 350000</code></pre>
-<p>Ahora los totales son correctos y, con las claves foráneas activadas, la base <strong>rechaza</strong> un pedido de un cliente que no existe («FOREIGN KEY constraint failed») y un cliente repetido («UNIQUE constraint failed»), cosa que probé también. El libro descargable trae este mismo caso con las dos formas: el archivo plano (donde una fórmula cuenta 4 «clientes» distintos, porque Excel ignora mayúsculas pero no tildes) y el modelo normalizado.</p>
+<p>Ahora los totales son correctos y, con las claves foráneas activadas, la base <strong>rechaza</strong> un pedido de un cliente que no existe ("FOREIGN KEY constraint failed") y un cliente repetido ("UNIQUE constraint failed"), cosa que probé también. El libro descargable trae este mismo caso con las dos formas: el archivo plano (donde una fórmula cuenta 4 "clientes" distintos, porque Excel ignora mayúsculas pero no tildes) y el modelo normalizado.</p>
 
 <h2>Excel, base de datos o aplicación web</h2>
 <p>No es una elección entre bueno y malo, sino entre necesidades:</p>
@@ -85,7 +85,7 @@ GROUP BY c.nombre;
 <li><strong>Decide cómo se capturarán los datos nuevos</strong> y capacita a los usuarios.</li>
 <li><strong>Mantén el archivo antiguo en solo lectura</strong> un tiempo y mide los resultados.</li>
 </ol>
-<p>La hoja «Checklist_migracion» del libro descargable trae estos pasos con casillas.</p>
+<p>La hoja "Checklist_migracion" del libro descargable trae estos pasos con casillas.</p>
 
 <h2>Colombia, Latinoamérica y el mundo</h2>
 <p>En todo el mundo, las pymes y las instituciones educativas empiezan en Excel porque ya lo tienen y porque funciona. En Colombia y Latinoamérica pesa además el costo: pasar a un sistema con servidor, licencias o desarrollo puede parecer un lujo, y por eso es tan importante comparar antes (ver <a href="/riesgo-oculto-excel-auditoria-control-versiones/">el riesgo oculto de Excel</a>). Para los <strong>docentes y coordinadores</strong>, la señal más común es el mismo listado de estudiantes en cinco archivos; para los <strong>directivos</strong>, el riesgo de un dato sensible en un archivo sin control; para las <strong>familias</strong>, que los datos de sus hijos no circulen por correo en hojas sin protección.</p>
@@ -128,7 +128,7 @@ return [
     'seo_description' => 'Siete señales de que Excel se quedó corto y necesitas una base de datos, con ejemplo en SQL, comparación y un libro descargable para decidir y migrar.',
     'focus_keyword' => 'cuándo usar una base de datos en lugar de Excel',
     'cover' => '/assets/img/articulos/excel-base-de-datos/excel-base-de-datos-portada',
-    'cover_alt' => 'Portada «¿Cuándo Excel deja de ser la solución? Siete señales de que necesitas una base de datos» con una tarjeta de cuatro señales: edición simultánea, datos escritos de varias formas, permisos por persona y otras aplicaciones que necesitan los datos.',
+    'cover_alt' => 'Portada "¿Cuándo Excel deja de ser la solución? Siete señales de que necesitas una base de datos" con una tarjeta de cuatro señales: edición simultánea, datos escritos de varias formas, permisos por persona y otras aplicaciones que necesitan los datos.',
     'published_at' => '2026-11-12 12:00:00',
     'content_html' => $html,
 ];

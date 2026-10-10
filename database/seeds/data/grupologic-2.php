@@ -23,7 +23,7 @@ return [
 <p>Para un colegio, lo valioso es que no se trata de un juego suelto, sino de un currículo organizado en diez materias, con actividades que crecen en dificultad. Se usa en computadores y está optimizada para tabletas escolares.</p>
 
 <h2>¿Por qué enseñar pensamiento computacional desde pequeños?</h2>
-<p>El pensamiento computacional no es «aprender a usar el computador». Es descomponer un problema en pasos, reconocer patrones, ordenar instrucciones y revisar qué falló cuando algo no sale. Son habilidades que ya trabajas cuando un niño resuelve un problema de matemáticas por etapas o cuando ordena las partes de un cuento.</p>
+<p>El pensamiento computacional no es "aprender a usar el computador". Es descomponer un problema en pasos, reconocer patrones, ordenar instrucciones y revisar qué falló cuando algo no sale. Son habilidades que ya trabajas cuando un niño resuelve un problema de matemáticas por etapas o cuando ordena las partes de un cuento.</p>
 <p>Programar a temprana edad hace visible ese proceso: si el robot no llegó a la estrella, hay que revisar la secuencia. Esa cultura de probar, fallar y corregir sirve en cualquier área. Lo difícil para el docente suele ser contar con una ruta estructurada, adaptada a la edad y que no exija que el niño ya sepa leer.</p>
 
 <h2>Funciones principales de Codexia</h2>
@@ -61,10 +61,10 @@ return [
 <p>Después de jugar varios retos, cada pareja dibuja en papel cuadriculado su propio nivel: un héroe, obstáculos y una estrella como meta. En artes cuidan el color, los personajes y la composición. Luego intercambian dibujos y el otro equipo escribe con flechas o palabras el programa que resuelve el nivel, contando pasos y giros. Es ubicación espacial, lateralidad y conteo, sin pantalla de por medio.</p>
 
 <h3>3. Parejas de programación para los bucles (3.° y 4.°)</h3>
-<p>Trabaja con dos roles: el «piloto» maneja el equipo y el «copiloto» lee el reto, propone la estrategia y revisa. Cambian cada dos retos. Al llegar a los bucles, pide al copiloto que identifique los pasos repetidos antes de arrastrar un solo bloque: «si avanzamos tres veces seguidas, ¿cómo lo decimos con <em>repetir(3)</em>?». De paso practican escucha, argumentación y turnos de palabra.</p>
+<p>Trabaja con dos roles: el "piloto" maneja el equipo y el "copiloto" lee el reto, propone la estrategia y revisa. Cambian cada dos retos. Al llegar a los bucles, pide al copiloto que identifique los pasos repetidos antes de arrastrar un solo bloque: "si avanzamos tres veces seguidas, ¿cómo lo decimos con <em>repetir(3)</em>?". De paso practican escucha, argumentación y turnos de palabra.</p>
 
 <h3>4. Geometría con reto y cuaderno (4.° y 5.°)</h3>
-<p>Asigna los mundos de Geometría como complemento de tu unidad de perímetro, área o ángulos. La secuencia: explicación corta en el tablero, 20 minutos de retos y, al final, cada estudiante elige un reto y lo explica en el cuaderno con un dibujo y la operación que usó. Así la plataforma no se reduce a «pasar niveles» y te queda evidencia escrita del aprendizaje.</p>
+<p>Asigna los mundos de Geometría como complemento de tu unidad de perímetro, área o ángulos. La secuencia: explicación corta en el tablero, 20 minutos de retos y, al final, cada estudiante elige un reto y lo explica en el cuaderno con un dibujo y la operación que usó. Así la plataforma no se reduce a "pasar niveles" y te queda evidencia escrita del aprendizaje.</p>
 
 <h3>5. Diario del programador (2.° a 5.°, lenguaje)</h3>
 <p>Al terminar cada sesión, los niños escriben tres frases sobre un reto: qué debían lograr, qué instrucciones usaron y qué corrigieron. Exige conectores de secuencia como primero, luego, después y finalmente. Un algoritmo es, al fin y al cabo, un texto instructivo.</p>
@@ -73,16 +73,16 @@ return [
 <p>Codexia incluye mundos sobre fuerzas, gravedad, luz, sonido, calor e imanes. Úsalos como puente con la experiencia concreta: si estás viendo magnetismo, empieza con imanes, clips y objetos del salón para que los niños formulen hipótesis; luego pasen a los retos y cierren comparando lo que observaron en ambos momentos. La pantalla no reemplaza el experimento, pero refuerza los conceptos.</p>
 
 <h3>7. Asamblea de ciudadanía digital (4.° a 6.°)</h3>
-<p>La materia de Seguridad en internet trabaja contraseñas, <em>phishing</em>, privacidad y huella digital. Divide el curso en equipos, asigna a cada uno un tema y pídeles una mini-exposición tras resolver las actividades: «cómo reconocer un mensaje sospechoso» o «qué deja mi huella digital». Cierra con un juego de rol donde el curso identifica las señales de alerta de un mensaje engañoso.</p>
+<p>La materia de Seguridad en internet trabaja contraseñas, <em>phishing</em>, privacidad y huella digital. Divide el curso en equipos, asigna a cada uno un tema y pídeles una mini-exposición tras resolver las actividades: "cómo reconocer un mensaje sospechoso" o "qué deja mi huella digital". Cierra con un juego de rol donde el curso identifica las señales de alerta de un mensaje engañoso.</p>
 
 <h3>8. Primer contacto con la inteligencia artificial (5.° y 6.°)</h3>
 <p>El módulo de inteligencia artificial habla de datos, patrones y la primera neurona artificial. Antes de entrar, haz una actividad desconectada: reparte tarjetas con frutas dibujadas y pide al curso inventar reglas para clasificarlas por color, tamaño o forma. Después del módulo, conversen: ¿qué pasa si los ejemplos que recibe una máquina están incompletos? En la sección <a href="/ia-para-docentes/">IA para docentes</a> encuentras más material para seguir con el tema.</p>
 
 <h3>9. Reto semanal con reconocimiento justo (toda la primaria)</h3>
-<p>Cada lunes asigna desde el panel un «reto de la semana» para todo el curso. El viernes revisan estrellas y rachas, pero el reconocimiento no es solo para quien más puntos sumó: también para quien mejor explicó su estrategia o más ayudó a otros. Usa logros, monedas y avatar como motivación, sin convertir el salón en una tabla de posiciones que desanime a quien va más despacio.</p>
+<p>Cada lunes asigna desde el panel un "reto de la semana" para todo el curso. El viernes revisan estrellas y rachas, pero el reconocimiento no es solo para quien más puntos sumó: también para quien mejor explicó su estrategia o más ayudó a otros. Usa logros, monedas y avatar como motivación, sin convertir el salón en una tabla de posiciones que desanime a quien va más despacio.</p>
 
 <h3>10. Evaluación formativa con estadísticas en vivo (todas las edades)</h3>
-<p>Durante la clase, el panel te muestra quién avanza y quién se quedó en un reto. Úsalo para agrupar de forma flexible: quienes dominan el tema pasan a retos más exigentes o apoyan como monitores; quienes se atascan trabajan contigo una mini-explicación. Como puedes asignar por estudiante o por aula, diferencias sin preparar tres guías. Un ticket de salida («¿qué aprendiste?, ¿qué te costó?») completa lo que los números no dicen.</p>
+<p>Durante la clase, el panel te muestra quién avanza y quién se quedó en un reto. Úsalo para agrupar de forma flexible: quienes dominan el tema pasan a retos más exigentes o apoyan como monitores; quienes se atascan trabajan contigo una mini-explicación. Como puedes asignar por estudiante o por aula, diferencias sin preparar tres guías. Un ticket de salida ("¿qué aprendiste?, ¿qué te costó?") completa lo que los números no dicen.</p>
 
 <h2>Cómo empezar paso a paso</h2>
 <ol>
@@ -162,34 +162,34 @@ HTML,
 <h3>Seguimiento y herramientas para el colegio</h3>
 <p>Hay reporte por estudiante con su progreso por mundo, el tiempo dedicado y las actividades donde se atasca. El plan Escuela suma estudiantes y docentes ilimitados con panel propio, varias sedes, alta masiva de estudiantes, asignaciones por aula, consentimiento del tutor registrado y auditoría de accesos a los datos de menores, conforme a la Ley 1581 de 2012.</p>
 
-<figure><img src="/assets/img/articulos/grupologic/codenest-school-demo-1100.webp" srcset="/assets/img/articulos/grupologic/codenest-school-demo-560.webp 560w, /assets/img/articulos/grupologic/codenest-school-demo-1100.webp 1100w" sizes="(min-width: 760px) 720px, 100vw" width="1100" height="535" alt="Actividad del primer mundo de CodeNest School: tablero con el personaje, una estrella y una bandera, y el programa armado con fichas de flechas" loading="lazy"><figcaption>Una actividad del primer mundo: el niño arma su programa con flechas y pulsa «Jugar» para llevar al personaje hasta la bandera.</figcaption></figure>
+<figure><img src="/assets/img/articulos/grupologic/codenest-school-demo-1100.webp" srcset="/assets/img/articulos/grupologic/codenest-school-demo-560.webp 560w, /assets/img/articulos/grupologic/codenest-school-demo-1100.webp 1100w" sizes="(min-width: 760px) 720px, 100vw" width="1100" height="535" alt="Actividad del primer mundo de CodeNest School: tablero con el personaje, una estrella y una bandera, y el programa armado con fichas de flechas" loading="lazy"><figcaption>Una actividad del primer mundo: el niño arma su programa con flechas y pulsa "Jugar" para llevar al personaje hasta la bandera.</figcaption></figure>
 
 <h2>10 ideas para usar CodeNest School en el aula</h2>
 <p>Estas propuestas combinan la plataforma con dinámicas de clase que ya manejas. Tómalas como punto de partida y adáptalas a tu contexto.</p>
 
 <h3>1. Rincón de exploradores con audífonos (preescolar, 4 a 6 años)</h3>
-<p>Monta un rincón con dos o tres tabletas y audífonos dentro de tu rotación habitual. Muéstrales una sola vez el botón del megáfono: «si no entendiste, tócalo otra vez». Como no hay texto en los primeros mundos, los niños trabajan con autonomía mientras atiendes otros rincones. Rotaciones de 10 a 15 minutos son suficientes.</p>
+<p>Monta un rincón con dos o tres tabletas y audífonos dentro de tu rotación habitual. Muéstrales una sola vez el botón del megáfono: "si no entendiste, tócalo otra vez". Como no hay texto en los primeros mundos, los niños trabajan con autonomía mientras atiendes otros rincones. Rotaciones de 10 a 15 minutos son suficientes.</p>
 
 <h3>2. Cuadrícula gigante en el piso (transición y 1.°, matemáticas)</h3>
-<p>En el demo del primer mundo, cada flecha hace rodar al personaje hasta que se acaba el camino. Reproduce esa regla con una cuadrícula de cinta en el piso: un niño es el personaje y el grupo coloca tarjetas de flechas. Antes de «ejecutar», todos predicen dónde se detendrá. Trabajas ubicación espacial, direcciones y anticipación; luego, en la tableta, la mecánica ya les resulta familiar.</p>
+<p>En el demo del primer mundo, cada flecha hace rodar al personaje hasta que se acaba el camino. Reproduce esa regla con una cuadrícula de cinta en el piso: un niño es el personaje y el grupo coloca tarjetas de flechas. Antes de "ejecutar", todos predicen dónde se detendrá. Trabajas ubicación espacial, direcciones y anticipación; luego, en la tableta, la mecánica ya les resulta familiar.</p>
 
 <h3>3. Tableros de colores para los condicionales (4 a 6 años, artes)</h3>
-<p>Los Exploradores trabajan condicionales por color de casilla. Prepara la idea en artes: cada equipo pinta con témperas un tablero de casillas y acuerda una regla sencilla, como «si pisas rojo, giras». Luego juegan con sus propios tableros. Cuando lleguen a esas actividades en la plataforma, la idea de «si pasa esto, hago aquello» ya tendrá sentido.</p>
+<p>Los Exploradores trabajan condicionales por color de casilla. Prepara la idea en artes: cada equipo pinta con témperas un tablero de casillas y acuerda una regla sencilla, como "si pisas rojo, giras". Luego juegan con sus propios tableros. Cuando lleguen a esas actividades en la plataforma, la idea de "si pasa esto, hago aquello" ya tendrá sentido.</p>
 
 <h3>4. A la caza de la tercera estrella (1.° a 4.°, matemáticas)</h3>
 <p>La tercera estrella exige el programa más corto. Convierte eso en un reto de clase: en el tablero, una tabla con el nombre de cada pareja y cuántas instrucciones usó en una actividad. ¿Quién logró menos? ¿Qué pasos sobraban? Comparar cantidades, contar y argumentar es matemáticas pura, y además introduces la idea de optimizar.</p>
 
 <h3>5. Cazadores de errores (Creadores, 7 a 9 años)</h3>
-<p>Aprovecha que fallar no castiga. Instaura el «error de la semana»: cuando una pareja encuentra y corrige un fallo, lo cuenta al curso en un minuto. Con los Creadores, que depuran programas con varios errores, pide que anoten en el cuaderno qué esperaban, qué pasó y qué cambiaron. Así normalizas el error como parte del aprendizaje.</p>
+<p>Aprovecha que fallar no castiga. Instaura el "error de la semana": cuando una pareja encuentra y corrige un fallo, lo cuenta al curso en un minuto. Con los Creadores, que depuran programas con varios errores, pide que anoten en el cuaderno qué esperaban, qué pasó y qué cambiaron. Así normalizas el error como parte del aprendizaje.</p>
 
 <h3>6. Leer el código en voz alta (7 a 9 años, lenguaje)</h3>
-<p>Los Creadores ven al lado de los bloques el código que generan. Usa ese panel en lenguaje: pide que «traduzcan» un programa a oraciones completas en español, con conectores de orden y de condición («primero», «mientras», «si… entonces»). Están leyendo y escribiendo un texto instructivo y, a la vez, preparándose para escribir código.</p>
+<p>Los Creadores ven al lado de los bloques el código que generan. Usa ese panel en lenguaje: pide que "traduzcan" un programa a oraciones completas en español, con conectores de orden y de condición ("primero", "mientras", "si… entonces"). Están leyendo y escribiendo un texto instructivo y, a la vez, preparándose para escribir código.</p>
 
 <h3>7. Funciones como coreografías (7 a 9 años, artes y música)</h3>
-<p>Antes de crear funciones propias, inventen en grupo una «función saludo» de cuatro movimientos y pónganle nombre. Luego armen una canción corta donde el estribillo «llama» a esa función varias veces. Los niños entienden que una función es una secuencia con nombre que se reutiliza, y la llevan después a los bloques.</p>
+<p>Antes de crear funciones propias, inventen en grupo una "función saludo" de cuatro movimientos y pónganle nombre. Luego armen una canción corta donde el estribillo "llama" a esa función varias veces. Los niños entienden que una función es una secuencia con nombre que se reutiliza, y la llevan después a los bloques.</p>
 
 <h3>8. Parejas de programación con JavaScript o Python (10 a 12 años)</h3>
-<p>Con los Hackers, usa roles de conductor (teclea) y navegador (lee, sugiere y revisa), con cambio cada 15 minutos. El editor real con autocompletado y avisos de error ayuda, pero el navegador debe explicar por qué propone cada línea. Cierra con una ronda de «refactorizar para gastar menos»: ¿se puede resolver con menos código?</p>
+<p>Con los Hackers, usa roles de conductor (teclea) y navegador (lee, sugiere y revisa), con cambio cada 15 minutos. El editor real con autocompletado y avisos de error ayuda, pero el navegador debe explicar por qué propone cada línea. Cierra con una ronda de "refactorizar para gastar menos": ¿se puede resolver con menos código?</p>
 
 <h3>9. Rutas en un mapa de ciencias (5.° y 6.°, ciencias naturales)</h3>
 <p>Cuando aparezcan los algoritmos de búsqueda y rutas, dibuja en cuadrícula un ecosistema: una abeja debe visitar tres flores y volver a la colmena. Los equipos buscan en papel la ruta más corta y la comparan. Conversan sobre polinización mientras practican el razonamiento detrás de las rutas; después lo llevan a las actividades de la plataforma.</p>

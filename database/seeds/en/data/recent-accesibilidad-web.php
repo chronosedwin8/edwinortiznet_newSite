@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «Accesibilidad web: formularios, contraste y teclado que todas las personas pueda…». Key is the Spanish slug. Status and date come from the Spanish post via en/02_recent_posts.php.
+// English version of "Accesibilidad web: formularios, contraste y teclado que todas las personas pueda…". Key is the Spanish slug. Status and date come from the Spanish post via en/02_recent_posts.php.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/accesibilidad-web/' . $name . '-en';
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -59,7 +59,7 @@ $html = <<<'HTML'
 <pre><code>formulario-inaccesible.html: 14 problema(s) detectado(s)
  - Salto de encabezados: de h1 a h3
  - Imagen sin atributo alt: logo.png
- - Enlace con texto genérico: «Haz clic aquí»
+ - Enlace con texto genérico: "Haz clic aquí"
  - tabindex positivo (3) en <div>: altera el orden natural del teclado
  - <div> con onclick: no es accesible por teclado; usa <button>
  - Falta el idioma de la página (<html lang="es">)

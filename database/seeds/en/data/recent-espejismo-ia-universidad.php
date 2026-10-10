@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-// English version of «El espejismo de la IA en la universidad: mucho "artefacto" y poca innovación». Key is the Spanish slug.
+// English version of "El espejismo de la IA en la universidad: mucho "artefacto" y poca innovación". Key is the Spanish slug.
 // Based on K. K. Ruiz Mendoza and E. Oviedo González (2026, TE&ET no. 44, DOI 10.24215/18509959.44.e4), read in full on
 // October 9, 2026, plus linked sources. Quotes from Spanish-language sources are my translation. A phrase attributed to
-// «Revista Mundo Empresarial» could not be verified and is not cited. Nowdoc keeps the text literal; figures are inserted
+// "Revista Mundo Empresarial" could not be verified and is not cited. Nowdoc keeps the text literal; figures are inserted
 // from {{img:…}} markers.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/espejismo-ia-universidad/' . $name . '-en';

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «La gran mentira de la IA: la inteligencia artificial no piensa, pero eso no te deja tranquilo». Key is the Spanish slug.
+// English version of "La gran mentira de la IA: la inteligencia artificial no piensa, pero eso no te deja tranquilo". Key is the Spanish slug.
 // Figures, laws and studies checked on October 9, 2026, with linked sources. The text is a nowdoc; figures are inserted from
 // {{img:…}} markers and external links receive target/rel at the end. Status and publication date are carried over from the Spanish post
 // by en/02_recent_posts.php (scheduled for October 10, 2026, 7:00 a.m. Bogotá time).

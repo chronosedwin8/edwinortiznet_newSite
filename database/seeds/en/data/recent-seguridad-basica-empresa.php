@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «La mayoría de las empresas no necesita hackers más sofisticados…». Key is the Spanish slug. Data checked on October 9, 2026
+// English version of "La mayoría de las empresas no necesita hackers más sofisticados…". Key is the Spanish slug. Data checked on October 9, 2026
 // (Verizon DBIR 2025, IBM Cost of a Data Breach 2025, Microsoft Research MFA study, NIST SP 800-63B-4). Status and date come from the Spanish post
 // via en/02_recent_posts.php (scheduled for Tuesday, October 20, 2026, 7:00 a.m. Bogotá time).
 $img = static function (string $name, int $h960, string $alt, string $caption): string {

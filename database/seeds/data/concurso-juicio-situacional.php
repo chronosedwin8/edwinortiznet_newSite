@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Juicio situacional en el Concurso Docente»: método y cuatro casos de práctica (no oficiales) sobre convivencia (Ley 1620 de 2013), inclusión (Decreto 1421 de 2017), evaluación (Decreto 1290 de 2009) y gestión escolar (Ley 115 de 1994). Estructura de la prueba según las respuestas de la CNSC al proyecto de acuerdo (septiembre de 2026). Última verificación: 9 de octubre de 2026.
+// "Juicio situacional en el Concurso Docente": método y cuatro casos de práctica (no oficiales) sobre convivencia (Ley 1620 de 2013), inclusión (Decreto 1421 de 2017), evaluación (Decreto 1290 de 2009) y gestión escolar (Ley 115 de 1994). Estructura de la prueba según las respuestas de la CNSC al proyecto de acuerdo (septiembre de 2026). Última verificación: 9 de octubre de 2026.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/concurso-juicio-situacional/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -16,43 +16,43 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>Hay preguntas de concurso que no se resuelven recordando un artículo, sino <strong>analizando una situación</strong>: un estudiante, una familia, una norma y cuatro opciones que parecen razonables. Lo difícil es que casi siempre hay una opción «aparentemente correcta» (firme, amable, prudente) que falla por un detalle del marco aplicable. Este artículo te enseña un método para analizar un caso sin caer en esa trampa, con cuatro casos hipotéticos resueltos paso a paso.</p>
-<p>Una advertencia: <strong>los casos de este artículo son ejercicios de práctica que escribí yo, no preguntas oficiales</strong> ni garantizan lo que aparecerá en la prueba. No garantizo puntajes ni nombramientos. Sobre la prueba: según las respuestas oficiales de la CNSC al proyecto de acuerdo (septiembre de 2026), la prueba de aptitudes y competencias básicas valora conocimientos disciplinares y pedagógicos, lectura crítica, razonamiento cuantitativo y competencias blandas orientadas al ejercicio del empleo. Los documentos que consulté no usan la etiqueta «juicio situacional»; si la convocatoria definitiva incluye preguntas basadas en situaciones, este método aplica. Verifica la estructura en el acuerdo definitivo. Fecha de la última verificación: 9 de octubre de 2026.</p>
-<p class="notice"><strong>En resumen.</strong> Para resolver un caso: 1) interpreta el contexto, 2) identifica el problema real, 3) reconoce actores y derechos, 4) ubica el marco aplicable, 5) decide con una acción proporcional y justifícala. Desconfía de las opciones extremas (castigar sin proceso, ignorar, delegar todo) y de las que «suenan bien» pero omiten una obligación del marco.</p>
+<p>Hay preguntas de concurso que no se resuelven recordando un artículo, sino <strong>analizando una situación</strong>: un estudiante, una familia, una norma y cuatro opciones que parecen razonables. Lo difícil es que casi siempre hay una opción "aparentemente correcta" (firme, amable, prudente) que falla por un detalle del marco aplicable. Este artículo te enseña un método para analizar un caso sin caer en esa trampa, con cuatro casos hipotéticos resueltos paso a paso.</p>
+<p>Una advertencia: <strong>los casos de este artículo son ejercicios de práctica que escribí yo, no preguntas oficiales</strong> ni garantizan lo que aparecerá en la prueba. No garantizo puntajes ni nombramientos. Sobre la prueba: según las respuestas oficiales de la CNSC al proyecto de acuerdo (septiembre de 2026), la prueba de aptitudes y competencias básicas valora conocimientos disciplinares y pedagógicos, lectura crítica, razonamiento cuantitativo y competencias blandas orientadas al ejercicio del empleo. Los documentos que consulté no usan la etiqueta "juicio situacional"; si la convocatoria definitiva incluye preguntas basadas en situaciones, este método aplica. Verifica la estructura en el acuerdo definitivo. Fecha de la última verificación: 9 de octubre de 2026.</p>
+<p class="notice"><strong>En resumen.</strong> Para resolver un caso: 1) interpreta el contexto, 2) identifica el problema real, 3) reconoce actores y derechos, 4) ubica el marco aplicable, 5) decide con una acción proporcional y justifícala. Desconfía de las opciones extremas (castigar sin proceso, ignorar, delegar todo) y de las que "suenan bien" pero omiten una obligación del marco.</p>
 
 <h2>El método en cinco pasos</h2>
 {{img:metodo}}
 <ol>
 <li><strong>Contexto:</strong> ¿quién, qué, dónde, desde cuándo y con qué frecuencia? Un hecho aislado y uno repetido se tratan distinto.</li>
-<li><strong>Problema real:</strong> distingue el síntoma del problema. «Un estudiante no entrega tareas» puede ser un problema de aprendizaje, de salud, de acoso o de contexto familiar.</li>
+<li><strong>Problema real:</strong> distingue el síntoma del problema. "Un estudiante no entrega tareas" puede ser un problema de aprendizaje, de salud, de acoso o de contexto familiar.</li>
 <li><strong>Actores y derechos:</strong> estudiantes, familias, docentes, directivos. Pregúntate qué derecho está en juego (protección, educación, debido proceso, participación) y quién es el más vulnerable.</li>
-<li><strong>Marco aplicable:</strong> manual de convivencia, ruta de atención, plan de ajustes, sistema de evaluación, gobierno escolar. La mejor respuesta es la que respeta el procedimiento previsto, no la que «parece justa» al margen de él.</li>
+<li><strong>Marco aplicable:</strong> manual de convivencia, ruta de atención, plan de ajustes, sistema de evaluación, gobierno escolar. La mejor respuesta es la que respeta el procedimiento previsto, no la que "parece justa" al margen de él.</li>
 <li><strong>Decisión proporcional y justificada:</strong> una acción concreta, gradual y documentada, con responsables y seguimiento.</li>
 </ol>
-<p>Y una regla de lectura de las opciones: descarta primero la <strong>absolutista</strong> (siempre sancionar, nunca intervenir), la que <strong>delega sin responsabilidad</strong> («que lo resuelvan entre ellos»), la <strong>pasiva</strong> («esperar a ver qué pasa») y la que <strong>ignora un procedimiento obligatorio</strong>.</p>
+<p>Y una regla de lectura de las opciones: descarta primero la <strong>absolutista</strong> (siempre sancionar, nunca intervenir), la que <strong>delega sin responsabilidad</strong> ("que lo resuelvan entre ellos"), la <strong>pasiva</strong> ("esperar a ver qué pasa") y la que <strong>ignora un procedimiento obligatorio</strong>.</p>
 
 <h2>Caso 1: convivencia (ciberacoso)</h2>
-<p>En el grupo de WhatsApp del curso 8.°B, varios estudiantes humillan de forma repetida a una compañera con memes y mensajes. La madre de la afectada pide la expulsión de los agresores; algunos padres dicen que «eso pasó fuera del colegio». Eres el docente que se entera. ¿Qué haces primero?</p>
+<p>En el grupo de WhatsApp del curso 8.°B, varios estudiantes humillan de forma repetida a una compañera con memes y mensajes. La madre de la afectada pide la expulsión de los agresores; algunos padres dicen que "eso pasó fuera del colegio". Eres el docente que se entera. ¿Qué haces primero?</p>
 <ul>
 <li><strong>A.</strong> Suspender de inmediato a los estudiantes señalados.</li>
 <li><strong>B.</strong> Reunir al grupo para que lo resuelvan entre ellos.</li>
 <li><strong>C.</strong> Proteger a la estudiante, registrar el caso y activar la ruta de atención integral: informar a las familias y remitirlo al comité de convivencia escolar para definir medidas pedagógicas y de restauración.</li>
 <li><strong>D.</strong> No intervenir porque ocurrió fuera del horario escolar.</li>
 </ul>
-<p><strong>Respuesta fundamentada: C.</strong> La Ley 1620 de 2013 (Sistema Nacional de Convivencia Escolar), reglamentada por el Decreto 1965 de 2013 (hoy compilado en el Decreto 1075 de 2015), establece una <em>ruta de atención integral</em> con clasificación de situaciones (tipo I, II y III), protección de la víctima, información a las familias y participación del comité de convivencia; el ciberacoso repetido involucra a estudiantes del mismo establecimiento y se atiende por esa ruta. <strong>Por qué las otras fallan:</strong> A parece firme pero se salta el debido proceso del manual de convivencia y la ruta; B parece «restaurativa» pero deja sin protección a la víctima y delega en los estudiantes lo que es una responsabilidad institucional; D ignora que el daño afecta la convivencia escolar aunque ocurra en línea.</p>
+<p><strong>Respuesta fundamentada: C.</strong> La Ley 1620 de 2013 (Sistema Nacional de Convivencia Escolar), reglamentada por el Decreto 1965 de 2013 (hoy compilado en el Decreto 1075 de 2015), establece una <em>ruta de atención integral</em> con clasificación de situaciones (tipo I, II y III), protección de la víctima, información a las familias y participación del comité de convivencia; el ciberacoso repetido involucra a estudiantes del mismo establecimiento y se atiende por esa ruta. <strong>Por qué las otras fallan:</strong> A parece firme pero se salta el debido proceso del manual de convivencia y la ruta; B parece "restaurativa" pero deja sin protección a la víctima y delega en los estudiantes lo que es una responsabilidad institucional; D ignora que el daño afecta la convivencia escolar aunque ocurra en línea.</p>
 
 <h2>Caso 2: inclusión (evaluación de un estudiante con discapacidad)</h2>
-<p>En 6.° hay un estudiante con diagnóstico de discapacidad intelectual leve. Su familia pide «que lo pasen sin exigirle» y otro docente propone aplicarle el mismo examen que al resto «para ser equitativos». ¿Cuál es la mejor decisión?</p>
+<p>En 6.° hay un estudiante con diagnóstico de discapacidad intelectual leve. Su familia pide "que lo pasen sin exigirle" y otro docente propone aplicarle el mismo examen que al resto "para ser equitativos". ¿Cuál es la mejor decisión?</p>
 <ul>
 <li><strong>A.</strong> Aplicar el mismo examen sin cambios.</li>
 <li><strong>B.</strong> Promoverlo sin evaluar sus aprendizajes.</li>
 <li><strong>C.</strong> Elaborar con la familia y el equipo un Plan Individual de Ajustes Razonables (PIAR), aplicar principios de diseño universal para el aprendizaje y evaluar con ajustes que mantengan las competencias esenciales, documentando el proceso.</li>
 <li><strong>D.</strong> Remitirlo a una institución especial.</li>
 </ul>
-<p><strong>Respuesta fundamentada: C.</strong> El Decreto 1421 de 2017 reglamenta la educación inclusiva para población con discapacidad, e incorpora el diseño universal para el aprendizaje, los ajustes razonables y el PIAR como herramienta de planeación y evaluación. <strong>Por qué las otras fallan:</strong> A confunde igualdad con equidad (el mismo examen puede ser una barrera); B «protege» pero renuncia a la enseñanza y a la evaluación, lo que perjudica al estudiante; D contradice el principio de inclusión en la escuela regular. Si trabajas con ajustes razonables, te puede servir <a href="/herramientas/piar/">PIAR con IA</a> como apoyo para redactar borradores (siempre con validación del equipo).</p>
+<p><strong>Respuesta fundamentada: C.</strong> El Decreto 1421 de 2017 reglamenta la educación inclusiva para población con discapacidad, e incorpora el diseño universal para el aprendizaje, los ajustes razonables y el PIAR como herramienta de planeación y evaluación. <strong>Por qué las otras fallan:</strong> A confunde igualdad con equidad (el mismo examen puede ser una barrera); B "protege" pero renuncia a la enseñanza y a la evaluación, lo que perjudica al estudiante; D contradice el principio de inclusión en la escuela regular. Si trabajas con ajustes razonables, te puede servir <a href="/herramientas/piar/">PIAR con IA</a> como apoyo para redactar borradores (siempre con validación del equipo).</p>
 
 <h2>Caso 3: evaluación (una nota en discusión)</h2>
-<p>Un estudiante termina el periodo con 2,8 en Matemáticas, pero mejoró mucho en el último mes. Su padre pide que le «suban la nota» porque se esforzó. El sistema institucional de evaluación del colegio establece criterios y un plan de apoyo para quienes no superan el desempeño básico. ¿Qué haces?</p>
+<p>Un estudiante termina el periodo con 2,8 en Matemáticas, pero mejoró mucho en el último mes. Su padre pide que le "suban la nota" porque se esforzó. El sistema institucional de evaluación del colegio establece criterios y un plan de apoyo para quienes no superan el desempeño básico. ¿Qué haces?</p>
 <ul>
 <li><strong>A.</strong> Subir la nota a 3,0 por el esfuerzo.</li>
 <li><strong>B.</strong> Mantener la nota y no dar más explicaciones.</li>
@@ -62,7 +62,7 @@ $html = <<<'HTML'
 <p><strong>Respuesta fundamentada: C.</strong> Según el Decreto 1290 de 2009 (compilado en el Decreto 1075 de 2015), cada colegio define su sistema institucional de evaluación con criterios, escala y reglas de promoción, y esos criterios son los que orientan y limitan la decisión del docente; además, existen instancias de reclamación. <strong>Por qué las otras fallan:</strong> A parece empática pero rompe la coherencia y la igualdad entre estudiantes; B incumple el deber de explicar y de ofrecer apoyo; D ignora que la promoción se decide con los criterios del sistema y no de forma automática. (Profundizo en cómo revisar estos criterios en <a href="/calificaciones-miden-aprendizaje-o-cumplimiento-reglas-colegio/">el artículo sobre qué miden las calificaciones</a>).</p>
 
 <h2>Caso 4: gestión escolar (cambio de reglas tras un incidente)</h2>
-<p>Tras una pelea grave en el patio, el rector quiere endurecer de inmediato las sanciones del manual de convivencia y aplicarlas a los estudiantes involucrados. Algunos docentes dicen que no hace falta consultar a nadie «por urgencia». ¿Qué corresponde?</p>
+<p>Tras una pelea grave en el patio, el rector quiere endurecer de inmediato las sanciones del manual de convivencia y aplicarlas a los estudiantes involucrados. Algunos docentes dicen que no hace falta consultar a nadie "por urgencia". ¿Qué corresponde?</p>
 <ul>
 <li><strong>A.</strong> Modificar el manual por resolución rectoral y aplicarlo ya.</li>
 <li><strong>B.</strong> No modificar nada y aplicar la sanción que cada docente considere.</li>
@@ -91,7 +91,7 @@ $html = <<<'HTML'
 
 <h2>Preguntas frecuentes</h2>
 <h3>¿La prueba del Concurso Docente tiene preguntas de juicio situacional?</h3>
-<p>Los documentos oficiales que consulté (septiembre de 2026) describen la prueba de aptitudes y competencias básicas con conocimientos disciplinares y pedagógicos, lectura crítica, razonamiento cuantitativo y competencias blandas; no usan la etiqueta «juicio situacional». Revisa la estructura en el acuerdo definitivo y el anexo técnico.</p>
+<p>Los documentos oficiales que consulté (septiembre de 2026) describen la prueba de aptitudes y competencias básicas con conocimientos disciplinares y pedagógicos, lectura crítica, razonamiento cuantitativo y competencias blandas; no usan la etiqueta "juicio situacional". Revisa la estructura en el acuerdo definitivo y el anexo técnico.</p>
 <h3>¿Estos casos son preguntas oficiales?</h3>
 <p>No. Son ejercicios de práctica elaborados para este artículo. Ninguna fuente oficial los respalda como preguntas del concurso.</p>
 <h3>¿Cómo sé cuál es la respuesta correcta si todas parecen razonables?</h3>
@@ -121,7 +121,7 @@ return [
     'seo_description' => 'Método de cinco pasos y cuatro casos de práctica resueltos (convivencia, inclusión, evaluación y gestión) para analizar situaciones en el Concurso Docente.',
     'focus_keyword' => 'juicio situacional Concurso Docente',
     'cover' => '/assets/img/articulos/concurso-juicio-situacional/concurso-juicio-situacional-portada',
-    'cover_alt' => 'Portada «Juicio situacional en el Concurso Docente: cómo analizar un caso sin caer en respuestas aparentemente correctas» con los cuatro ámbitos de los casos: convivencia, inclusión, evaluación y gestión escolar.',
+    'cover_alt' => 'Portada "Juicio situacional en el Concurso Docente: cómo analizar un caso sin caer en respuestas aparentemente correctas" con los cuatro ámbitos de los casos: convivencia, inclusión, evaluación y gestión escolar.',
     'published_at' => '2026-11-06 12:00:00',
     'content_html' => $html,
 ];

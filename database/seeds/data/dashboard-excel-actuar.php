@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Un dashboard de Excel que ayude a actuar, no solo a mirar gráficos». Tablero de cartera de un colegio (datos ficticios): indicadores verificados contra un cálculo independiente en Python y probados en Microsoft Excel 16 (es-CO). Verificado el 9 de octubre de 2026.
+// "Un dashboard de Excel que ayude a actuar, no solo a mirar gráficos". Tablero de cartera de un colegio (datos ficticios): indicadores verificados contra un cálculo independiente en Python y probados en Microsoft Excel 16 (es-CO). Verificado el 9 de octubre de 2026.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/dashboard-excel-actuar/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -16,8 +16,8 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>Hay un tipo de tablero de Excel que se ve impresionante y no sirve para nada: veinte gráficos de colores, mapas, indicadores que giran… y ninguna pregunta que responder. Quien lo mira dice «qué bonito» y vuelve a hacer lo mismo que hacía. Un dashboard útil es otra cosa: <strong>parte de una pregunta, compara con una meta, ordena por prioridad y propone el siguiente paso</strong>.</p>
-<p>En este artículo construyo uno completo, <strong>un tablero de cartera de un colegio</strong> que responde «¿a quién llamo esta semana?», con datos ficticios y plantilla descargable. Todos los cálculos del tablero los verifiqué contra un cálculo independiente en Python (coinciden al peso) y probé las fórmulas en Microsoft Excel 16 (es-CO). Es una <a href="/descargas/dashboard-excel/tablero-cartera-colegio.xlsx">plantilla descargable en Excel</a>. Verificado el 9 de octubre de 2026.</p>
+<p>Hay un tipo de tablero de Excel que se ve impresionante y no sirve para nada: veinte gráficos de colores, mapas, indicadores que giran… y ninguna pregunta que responder. Quien lo mira dice "qué bonito" y vuelve a hacer lo mismo que hacía. Un dashboard útil es otra cosa: <strong>parte de una pregunta, compara con una meta, ordena por prioridad y propone el siguiente paso</strong>.</p>
+<p>En este artículo construyo uno completo, <strong>un tablero de cartera de un colegio</strong> que responde "¿a quién llamo esta semana?", con datos ficticios y plantilla descargable. Todos los cálculos del tablero los verifiqué contra un cálculo independiente en Python (coinciden al peso) y probé las fórmulas en Microsoft Excel 16 (es-CO). Es una <a href="/descargas/dashboard-excel/tablero-cartera-colegio.xlsx">plantilla descargable en Excel</a>. Verificado el 9 de octubre de 2026.</p>
 <p class="notice"><strong>Resumen.</strong> Un buen dashboard tiene cuatro cualidades: una <strong>pregunta</strong> concreta, una <strong>meta</strong> con la cual comparar (semáforo), una <strong>priorización</strong> que ordena lo urgente y una <strong>acción</strong> sugerida por fila. Se construye con una hoja de datos limpia, unas pocas fórmulas (SUMAR.SI.CONJUNTO, CONTAR.SI.CONJUNTO, K.ESIMO.MAYOR) y dos o tres gráficos, no veinte. En el ejemplo, el recaudo del mes es 77 % frente a una meta del 90 %, el 50 % de la cartera lleva más de 60 días de mora y el tablero señala qué familias contactar y cómo.</p>
 
 <h2>Por qué la mayoría de dashboards no sirven</h2>
@@ -25,15 +25,15 @@ $html = <<<'HTML'
 <p>Un tablero que solo informa deja todo el trabajo al lector: interpretar, priorizar y decidir. Los cuatro defectos típicos: no hay una pregunta clara, las cifras no se comparan con una meta (un 77 % no dice nada sin saber si la meta es 70 u 90), no hay orden de prioridad y no se propone ninguna acción. Además, muchos tableros fallan por el diseño de los gráficos (ver <a href="/graficas-de-excel-mienten-cinco-errores-distorsionan-conclusiones/">las gráficas de Excel que mienten</a>).</p>
 
 <h2>El caso: ¿a quién llamo esta semana?</h2>
-<p>La tesorería de un colegio privado (ficticio) tiene 80 familias, la pensión de cada una y su saldo pendiente. Quiere saber: ¿cómo va el recaudo del mes frente a la meta?, ¿cómo está la cartera según los días de mora? y, sobre todo, ¿con quién hay que hablar esta semana y de qué manera? El tablero está en la hoja «Tablero» y se alimenta de la hoja «Datos».</p>
+<p>La tesorería de un colegio privado (ficticio) tiene 80 familias, la pensión de cada una y su saldo pendiente. Quiere saber: ¿cómo va el recaudo del mes frente a la meta?, ¿cómo está la cartera según los días de mora? y, sobre todo, ¿con quién hay que hablar esta semana y de qué manera? El tablero está en la hoja "Tablero" y se alimenta de la hoja "Datos".</p>
 {{img:tablero}}
 <p>Con los datos de ejemplo, el tablero muestra:</p>
 <ul>
-<li><strong>Recaudo del mes:</strong> 77,3 % frente a una meta del 90 %: el semáforo marca «Por debajo de la meta» en rojo.</li>
+<li><strong>Recaudo del mes:</strong> 77,3 % frente a una meta del 90 %: el semáforo marca "Por debajo de la meta" en rojo.</li>
 <li><strong>Cartera vencida:</strong> 25,47 millones de pesos, repartidos así: 8,16 millones en mora de 1 a 30 días (9 familias), 4,56 de 31 a 60 (4 familias), 8,10 de 61 a 90 (5 familias) y 4,65 de más de 90 (2 familias).</li>
 <li><strong>Concentración:</strong> 12,75 millones (el 50 % de la cartera) está en 7 familias con más de 60 días de mora.</li>
 <li><strong>Prioridad esta semana:</strong> 5 familias con mora de 61 a 90 días y un saldo igual o superior al umbral que tú defines (1 millón en el ejemplo), y 2 con más de 90 días.</li>
-<li><strong>Los diez saldos más altos</strong>, cada uno con su acción sugerida: por ejemplo, «Llamar esta semana» o «Reunión para acuerdo de pago».</li>
+<li><strong>Los diez saldos más altos</strong>, cada uno con su acción sugerida: por ejemplo, "Llamar esta semana" o "Reunión para acuerdo de pago".</li>
 </ul>
 
 <h2>Cómo está construido (y las fórmulas)</h2>
@@ -68,7 +68,7 @@ $html = <<<'HTML'
 
 <h2>Diez reglas para tu propio tablero</h2>
 <ol>
-<li><strong>Escribe la pregunta</strong> en el título: «¿a quién llamo esta semana?», «¿qué grupos necesitan refuerzo?», «¿qué productos se están agotando?».</li>
+<li><strong>Escribe la pregunta</strong> en el título: "¿a quién llamo esta semana?", "¿qué grupos necesitan refuerzo?", "¿qué productos se están agotando?".</li>
 <li><strong>Cada indicador, con meta</strong> y semáforo.</li>
 <li><strong>Cinco a siete indicadores</strong> como máximo.</li>
 <li><strong>Ordena por prioridad</strong> y muestra solo los primeros.</li>
@@ -84,7 +84,7 @@ $html = <<<'HTML'
 <p>Un tablero de cartera habla de familias con dificultades económicas. Las acciones del libro son <strong>sugerencias para iniciar una conversación respetuosa</strong>, no sentencias, y las decisiones sobre cobro siguen siendo de personas de la institución, con sus reglas y su criterio. Además, un archivo con nombres y saldos es información personal: protégelo, limita quién lo ve y no lo pegues en herramientas de IA gratuitas (ver <a href="/siete-preguntas-antes-de-pegar-datos-en-una-ia-gratuita-matriz/">siete preguntas antes de pegar datos en una IA</a>). Cuando el volumen crece y varias personas editan a la vez, conviene pasar a una base de datos (ver <a href="/cuando-excel-deja-de-ser-solucion-siete-senales-necesitas-base-de-datos/">las siete señales</a>).</p>
 
 <h2>Colombia, Latinoamérica y el mundo</h2>
-<p>En todo el mundo, los tableros se volvieron un símbolo de gestión basada en datos, y con ellos el riesgo de «tableros de adorno». En Colombia y Latinoamérica, las pequeñas y medianas instituciones y empresas rara vez tienen un analista de datos y casi todo se hace en Excel; allí un tablero sencillo y verificado vale más que una herramienta sofisticada que nadie sabe mantener. Para <strong>directivos y tesoreros</strong>, la lección es pedir tableros que respondan preguntas; para <strong>docentes</strong>, el mismo diseño sirve para seguimiento de asistencia o de notas (por ejemplo, qué grupos necesitan apoyo); para <strong>familias</strong>, la transparencia en cómo se usan sus datos; y para <strong>quienes enseñan Excel</strong>, es un buen proyecto integrador.</p>
+<p>En todo el mundo, los tableros se volvieron un símbolo de gestión basada en datos, y con ellos el riesgo de "tableros de adorno". En Colombia y Latinoamérica, las pequeñas y medianas instituciones y empresas rara vez tienen un analista de datos y casi todo se hace en Excel; allí un tablero sencillo y verificado vale más que una herramienta sofisticada que nadie sabe mantener. Para <strong>directivos y tesoreros</strong>, la lección es pedir tableros que respondan preguntas; para <strong>docentes</strong>, el mismo diseño sirve para seguimiento de asistencia o de notas (por ejemplo, qué grupos necesitan apoyo); para <strong>familias</strong>, la transparencia en cómo se usan sus datos; y para <strong>quienes enseñan Excel</strong>, es un buen proyecto integrador.</p>
 
 <h2>Plantillas para trabajar con orden</h2>
 <p>Si prefieres partir de plantillas ya armadas, estas opciones traen controles y formato. Y hay una <a href="/descargas/excel-con-ia/excel-con-ia.zip">guía gratuita de Excel con IA</a> para pedir ayuda con tus fórmulas, siempre verificando el resultado.</p>
@@ -103,10 +103,10 @@ $html = <<<'HTML'
 <h3>¿Necesito Power BI?</h3>
 <p>No para empezar. Un tablero bien diseñado en Excel cubre la mayoría de necesidades de una pequeña institución o empresa; Power BI aporta cuando hay mucho volumen, varias fuentes o muchos usuarios.</p>
 
-<p class="notice"><strong>Pruébalo con tus datos.</strong> Descarga el <a href="/descargas/dashboard-excel/tablero-cartera-colegio.xlsx">tablero de cartera</a>, reemplaza la hoja «Datos» por la tuya y ajusta la fecha de corte, la meta y el umbral. Si lo conviertes para otro tema (asistencia, inventario), conserva la estructura: pregunta, meta, prioridad y acción.</p>
+<p class="notice"><strong>Pruébalo con tus datos.</strong> Descarga el <a href="/descargas/dashboard-excel/tablero-cartera-colegio.xlsx">tablero de cartera</a>, reemplaza la hoja "Datos" por la tuya y ajusta la fecha de corte, la meta y el umbral. Si lo conviertes para otro tema (asistencia, inventario), conserva la estructura: pregunta, meta, prioridad y acción.</p>
 
 <h2>Para pensar</h2>
-<p>Un tablero que propone qué hacer con cada persona puede ahorrar tiempo y también deshumanizar. <strong>¿Hasta dónde debe llegar la automatización de las «acciones sugeridas» cuando detrás de cada fila hay una familia? ¿Y quién debe decidir qué se mide, qué meta se fija y qué acción se recomienda: quien diseña el tablero, quien lo usa o las personas que aparecen en él?</strong></p>
+<p>Un tablero que propone qué hacer con cada persona puede ahorrar tiempo y también deshumanizar. <strong>¿Hasta dónde debe llegar la automatización de las "acciones sugeridas" cuando detrás de cada fila hay una familia? ¿Y quién debe decidir qué se mide, qué meta se fija y qué acción se recomienda: quien diseña el tablero, quien lo usa o las personas que aparecen en él?</strong></p>
 HTML;
 
 $html = $code($html);
@@ -124,7 +124,7 @@ return [
     'seo_description' => 'Cómo hacer un dashboard de Excel útil: pregunta, meta, prioridad y acción, con un tablero de cartera de colegio, fórmulas verificadas y plantilla descargable.',
     'focus_keyword' => 'dashboard de Excel',
     'cover' => '/assets/img/articulos/dashboard-excel-actuar/dashboard-excel-actuar-portada',
-    'cover_alt' => 'Portada «Un dashboard de Excel que ayude a actuar, no solo a mirar gráficos» con una tarjeta: recaudo del mes 77 % frente a una meta del 90 %, cartera de 25,5 millones y el 50 % con más de 60 días de mora.',
+    'cover_alt' => 'Portada "Un dashboard de Excel que ayude a actuar, no solo a mirar gráficos" con una tarjeta: recaudo del mes 77 % frente a una meta del 90 %, cartera de 25,5 millones y el 50 % con más de 60 días de mora.',
     'published_at' => '2026-12-10 12:00:00',
     'content_html' => $html,
 ];

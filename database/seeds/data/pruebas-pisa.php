@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Artículo de análisis: video de Platzi «El fracaso de la educación y las pruebas PISA» (YouTube fNLBeGyTNf8).
+// Artículo de análisis: video de Platzi "El fracaso de la educación y las pruebas PISA" (YouTube fNLBeGyTNf8).
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/pruebas-pisa/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -13,7 +13,7 @@ $img = static function (string $name, int $h960, string $alt, string $caption): 
 return [
     'slug' => 'pruebas-pisa-america-latina-colombia-docentes-familias',
     'title' => 'Pruebas PISA: por qué América Latina va mal en matemáticas y qué pueden hacer docentes, familias y el sistema educativo colombiano',
-    'excerpt' => 'Analizo el video de Platzi sobre los resultados de PISA: la caída en matemáticas y lectura, las excusas que no alcanzan, el papel de las pantallas y la idea del colegio como «gimnasio de la mente», desde Colombia frente a Latinoamérica y el mundo.',
+    'excerpt' => 'Analizo el video de Platzi sobre los resultados de PISA: la caída en matemáticas y lectura, las excusas que no alcanzan, el papel de las pantallas y la idea del colegio como "gimnasio de la mente", desde Colombia frente a Latinoamérica y el mundo.',
     'seo_title' => 'Pruebas PISA en América Latina: qué significa para Colombia',
     'seo_description' => 'Análisis del video de Platzi sobre PISA: matemáticas, lectura, pantallas y perseverancia. Qué significa para docentes, familias y estudiantes en Colombia.',
     'focus_keyword' => 'pruebas PISA',
@@ -73,7 +73,7 @@ return [
 <ul>
 <li><strong>Menos de una hora diaria de pantallas para ocio</strong> en días de colegio, acordada con los hijos y no impuesta a gritos.</li>
 <li><strong>El teléfono fuera de la mesa de estudio</strong> mientras se hacen las tareas.</li>
-<li><strong>Preguntar «¿cómo lo resolviste?»</strong> en lugar de «¿ya terminaste?».</li>
+<li><strong>Preguntar "¿cómo lo resolviste?"</strong> en lugar de "¿ya terminaste?".</li>
 <li><strong>No hacer las tareas por ellos</strong>, ni dejar que la IA las haga: acompañar el esfuerzo es más valioso que resolver el problema.</li>
 <li><strong>Dar ejemplo</strong>: los hijos aprenden más de cómo usamos el teléfono que de lo que les decimos sobre él.</li>
 </ul>
@@ -96,13 +96,13 @@ return [
 <p>El análisis es valioso, pero no está exento de matices:</p>
 <ul>
 <li><strong>Correlación no es causalidad.</strong> Que los países que menos usan IA tengan mejores puntajes no prueba que la IA sea la causa; puede haber factores culturales y de política educativa detrás de ambas cosas.</li>
-<li><strong>Algunas conclusiones son muy contundentes.</strong> Afirmar que la región «nunca» podrá desarrollar industrias complejas por su nivel en matemáticas sirve para despertar, pero el futuro depende de lo que se haga a partir de ahora.</li>
+<li><strong>Algunas conclusiones son muy contundentes.</strong> Afirmar que la región "nunca" podrá desarrollar industrias complejas por su nivel en matemáticas sirve para despertar, pero el futuro depende de lo que se haga a partir de ahora.</li>
 <li><strong>Las cifras merecen ir a la fuente.</strong> El video resume muchos gráficos; quien quiera tomar decisiones debe revisar los informes oficiales de la OCDE y los datos de su país.</li>
 <li><strong>Hay un contexto comercial.</strong> El video recomienda cursos de Platzi. No invalida el análisis, pero conviene tenerlo presente.</li>
 </ul>
 <p>Aun con esos matices, su aporte central me parece acertado: dejar de buscar excusas y concentrarnos en lo que sí podemos cambiar en el aula y en la casa.</p>
 
-<h2>El colegio como «gimnasio de la mente»</h2>
+<h2>El colegio como "gimnasio de la mente"</h2>
 <p>La idea con la que cierra el video es poderosa. Antes, ir al colegio era acceder a un conocimiento escaso; hoy el conocimiento está en todas partes. Desde la revolución industrial, las máquinas nos liberaron del esfuerzo físico y por eso existen los gimnasios: necesitamos ejercitarnos para estar bien. Con las máquinas que piensan por nosotros pasará lo mismo, y <strong>los colegios tendrán que convertirse en gimnasios de la mente</strong>, lugares donde nos obligamos a pensar y a sentirnos incómodos. Su conclusión: <em>educar ahora es motivar a pensar</em>.</p>
 {$img('pruebas-pisa-gimnasio', 573, 'Qué puede entrenar cada actor en el colegio como gimnasio de la mente: docentes, estudiantes, familias y sistema educativo', 'Si el colegio es un gimnasio de la mente, cada actor tiene su rutina.')}
 

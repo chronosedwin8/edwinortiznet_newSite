@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Errores básicos de seguridad»: lista de comprobación para auditar la seguridad básica de una empresa o colegio. Datos verificados el 9 de
+// "Errores básicos de seguridad": lista de comprobación para auditar la seguridad básica de una empresa o colegio. Datos verificados el 9 de
 // octubre de 2026 (Verizon DBIR 2025, IBM Cost of a Data Breach 2025, estudio de Microsoft Research sobre MFA, NIST SP 800-63B-4, SIC).
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/seguridad-basica-empresa/' . $name;
@@ -26,7 +26,7 @@ $html = <<<'HTML'
 <ul>
 <li>Usa contraseñas largas (frases de varias palabras) y <strong>únicas</strong> para cada servicio.</li>
 <li>Adopta un <strong>gestor de contraseñas</strong>: es la única forma realista de tener claves únicas sin escribirlas en un papel o en un Excel.</li>
-<li>No obligues a cambiar la clave cada 90 días: eso produce «Clave2026!» y «Clave2027!». Cámbiala cuando haya sospecha de filtración.</li>
+<li>No obligues a cambiar la clave cada 90 días: eso produce "Clave2026!" y "Clave2027!". Cámbiala cuando haya sospecha de filtración.</li>
 <li>Revisa si tus correos aparecen en filtraciones conocidas y cambia las claves afectadas.</li>
 </ul>
 
@@ -40,13 +40,13 @@ $html = <<<'HTML'
 </ol>
 
 <h2>Error 3: permisos excesivos y cuentas que nadie cierra</h2>
-<p>El «mínimo privilegio» significa que cada persona accede solo a lo que necesita para su trabajo. En la práctica se rompe de cuatro formas: todos son administradores «para que no molesten», se comparte una misma cuenta entre varias personas, no se cierra el acceso de quien dejó la empresa y las carpetas compartidas están abiertas «a cualquiera con el enlace». Un colegio lo vive con las cuentas de docentes que se van a mitad de año y con los accesos a las notas; una pyme, con el contador externo que mantiene acceso a todo. Soluciones: roles por cargo, una cuenta por persona, una lista de salida (<em>offboarding</em>) para cerrar accesos el último día y revisiones trimestrales de quién ve qué.</p>
+<p>El "mínimo privilegio" significa que cada persona accede solo a lo que necesita para su trabajo. En la práctica se rompe de cuatro formas: todos son administradores "para que no molesten", se comparte una misma cuenta entre varias personas, no se cierra el acceso de quien dejó la empresa y las carpetas compartidas están abiertas "a cualquiera con el enlace". Un colegio lo vive con las cuentas de docentes que se van a mitad de año y con los accesos a las notas; una pyme, con el contador externo que mantiene acceso a todo. Soluciones: roles por cargo, una cuenta por persona, una lista de salida (<em>offboarding</em>) para cerrar accesos el último día y revisiones trimestrales de quién ve qué.</p>
 
 <h2>Error 4: respaldos que nunca se verificaron</h2>
-<p>Tener los archivos «en la nube» no es tener un respaldo: la sincronización replica también los borrados y los archivos cifrados por un ransomware. Un respaldo útil es una <strong>copia independiente, con versiones, y que has probado restaurar</strong>. La regla clásica 3-2-1 (tres copias, en dos medios, una fuera del sitio) sigue siendo un buen punto de partida. Y la única forma de saber si funciona es una <strong>prueba de restauración</strong>: elige un archivo y una carpeta, restáuralos en otro equipo y comprueba que abren. Si nunca lo hiciste, no tienes un respaldo: tienes una esperanza.</p>
+<p>Tener los archivos "en la nube" no es tener un respaldo: la sincronización replica también los borrados y los archivos cifrados por un ransomware. Un respaldo útil es una <strong>copia independiente, con versiones, y que has probado restaurar</strong>. La regla clásica 3-2-1 (tres copias, en dos medios, una fuera del sitio) sigue siendo un buen punto de partida. Y la única forma de saber si funciona es una <strong>prueba de restauración</strong>: elige un archivo y una carpeta, restáuralos en otro equipo y comprueba que abren. Si nunca lo hiciste, no tienes un respaldo: tienes una esperanza.</p>
 
 <h2>Lista de comprobación: autoevaluación de seguridad básica</h2>
-<p>Este es el recurso aplicable. Responde «sí» o «no» a cada punto y cuenta tus «sí». Es una herramienta de autodiagnóstico práctica, no una certificación ni una auditoría formal.</p>
+<p>Este es el recurso aplicable. Responde "sí" o "no" a cada punto y cuenta tus "sí". Es una herramienta de autodiagnóstico práctica, no una certificación ni una auditoría formal.</p>
 {{img:pasos}}
 <table>
 <thead><tr><th>Área</th><th>Pregunta (responde sí o no)</th></tr></thead>
@@ -64,7 +64,7 @@ $html = <<<'HTML'
 <tr><td><strong>Permisos</strong></td><td>11. Cada persona tiene su propia cuenta; no se comparten.</td></tr>
 <tr><td><strong>Permisos</strong></td><td>12. Solo quien lo necesita es administrador.</td></tr>
 <tr><td><strong>Permisos</strong></td><td>13. Cerramos los accesos de quien se va el mismo día.</td></tr>
-<tr><td><strong>Permisos</strong></td><td>14. Las carpetas compartidas no están abiertas a «cualquiera con el enlace».</td></tr>
+<tr><td><strong>Permisos</strong></td><td>14. Las carpetas compartidas no están abiertas a "cualquiera con el enlace".</td></tr>
 <tr><td><strong>Permisos</strong></td><td>15. Revisamos quién tiene acceso a qué, al menos cada trimestre.</td></tr>
 <tr><td><strong>Respaldos</strong></td><td>16. Tenemos al menos una copia independiente de los datos críticos (no solo sincronizada).</td></tr>
 <tr><td><strong>Respaldos</strong></td><td>17. Una copia está fuera del sitio o desconectada, a salvo de un ransomware.</td></tr>
@@ -73,13 +73,13 @@ $html = <<<'HTML'
 <tr><td><strong>Respaldos</strong></td><td>20. Alguien tiene por escrito el procedimiento de restauración.</td></tr>
 </tbody>
 </table>
-<p><strong>Cómo leer tu puntaje (orientativo).</strong> 17 a 20 «sí»: buena base; sigue revisando. 11 a 16: hay brechas que conviene cerrar este mes, empezando por MFA y respaldos. 10 o menos: prioridad alta; dedica una semana a cerrar los puntos de correo, banco y respaldo. Si un incidente expone datos personales, además tienes obligaciones legales: según varias firmas jurídicas, los incidentes de seguridad deben reportarse a la Superintendencia de Industria y Comercio en el Registro Nacional de Bases de Datos dentro de los 15 días hábiles siguientes a su detección; confirma el texto vigente en sic.gov.co o con un abogado.</p>
+<p><strong>Cómo leer tu puntaje (orientativo).</strong> 17 a 20 "sí": buena base; sigue revisando. 11 a 16: hay brechas que conviene cerrar este mes, empezando por MFA y respaldos. 10 o menos: prioridad alta; dedica una semana a cerrar los puntos de correo, banco y respaldo. Si un incidente expone datos personales, además tienes obligaciones legales: según varias firmas jurídicas, los incidentes de seguridad deben reportarse a la Superintendencia de Industria y Comercio en el Registro Nacional de Bases de Datos dentro de los 15 días hábiles siguientes a su detección; confirma el texto vigente en sic.gov.co o con un abogado.</p>
 
 <h2>Colombia, Latinoamérica y el mundo: dónde está la brecha</h2>
 <p>A nivel mundial, la MFA y los respaldos ya son requisitos mínimos de grandes empresas y de los seguros cibernéticos. En Latinoamérica, la IBM encuentra que la adopción de IA y automatización en seguridad reduce costos, y el 75 % de las empresas de la región ya las usa, en distintos niveles de madurez. En Colombia, la brecha suele ser de prioridades, no de dinero: muchas pymes y colegios tienen antivirus pero no MFA, y hojas de cálculo con contraseñas pegadas al monitor. Para <strong>docentes y directivos</strong>, el riesgo es doble: datos sensibles de menores y operación escolar paralizada. Para <strong>familias</strong>, la lección es la misma a menor escala: MFA en el correo y en las cuentas de los hijos, y fotos respaldadas.</p>
 
 <h2>Herramientas para empezar hoy</h2>
-<p>Si tu negocio factura o envía documentos por correo, estandariza el remitente y el formato: la <a href="/producto/factura-con-envio-por-correo-al-cliente/">Factura con envío por correo al cliente</a> mantiene siempre la misma plantilla y datos bancarios, así que cualquier cambio de cuenta que llegue «de parte tuya» salta a la vista como una anomalía (lo expliqué en el artículo sobre <a href="/estafas-voz-clonada-ia-protocolo-verificacion/">estafas con voz clonada</a>). Y si enseñas, el <a href="/producto/kit-de-ia-para-docentes/">Kit de IA para docentes</a> incluye una secuencia de ciudadanía digital (huella, privacidad, ciberacoso y datos personales) para llevar estos hábitos al aula; el <a href="/herramientas/generador-de-examenes/">Generador de exámenes con IA</a> convierte esta lista en un quiz para tus estudiantes (<a href="/examenes/demo/">demostración gratis</a>).</p>
+<p>Si tu negocio factura o envía documentos por correo, estandariza el remitente y el formato: la <a href="/producto/factura-con-envio-por-correo-al-cliente/">Factura con envío por correo al cliente</a> mantiene siempre la misma plantilla y datos bancarios, así que cualquier cambio de cuenta que llegue "de parte tuya" salta a la vista como una anomalía (lo expliqué en el artículo sobre <a href="/estafas-voz-clonada-ia-protocolo-verificacion/">estafas con voz clonada</a>). Y si enseñas, el <a href="/producto/kit-de-ia-para-docentes/">Kit de IA para docentes</a> incluye una secuencia de ciudadanía digital (huella, privacidad, ciberacoso y datos personales) para llevar estos hábitos al aula; el <a href="/herramientas/generador-de-examenes/">Generador de exámenes con IA</a> convierte esta lista en un quiz para tus estudiantes (<a href="/examenes/demo/">demostración gratis</a>).</p>
 {{productos:factura-con-envio-por-correo-al-cliente,kit-de-ia-para-docentes}}
 <p>Si necesitas que alguien te acompañe a implementar plantillas y controles en Excel, está la <a href="/producto/soporte-plus-para-las-plantillas-de-excel/">asesoría PLUS</a>. Y para seguir: <a href="/excel-esta-muerto-era-de-la-ia/">¿Excel está muerto en la era de la IA?</a> y <a href="/como-automatizar-tareas-en-excel-y-reducir-errores/">cómo automatizar tareas en Excel y reducir errores</a>.</p>
 
@@ -115,7 +115,7 @@ return [
     'seo_description' => 'Los errores básicos de seguridad que más daño causan (contraseñas, MFA, permisos y respaldos) y una lista de 20 puntos para auditar tu empresa o colegio.',
     'focus_keyword' => 'seguridad básica para empresas',
     'cover' => '/assets/img/articulos/seguridad-basica-empresa/seguridad-basica-empresa-portada',
-    'cover_alt' => 'Portada con el título «Tu empresa no necesita hackers sofisticados para sufrir un desastre: corrige lo básico» y una tarjeta con cuatro errores marcados: contraseñas débiles, sin autenticación multifactor, permisos excesivos y respaldos sin restaurar.',
+    'cover_alt' => 'Portada con el título "Tu empresa no necesita hackers sofisticados para sufrir un desastre: corrige lo básico" y una tarjeta con cuatro errores marcados: contraseñas débiles, sin autenticación multifactor, permisos excesivos y respaldos sin restaurar.',
     'published_at' => '2026-10-20 12:00:00',
     'content_html' => $html,
 ];

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Concurso Docente: errores en SIMO y documentos que debes revisar antes de inscribirte». Fundamentado en la matriz oficial de respuestas de la CNSC
+// "Concurso Docente: errores en SIMO y documentos que debes revisar antes de inscribirte". Fundamentado en la matriz oficial de respuestas de la CNSC
 // (septiembre de 2026) al proyecto de acuerdo y anexo técnico del proceso docente 2026 y en la noticia de la CNSC del 19 de agosto de 2026.
 // Documentos PRELIMINARES. Última verificación: 9 de octubre de 2026. Recurso: public/descargas/concurso-docente/control-documentos-aspirante.xlsx
 // (probado en Excel 16).
@@ -20,18 +20,18 @@ $html = <<<'HTML'
 
 <h2>Prepararte no es inscribirte</h2>
 <p>La CNSC publicó el 19 de agosto de 2026 los proyectos de acuerdo, el anexo técnico y la OPEC preliminar del proceso docente 2026, y advirtió que la <a href="https://www.cnsc.gov.co/la-cnsc-publica-los-proyectos-de-acuerdo-el-anexo-tecnico-y-la-opec-preliminar-del-proceso-de">OPEC es preliminar y puede variar</a> hasta antes de abrir inscripciones. Después de recibir observaciones, publicó en septiembre una <a href="https://www.cnsc.gov.co/sites/default/files/2026-09/matriz-de-observaciones-respuestas-ciudadania.xlsx">matriz con las respuestas</a>, de donde salen las precisiones de este artículo. En el momento de redactarlo, las fechas exactas de inscripción dependen del acuerdo definitivo y del cronograma, que, según la información disponible, se ajustó hacia 2027 (te lo conté en <a href="/concurso-docente-2026-nuevo-cronograma-inscripciones-2027/">este artículo</a>). Y la inscripción para personas con discapacidad tiene su propia modalidad, explicada en <a href="/concurso-docente-reserva-7-por-ciento-discapacidad-que-verificar/">el artículo sobre la reserva del 7 %</a>.</p>
-<p>Lo que <em>sí</em> puedes hacer hoy es ordenar tu información y tus soportes, de modo que cuando se abra la etapa de inscripciones solo tengas que ajustar detalles. Lo que <em>no</em> debes hacer es pagarle a alguien para que «te asegure el cupo» o «te inscriba ya»: el único canal es <a href="https://simo.cnsc.gov.co/">SIMO</a> y la información oficial está en <a href="https://www.cnsc.gov.co/">cnsc.gov.co</a>.</p>
+<p>Lo que <em>sí</em> puedes hacer hoy es ordenar tu información y tus soportes, de modo que cuando se abra la etapa de inscripciones solo tengas que ajustar detalles. Lo que <em>no</em> debes hacer es pagarle a alguien para que "te asegure el cupo" o "te inscriba ya": el único canal es <a href="https://simo.cnsc.gov.co/">SIMO</a> y la información oficial está en <a href="https://www.cnsc.gov.co/">cnsc.gov.co</a>.</p>
 
 <h2>Cómo funciona SIMO según el proyecto de acuerdo</h2>
 <p>La CNSC responde que el proyecto de acuerdo define a SIMO y al sitio web de la CNSC como los medios oficiales de comunicación del proceso, y que el anexo técnico describe la secuencia: <strong>registro, actualización de la hoja de vida, consulta de la OPEC, selección del empleo, pago y formalización de la inscripción</strong>. Para la selección de personal, SIMO es el sistema donde cargas tu perfil, y en esa plataforma se hace la verificación de requisitos mínimos y la valoración de antecedentes con los documentos que cargaste.</p>
 {{img:ruta}}
 <p>Estas son las reglas que la CNSC ha precisado en sus respuestas, y que te conviene tener presentes:</p>
 <ul>
-<li><strong>La responsabilidad del perfil es tuya.</strong> «Mantener actualizada y veraz la información del perfil es responsabilidad del aspirante.»</li>
+<li><strong>La responsabilidad del perfil es tuya.</strong> "Mantener actualizada y veraz la información del perfil es responsabilidad del aspirante."</li>
 <li><strong>Fecha de corte.</strong> Los documentos que se acreditan son los registrados en SIMO que correspondan a los títulos académicos y las certificaciones de experiencia obtenidos hasta el último día del término de inscripciones. Una ventana posterior, si el cronograma la prevé, solo serviría para cargar o corregir el soporte de condiciones <em>ya obtenidas</em> a esa fecha, no para aportar méritos nuevos.</li>
 <li><strong>Actualizar hasta el cierre.</strong> El anexo técnico establece la posibilidad de actualizar, modificar, reemplazar o adicionar la documentación registrada en SIMO hasta el cierre del término de inscripciones.</li>
 <li><strong>Una sola inscripción por proceso.</strong> Hay que escoger un empleo y acreditar los requisitos de ese empleo en la OPEC; esto aplica a todos, incluso a educadores ya nombrados en propiedad.</li>
-<li><strong>Cada empleo tiene sus requisitos.</strong> La identificación de cada empleo (denominación, área, nivel y requisitos) consta en la OPEC publicada en SIMO. La CNSC dijo que antes de inscripciones cotejará el Manual de Funciones con la OPEC y la parametrización de SIMO, que <strong>no se exigirán requisitos adicionales ni se crearán equivalencias «por afinidad»</strong>.</li>
+<li><strong>Cada empleo tiene sus requisitos.</strong> La identificación de cada empleo (denominación, área, nivel y requisitos) consta en la OPEC publicada en SIMO. La CNSC dijo que antes de inscripciones cotejará el Manual de Funciones con la OPEC y la parametrización de SIMO, que <strong>no se exigirán requisitos adicionales ni se crearán equivalencias "por afinidad"</strong>.</li>
 <li><strong>Los datos de la OPEC los reporta la entidad territorial.</strong> La CNSC verifica la consistencia formal del cargue, pero la corrección de fondo de un dato corresponde a la entidad territorial certificada que lo reportó.</li>
 <li><strong>Títulos obtenidos en el exterior.</strong> Según las respuestas, el aspirante debe contar con la convalidación dentro de la oportunidad de cargue de documentos.</li>
 <li><strong>Derechos de participación.</strong> En el proyecto, quien se inscribe a empleos sin reserva paga 1,5 salarios mínimos diarios legales vigentes; la modalidad con reserva para personas con discapacidad no paga si aporta el certificado.</li>
@@ -43,16 +43,16 @@ $html = <<<'HTML'
 <p>Lo que sigue combina lo que dicen los documentos oficiales con la experiencia de quienes hemos acompañado aspirantes. Donde es una recomendación mía, lo digo.</p>
 <ol>
 <li><strong>Datos personales que no coinciden con el documento de identidad.</strong> Nombres, apellidos, número de documento y fecha de nacimiento deben ser idénticos a la cédula. Un correo que ya no usas es un riesgo: las notificaciones llegan por SIMO y por el correo registrado.</li>
-<li><strong>Títulos que no «hablan» el mismo idioma que el empleo.</strong> Compara el nombre exacto de tu título con los requisitos de la OPEC. Si tu título está en una lista de títulos admitidos, anótalo; si no lo está, no esperes equivalencias por afinidad (la CNSC dijo que no las creará). Distingue entre título <em>obtenido</em> (con grado) y en curso: según la regla de la fecha de corte, cuenta lo obtenido hasta el último día de inscripciones.</li>
+<li><strong>Títulos que no "hablan" el mismo idioma que el empleo.</strong> Compara el nombre exacto de tu título con los requisitos de la OPEC. Si tu título está en una lista de títulos admitidos, anótalo; si no lo está, no esperes equivalencias por afinidad (la CNSC dijo que no las creará). Distingue entre título <em>obtenido</em> (con grado) y en curso: según la regla de la fecha de corte, cuenta lo obtenido hasta el último día de inscripciones.</li>
 <li><strong>Certificaciones laborales incompletas.</strong> La experiencia se valora con las funciones certificadas y su relación con el empleo, y el proyecto prevé reglas de cómputo (por ejemplo, evitar contar dos veces un mismo periodo). Revisa que cada certificación indique el cargo, las funciones, las fechas de ingreso y retiro y quién la expide. Verifica el anexo técnico para saber cómo se computa y qué hacer con el ejercicio profesional independiente, que la CNSC dijo que revisará para acreditarlo con una declaración bajo juramento.</li>
-<li><strong>Soportes ilegibles, incompletos o con el nombre equivocado.</strong> Escanea con buena resolución, sin recortes, con todas las páginas. Cuando salga la guía del aspirante, usa los nombres y formatos que pida; mientras tanto, es buena práctica nombrar los archivos de forma clara y sin tildes, espacios ni «ñ». Es una recomendación mía, no una regla verificada del proceso actual.</li>
+<li><strong>Soportes ilegibles, incompletos o con el nombre equivocado.</strong> Escanea con buena resolución, sin recortes, con todas las páginas. Cuando salga la guía del aspirante, usa los nombres y formatos que pida; mientras tanto, es buena práctica nombrar los archivos de forma clara y sin tildes, espacios ni "ñ". Es una recomendación mía, no una regla verificada del proceso actual.</li>
 <li><strong>Elegir un empleo que no corresponde a tu perfil.</strong> Como solo hay una inscripción por proceso, la decisión es definitiva. Lee la denominación, el área, el nivel y los requisitos de cada empleo y cruza con tu formación y experiencia (el próximo artículo de esta serie te ayuda a comparar cargos).</li>
 <li><strong>Dejar todo para el último día.</strong> Pagar, cargar y formalizar la inscripción tiene un plazo. Si algo falla, necesitas margen para pedir apoyo por los canales oficiales.</li>
-<li><strong>Confiar en terceros con tu clave.</strong> Tu usuario y contraseña son personales: no los compartas con nadie que te «inscriba». Activa y guarda tu correo de recuperación, y mantén el correo registrado bajo tu control.</li>
+<li><strong>Confiar en terceros con tu clave.</strong> Tu usuario y contraseña son personales: no los compartas con nadie que te "inscriba". Activa y guarda tu correo de recuperación, y mantén el correo registrado bajo tu control.</li>
 </ol>
 
 <h2>Lista de verificación: perfil y documentos</h2>
-<p>Este es el recurso aplicable. Úsalo para preparar tu perfil con antelación; la numeración de artículos corresponde al proyecto de acuerdo y puede cambiar en el definitivo. Puedes <a href="/descargas/concurso-docente/control-documentos-aspirante.xlsx">descargar la hoja de Excel «Control de documentos del aspirante»</a> (gratis) para llevar el estado de cada soporte, con listas desplegables, avance en porcentaje y una revisión de nombres de archivo; no es un documento oficial.</p>
+<p>Este es el recurso aplicable. Úsalo para preparar tu perfil con antelación; la numeración de artículos corresponde al proyecto de acuerdo y puede cambiar en el definitivo. Puedes <a href="/descargas/concurso-docente/control-documentos-aspirante.xlsx">descargar la hoja de Excel "Control de documentos del aspirante"</a> (gratis) para llevar el estado de cada soporte, con listas desplegables, avance en porcentaje y una revisión de nombres de archivo; no es un documento oficial.</p>
 <table>
 <thead><tr><th>Bloque</th><th>Qué revisar</th><th>Dónde verificarlo</th></tr></thead>
 <tbody>
@@ -111,7 +111,7 @@ return [
     'seo_description' => 'Errores frecuentes en SIMO y documentos que debes revisar antes de inscribirte al Concurso Docente, con lista de verificación y hoja de Excel gratis.',
     'focus_keyword' => 'errores en SIMO Concurso Docente',
     'cover' => '/assets/img/articulos/concurso-simo-documentos/concurso-simo-documentos-portada',
-    'cover_alt' => 'Portada con el título «Errores en SIMO y documentos que debes revisar antes de inscribirte» y una lista de verificación: datos personales, títulos, soportes y empleo marcados, y la nota de que todavía no hay inscripción abierta.',
+    'cover_alt' => 'Portada con el título "Errores en SIMO y documentos que debes revisar antes de inscribirte" y una lista de verificación: datos personales, títulos, soportes y empleo marcados, y la nota de que todavía no hay inscripción abierta.',
     'published_at' => '2026-10-23 12:00:00',
     'content_html' => $html,
 ];

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «¿Las calificaciones miden lo que aprende un estudiante o su capacidad para cumplir con las reglas?» Evidencia: Brookhart et al. (2016),
+// "¿Las calificaciones miden lo que aprende un estudiante o su capacidad para cumplir con las reglas?" Evidencia: Brookhart et al. (2016),
 // Allensworth y Clark (2020); normas: Decreto 1075 de 2015 (compila el 1290 de 2009) y Decreto 67 de 2018 de Chile. Verificado el 9 de octubre
 // de 2026. El caso de Valentina y Mateo es hipotético; los promedios se calcularon: 0,3·5,0+0,2·5,0+0,2·4,5+0,3·2,9 = 4,27 y
 // 0,3·3,5+0,2·4,0+0,2·4,3+0,3·5,0 = 4,21.
@@ -14,7 +14,7 @@ $img = static function (string $name, int $h960, string $alt, string $caption): 
 };
 
 $html = <<<'HTML'
-<p>Imagina el boletín de dos estudiantes de noveno. Ambos tienen 4,2 en matemáticas, un desempeño «Alto». Sin embargo, si les pides que resuelvan un problema nuevo sin ayuda, uno lo hace y explica por qué, y la otra no sabe por dónde empezar. <strong>¿Qué midió exactamente esa nota?</strong> Es una pregunta incómoda, porque la mayoría de nosotros, docentes, estudiantes y familias, hemos tratado la nota como si fuera una medida exacta del aprendizaje.</p>
+<p>Imagina el boletín de dos estudiantes de noveno. Ambos tienen 4,2 en matemáticas, un desempeño "Alto". Sin embargo, si les pides que resuelvan un problema nuevo sin ayuda, uno lo hace y explica por qué, y la otra no sabe por dónde empezar. <strong>¿Qué midió exactamente esa nota?</strong> Es una pregunta incómoda, porque la mayoría de nosotros, docentes, estudiantes y familias, hemos tratado la nota como si fuera una medida exacta del aprendizaje.</p>
 <p>En este artículo analizo ese caso hipotético, reviso qué dice la investigación y la normativa en Colombia, Latinoamérica y el mundo, y te dejo una <strong>matriz para revisar los criterios de evaluación</strong> de tu aula o tu colegio. Datos y normas verificados el 9 de octubre de 2026.</p>
 <p class="notice"><strong>Resumen.</strong> Una revisión de un siglo de estudios concluye que las notas mezclan factores cognitivos y no cognitivos: lo que el estudiante aprendió y lo que el docente valora en su trabajo (puntualidad, orden, actitud). No es malo que existan ambos, pero si se funden en un solo número, el boletín ya no dice cuál es cuál. La salida no es eliminar las notas, sino separar logro y cumplimiento y revisar los criterios.</p>
 
@@ -31,12 +31,12 @@ $html = <<<'HTML'
 <tr><td><strong>Nota final</strong></td><td><strong>4,27</strong></td><td><strong>4,21</strong></td></tr>
 </tbody>
 </table>
-<p>Valentina cumple con todo: entrega a tiempo, mantiene el cuaderno impecable y participa. Pero en la evaluación, que es la única evidencia de lo que sabe sin apoyo, saca 2,9, un desempeño bajo. Mateo entrega tarde, su cuaderno es un desorden y a veces pierde puntos por actitud, pero en la evaluación saca 5,0 y explica su razonamiento. En el boletín, los dos son «Alto» y Valentina tiene incluso una décima más. Si solo contamos la evidencia de aprendizaje (trabajos y evaluación, reponderados a 100 %), la «nota de logro» sería 3,54 para Valentina y 4,72 para Mateo.</p>
-<p>No se trata de decir que Valentina «hizo trampa» ni que Mateo es mejor persona. Se trata de ver que <strong>una sola nota está contando dos historias distintas</strong>, y que cuando se mezclan, quien lee el boletín (un padre, un rector, otra institución) no puede saber cuál es cuál. Y hay una decisión pedagógica de fondo: ¿cuánto de la nota debería premiar el cumplimiento de reglas?</p>
+<p>Valentina cumple con todo: entrega a tiempo, mantiene el cuaderno impecable y participa. Pero en la evaluación, que es la única evidencia de lo que sabe sin apoyo, saca 2,9, un desempeño bajo. Mateo entrega tarde, su cuaderno es un desorden y a veces pierde puntos por actitud, pero en la evaluación saca 5,0 y explica su razonamiento. En el boletín, los dos son "Alto" y Valentina tiene incluso una décima más. Si solo contamos la evidencia de aprendizaje (trabajos y evaluación, reponderados a 100 %), la "nota de logro" sería 3,54 para Valentina y 4,72 para Mateo.</p>
+<p>No se trata de decir que Valentina "hizo trampa" ni que Mateo es mejor persona. Se trata de ver que <strong>una sola nota está contando dos historias distintas</strong>, y que cuando se mezclan, quien lee el boletín (un padre, un rector, otra institución) no puede saber cuál es cuál. Y hay una decisión pedagógica de fondo: ¿cuánto de la nota debería premiar el cumplimiento de reglas?</p>
 
 <h2>Qué dice la investigación</h2>
-<p>La revisión más amplia que conozco es la de <a href="https://doi.org/10.3102/0034654316672069">Brookhart y colaboradores (2016), «A Century of Grading Research»</a>, en <em>Review of Educational Research</em>. Tras analizar más de cien años de estudios, concluyen que las notas son una medida «multidimensional»: miden, en parte, lo que el estudiante logró en pruebas, pero también reflejan factores no cognitivos que el docente valora (esfuerzo, conducta, participación). Es decir, el fenómeno del caso de Valentina y Mateo no es una rareza: es la regla.</p>
-<p>Ahora, ese resultado tiene un matiz que no conviene olvidar: los factores «no cognitivos» no son basura. Un <a href="https://consortium.uchicago.edu/news-item/high-school-GPAs-and-ACT-scores-as-predictors-of-college-completion">estudio de Allensworth y Clark (2020)</a> con 55.084 egresados de colegios públicos de Chicago encontró que el promedio de notas de bachillerato predice la graduación universitaria mucho mejor que el examen ACT, y que el valor del ACT cambiaba de un colegio a otro mientras el de las notas se mantenía estable. Una explicación plausible es que las notas capturan hábitos de trabajo y persistencia que importan para terminar una carrera. Entonces, el problema no es que las notas incluyan hábitos; es que <strong>no sabemos cuánto de cada cosa hay en cada nota</strong>, y por eso no podemos usarla bien para decidir.</p>
+<p>La revisión más amplia que conozco es la de <a href="https://doi.org/10.3102/0034654316672069">Brookhart y colaboradores (2016), "A Century of Grading Research"</a>, en <em>Review of Educational Research</em>. Tras analizar más de cien años de estudios, concluyen que las notas son una medida "multidimensional": miden, en parte, lo que el estudiante logró en pruebas, pero también reflejan factores no cognitivos que el docente valora (esfuerzo, conducta, participación). Es decir, el fenómeno del caso de Valentina y Mateo no es una rareza: es la regla.</p>
+<p>Ahora, ese resultado tiene un matiz que no conviene olvidar: los factores "no cognitivos" no son basura. Un <a href="https://consortium.uchicago.edu/news-item/high-school-GPAs-and-ACT-scores-as-predictors-of-college-completion">estudio de Allensworth y Clark (2020)</a> con 55.084 egresados de colegios públicos de Chicago encontró que el promedio de notas de bachillerato predice la graduación universitaria mucho mejor que el examen ACT, y que el valor del ACT cambiaba de un colegio a otro mientras el de las notas se mantenía estable. Una explicación plausible es que las notas capturan hábitos de trabajo y persistencia que importan para terminar una carrera. Entonces, el problema no es que las notas incluyan hábitos; es que <strong>no sabemos cuánto de cada cosa hay en cada nota</strong>, y por eso no podemos usarla bien para decidir.</p>
 {{img:evidencia}}
 
 <h2>Qué dice la normativa: Colombia, Chile y el mundo</h2>
@@ -50,7 +50,7 @@ $html = <<<'HTML'
 <li><strong>Aprendizaje profundo:</strong> entender y poder explicar, aplicar a un caso nuevo, detectar errores. Se ve cuando el estudiante resuelve sin apoyo o justifica su respuesta.</li>
 <li><strong>Competencias:</strong> combinar conocimiento, habilidades y actitudes para resolver situaciones reales (por ejemplo, comunicar un resultado o trabajar en equipo). Requieren evidencia de desempeño, no solo de entrega.</li>
 </ul>
-<p>Cuando la nota promedia las tres, castiga a Mateo por lo que no cumple y premia a Valentina por lo que no aprendió. Los <strong>docentes</strong> lo saben: premiar el cumplimiento mantiene el orden del aula, y eliminarlo no es realista. Las <strong>familias</strong> suelen pedir transparencia: quieren saber si su hijo «va mal» por no entender o por no entregar. Y los <strong>estudiantes</strong> aprenden pronto qué se premia y se adaptan: si el cuaderno vale más que explicar, cuidan el cuaderno.</p>
+<p>Cuando la nota promedia las tres, castiga a Mateo por lo que no cumple y premia a Valentina por lo que no aprendió. Los <strong>docentes</strong> lo saben: premiar el cumplimiento mantiene el orden del aula, y eliminarlo no es realista. Las <strong>familias</strong> suelen pedir transparencia: quieren saber si su hijo "va mal" por no entender o por no entregar. Y los <strong>estudiantes</strong> aprenden pronto qué se premia y se adaptan: si el cuaderno vale más que explicar, cuidan el cuaderno.</p>
 
 <h2>Matriz para revisar tus criterios de evaluación</h2>
 <p>Este es el recurso aplicable. Úsala con tu equipo de área o con el consejo académico para revisar tu aula o tu SIEE:</p>
@@ -63,7 +63,7 @@ $html = <<<'HTML'
 <tr><td><strong>Penalización por tardanza</strong></td><td>¿Entregar tarde baja la nota del conocimiento?</td><td>Un trabajo excelente recibe 2,0 por llegar un día tarde.</td><td>Descontar solo en la valoración de hábitos, no en la de logro.</td></tr>
 <tr><td><strong>Nuevas oportunidades</strong></td><td>¿Puede el estudiante demostrar después que aprendió?</td><td>Un mal día define toda la nota.</td><td>Permitir reevaluar con plan de mejora.</td></tr>
 <tr><td><strong>Claridad de criterios</strong></td><td>¿El estudiante sabe de antemano qué se valora y cómo?</td><td>Criterios implícitos o cambiantes.</td><td>Rúbrica compartida con ejemplos.</td></tr>
-<tr><td><strong>Coherencia con la escala nacional</strong></td><td>¿Qué significa «Alto» en nuestro SIEE?</td><td>Un «Alto» puede ser con o sin comprensión.</td><td>Describir cada nivel por lo que el estudiante sabe y puede hacer.</td></tr>
+<tr><td><strong>Coherencia con la escala nacional</strong></td><td>¿Qué significa "Alto" en nuestro SIEE?</td><td>Un "Alto" puede ser con o sin comprensión.</td><td>Describir cada nivel por lo que el estudiante sabe y puede hacer.</td></tr>
 <tr><td><strong>Participación de la comunidad</strong></td><td>¿Docentes, estudiantes y familias revisaron el SIEE en el último año?</td><td>Nadie recuerda cuándo se actualizó.</td><td>Agendar una revisión con evidencias de boletines reales.</td></tr>
 </tbody>
 </table>
@@ -106,7 +106,7 @@ return [
     'seo_description' => 'Qué miden realmente las calificaciones: cumplimiento, aprendizaje o competencias. Caso hipotético, evidencia, normas y una matriz para revisar el SIEE.',
     'focus_keyword' => 'calificaciones y aprendizaje',
     'cover' => '/assets/img/articulos/calificaciones-aprendizaje-cumplimiento/calificaciones-aprendizaje-cumplimiento-portada',
-    'cover_alt' => 'Portada con el título «¿Las notas miden lo que aprendes o qué tanto cumples las reglas?» y una tarjeta que compara dos notas casi iguales, 4,27 y 4,21, de dos estudiantes con aprendizajes muy distintos.',
+    'cover_alt' => 'Portada con el título "¿Las notas miden lo que aprendes o qué tanto cumples las reglas?" y una tarjeta que compara dos notas casi iguales, 4,27 y 4,21, de dos estudiantes con aprendizajes muy distintos.',
     'published_at' => '2026-10-21 12:00:00',
     'content_html' => $html,
 ];

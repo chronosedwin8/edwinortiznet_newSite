@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «¿Mi título cumple el requisito del empleo? Compatibilidad sin rumores». Fuentes verificadas el 9 de octubre de 2026: matriz de respuestas de la CNSC y proyectos de acuerdo (documentos preliminares, sept. 2026); SNIES (Ministerio de Educación). Caso de práctica no oficial; matriz con ejemplo ficticio.
+// "¿Mi título cumple el requisito del empleo? Compatibilidad sin rumores". Fuentes verificadas el 9 de octubre de 2026: matriz de respuestas de la CNSC y proyectos de acuerdo (documentos preliminares, sept. 2026); SNIES (Ministerio de Educación). Caso de práctica no oficial; matriz con ejemplo ficticio.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/titulo-opec-trazabilidad/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -16,7 +16,7 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>«Mi título es parecido, seguro sirve.» «Un colega con el mismo posgrado ya se inscribió.» «En el grupo dijeron que ese programa cuenta.» Cada año, aspirantes a concursos docentes toman decisiones de inscripción con base en frases como estas. Y el error más caro no es sacar un puntaje bajo: es <strong>competir meses por un empleo cuyo requisito no cumples</strong> y enterarte al final, cuando la verificación de requisitos te deja fuera aunque hayas sacado un gran resultado.</p>
+<p>"Mi título es parecido, seguro sirve." "Un colega con el mismo posgrado ya se inscribió." "En el grupo dijeron que ese programa cuenta." Cada año, aspirantes a concursos docentes toman decisiones de inscripción con base en frases como estas. Y el error más caro no es sacar un puntaje bajo: es <strong>competir meses por un empleo cuyo requisito no cumples</strong> y enterarte al final, cuando la verificación de requisitos te deja fuera aunque hayas sacado un gran resultado.</p>
 <p>Este artículo propone cómo comprobar la compatibilidad entre tu título (y tu experiencia) y el requisito de un empleo <strong>sin rumores</strong>, usando una matriz de trazabilidad que conecta el requisito literal, tu evidencia y la fuente oficial. Incluye una <a href="/descargas/concurso-docente/matriz-trazabilidad-titulo-opec.xlsx">matriz descargable en Excel</a> con un ejemplo ficticio, una hoja de rumores frecuentes y una plantilla de consulta escrita. Datos verificados el 9 de octubre de 2026.</p>
 <p class="notice"><strong>Advertencias.</strong> Las reglas citadas provienen de los documentos <strong>preliminares</strong> del proceso (proyectos de acuerdo, anexo técnico y matriz de respuestas de la CNSC de septiembre de 2026); las definitivas se conocen con el acuerdo. Este artículo no define si tú cumples un requisito: eso lo decide la CNSC con los documentos que cargues en SIMO. No garantiza puntajes ni nombramientos. El caso de práctica es un ejercicio mío, <strong>no una pregunta oficial</strong>.</p>
 
@@ -37,7 +37,7 @@ $html = <<<'HTML'
 {{img:pasos}}
 <p>La matriz tiene una fila por requisito del empleo y estas columnas:</p>
 <ol>
-<li><strong>Requisito (texto literal).</strong> Cópialo del documento oficial sin «adaptarlo». Si dice «título profesional en el núcleo básico de conocimiento X», no escribas «en la misma área».</li>
+<li><strong>Requisito (texto literal).</strong> Cópialo del documento oficial sin "adaptarlo". Si dice "título profesional en el núcleo básico de conocimiento X", no escribas "en la misma área".</li>
 <li><strong>Tipo:</strong> estudio, experiencia u otro.</li>
 <li><strong>Tu evidencia:</strong> el documento que lo demuestra (diploma, acta de grado, certificación laboral).</li>
 <li><strong>Dónde está:</strong> archivo y página, para encontrarlo rápido al cargarlo en SIMO.</li>
@@ -45,21 +45,21 @@ $html = <<<'HTML'
 <li><strong>Fecha del documento</strong> y una fórmula que dice si es <strong>anterior o igual a la fecha de corte</strong> que tú escribes.</li>
 <li><strong>Estado:</strong> Cumple (con evidencia), Dudo, Sin evidencia o No cumple. La regla es dura a propósito: <em>si no hay evidencia, el requisito está sin cumplir hasta demostrar lo contrario</em>.</li>
 </ol>
-<p>El libro trae el resumen automático (cuántos requisitos cumplen, cuántos dudo, cuántos sin evidencia y cuántos documentos son posteriores al corte; probé que al poner una fecha posterior al corte la fila lo señala y el resumen lo cuenta). Con el ejemplo ficticio, dos requisitos «cumplen», uno es «dudo» (una certificación laboral sin funciones claras) y uno «sin evidencia», y la lectura dice «Hay requisitos por resolver antes de inscribirte». Esa frase es el objetivo: <strong>descubrir hoy lo que podría eliminarte mañana</strong>. Para el control de documentos en general, ver el <a href="/concurso-docente-errores-simo-documentos-revisar-antes-inscripcion/">artículo sobre errores en SIMO</a> y su libro de control.</p>
+<p>El libro trae el resumen automático (cuántos requisitos cumplen, cuántos dudo, cuántos sin evidencia y cuántos documentos son posteriores al corte; probé que al poner una fecha posterior al corte la fila lo señala y el resumen lo cuenta). Con el ejemplo ficticio, dos requisitos "cumplen", uno es "dudo" (una certificación laboral sin funciones claras) y uno "sin evidencia", y la lectura dice "Hay requisitos por resolver antes de inscribirte". Esa frase es el objetivo: <strong>descubrir hoy lo que podría eliminarte mañana</strong>. Para el control de documentos en general, ver el <a href="/concurso-docente-errores-simo-documentos-revisar-antes-inscripcion/">artículo sobre errores en SIMO</a> y su libro de control.</p>
 
 <h2>Rumores frecuentes y cómo verificarlos</h2>
 {{img:rumores}}
-<p>La hoja «Rumores_y_fuentes» trae seis rumores comunes. Algunos de ellos:</p>
+<p>La hoja "Rumores_y_fuentes" trae seis rumores comunes. Algunos de ellos:</p>
 <ul>
-<li><strong>«Mi título es parecido, sirve».</strong> Con la regla preliminar de no aceptar equivalencias por afinidad, lo que importa es el texto literal. Compáralo con el programa en SNIES (denominación, código, NBC).</li>
-<li><strong>«Me dijeron en un grupo que sí cumplo».</strong> Nadie distinto de la CNSC define si cumples. Si tienes una duda real, consúltala por los canales oficiales y guarda la respuesta.</li>
-<li><strong>«Las cifras que vi son definitivas».</strong> La oferta preliminar es un borrador; consulta la vigente en SIMO.</li>
-<li><strong>«Con una especialización cubro cualquier maestría».</strong> Cada empleo define el nivel y el tipo de estudio que exige; compáralo tal cual.</li>
+<li><strong>"Mi título es parecido, sirve".</strong> Con la regla preliminar de no aceptar equivalencias por afinidad, lo que importa es el texto literal. Compáralo con el programa en SNIES (denominación, código, NBC).</li>
+<li><strong>"Me dijeron en un grupo que sí cumplo".</strong> Nadie distinto de la CNSC define si cumples. Si tienes una duda real, consúltala por los canales oficiales y guarda la respuesta.</li>
+<li><strong>"Las cifras que vi son definitivas".</strong> La oferta preliminar es un borrador; consulta la vigente en SIMO.</li>
+<li><strong>"Con una especialización cubro cualquier maestría".</strong> Cada empleo define el nivel y el tipo de estudio que exige; compáralo tal cual.</li>
 </ul>
 <p>Y una nota sobre la <strong>consulta escrita</strong>: el libro trae una plantilla (asunto, empleo, requisito transcrito, título con código SNIES, una sola pregunta concreta y los documentos adjuntos). Hazla por los canales oficiales de la CNSC o de la entidad, guarda la respuesta como evidencia y recuerda que una consulta no es una garantía: la verificación formal ocurre con los documentos cargados en SIMO. El plazo de respuesta lo define la normativa aplicable y el canal que uses; verifícalo en el sitio oficial.</p>
 
 <h2>Un caso de aplicación (práctica, no oficial)</h2>
-<p><strong>Situación.</strong> Una aspirante es licenciada en Ciencias Naturales y Educación Ambiental. Encuentra un empleo de docente de aula cuyo requisito de estudio dice, literalmente: «Licenciado en Matemáticas o Licenciado en Educación Matemática». Una amiga le dice que «es de la misma área de ciencias, seguro la dejan». Según el proyecto de anexo técnico, no se aceptan equivalencias por afinidad.</p>
+<p><strong>Situación.</strong> Una aspirante es licenciada en Ciencias Naturales y Educación Ambiental. Encuentra un empleo de docente de aula cuyo requisito de estudio dice, literalmente: "Licenciado en Matemáticas o Licenciado en Educación Matemática". Una amiga le dice que "es de la misma área de ciencias, seguro la dejan". Según el proyecto de anexo técnico, no se aceptan equivalencias por afinidad.</p>
 <p><strong>Pregunta.</strong> ¿Qué decisión es más sólida?</p>
 <ol type="A">
 <li>Inscribirse en ese empleo, porque la afinidad cuenta.</li>
@@ -110,7 +110,7 @@ return [
     'seo_description' => 'Cómo verificar si tu título cumple el requisito de un empleo del Concurso Docente con el texto literal, el SNIES y una matriz de trazabilidad descargable.',
     'focus_keyword' => 'título requisito empleo Concurso Docente',
     'cover' => '/assets/img/articulos/titulo-opec-trazabilidad/titulo-opec-trazabilidad-portada',
-    'cover_alt' => 'Portada «¿Mi título cumple el requisito del empleo? Compatibilidad sin rumores» con una lista: copiar el requisito literal, verificar el programa en el SNIES y guardar la evidencia, marcados; confiar en un rumor, descartado.',
+    'cover_alt' => 'Portada "¿Mi título cumple el requisito del empleo? Compatibilidad sin rumores" con una lista: copiar el requisito literal, verificar el programa en el SNIES y guardar la evidencia, marcados; confiar en un rumor, descartado.',
     'published_at' => '2026-12-04 12:00:00',
     'content_html' => $html,
 ];

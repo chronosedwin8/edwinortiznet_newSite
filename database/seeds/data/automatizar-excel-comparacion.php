@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Power Query, VBA, Office Scripts o Python: ¿cuál es la mejor forma de automatizar Excel?» Prueba del 9 de octubre de 2026: 12 libros de 10.000
+// "Power Query, VBA, Office Scripts o Python: ¿cuál es la mejor forma de automatizar Excel?" Prueba del 9 de octubre de 2026: 12 libros de 10.000
 // filas consolidados con Power Query (6,7 s; 3,7 s al actualizar), VBA (7,5 s) y Python con pandas (7,0 s), todos con 120.000 filas y suma de
 // Valor 11.111.254.600, en Windows con Excel 16 y Python 3 (pandas 2.3). Los scripts de Office Scripts NO se ejecutaron (requieren Excel en la web
 // y Power Automate); los límites citados vienen de la documentación de Microsoft. Python en Excel: sin acceso a archivos locales (Microsoft).
@@ -19,7 +19,7 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>«¿Cuál es la mejor forma de automatizar Excel?» es una pregunta que casi siempre recibe una respuesta incorrecta, porque está mal planteada. No hay una «mejor» herramienta: hay una herramienta adecuada para tu tarea, tu equipo, tu licencia y la persona que va a mantener la solución dentro de dos años. Para que la comparación sea concreta, <strong>resolví la misma tarea con cuatro herramientas</strong>: consolidar 12 libros mensuales de ventas (120.000 filas) en una sola tabla.</p>
+<p>"¿Cuál es la mejor forma de automatizar Excel?" es una pregunta que casi siempre recibe una respuesta incorrecta, porque está mal planteada. No hay una "mejor" herramienta: hay una herramienta adecuada para tu tarea, tu equipo, tu licencia y la persona que va a mantener la solución dentro de dos años. Para que la comparación sea concreta, <strong>resolví la misma tarea con cuatro herramientas</strong>: consolidar 12 libros mensuales de ventas (120.000 filas) en una sola tabla.</p>
 <p>En este artículo te muestro el código de cada alternativa, los tiempos que medí, los requisitos reales de cada una (con sus límites) y una <strong>matriz de decisión</strong> para elegir. Una aclaración: el título habla de 2027, pero solo puedo afirmar lo que existe y verifiqué a 9 de octubre de 2026; las herramientas cambian, el método de decidir no.</p>
 <p class="notice"><strong>Resumen.</strong> En mi prueba, Power Query (6,7 s; 3,7 s al actualizar), VBA (7,5 s) y Python con pandas (7,0 s) consolidaron 120.000 filas con exactamente el mismo resultado. La velocidad no decide: decide dónde corre, quién lo mantiene y qué más necesitas (formato, correos, flujos en la nube). Regla práctica: usa la herramienta más simple que resuelva el problema.</p>
 
@@ -86,7 +86,7 @@ function main(workbook: ExcelScript.Workbook, filas: (string | number | boolean)
   const siguiente = hoja.getUsedRange().getRowCount();
   hoja.getRangeByIndexes(siguiente, 0, filas.length, filas[0].length).setValues(filas);
 }</code></pre>
-<p><strong>Ventajas:</strong> corre en la nube sin que tu computador esté encendido, se programa y se integra con Teams, correo y SharePoint. <strong>Límites que Microsoft documenta:</strong> las solicitudes y respuestas en Excel para la web se limitan a 5 MB, hay 1.600 llamadas por día y por usuario a la acción «Ejecutar script» y un tiempo máximo de 120 segundos en operaciones síncronas de Power Automate; usar Office Scripts con Power Automate requiere una licencia empresarial de Microsoft 365. Para 120.000 filas hay que enviar lotes. Es una solución para equipos que ya trabajan en SharePoint y Power Automate, no para una pyme con un computador y archivos locales.</p>
+<p><strong>Ventajas:</strong> corre en la nube sin que tu computador esté encendido, se programa y se integra con Teams, correo y SharePoint. <strong>Límites que Microsoft documenta:</strong> las solicitudes y respuestas en Excel para la web se limitan a 5 MB, hay 1.600 llamadas por día y por usuario a la acción "Ejecutar script" y un tiempo máximo de 120 segundos en operaciones síncronas de Power Automate; usar Office Scripts con Power Automate requiere una licencia empresarial de Microsoft 365. Para 120.000 filas hay que enviar lotes. Es una solución para equipos que ya trabajan en SharePoint y Power Automate, no para una pyme con un computador y archivos locales.</p>
 
 <h2>Opción 4: Python (dentro y fuera de Excel)</h2>
 <p>Hay dos cosas distintas. <strong>Python en Excel</strong> (la función <code>=PY()</code>) corre en la nube de Microsoft, en un entorno aislado sin acceso a tus archivos locales ni a la red: los datos entran solo con la función <code>xl()</code> y no puedes instalar paquetes propios, solo los de la distribución curada de Anaconda. Por eso <strong>no puede consolidar una carpeta</strong>: sirve para analizar y graficar los datos que ya están en el libro (por ejemplo, la tabla que dejó Power Query). Y <strong>Python fuera de Excel</strong> (en tu computador o en un servidor) sí lee archivos y es la opción para grandes volúmenes y tareas programadas:</p>
@@ -158,7 +158,7 @@ return [
     'seo_description' => 'Comparamos Power Query, VBA, Office Scripts y Python resolviendo la misma tarea en Excel, con código, tiempos medidos y una matriz para decidir.',
     'focus_keyword' => 'automatizar Excel',
     'cover' => '/assets/img/articulos/automatizar-excel-comparacion/automatizar-excel-comparacion-portada',
-    'cover_alt' => 'Portada «Power Query, VBA, Office Scripts o Python: ¿cuál automatiza mejor tu Excel?» con una tarjeta de lo mejor de cada herramienta: datos, escritorio, nube y flujos, y análisis.',
+    'cover_alt' => 'Portada "Power Query, VBA, Office Scripts o Python: ¿cuál automatiza mejor tu Excel?" con una tarjeta de lo mejor de cada herramienta: datos, escritorio, nube y flujos, y análisis.',
     'published_at' => '2026-10-29 12:00:00',
     'content_html' => $html,
 ];

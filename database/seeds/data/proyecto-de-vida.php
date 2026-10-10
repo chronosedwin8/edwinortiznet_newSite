@@ -21,7 +21,7 @@ return [
     'cover_alt' => 'Ruta con cinco etapas del proyecto de vida: quién soy, qué me mueve, qué opciones tengo, mi plan y hacia dónde voy',
     'published_at' => '2026-10-06 16:00:00',
     'content_html' => <<<HTML
-<p>Hay una pregunta que todo docente ha escuchado alguna vez en el pasillo: «Profe, ¿y yo qué estudio?». Detrás de esa pregunta no hay una tarea ni una evaluación: hay un adolescente intentando imaginarse a sí mismo dentro de cinco o diez años. La escuela tiene un nombre para ese trabajo, <strong>proyecto de vida</strong>, y en muchos colegios es justamente la clase que se aplaza cuando el tiempo no alcanza.</p>
+<p>Hay una pregunta que todo docente ha escuchado alguna vez en el pasillo: "Profe, ¿y yo qué estudio?". Detrás de esa pregunta no hay una tarea ni una evaluación: hay un adolescente intentando imaginarse a sí mismo dentro de cinco o diez años. La escuela tiene un nombre para ese trabajo, <strong>proyecto de vida</strong>, y en muchos colegios es justamente la clase que se aplaza cuando el tiempo no alcanza.</p>
 <p>Un video reciente de Platzi puso cifras a esa realidad en colegios públicos de Cundinamarca. Lo analicé con calma porque, como docente, me interesa menos la noticia que lo que revela: qué les pasa a los profesores, qué necesitan los estudiantes, qué pueden hacer las familias y qué tan preparado está el sistema educativo colombiano frente a lo que se hace en Latinoamérica y en el resto del mundo.</p>
 
 <h2>Lo que cuenta el video</h2>
@@ -31,9 +31,9 @@ return [
 <li><strong>Uno de cada tres docentes</strong> no se sentía preparado para guiar los planes de vida de sus estudiantes.</li>
 <li><strong>Más de cuatro de cada diez</strong> habían cancelado o pospuesto esa clase porque no contaban con las herramientas necesarias.</li>
 </ul>
-<p>Platzi tomó la metodología y las guías de la fundación y las convirtió en un curso en línea, «Aventura al éxito», dirigido a rectores, docentes y líderes escolares. Se lanzó en septiembre de 2025 y, según el video, <strong>729 docentes de 18 colegios públicos</strong> de Cundinamarca se certificaron con una valoración de 4,8 sobre 5. Una evaluación externa encontró que el <strong>96 %</strong> considera útil o muy útil lo aprendido y que el <strong>86 %</strong> ya lo aplica en clase. La meta es llegar a <strong>1.600 docentes en 2028</strong>.</p>
+<p>Platzi tomó la metodología y las guías de la fundación y las convirtió en un curso en línea, "Aventura al éxito", dirigido a rectores, docentes y líderes escolares. Se lanzó en septiembre de 2025 y, según el video, <strong>729 docentes de 18 colegios públicos</strong> de Cundinamarca se certificaron con una valoración de 4,8 sobre 5. Una evaluación externa encontró que el <strong>96 %</strong> considera útil o muy útil lo aprendido y que el <strong>86 %</strong> ya lo aplica en clase. La meta es llegar a <strong>1.600 docentes en 2028</strong>.</p>
 {$img('proyecto-de-vida-datos', 613, 'Infografía con los datos del caso: 1 de 3 docentes no se sentía preparado, 4 de 10 cancelaban la clase, 729 docentes certificados en 18 colegios, 96 % lo considera útil y 86 % lo aplica', 'Los datos del caso según el video de Platzi. La meta es formar 1.600 docentes en 2028.')}
-<p>La segunda mitad del video es menos sobre educación y más sobre comunicación: Platzi reconoce que proyectos como este «no llegaron a redes, no llegaron a la comunidad y muchas veces ni siquiera llegaron a nosotros», y cierra con una idea que vale para cualquier colegio: <em>no hay que crear todo de cero, solo hay que contarlo</em>.</p>
+<p>La segunda mitad del video es menos sobre educación y más sobre comunicación: Platzi reconoce que proyectos como este "no llegaron a redes, no llegaron a la comunidad y muchas veces ni siquiera llegaron a nosotros", y cierra con una idea que vale para cualquier colegio: <em>no hay que crear todo de cero, solo hay que contarlo</em>.</p>
 
 <h2>Por qué el proyecto de vida no es una clase de relleno</h2>
 <p>Cuando un colegio cancela la clase de proyecto de vida casi nunca lo hace por desinterés. Lo hace porque es la asignatura sin examen externo, sin libro de texto claro y, como muestra el video, a menudo sin un docente que se sienta seguro de cómo darla. El problema es que lo que no se trabaja en el colegio no desaparece: se decide igual, pero a ciegas.</p>
@@ -64,7 +64,7 @@ return [
 <p>La familia es el primer lugar donde un adolescente habla de su futuro, y también donde más presión recibe. Muchos padres quieren para sus hijos la carrera que ellos no pudieron estudiar o la que creen que da más dinero, y eso, aunque nace del cariño, puede convertir el proyecto de vida en un proyecto ajeno.</p>
 <p>Algunas ideas prácticas que comparto con las familias en las reuniones de padres:</p>
 <ul>
-<li><strong>Preguntar antes de opinar</strong>: «¿Qué te gusta hacer cuando nadie te obliga?» abre más conversación que «¿Qué vas a estudiar?».</li>
+<li><strong>Preguntar antes de opinar</strong>: "¿Qué te gusta hacer cuando nadie te obliga?" abre más conversación que "¿Qué vas a estudiar?".</li>
 <li><strong>Conocer las opciones</strong>: la formación técnica y tecnológica también es un camino digno y con salida laboral.</li>
 <li><strong>Hablar de dinero sin miedo</strong>: costos, becas, créditos y la posibilidad de estudiar y trabajar.</li>
 <li><strong>Acercarse al colegio</strong>: preguntar cómo se trabaja el proyecto de vida y pedir que no se cancele.</li>
@@ -119,7 +119,7 @@ return [
 <p>Es el proceso con el que el colegio ayuda a cada estudiante a conocerse, explorar sus opciones de estudio y trabajo y construir un plan para su futuro. En Colombia se enmarca en el servicio de orientación estudiantil y en el proyecto educativo institucional de cada colegio.</p>
 <h3>¿Es obligatorio trabajar el proyecto de vida en Colombia?</h3>
 <p>La norma exige que todos los establecimientos presten un servicio de orientación estudiantil que apoye la toma de decisiones y la identificación de aptitudes e intereses. La forma concreta de hacerlo, el tiempo y el responsable dependen del PEI de cada colegio.</p>
-<h3>¿Qué es el curso «Aventura al éxito» de Platzi?</h3>
+<h3>¿Qué es el curso "Aventura al éxito" de Platzi?</h3>
 <p>Es un curso en línea creado por Platzi a partir de la metodología de la Fundación Santa Isabel para que rectores, docentes y líderes escolares guíen el proyecto de vida de sus estudiantes. Según el video, certificó a 729 docentes de 18 colegios públicos de Cundinamarca.</p>
 <h3>¿Cómo pueden ayudar los padres a construir el proyecto de vida?</h3>
 <p>Escuchando antes de opinar, conociendo las opciones de formación técnica, tecnológica y universitaria, hablando con franqueza de costos y becas, y aceptando que los intereses de un adolescente pueden cambiar.</p>

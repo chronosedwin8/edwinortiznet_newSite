@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «¿Excel está muerto en la era de la IA?». Key is the Spanish slug.
+// English version of "¿Excel está muerto en la era de la IA?". Key is the Spanish slug.
 // Nowdoc keeps code ($, <, &) literal; <pre><code> blocks are escaped automatically and figures are
 // inserted from {{img:…}} markers. Facts checked on October 9, 2026, with linked sources. Formulas use
 // English function names and comma separators; the Spanish originals were tested in Excel 16.

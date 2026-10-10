@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Vacantes por territorio y por área en el Concurso Docente: qué se puede deducir y qué no». Fuentes verificadas el 9 de octubre de 2026: OPEC preliminar de la CNSC (19-ago-2026) según cobertura de Grupo Geard, Portafolio y otros medios; matriz de respuestas de la CNSC (sept. 2026). Cifras preliminares; escenarios y caso de práctica no oficiales.
+// "Vacantes por territorio y por área en el Concurso Docente: qué se puede deducir y qué no". Fuentes verificadas el 9 de octubre de 2026: OPEC preliminar de la CNSC (19-ago-2026) según cobertura de Grupo Geard, Portafolio y otros medios; matriz de respuestas de la CNSC (sept. 2026). Cifras preliminares; escenarios y caso de práctica no oficiales.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/vacantes-concurso-docente/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -16,7 +16,7 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>Cuando se publicó la oferta preliminar del Concurso Docente, la conversación entre aspirantes se llenó de números: «hay más de 28.000 vacantes», «Antioquia tiene mil y pico para primaria», «en Bogotá hay menos». Es natural querer saber dónde hay más plazas. Pero un número de vacantes, sin contexto, puede llevarte a decidir mal: <strong>más vacantes en un territorio no significa más probabilidad de ser nombrado</strong>.</p>
+<p>Cuando se publicó la oferta preliminar del Concurso Docente, la conversación entre aspirantes se llenó de números: "hay más de 28.000 vacantes", "Antioquia tiene mil y pico para primaria", "en Bogotá hay menos". Es natural querer saber dónde hay más plazas. Pero un número de vacantes, sin contexto, puede llevarte a decidir mal: <strong>más vacantes en un territorio no significa más probabilidad de ser nombrado</strong>.</p>
 <p>Este artículo explica qué se sabe de la oferta preliminar, qué se puede deducir de las vacantes por territorio y por área, qué no, y cómo usarlas para tomar una decisión informada. Incluye una <a href="/descargas/concurso-docente/matriz-vacantes-concurso-docente.xlsx">matriz descargable en Excel</a> para comparar empleos con tus propios criterios. Datos verificados el 9 de octubre de 2026.</p>
 <p class="notice"><strong>Advertencias.</strong> La oferta que se cita es la <strong>preliminar</strong>: un borrador que la CNSC publicó para observaciones y que puede variar antes de la apertura de inscripciones. Las cifras provienen de la cobertura de medios especializados sobre esa OPEC; verifica siempre en SIMO y en el portal de la CNSC, y distingue los documentos preliminares de los definitivos. Este artículo no garantiza puntajes, probabilidades ni nombramientos.</p>
 
@@ -36,7 +36,7 @@ $html = <<<'HTML'
 </ul>
 
 <h2>Por qué las vacantes solas no dicen nada</h2>
-<p>La razón es aritmética: lo que importa no es cuántas vacantes hay, sino <strong>cuántos aspirantes competirán por cada una</strong>. La hoja «Escenarios» del libro lo muestra con cifras inventadas:</p>
+<p>La razón es aritmética: lo que importa no es cuántas vacantes hay, sino <strong>cuántos aspirantes competirán por cada una</strong>. La hoja "Escenarios" del libro lo muestra con cifras inventadas:</p>
 <table>
 <thead><tr><th>Escenario (ilustrativo)</th><th>Vacantes</th><th>Aspirantes que podrían competir</th><th>Aspirantes por vacante</th></tr></thead>
 <tbody>
@@ -46,7 +46,7 @@ $html = <<<'HTML'
 <tr><td>Muchas vacantes, poca competencia</td><td>40</td><td>200</td><td>5</td></tr>
 </tbody>
 </table>
-<p>Dos empleos con 3 vacantes pueden tener 15 o 200 aspirantes por vacante; uno con 40 puede tener 5 o 60. Y aun esa razón no es una probabilidad: depende de quién apruebe la prueba eliminatoria, de los puntajes de cada etapa y de las reglas definitivas. Por eso <strong>no existe una forma honesta de convertir vacantes en tu «probabilidad de ganar»</strong>, y cualquiera que te la ofrezca te está vendiendo humo.</p>
+<p>Dos empleos con 3 vacantes pueden tener 15 o 200 aspirantes por vacante; uno con 40 puede tener 5 o 60. Y aun esa razón no es una probabilidad: depende de quién apruebe la prueba eliminatoria, de los puntajes de cada etapa y de las reglas definitivas. Por eso <strong>no existe una forma honesta de convertir vacantes en tu "probabilidad de ganar"</strong>, y cualquiera que te la ofrezca te está vendiendo humo.</p>
 
 <h2>Cómo usar las vacantes para decidir bien</h2>
 <p>Según el proyecto de anexo técnico y la matriz de respuestas de la CNSC (septiembre de 2026, documentos preliminares), cada aspirante se inscribe a <strong>un solo empleo por proceso</strong> y no se aceptan equivalencias por afinidad; confirma estas reglas en el acuerdo definitivo. Eso convierte la elección del empleo en la decisión más importante, y conviene tomarla con una lista de criterios:</p>
@@ -57,10 +57,10 @@ $html = <<<'HTML'
 <li><strong>Interés profesional:</strong> la zona, el nivel y el tipo de institución.</li>
 <li><strong>Y solo después</strong>, como dato de contexto, las vacantes.</li>
 </ol>
-<p>La hoja «Mi_busqueda» del libro implementa este orden: calcula un puntaje de prioridad con arraigo, logística e interés, <strong>pone en cero los empleos cuyos requisitos no cumples</strong> y deja las vacantes fuera del puntaje a propósito.</p>
+<p>La hoja "Mi_busqueda" del libro implementa este orden: calcula un puntaje de prioridad con arraigo, logística e interés, <strong>pone en cero los empleos cuyos requisitos no cumples</strong> y deja las vacantes fuera del puntaje a propósito.</p>
 
 <h2>Un caso de aplicación (práctica, no oficial)</h2>
-<p><strong>Situación.</strong> Una aspirante a docente de primaria encuentra tres empleos: el A, con 3 vacantes en un municipio rural donde tiene familia; el B, con 12 vacantes en una ciudad grande donde no ha vivido; y el C, con 2 vacantes de matemáticas, para cuyo requisito no tiene el título exacto. Un amigo le dice que elija el B «porque tiene más vacantes».</p>
+<p><strong>Situación.</strong> Una aspirante a docente de primaria encuentra tres empleos: el A, con 3 vacantes en un municipio rural donde tiene familia; el B, con 12 vacantes en una ciudad grande donde no ha vivido; y el C, con 2 vacantes de matemáticas, para cuyo requisito no tiene el título exacto. Un amigo le dice que elija el B "porque tiene más vacantes".</p>
 <p><strong>Pregunta.</strong> ¿Qué razonamiento es el más sólido?</p>
 <ol type="A">
 <li>Elegir el B: más vacantes significa más probabilidad.</li>
@@ -111,7 +111,7 @@ return [
     'seo_description' => 'Cómo leer las vacantes por territorio y área de la OPEC preliminar del Concurso Docente, qué no puedes deducir de ellas y una matriz para comparar empleos.',
     'focus_keyword' => 'vacantes Concurso Docente por territorio',
     'cover' => '/assets/img/articulos/vacantes-concurso-docente/vacantes-concurso-docente-portada',
-    'cover_alt' => 'Portada «Vacantes por territorio y por área: qué se puede deducir y qué no» con una tarjeta: 8.059 vacantes preliminares de docente de primaria, diez territorios concentran el 66 %, cifra preliminar y más vacantes no es más probabilidad.',
+    'cover_alt' => 'Portada "Vacantes por territorio y por área: qué se puede deducir y qué no" con una tarjeta: 8.059 vacantes preliminares de docente de primaria, diez territorios concentran el 66 %, cifra preliminar y más vacantes no es más probabilidad.',
     'published_at' => '2026-11-27 12:00:00',
     'content_html' => $html,
 ];

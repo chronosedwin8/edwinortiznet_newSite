@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «¿La IA amplía el pensamiento del estudiante o lo reemplaza?». Key is the Spanish slug. Evidence (Bastani et al. PNAS 2025,
+// English version of "¿La IA amplía el pensamiento del estudiante o lo reemplaza?". Key is the Spanish slug. Evidence (Bastani et al. PNAS 2025,
 // Lee et al. CHI 2025, OECD Digital Education Outlook 2026, TALIS 2024) checked on October 9, 2026. Status and date are carried over from the
 // Spanish post by en/02_recent_posts.php (scheduled for Wednesday, October 14, 2026, 7:00 a.m. Bogotá time).
 $img = static function (string $name, int $h960, string $alt, string $caption): string {

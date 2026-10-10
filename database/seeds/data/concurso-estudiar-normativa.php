@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Cómo estudiar la normativa del Concurso Docente sin memorizar artículos». Fuentes verificadas el 9 de octubre de 2026: Dunlosky et al. (2013), Constitución art. 67, Ley 115 de 1994 arts. 73, 76, 77, 142, 144 y 145 (Función Pública, Normograma). Caso de práctica no oficial.
+// "Cómo estudiar la normativa del Concurso Docente sin memorizar artículos". Fuentes verificadas el 9 de octubre de 2026: Dunlosky et al. (2013), Constitución art. 67, Ley 115 de 1994 arts. 73, 76, 77, 142, 144 y 145 (Función Pública, Normograma). Caso de práctica no oficial.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/estudiar-normativa-concurso/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -16,7 +16,7 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>«Hay que estudiarse la normativa» es el consejo más repetido a quien se prepara para el Concurso Docente, y también el que más angustia produce: leyes, decretos, artículos, parágrafos. La reacción habitual es intentar memorizarlo todo, subrayar de colores y releer hasta que «suene familiar». El problema es que <strong>reconocer una norma no es lo mismo que saber usarla</strong>, y las preguntas de aplicación piden lo segundo.</p>
+<p>"Hay que estudiarse la normativa" es el consejo más repetido a quien se prepara para el Concurso Docente, y también el que más angustia produce: leyes, decretos, artículos, parágrafos. La reacción habitual es intentar memorizarlo todo, subrayar de colores y releer hasta que "suene familiar". El problema es que <strong>reconocer una norma no es lo mismo que saber usarla</strong>, y las preguntas de aplicación piden lo segundo.</p>
 <p>Este artículo propone un método distinto: en lugar de memorizar artículos, <strong>construyes un mapa normativo</strong>, aprendes a leer cada norma con cuatro preguntas y repasas con intervalos crecientes. Incluye un <a href="/descargas/concurso-docente/mapa-normativo-concurso-docente.xlsx">mapa normativo descargable en Excel</a> con ejemplos verificados contra el texto oficial y un calendario de repaso automático. Datos verificados el 9 de octubre de 2026.</p>
 <p class="notice"><strong>Advertencias.</strong> Este artículo no define qué normas se evalúan: eso lo establecen los documentos oficiales de la convocatoria (consulta el portal de la CNSC y la guía de orientación vigente, y distingue siempre los documentos preliminares de los definitivos). Los casos de práctica son ejercicios míos, <strong>no preguntas oficiales</strong>. Ningún método garantiza un puntaje ni un nombramiento.</p>
 
@@ -44,11 +44,11 @@ $html = <<<'HTML'
 <li><strong>¿Cuándo y cómo?</strong> El procedimiento y el orden de los pasos.</li>
 <li><strong>¿Qué pasa si no se cumple y con qué otra norma se conecta?</strong></li>
 </ol>
-<p>La hoja «Cuatro_preguntas» las trae listas para aplicar a cada artículo. Fíjate que estas preguntas son las mismas que necesitas para resolver una situación: por eso conectan con el <a href="/concurso-docente-juicio-situacional-analizar-caso-respuestas-aparentemente-correctas/">método de juicio situacional</a>.</p>
+<p>La hoja "Cuatro_preguntas" las trae listas para aplicar a cada artículo. Fíjate que estas preguntas son las mismas que necesitas para resolver una situación: por eso conectan con el <a href="/concurso-docente-juicio-situacional-analizar-caso-respuestas-aparentemente-correctas/">método de juicio situacional</a>.</p>
 
 <h2>Paso 3: el repaso espaciado</h2>
-<p>El libro calcula la fecha de tu próximo repaso: si contestaste mal o dudaste (confianza 0), repasas al día siguiente; si contestaste bien, los intervalos crecen a 1, 3, 7, 14 y 30 días según los repasos hechos. La columna «Estado» te avisa cuándo toca «Repasar hoy». Son intervalos de elaboración propia, basados en el principio de práctica distribuida; ajústalos a tu tiempo. Lo esencial: <strong>anota «último repaso» solo cuando contestes sin mirar la norma</strong>.</p>
-<p>La hoja «Preguntas_de_repaso» trae ocho tarjetas con respuestas verificadas, para empezar. Después, crea las tuyas.</p>
+<p>El libro calcula la fecha de tu próximo repaso: si contestaste mal o dudaste (confianza 0), repasas al día siguiente; si contestaste bien, los intervalos crecen a 1, 3, 7, 14 y 30 días según los repasos hechos. La columna "Estado" te avisa cuándo toca "Repasar hoy". Son intervalos de elaboración propia, basados en el principio de práctica distribuida; ajústalos a tu tiempo. Lo esencial: <strong>anota "último repaso" solo cuando contestes sin mirar la norma</strong>.</p>
+<p>La hoja "Preguntas_de_repaso" trae ocho tarjetas con respuestas verificadas, para empezar. Después, crea las tuyas.</p>
 
 <h2>Un caso de aplicación (práctica, no oficial)</h2>
 <p><strong>Situación:</strong> En un colegio oficial, el equipo de matemáticas propone cambiar la secuencia de contenidos del currículo para que el pensamiento variacional aparezca antes. El rector quiere saber qué instancia debe estudiar y ajustar el currículo y cuál debe participar en la planeación y evaluación del PEI, del currículo y del plan de estudios.</p>
@@ -59,7 +59,7 @@ $html = <<<'HTML'
 <li>El rector, por ser el representante legal.</li>
 <li>La asamblea de padres de familia, por participar en el PEI.</li>
 </ol>
-<p><strong>Respuesta:</strong> B. El artículo 145 de la Ley 115 de 1994 asigna al consejo académico «el estudio, modificación y ajustes al currículo, de conformidad con lo establecido en la presente Ley». <strong>Por qué los distractores tientan:</strong> A mezcla dos funciones, porque el consejo directivo <em>participa</em> en la planeación y evaluación del PEI, el currículo y el plan de estudios (art. 144), pero no es el que lo estudia y ajusta; C confunde la representación legal con la competencia pedagógica; D apela a la participación de la comunidad, que existe, pero no es el órgano con esa función. <strong>Ejercicio:</strong> responde ahora ¿qué decisión corresponde a cada órgano si el cambio afecta además al PEI? Conecta con el art. 73 y con la autonomía del art. 77, que se ejerce «dentro de los límites» de la ley y del PEI.</p>
+<p><strong>Respuesta:</strong> B. El artículo 145 de la Ley 115 de 1994 asigna al consejo académico "el estudio, modificación y ajustes al currículo, de conformidad con lo establecido en la presente Ley". <strong>Por qué los distractores tientan:</strong> A mezcla dos funciones, porque el consejo directivo <em>participa</em> en la planeación y evaluación del PEI, el currículo y el plan de estudios (art. 144), pero no es el que lo estudia y ajusta; C confunde la representación legal con la competencia pedagógica; D apela a la participación de la comunidad, que existe, pero no es el órgano con esa función. <strong>Ejercicio:</strong> responde ahora ¿qué decisión corresponde a cada órgano si el cambio afecta además al PEI? Conecta con el art. 73 y con la autonomía del art. 77, que se ejerce "dentro de los límites" de la ley y del PEI.</p>
 
 <h2>Cómo organizarlo en cuatro semanas</h2>
 <ol>
@@ -109,7 +109,7 @@ return [
     'seo_description' => 'Cómo estudiar la normativa del Concurso Docente sin memorizar: mapa normativo, cuatro preguntas, repaso espaciado y un caso de aplicación con plantilla.',
     'focus_keyword' => 'estudiar la normativa del Concurso Docente',
     'cover' => '/assets/img/articulos/estudiar-normativa-concurso/estudiar-normativa-concurso-portada',
-    'cover_alt' => 'Portada «Cómo estudiar la normativa del concurso sin memorizar artículos» con una lista: preguntarse sin mirar la norma, conectar cada norma con otras y resolver casos, marcados; subrayar todo y releer, descartado.',
+    'cover_alt' => 'Portada "Cómo estudiar la normativa del concurso sin memorizar artículos" con una lista: preguntarse sin mirar la norma, conectar cada norma con otras y resolver casos, marcados; subrayar todo y releer, descartado.',
     'published_at' => '2026-11-20 12:00:00',
     'content_html' => $html,
 ];

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «La computación cuántica: para qué sirve y cómo podría cambiar el mundo». Key is the Spanish slug.
+// English version of "La computación cuántica: para qué sirve y cómo podría cambiar el mundo". Key is the Spanish slug.
 // Nowdoc keeps code literal; <pre><code> blocks are escaped automatically and figures are inserted from {{img:…}}
 // markers. Facts checked on October 8, 2026, with linked sources; Python examples tested with NumPy and Qiskit 2.5.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {

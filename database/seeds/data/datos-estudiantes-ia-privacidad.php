@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «¿Hasta dónde puede llegar un colegio al recopilar datos de sus estudiantes para personalizar el aprendizaje con IA?» Fuentes verificadas el 9 de
+// "¿Hasta dónde puede llegar un colegio al recopilar datos de sus estudiantes para personalizar el aprendizaje con IA?" Fuentes verificadas el 9 de
 // octubre de 2026: Ley 1581 de 2012 (art. 7) y Decreto 1074 de 2015 (art. 2.2.2.25.2.9), Sentencia C-748 de 2011, Circular Externa 002 de 2024 de la
 // SIC, Reglamento (UE) 2024/1689 (art. 5(1)(f) y Anexo III) y la brecha de PowerSchool. No es asesoría legal.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
@@ -20,7 +20,7 @@ $html = <<<'HTML'
 <h2>Qué datos se recopilan y cuáles son sensibles</h2>
 <p>No todos los datos de un estudiante pesan igual. Esta clasificación práctica sirve para decidir cuánto cuidado merece cada tipo:</p>
 {{img:datos}}
-<p>Hay una categoría que merece una advertencia: las <strong>inferencias</strong>. Cuando una IA calcula que un estudiante «tiene riesgo de deserción», «es poco motivado» o «tiene un estilo de aprendizaje visual», crea datos nuevos sobre el niño, que pueden ser erróneos y que, una vez en un perfil, tienden a seguirlo. Y los datos de salud, discapacidad o diagnósticos (por ejemplo, los de un PIAR) son sensibles: no deberían llegar a una herramienta externa con nombre y apellido.</p>
+<p>Hay una categoría que merece una advertencia: las <strong>inferencias</strong>. Cuando una IA calcula que un estudiante "tiene riesgo de deserción", "es poco motivado" o "tiene un estilo de aprendizaje visual", crea datos nuevos sobre el niño, que pueden ser erróneos y que, una vez en un perfil, tienden a seguirlo. Y los datos de salud, discapacidad o diagnósticos (por ejemplo, los de un PIAR) son sensibles: no deberían llegar a una herramienta externa con nombre y apellido.</p>
 
 <h2>Un caso real: la brecha de PowerSchool</h2>
 <p>A finales de 2024, la plataforma estadounidense PowerSchool, que gestiona información de estudiantes en miles de colegios, sufrió un acceso no autorizado. Según <a href="https://www.tomsguide.com/computing/online-security/powerschool-cyberattack-may-have-compromised-the-data-of-more-than-70-million-students-and-teachers-what-to-do-now">el resumen de Tom's Guide</a> basado en BleepingComputer, se vieron afectados los datos de unos 62,4 millones de estudiantes y 9,5 millones de docentes, y la intrusión se hizo con las credenciales de un contratista, no con un ataque de ransomware ni por una falla del software. Lo expuesto dependió de cada distrito: nombres, direcciones, teléfonos, promedios de notas, información de padres y, en algunos casos, datos médicos. Las cifras varían según la fuente y algunos detalles (por ejemplo, la exposición de números de seguridad social) se contradicen entre los informes. La lección es sencilla: <strong>mientras más datos concentra un proveedor, más atractivo y más dañino es un incidente</strong>, y la seguridad de un colegio depende también de las credenciales de sus contratistas.</p>
@@ -35,7 +35,7 @@ $html = <<<'HTML'
 <table>
 <thead><tr><th>Criterio</th><th>Pregunta clave</th><th>Señal de alerta</th></tr></thead>
 <tbody>
-<tr><td><strong>1. Finalidad</strong></td><td>¿Qué decisión pedagógica concreta mejora este dato?</td><td>«Por si sirve más adelante».</td></tr>
+<tr><td><strong>1. Finalidad</strong></td><td>¿Qué decisión pedagógica concreta mejora este dato?</td><td>"Por si sirve más adelante".</td></tr>
 <tr><td><strong>2. Necesidad (minimización)</strong></td><td>¿Se logra lo mismo con menos datos o con datos anonimizados?</td><td>Piden más datos de los necesarios.</td></tr>
 <tr><td><strong>3. Proporcionalidad</strong></td><td>¿El beneficio justifica el riesgo para un menor?</td><td>Datos biométricos o emocionales para tareas simples.</td></tr>
 <tr><td><strong>4. Autorización e información</strong></td><td>¿Las familias entienden qué datos, para qué y quién los ve? ¿Se escuchó al estudiante según su madurez?</td><td>Un consentimiento genérico dentro de la matrícula.</td></tr>
@@ -44,7 +44,7 @@ $html = <<<'HTML'
 <tr><td><strong>7. Seguridad</strong></td><td>¿Hay control de accesos, cifrado, registro de accesos y MFA, también para contratistas?</td><td>Cuentas compartidas y sin segundo factor.</td></tr>
 <tr><td><strong>8. Conservación y supresión</strong></td><td>¿Cuánto tiempo se guardan y cómo se borran?</td><td>Sin plazo ni procedimiento de eliminación.</td></tr>
 <tr><td><strong>9. Derechos y canales</strong></td><td>¿Las familias pueden consultar, corregir y pedir suprimir los datos?</td><td>No hay canal ni responsable visible.</td></tr>
-<tr><td><strong>10. Evaluación de impacto e incidentes</strong></td><td>¿Se hizo un estudio de impacto antes de usarla y hay plan si hay una filtración?</td><td>«Nunca nos ha pasado nada».</td></tr>
+<tr><td><strong>10. Evaluación de impacto e incidentes</strong></td><td>¿Se hizo un estudio de impacto antes de usarla y hay plan si hay una filtración?</td><td>"Nunca nos ha pasado nada".</td></tr>
 </tbody>
 </table>
 <p>Y una prueba de tres preguntas que cabe en cualquier reunión de consejo académico: <strong>1) ¿Qué decisión pedagógica mejora? 2) ¿Podría lograrse con menos datos? 3) ¿Qué pasa si se filtra o se equivoca?</strong> Si no hay una buena respuesta a las tres, probablemente el dato no se debería recoger.</p>
@@ -94,7 +94,7 @@ return [
     'seo_description' => 'Privacidad de datos de estudiantes en la IA educativa: qué dice la ley en Colombia, un caso real y diez criterios para un uso responsable en colegios.',
     'focus_keyword' => 'privacidad de datos de estudiantes IA',
     'cover' => '/assets/img/articulos/datos-estudiantes-ia-privacidad/datos-estudiantes-ia-privacidad-portada',
-    'cover_alt' => 'Portada «¿Hasta dónde puede un colegio recopilar datos de sus estudiantes para personalizar con IA?» con una lista: datos académicos y de salud protegidos, y emociones y perfiles sin revisión humana descartados.',
+    'cover_alt' => 'Portada "¿Hasta dónde puede un colegio recopilar datos de sus estudiantes para personalizar con IA?" con una lista: datos académicos y de salud protegidos, y emociones y perfiles sin revisión humana descartados.',
     'published_at' => '2026-10-28 12:00:00',
     'content_html' => $html,
 ];

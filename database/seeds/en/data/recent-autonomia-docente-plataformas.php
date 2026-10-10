@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «¿El docente está perdiendo autonomía pedagógica ante las plataformas que planean…». Key is the Spanish slug. Status and date come from the Spanish post via en/02_recent_posts.php.
+// English version of "¿El docente está perdiendo autonomía pedagógica ante las plataformas que planean…". Key is the Spanish slug. Status and date come from the Spanish post via en/02_recent_posts.php.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/autonomia-docente-plataformas/' . $name . '-en';
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «Copilot y agentes en Excel». Key is the Spanish slug.
+// English version of "Copilot y agentes en Excel". Key is the Spanish slug.
 // Nowdoc keeps formulas ($, <, &) literal; <pre><code> blocks are escaped automatically and figures
 // are inserted from {{img:…}} markers. Facts checked on October 8, 2026, with linked sources.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «¿Comprar software, pagar una suscripción o desarrollar una aplicación propia?» Fuentes verificadas el 9 de octubre de 2026: Ley 1581 de 2012 art. 26 y Circular Única SIC, IVA de servicios digitales desde el exterior (Estatuto Tributario), Ley 603 de 2000. Cifras del caso: modelo propio con supuestos ilustrativos (matriz descargable).
+// "¿Comprar software, pagar una suscripción o desarrollar una aplicación propia?" Fuentes verificadas el 9 de octubre de 2026: Ley 1581 de 2012 art. 26 y Circular Única SIC, IVA de servicios digitales desde el exterior (Estatuto Tributario), Ley 603 de 2000. Cifras del caso: modelo propio con supuestos ilustrativos (matriz descargable).
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/tco-comprar-suscribir-desarrollar/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -47,10 +47,10 @@ $html = <<<'HTML'
 </tbody>
 </table>
 {{img:total}}
-<p>Observa tres cosas. Primero, <strong>la licencia «barata a la larga» no lo es tanto</strong>: el 73 % de su costo cae en el primer año, y los años 2 y 3 siguen costando por soporte, servidor y administración. Segundo, <strong>la suscripción parece cara mes a mes</strong> (US$ 300 mensuales en el año 1), pero evita el golpe inicial. Tercero, <strong>el desarrollo propio es el más caro con pocos usuarios</strong>, porque su costo es casi fijo.</p>
+<p>Observa tres cosas. Primero, <strong>la licencia "barata a la larga" no lo es tanto</strong>: el 73 % de su costo cae en el primer año, y los años 2 y 3 siguen costando por soporte, servidor y administración. Segundo, <strong>la suscripción parece cara mes a mes</strong> (US$ 300 mensuales en el año 1), pero evita el golpe inicial. Tercero, <strong>el desarrollo propio es el más caro con pocos usuarios</strong>, porque su costo es casi fijo.</p>
 
 <h2>Cuando cambian los usuarios, cambia la respuesta</h2>
-<p>Sensibilidad con los mismos supuestos y solo el número de usuarios variando (calculada en la hoja «Sensibilidad» de la matriz):</p>
+<p>Sensibilidad con los mismos supuestos y solo el número de usuarios variando (calculada en la hoja "Sensibilidad" de la matriz):</p>
 <table>
 <thead><tr><th>Usuarios</th><th>Comprar</th><th>Suscripción</th><th>Desarrollar</th><th>Más barata</th></tr></thead>
 <tbody>
@@ -71,7 +71,7 @@ $html = <<<'HTML'
 <li><strong>Datos personales.</strong> Si la herramienta guarda datos de estudiantes, clientes o empleados en servidores fuera de Colombia, la Ley 1581 de 2012 (artículo 26) prohíbe, en principio, transferir datos a países sin nivel adecuado de protección según los estándares de la Superintendencia de Industria y Comercio, salvo excepciones como la autorización del titular. Revisa dónde se alojan los datos y qué cláusulas ofrece el proveedor.</li>
 <li><strong>IVA y moneda.</strong> Los servicios digitales prestados desde el exterior a consumidores en Colombia causan IVA del 19 % (Estatuto Tributario), que generalmente asume el usuario, y el precio en dólares te expone a la tasa de cambio. Confírmalo con tu contador; no está incluido en la matriz.</li>
 <li><strong>Software legal.</strong> Las sociedades deben informar en su informe de gestión el estado de cumplimiento de las normas de propiedad intelectual y derechos de autor (Ley 603 de 2000): conviene que tus licencias estén en regla.</li>
-<li><strong>Capacidad de mantener.</strong> Una aplicación propia sin quien la mantenga se vuelve un riesgo. La pregunta no es «¿podemos construirla?», sino «¿quién la cuidará en el año tres?».</li>
+<li><strong>Capacidad de mantener.</strong> Una aplicación propia sin quien la mantenga se vuelve un riesgo. La pregunta no es "¿podemos construirla?", sino "¿quién la cuidará en el año tres?".</li>
 </ul>
 
 <h2>Una lista de verificación antes de decidir</h2>
@@ -126,7 +126,7 @@ return [
     'seo_description' => 'Compara el costo total a 3 años de comprar software, pagar una suscripción o desarrollar tu propia app, con un caso, puntos de equilibrio y matriz en Excel.',
     'focus_keyword' => 'comprar o desarrollar software',
     'cover' => '/assets/img/articulos/tco-comprar-suscribir-desarrollar/tco-comprar-suscribir-desarrollar-portada',
-    'cover_alt' => 'Portada «¿Comprar, suscribirse o desarrollar tu propia aplicación? El costo real a 3 años» con una tarjeta que muestra 14.274 dólares para la suscripción, 15.300 para la licencia y 36.540 para el desarrollo propio en el caso de ejemplo.',
+    'cover_alt' => 'Portada "¿Comprar, suscribirse o desarrollar tu propia aplicación? El costo real a 3 años" con una tarjeta que muestra 14.274 dólares para la suscripción, 15.300 para la licencia y 36.540 para el desarrollo propio en el caso de ejemplo.',
     'published_at' => '2026-11-10 12:00:00',
     'content_html' => $html,
 ];

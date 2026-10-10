@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «Agentes de IA con acceso a tus sistemas…». Key is the Spanish slug. Data checked on October 9, 2026 (OWASP LLM06:2025,
+// English version of "Agentes de IA con acceso a tus sistemas…". Key is the Spanish slug. Data checked on October 9, 2026 (OWASP LLM06:2025,
 // Gartner June 2025, CVE-2025-32711, OECD.AI incident log on Replit). The approval-gate code was run in Python 3 with simulated tools. Status and
 // date come from the Spanish post via en/02_recent_posts.php (scheduled for Tuesday, October 27, 2026, 7:00 a.m. Bogotá time).
 $img = static function (string $name, int $h960, string $alt, string $caption): string {

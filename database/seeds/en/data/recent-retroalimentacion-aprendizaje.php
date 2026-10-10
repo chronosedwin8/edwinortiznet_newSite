@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «La retroalimentación que sí cambia el aprendizaje: cuatro niveles, un banco de e…». Key is the Spanish slug. Status and date come from the Spanish post via en/02_recent_posts.php.
+// English version of "La retroalimentación que sí cambia el aprendizaje: cuatro niveles, un banco de e…". Key is the Spanish slug. Status and date come from the Spanish post via en/02_recent_posts.php.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/retroalimentacion-aprendizaje/' . $name . '-en';
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '

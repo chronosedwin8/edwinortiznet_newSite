@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «#N/A, #SPILL!, #CALC! y #VALUE!: qué significan los errores de Excel y cómo arre…». Key is the Spanish slug. Status and date come from the Spanish post via en/02_recent_posts.php.
+// English version of "#N/A, #SPILL!, #CALC! y #VALUE!: qué significan los errores de Excel y cómo arre…". Key is the Spanish slug. Status and date come from the Spanish post via en/02_recent_posts.php.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/errores-excel/' . $name . '-en';
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '

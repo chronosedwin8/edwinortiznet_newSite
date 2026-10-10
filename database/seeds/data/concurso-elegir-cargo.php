@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «¿Docente de aula, orientador, coordinador o rector? Cómo elegir el cargo según tu perfil». Fundamentado en el Diario Oficial 51.984 (Resolución 3842
+// "¿Docente de aula, orientador, coordinador o rector? Cómo elegir el cargo según tu perfil". Fundamentado en el Diario Oficial 51.984 (Resolución 3842
 // de 2022, MEN) que cita el Decreto 1075 de 2015, y en las respuestas oficiales de la CNSC (septiembre de 2026) al proyecto de acuerdo del proceso docente
 // 2026. Documentos PRELIMINARES. No se citan años de experiencia ni títulos por cargo porque no pude verificarlos en el Anexo Técnico 1 vigente: se
 // remite a la fuente. Última verificación: 9 de octubre de 2026.
@@ -16,7 +16,7 @@ $img = static function (string $name, int $h960, string $alt, string $caption): 
 $html = <<<'HTML'
 <p>Cuando llegue el momento de inscribirte al Concurso Docente tendrás que tomar una decisión que no podrás deshacer: <strong>escoger un solo empleo</strong>. Y la OPEC trae cargos muy distintos: docentes de aula, docentes orientadores, coordinadores, directores rurales y rectores. Elegir mal no es solo perder una oportunidad: puede significar presentarte a un cargo cuyos requisitos no cumples y quedar fuera en la verificación.</p>
 <p>Este artículo te propone un método para <strong>elegir el cargo según tu perfil</strong>, comparar lo que cambia entre cargos y descartar lo que no cumples, usando los documentos oficiales. Una advertencia: los textos de la CNSC que cito son un <strong>proyecto de acuerdo preliminar</strong>; las reglas válidas son las del acuerdo definitivo, y <strong>hoy no hay inscripciones abiertas</strong>. Este artículo no garantiza nombramientos, puntajes ni probabilidades de aprobación. Fecha de la última verificación: 9 de octubre de 2026.</p>
-<p class="notice"><strong>En resumen.</strong> El Decreto 1075 de 2015 distingue cargos docentes (docente de aula, docente orientador y docente de apoyo pedagógico) y directivos docentes (rector, director rural y coordinador). Los títulos habilitantes y la experiencia de cada cargo están en el Manual de Funciones, Requisitos y Competencias (Resolución 3842 de 2022, Anexo Técnico 1), y la CNSC dijo que no se crearán equivalencias «por afinidad» ni se exigirán requisitos adicionales. Elige solo el empleo cuyos requisitos cumples exactamente, y confirma cada uno en la OPEC.</p>
+<p class="notice"><strong>En resumen.</strong> El Decreto 1075 de 2015 distingue cargos docentes (docente de aula, docente orientador y docente de apoyo pedagógico) y directivos docentes (rector, director rural y coordinador). Los títulos habilitantes y la experiencia de cada cargo están en el Manual de Funciones, Requisitos y Competencias (Resolución 3842 de 2022, Anexo Técnico 1), y la CNSC dijo que no se crearán equivalencias "por afinidad" ni se exigirán requisitos adicionales. Elige solo el empleo cuyos requisitos cumples exactamente, y confirma cada uno en la OPEC.</p>
 
 <h2>El mapa de cargos: qué es cada uno</h2>
 <p>Según el Diario Oficial que publicó la <a href="https://sidn.ramajudicial.gov.co/SIDN/NORMATIVA/TEXTOS_COMPLETOS/8_RESOLUCIONES/RESOLUCIONES%202022/MEN%20Resoluci%C3%B3n%20003842%20de%202022%20(Requisitos%20y%20Competencias%20para%20los%20Cargos%20de%20Directivos%20Docentes).pdf">Resolución 3842 de 2022 del Ministerio de Educación</a>, el artículo 2.4.6.3.3 del Decreto 1075 de 2015 establece tres tipos de cargos docentes: <strong>docentes de aula</strong> (de preescolar, de primaria y de las áreas de conocimiento de básica y media), <strong>docentes orientadores</strong> y <strong>docentes de apoyo pedagógico</strong> (que acompañan a los docentes de aula que atienden estudiantes con discapacidad). Y los cargos directivos docentes son <strong>rector, director rural y coordinador</strong>. En el proyecto de la CNSC para 2026, la oferta preliminar incluye docentes de aula, docentes orientadores, rectores, coordinadores y directores rurales.</p>
@@ -39,7 +39,7 @@ $html = <<<'HTML'
 
 <h2>Las reglas de elegibilidad que no cambian con el cargo</h2>
 <ul>
-<li><strong>Cada empleo tiene requisitos propios.</strong> La OPEC en SIMO indica la denominación, el área, el nivel y los requisitos de cada uno. La CNSC dijo que antes de las inscripciones cotejará el Manual con la OPEC y la parametrización de SIMO, y que <strong>no se exigirán requisitos adicionales ni se crearán equivalencias «por afinidad»</strong>.</li>
+<li><strong>Cada empleo tiene requisitos propios.</strong> La OPEC en SIMO indica la denominación, el área, el nivel y los requisitos de cada uno. La CNSC dijo que antes de las inscripciones cotejará el Manual con la OPEC y la parametrización de SIMO, y que <strong>no se exigirán requisitos adicionales ni se crearán equivalencias "por afinidad"</strong>.</li>
 <li><strong>Título expedido por una institución habilitada.</strong> Según la Resolución 3842 (que cita el Decreto 1075), los títulos deben haber sido expedidos por una institución legalmente habilitada, y los obtenidos en el exterior deben estar convalidados ante el Ministerio de Educación Nacional para participar.</li>
 <li><strong>Una sola inscripción por proceso.</strong> Hay que escoger un empleo, y aplica a todas las personas, incluso a educadores ya nombrados en propiedad.</li>
 <li><strong>La verificación es individual</strong> y se hace con los documentos cargados en SIMO, hasta el último día de inscripciones. Te lo expliqué en <a href="/concurso-docente-errores-simo-documentos-revisar-antes-inscripcion/">el artículo sobre errores en SIMO y documentos</a>.</li>
@@ -56,10 +56,10 @@ $html = <<<'HTML'
 </ol>
 
 <h2>Un ejemplo hipotético</h2>
-<p>Laura es licenciada en Matemáticas, tiene una maestría en Educación y 6 años como docente de aula en bachillerato; además trabaja como coordinadora académica «encargada» desde hace dos años. ¿Qué empleos podría considerar? Aplicando el método: <strong>docente de aula de Matemáticas</strong> en básica secundaria o media (su título y experiencia coinciden con el área); <strong>coordinador</strong>, si el manual y la OPEC del empleo específico reconocen su título y su experiencia en el cargo requerido (hay que verificar si el tiempo como encargada cuenta y cómo se certifica); y <strong>rector o director rural</strong>, que suelen exigir más formación y experiencia directiva, y que ella debe contrastar con los requisitos exactos antes de siquiera considerarlos. Lo importante: Laura no «elige el cargo que más le gusta», sino el que <strong>cumple, documenta y puede defender</strong>, y solo después compara cuál le conviene. Es un caso inventado con fines pedagógicos, no una evaluación de elegibilidad.</p>
+<p>Laura es licenciada en Matemáticas, tiene una maestría en Educación y 6 años como docente de aula en bachillerato; además trabaja como coordinadora académica "encargada" desde hace dos años. ¿Qué empleos podría considerar? Aplicando el método: <strong>docente de aula de Matemáticas</strong> en básica secundaria o media (su título y experiencia coinciden con el área); <strong>coordinador</strong>, si el manual y la OPEC del empleo específico reconocen su título y su experiencia en el cargo requerido (hay que verificar si el tiempo como encargada cuenta y cómo se certifica); y <strong>rector o director rural</strong>, que suelen exigir más formación y experiencia directiva, y que ella debe contrastar con los requisitos exactos antes de siquiera considerarlos. Lo importante: Laura no "elige el cargo que más le gusta", sino el que <strong>cumple, documenta y puede defender</strong>, y solo después compara cuál le conviene. Es un caso inventado con fines pedagógicos, no una evaluación de elegibilidad.</p>
 
 <h2>Lista de verificación para elegir el cargo</h2>
-<p>Este es el recurso aplicable. Úsalo para cada empleo que estés considerando; si un «No» aparece, descarta el empleo o revisa la norma:</p>
+<p>Este es el recurso aplicable. Úsalo para cada empleo que estés considerando; si un "No" aparece, descarta el empleo o revisa la norma:</p>
 <table>
 <thead><tr><th>Pregunta</th><th>Dónde verificarlo</th></tr></thead>
 <tbody>
@@ -73,7 +73,7 @@ $html = <<<'HTML'
 <tr><td>¿Tengo organizados mis documentos (hoja de control)?</td><td><a href="/descargas/concurso-docente/control-documentos-aspirante.xlsx">Hoja de control de documentos</a> (gratis).</td></tr>
 </tbody>
 </table>
-<p>Los textos exactos están en el <a href="https://www.suin-juriscol.gov.co/viewDocument.asp?ruta=Resolucion/30046385">SUIN-Juriscol (Resolución 3842 de 2022)</a>, en <a href="https://www.cnsc.gov.co/">cnsc.gov.co</a> y en <a href="https://simo.cnsc.gov.co/">SIMO</a>. Desconfía de quien te «asegure» un cargo o un puntaje.</p>
+<p>Los textos exactos están en el <a href="https://www.suin-juriscol.gov.co/viewDocument.asp?ruta=Resolucion/30046385">SUIN-Juriscol (Resolución 3842 de 2022)</a>, en <a href="https://www.cnsc.gov.co/">cnsc.gov.co</a> y en <a href="https://simo.cnsc.gov.co/">SIMO</a>. Desconfía de quien te "asegure" un cargo o un puntaje.</p>
 
 <h2>Tres miradas: docentes de aula, orientadores y aspirantes a dirección</h2>
 <ul>
@@ -117,7 +117,7 @@ return [
     'seo_description' => 'Cómo elegir entre docente de aula, orientador, coordinador o rector en el Concurso Docente: método de cinco pasos, pesos de las pruebas y lista de verificación.',
     'focus_keyword' => 'elegir cargo Concurso Docente',
     'cover' => '/assets/img/articulos/concurso-elegir-cargo/concurso-elegir-cargo-portada',
-    'cover_alt' => 'Portada con el título «¿Docente de aula, orientador, coordinador o rector? Cómo elegir según tu perfil» y una tarjeta con los cargos del proceso: docente de aula enseña, orientador acompaña, coordinador apoya la gestión y rector o director rural dirige.',
+    'cover_alt' => 'Portada con el título "¿Docente de aula, orientador, coordinador o rector? Cómo elegir según tu perfil" y una tarjeta con los cargos del proceso: docente de aula enseña, orientador acompaña, coordinador apoya la gestión y rector o director rural dirige.',
     'published_at' => '2026-10-30 12:00:00',
     'content_html' => $html,
 ];

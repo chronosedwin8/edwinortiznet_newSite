@@ -18,7 +18,7 @@ return [
 <p>Si en tu colegio los horarios se arman en Untis, seguramente conoces la escena: el horario vive en el computador de coordinación, los docentes trabajan con una hoja impresa que ya cambió dos veces y los reemplazos del día se resuelven a punta de llamadas en el pasillo. <strong>UntiCloud</strong> es el software web de Grupo Logic que toma los archivos que Untis ya genera y los publica en un panel en línea: horarios en tiempo real, guardias de recreo, reemplazos e indicadores de ausentismo docente, cada uno visible para el rol que lo necesita. En este artículo te explico qué es, qué problema resuelve y, sobre todo, cómo puedes usar esa información para planear mejor tu trabajo en el aula.</p>
 
 <h2>¿Qué es UntiCloud?</h2>
-<p>UntiCloud es una plataforma 100 % web que funciona como la «capa en línea» de Untis. No reemplaza a Untis ni cambia la forma en que tu coordinación planifica: lee los archivos GPU que Untis Desktop ya exporta (versión 2020 o superior) y los convierte en un panel al que docentes y directivos entran desde el celular, la tableta o el computador.</p>
+<p>UntiCloud es una plataforma 100 % web que funciona como la "capa en línea" de Untis. No reemplaza a Untis ni cambia la forma en que tu coordinación planifica: lee los archivos GPU que Untis Desktop ya exporta (versión 2020 o superior) y los convierte en un panel al que docentes y directivos entran desde el celular, la tableta o el computador.</p>
 <p>No hay que instalar nada en los equipos del colegio ni montar servidores propios. La importación se hace con un clic, sin duplicados y con historial de auditoría, y las secciones que ya existen en Untis (IB, bachillerato, primaria…) se reconocen de forma automática.</p>
 
 <h2>¿Qué problema resuelve en el colegio?</h2>
@@ -35,7 +35,7 @@ return [
 
 <h2>Funciones principales</h2>
 <h3>Horarios en tiempo real</h3>
-<p>Vistas por docente, por curso y en agenda semanal, actualizadas al instante y disponibles en cualquier dispositivo. Se acabó la pregunta de «¿cuál es el horario vigente?».</p>
+<p>Vistas por docente, por curso y en agenda semanal, actualizadas al instante y disponibles en cualquier dispositivo. Se acabó la pregunta de "¿cuál es el horario vigente?".</p>
 <h3>Guardias de recreo</h3>
 <p>Cada docente ve qué día y en qué zona le corresponde vigilar. La asignación llega directamente desde Untis, sin reconfigurar nada.</p>
 <h3>Reemplazos y planificación</h3>
@@ -56,7 +56,7 @@ return [
 <p>Antes de salir de casa, revisa tu horario del día y la zona de recreo que te toca vigilar. Si aparece un reemplazo asignado, ya sabes a qué curso entras y puedes llevar el material listo. Parece poco, pero evita la carrera de las 6:45 a.m. buscando la hoja pegada en la sala de profesores.</p>
 
 <h3>2. Áreas académicas: un banco de guías para las horas de reemplazo</h3>
-<p>Un reemplazo bien llevado no es «cuidar el curso». Propón en tu área que cada docente deje en una carpeta compartida una guía de trabajo autónomo por grado. Cuando la coordinación publique las sustituciones del día en UntiCloud, quien cubre la hora sabe el curso y la materia y solo tiene que abrir la guía correspondiente. Por ejemplo, el área de matemáticas puede tener una guía de problemas de proporcionalidad para 7.º lista para cualquier ausencia.</p>
+<p>Un reemplazo bien llevado no es "cuidar el curso". Propón en tu área que cada docente deje en una carpeta compartida una guía de trabajo autónomo por grado. Cuando la coordinación publique las sustituciones del día en UntiCloud, quien cubre la hora sabe el curso y la materia y solo tiene que abrir la guía correspondiente. Por ejemplo, el área de matemáticas puede tener una guía de problemas de proporcionalidad para 7.º lista para cualquier ausencia.</p>
 
 <h3>3. Coordinación académica: asignar reemplazos con criterio pedagógico</h3>
 <p>La vista de disponibilidad docente muestra quién está libre a esa hora. Úsala para preferir, cuando sea posible, a un docente de la misma área o que ya conozca al grupo. Luego imprime el PDF de sustituciones del día para la sala de profesores y la portería, o compártelo por los canales internos.</p>
@@ -98,7 +98,7 @@ return [
 <li><strong>Los datos de ausentismo son sensibles.</strong> Úsalos para mejorar la organización, no para exponer a nadie. Aprovecha que cada rol ve solo lo que necesita y no compartas pantallazos con nombres por fuera de los canales institucionales.</li>
 <li><strong>Un número no cuenta toda la historia.</strong> Detrás de una incapacidad hay una persona. Lee los indicadores junto con el contexto antes de sacar conclusiones.</li>
 <li><strong>La calidad depende de Untis.</strong> Si los motivos de ausencia o las secciones no se registran bien en Untis, las estadísticas lo reflejarán. Acuerda códigos claros desde el principio.</li>
-<li><strong>Importa con regularidad.</strong> Un horario «en tiempo real» solo lo es si los cambios se importan cuando ocurren.</li>
+<li><strong>Importa con regularidad.</strong> Un horario "en tiempo real" solo lo es si los cambios se importan cuando ocurren.</li>
 <li><strong>Revisa el historial de importaciones.</strong> Allí aparecen los errores detectados; atenderlos a tiempo evita sorpresas.</li>
 </ul>
 <p>Si estás evaluando varias plataformas para tu institución, te puede servir mi análisis de <a href="/herramientas-tecnologicas-para-docentes-pros-y-contras/">herramientas tecnológicas para docentes: pros y contras</a>.</p>
@@ -300,7 +300,7 @@ HTML,
 <p>Aplica un taller de comprensión lectora con preguntas abiertas en papel y usa la corrección asistida con una rúbrica clara. La plataforma propone la retroalimentación; tú la revisas, la ajustas y la apruebas antes de que llegue al estudiante.</p>
 
 <h3>5. Cierre de periodo: plan de recuperación a la medida</h3>
-<p>En lugar del clásico «taller de recuperación» igual para todos, usa el módulo de recuperación para identificar los aprendizajes que cada estudiante necesita reforzar y asignar actividades de nivelación personalizadas. El seguimiento del avance te dice quién ya superó la dificultad.</p>
+<p>En lugar del clásico "taller de recuperación" igual para todos, usa el módulo de recuperación para identificar los aprendizajes que cada estudiante necesita reforzar y asignar actividades de nivelación personalizadas. El seguimiento del avance te dice quién ya superó la dificultad.</p>
 
 <h3>6. Sociales de 6.º: la misma lectura, accesible para todos</h3>
 <p>Si en tu grupo hay estudiantes con PIAR, genera la versión de lectura fácil, con apoyos visuales y audio narrado, de la lectura sobre las regiones naturales. Así todo el grupo trabaja el mismo contenido y nadie queda por fuera de la discusión.</p>

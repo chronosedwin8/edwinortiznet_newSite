@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Más plataformas no es mejor educación: la deuda tecnológica silenciosa de los colegios». Fuentes verificadas el 9 de octubre de 2026: Informe GEM 2023 de la UNESCO, LearnPlatform EdTech Top 40 vía K-12 Dive (jul. 2023), TALIS 2024, Ley 1581 de 2012. Inventario de ejemplo con datos ficticios.
+// "Más plataformas no es mejor educación: la deuda tecnológica silenciosa de los colegios". Fuentes verificadas el 9 de octubre de 2026: Informe GEM 2023 de la UNESCO, LearnPlatform EdTech Top 40 vía K-12 Dive (jul. 2023), TALIS 2024, Ley 1581 de 2012. Inventario de ejemplo con datos ficticios.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/deuda-tecnologica-colegios/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -21,7 +21,7 @@ $html = <<<'HTML'
 <p class="notice"><strong>Resumen.</strong> Más herramientas no significa mejor educación: la UNESCO advierte que hay poca evidencia robusta e independiente sobre el valor de la tecnología educativa y que los productos cambian en promedio cada 36 meses. Cada herramienta nueva suma costo, datos que proteger, capacitación y soporte. La solución no es prohibir, sino <strong>inventariar, puntuar y decidir</strong> con criterios explícitos y con quienes las usan.</p>
 
 <h2>Qué es la deuda tecnológica</h2>
-<p>El término «deuda técnica» lo propuso el programador Ward Cunningham en 1992 para describir los atajos de software que ahorran tiempo hoy y cobran intereses mañana. Aplicado a un colegio, la idea se extiende: cada herramienta adoptada sin criterio es un <strong>préstamo</strong> que se paga con mantenimiento, cuentas que gestionar, datos que proteger y atención de docentes que ya tienen poco tiempo. Los intereses son silenciosos porque no aparecen en un solo presupuesto: están repartidos entre rectoría, coordinación, sistemas y cada aula.</p>
+<p>El término "deuda técnica" lo propuso el programador Ward Cunningham en 1992 para describir los atajos de software que ahorran tiempo hoy y cobran intereses mañana. Aplicado a un colegio, la idea se extiende: cada herramienta adoptada sin criterio es un <strong>préstamo</strong> que se paga con mantenimiento, cuentas que gestionar, datos que proteger y atención de docentes que ya tienen poco tiempo. Los intereses son silenciosos porque no aparecen en un solo presupuesto: están repartidos entre rectoría, coordinación, sistemas y cada aula.</p>
 <p>Las señales típicas: dos o tres herramientas para la misma función, docentes que digitan la misma información en varios sitios, cuentas de personas que ya no trabajan en el colegio, plataformas pagadas que usa un solo curso, y nadie que pueda decir con certeza dónde están los datos de los estudiantes.</p>
 
 <h2>Lo que dicen los datos</h2>
@@ -54,14 +54,14 @@ $html = <<<'HTML'
 
 <h2>Cómo hacerlo en tres semanas</h2>
 <ol>
-<li><strong>Semana 1: inventario.</strong> Lista todas las herramientas (incluidas las gratuitas y las que adoptó un docente por su cuenta): función, usuarios, costo, datos que maneja y responsable. Pregunta a los docentes; las cuentas «invisibles» aparecen ahí.</li>
+<li><strong>Semana 1: inventario.</strong> Lista todas las herramientas (incluidas las gratuitas y las que adoptó un docente por su cuenta): función, usuarios, costo, datos que maneja y responsable. Pregunta a los docentes; las cuentas "invisibles" aparecen ahí.</li>
 <li><strong>Semana 2: puntuación.</strong> Puntúa con el equipo directivo y con al menos dos docentes que las usen. Anota la evidencia, no solo la opinión.</li>
 <li><strong>Semana 3: decisión y calendario.</strong> Decide qué se mantiene, se fusiona o se retira, con fechas, respaldos y comunicación a la comunidad. Fija un responsable y repite el ejercicio cada año.</li>
 </ol>
 <p>Y una regla para el futuro: <strong>una herramienta nueva entra solo si sale otra o si pasa los tres criterios antes de comprarla</strong> (el análisis de costos a tres años del artículo <a href="/comprar-software-suscripcion-desarrollo-propio-costo-total-3-anos/">comprar, suscribirse o desarrollar</a> te ayuda con el factor económico).</p>
 
 <h2>Colombia, Latinoamérica y el mundo</h2>
-<p>En el mundo, el debate pasó de «¿tenemos tecnología?» a «¿qué hace por el aprendizaje?». En Colombia y Latinoamérica la presión viene de dos lados: la brecha de conectividad y equipos que persiste en muchas zonas, y, en los colegios que sí tienen recursos, la oferta constante de plataformas y de IA. Según la OCDE (TALIS 2024), alrededor del 53 % de los docentes colombianos usó IA en el último año, más que el promedio de la OCDE (36 %): el uso crece más rápido que las reglas institucionales. Para los <strong>directivos</strong>, la tarea es ordenar el portafolio y rendir cuentas del gasto; para los <strong>docentes</strong>, que las herramientas les ahorren trabajo en vez de multiplicarlo (ver <a href="/docente-autonomia-pedagogica-plataformas-que-planean-evaluan-recomiendan/">autonomía pedagógica ante las plataformas</a>); para las <strong>familias</strong>, saber qué empresas reciben los datos de sus hijos y por qué se usan tantas aplicaciones.</p>
+<p>En el mundo, el debate pasó de "¿tenemos tecnología?" a "¿qué hace por el aprendizaje?". En Colombia y Latinoamérica la presión viene de dos lados: la brecha de conectividad y equipos que persiste en muchas zonas, y, en los colegios que sí tienen recursos, la oferta constante de plataformas y de IA. Según la OCDE (TALIS 2024), alrededor del 53 % de los docentes colombianos usó IA en el último año, más que el promedio de la OCDE (36 %): el uso crece más rápido que las reglas institucionales. Para los <strong>directivos</strong>, la tarea es ordenar el portafolio y rendir cuentas del gasto; para los <strong>docentes</strong>, que las herramientas les ahorren trabajo en vez de multiplicarlo (ver <a href="/docente-autonomia-pedagogica-plataformas-que-planean-evaluan-recomiendan/">autonomía pedagógica ante las plataformas</a>); para las <strong>familias</strong>, saber qué empresas reciben los datos de sus hijos y por qué se usan tantas aplicaciones.</p>
 
 <h2>Herramientas pensadas para sumar, no para acumular</h2>
 <p>Parte de reducir la deuda es elegir pocas herramientas que hagan bien varias cosas y que dejen al docente decidir. El <a href="/herramientas/generador-de-examenes/">Generador de exámenes con IA</a> reúne en un solo lugar la creación del examen, sus soluciones y la corrección; y el <a href="/producto/kit-de-ia-para-docentes/">Kit de IA para docentes</a> organiza recetas por materia sin exigir otra plataforma que mantener. Para la atención a la diversidad, <a href="/herramientas/piar/">PIAR con IA</a> concentra los ajustes razonables de cada estudiante en un solo documento, con la revisión del equipo de expertos, en lugar de repartirlos en carpetas y chats.</p>
@@ -101,7 +101,7 @@ return [
     'seo_description' => 'Cómo detectar herramientas redundantes en un colegio con tres criterios (integración, utilidad pedagógica, sostenibilidad) y un inventario en Excel.',
     'focus_keyword' => 'deuda tecnológica en colegios',
     'cover' => '/assets/img/articulos/deuda-tecnologica-colegios/deuda-tecnologica-colegios-portada',
-    'cover_alt' => 'Portada «Más plataformas no es mejor educación: la deuda tecnológica silenciosa» con una tarjeta que dice 5 de 12 herramientas del colegio de ejemplo se retirarían, el 18 % del gasto anual, con tres funciones duplicadas y cuatro herramientas por revisar.',
+    'cover_alt' => 'Portada "Más plataformas no es mejor educación: la deuda tecnológica silenciosa" con una tarjeta que dice 5 de 12 herramientas del colegio de ejemplo se retirarían, el 18 % del gasto anual, con tres funciones duplicadas y cuatro herramientas por revisar.',
     'published_at' => '2026-11-11 12:00:00',
     'content_html' => $html,
 ];

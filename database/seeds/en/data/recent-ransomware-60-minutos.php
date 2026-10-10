@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «Ransomware: qué hacer en los primeros 60 minutos, y qué no hacer, en un colegio …». Key is the Spanish slug. Status and date come from the Spanish post via en/02_recent_posts.php.
+// English version of "Ransomware: qué hacer en los primeros 60 minutos, y qué no hacer, en un colegio …". Key is the Spanish slug. Status and date come from the Spanish post via en/02_recent_posts.php.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/ransomware-60-minutos/' . $name . '-en';
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '

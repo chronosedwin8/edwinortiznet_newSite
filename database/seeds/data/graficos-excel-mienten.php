@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Las gráficas de Excel también pueden mentir: cinco errores que distorsionan tus conclusiones». Todos los gráficos se hicieron en Microsoft Excel 16
+// "Las gráficas de Excel también pueden mentir: cinco errores que distorsionan tus conclusiones". Todos los gráficos se hicieron en Microsoft Excel 16
 // (macro de VBA) con datos hipotéticos; la macro RevisarEjes se probó: de tres gráficos de columnas detectó solo el que tenía el eje truncado. En el
 // ejemplo de correlación (datos inventados), COEF.DE.CORREL dio 0,998 y COEFICIENTE.R2 0,996. Fecha de verificación: 9 de octubre de 2026.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
@@ -18,7 +18,7 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>Un gráfico de Excel se hace en tres clics y parece objetivo: es «el dato», dibujado. Pero un gráfico no es un dato: es una <strong>decisión de presentación</strong>, y esa decisión puede inflar una diferencia, esconder una caída o inventar una relación que no existe. A veces es deliberado; casi siempre es descuido, porque Excel elige por ti el eje, la escala y el estilo.</p>
+<p>Un gráfico de Excel se hace en tres clics y parece objetivo: es "el dato", dibujado. Pero un gráfico no es un dato: es una <strong>decisión de presentación</strong>, y esa decisión puede inflar una diferencia, esconder una caída o inventar una relación que no existe. A veces es deliberado; casi siempre es descuido, porque Excel elige por ti el eje, la escala y el estilo.</p>
 <p>En este artículo te muestro <strong>cinco errores</strong> con su versión engañosa y su versión corregida (todos hechos en Excel con datos hipotéticos), una macro de VBA que detecta uno de ellos en tus libros y una <strong>lista de comprobación</strong> para revisar un gráfico antes de presentarlo. Probado en Microsoft Excel el 9 de octubre de 2026.</p>
 <p class="notice"><strong>Resumen.</strong> Los cinco errores: eje truncado en barras, escalas distintas entre gráficos comparables, periodo o datos elegidos a conveniencia, correlación presentada como causa y ejes dobles ajustados para forzar una relación. La regla común: <strong>el gráfico debe dejar ver lo que dicen los datos, no lo que te conviene que digan</strong>.</p>
 
@@ -33,9 +33,9 @@ $html = <<<'HTML'
 <p><strong>Cómo corregirlo:</strong> fija el mismo mínimo y máximo en los ejes de todos los gráficos que se van a comparar (aquí, 0 a 160), o pon ambas series en un mismo gráfico.</p>
 
 <h2>Error 3: selección sesgada del periodo o de los datos</h2>
-<p>Con los mismos datos puedes contar historias opuestas según la ventana que elijas. Mostrar solo de enero a julio dice «¡crecimiento!»; el año completo revela que desde agosto las ventas caen:</p>
+<p>Con los mismos datos puedes contar historias opuestas según la ventana que elijas. Mostrar solo de enero a julio dice "¡crecimiento!"; el año completo revela que desde agosto las ventas caen:</p>
 {{img:c3}}
-<p><strong>Cómo corregirlo:</strong> muestra el periodo completo, o justifica el recorte (por ejemplo, «desde que cambió el precio»). Si comparas con un año anterior, compara los mismos meses. Y pregúntate qué datos quedaron fuera: colegios que no respondieron, clientes perdidos, meses sin registro.</p>
+<p><strong>Cómo corregirlo:</strong> muestra el periodo completo, o justifica el recorte (por ejemplo, "desde que cambió el precio"). Si comparas con un año anterior, compara los mismos meses. Y pregúntate qué datos quedaron fuera: colegios que no respondieron, clientes perdidos, meses sin registro.</p>
 
 <h2>Error 4: confundir correlación con causalidad</h2>
 <p>Dos series pueden moverse juntas sin que una cause la otra. En el ejemplo (datos inventados), el helado vendido y las quemaduras de sol tienen una correlación altísima, y Excel lo confirma:</p>
@@ -43,7 +43,7 @@ $html = <<<'HTML'
 =COEFICIENTE.R2(B2:B13;A2:A13)     → 0,996</code></pre>
 <p>Pero el helado no produce quemaduras: ambos dependen del calor y de la temporada. Esa tercera variable oculta se llama <em>variable de confusión</em>.</p>
 {{img:c4}}
-<p><strong>Cómo evitarlo:</strong> antes de escribir «X causa Y», pregúntate si hay una tercera variable que afecte a ambas, si el orden en el tiempo tiene sentido y si hay un mecanismo plausible. Una correlación alta es una pista para investigar, no una prueba. Las <a href="https://www.tylervigen.com/spurious-correlations">correlaciones espurias</a> (como las que recopila Tyler Vigen) muestran que con suficientes series siempre aparece alguna que «coincide».</p>
+<p><strong>Cómo evitarlo:</strong> antes de escribir "X causa Y", pregúntate si hay una tercera variable que afecte a ambas, si el orden en el tiempo tiene sentido y si hay un mecanismo plausible. Una correlación alta es una pista para investigar, no una prueba. Las <a href="https://www.tylervigen.com/spurious-correlations">correlaciones espurias</a> (como las que recopila Tyler Vigen) muestran que con suficientes series siempre aparece alguna que "coincide".</p>
 
 <h2>Error 5: ejes dobles que fuerzan una relación</h2>
 <p>El eje secundario de Excel permite graficar dos magnitudes distintas, pero también permite <strong>ajustar los dos ejes hasta que las líneas coincidan</strong>. En el ejemplo, la inversión en publicidad varía menos del 5 % y las visitas, menos del 7 %: casi no hay movimiento. Con dos ejes recortados, ambas líneas parecen bailar juntas:</p>
@@ -73,21 +73,21 @@ End Function
 Sub MostrarRevision()
     MsgBox RevisarEjes(ActiveWorkbook)
 End Sub</code></pre>
-<p>Úsala como control en la hoja «Control» de tus informes (como el que propongo en <a href="/riesgo-oculto-excel-auditoria-control-versiones/">el artículo sobre el riesgo oculto de Excel</a>). Para guardar macros, el libro debe ser .xlsm, y recuerda que Microsoft bloquea por defecto las macros de archivos descargados de internet.</p>
+<p>Úsala como control en la hoja "Control" de tus informes (como el que propongo en <a href="/riesgo-oculto-excel-auditoria-control-versiones/">el artículo sobre el riesgo oculto de Excel</a>). Para guardar macros, el libro debe ser .xlsm, y recuerda que Microsoft bloquea por defecto las macros de archivos descargados de internet.</p>
 
 <h2>Colombia, Latinoamérica y el mundo: dónde importan estas distorsiones</h2>
-<p>Los gráficos engañosos no son un problema solo de la prensa o de la política. Se cuelan en el informe de resultados que el colegio presenta a las familias, en el comparativo de ventas que llega al gerente, en la presentación de una licitación o en una tesis. En el mundo, los especialistas en visualización llevan décadas advirtiendo sobre el «factor de mentira» de los gráficos; en Colombia y Latinoamérica, donde buena parte de las decisiones de pymes, colegios y oficinas se apoyan en gráficos hechos en Excel por una sola persona, el riesgo es mayor porque rara vez alguien los revisa. Para un <strong>docente o directivo</strong>, la lección es doble: construir gráficos honestos y enseñar a los estudiantes a leer los de otros (una habilidad clave de alfabetización de datos). Para un <strong>gerente</strong>, pedir siempre el eje, el periodo y la fuente. Para las <strong>familias</strong>, mirar dónde empieza el eje antes de creerle a un gráfico.</p>
+<p>Los gráficos engañosos no son un problema solo de la prensa o de la política. Se cuelan en el informe de resultados que el colegio presenta a las familias, en el comparativo de ventas que llega al gerente, en la presentación de una licitación o en una tesis. En el mundo, los especialistas en visualización llevan décadas advirtiendo sobre el "factor de mentira" de los gráficos; en Colombia y Latinoamérica, donde buena parte de las decisiones de pymes, colegios y oficinas se apoyan en gráficos hechos en Excel por una sola persona, el riesgo es mayor porque rara vez alguien los revisa. Para un <strong>docente o directivo</strong>, la lección es doble: construir gráficos honestos y enseñar a los estudiantes a leer los de otros (una habilidad clave de alfabetización de datos). Para un <strong>gerente</strong>, pedir siempre el eje, el periodo y la fuente. Para las <strong>familias</strong>, mirar dónde empieza el eje antes de creerle a un gráfico.</p>
 
 <h2>Lista de comprobación: revisa un gráfico antes de presentarlo</h2>
 <p>Este es el recurso aplicable. Úsalo con un informe tuyo:</p>
 <table>
-<thead><tr><th>Pregunta</th><th>Si la respuesta es «no»…</th></tr></thead>
+<thead><tr><th>Pregunta</th><th>Si la respuesta es "no"…</th></tr></thead>
 <tbody>
 <tr><td>¿En barras y columnas, el eje de valores empieza en cero?</td><td>Corrige el límite mínimo o cambia a un gráfico de líneas y avisa del recorte.</td></tr>
 <tr><td>¿Los gráficos que se comparan tienen la misma escala?</td><td>Fija mínimo y máximo iguales, o ponlos en un mismo gráfico.</td></tr>
 <tr><td>¿Muestro todo el periodo relevante, o justifiqué el recorte?</td><td>Amplía la ventana o explica el criterio.</td></tr>
 <tr><td>¿Incluí todos los datos que corresponden (sin omitir casos incómodos)?</td><td>Revisa qué quedó fuera y por qué.</td></tr>
-<tr><td>¿Afirmo una causa solo con una correlación?</td><td>Cambia el lenguaje («se asocia con») o busca más evidencia.</td></tr>
+<tr><td>¿Afirmo una causa solo con una correlación?</td><td>Cambia el lenguaje ("se asocia con") o busca más evidencia.</td></tr>
 <tr><td>¿Uso ejes dobles?</td><td>Prefiere un índice o dos gráficos separados.</td></tr>
 <tr><td>¿El título dice lo que muestra el gráfico (no una conclusión exagerada)?</td><td>Describe el dato; deja la interpretación al texto.</td></tr>
 <tr><td>¿Están claros las unidades, la fuente y el periodo?</td><td>Agrega nota al pie con fuente y fecha.</td></tr>
@@ -136,7 +136,7 @@ return [
     'seo_description' => 'Cinco errores en gráficos de Excel (eje truncado, escalas, correlación y ejes dobles) con ejemplos, macro de VBA y lista de comprobación para corregirlos.',
     'focus_keyword' => 'gráficas de Excel engañosas',
     'cover' => '/assets/img/articulos/graficos-excel-mienten/graficos-excel-mienten-portada',
-    'cover_alt' => 'Portada con el título «Las gráficas de Excel también pueden mentir: cinco errores que distorsionan tus conclusiones» y una lista de comprobación: eje en cero, escalas comparables y periodo completo marcados, y confundir correlación con causa descartado.',
+    'cover_alt' => 'Portada con el título "Las gráficas de Excel también pueden mentir: cinco errores que distorsionan tus conclusiones" y una lista de comprobación: eje en cero, escalas comparables y periodo completo marcados, y confundir correlación con causa descartado.',
     'published_at' => '2026-11-05 12:00:00',
     'content_html' => $html,
 ];

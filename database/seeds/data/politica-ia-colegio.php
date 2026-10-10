@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Política institucional de IA para colegios». Fuentes verificadas el 9 de octubre de 2026: UNESCO, guía sobre IA generativa en educación (2023, vía cobertura); Gallup-Walton (jun. 2025); TALIS 2024; GAD3 vía El Tiempo (ago. 2026); Ley 1581 de 2012. No se encontraron lineamientos nacionales específicos para colegios.
+// "Política institucional de IA para colegios". Fuentes verificadas el 9 de octubre de 2026: UNESCO, guía sobre IA generativa en educación (2023, vía cobertura); Gallup-Walton (jun. 2025); TALIS 2024; GAD3 vía El Tiempo (ago. 2026); Ley 1581 de 2012. No se encontraron lineamientos nacionales específicos para colegios.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/politica-ia-colegio/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -16,7 +16,7 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>En muchos colegios, la inteligencia artificial ya entró por la puerta de atrás: los estudiantes la usan para las tareas, algunos docentes la usan para planear y casi nadie sabe, con claridad, qué está permitido. Cuando no hay reglas, cada docente improvisa la suya, un mismo trabajo es «fraude» en un salón y «buen uso» en otro, y los datos de los estudiantes terminan en herramientas que nadie evaluó.</p>
+<p>En muchos colegios, la inteligencia artificial ya entró por la puerta de atrás: los estudiantes la usan para las tareas, algunos docentes la usan para planear y casi nadie sabe, con claridad, qué está permitido. Cuando no hay reglas, cada docente improvisa la suya, un mismo trabajo es "fraude" en un salón y "buen uso" en otro, y los datos de los estudiantes terminan en herramientas que nadie evaluó.</p>
 <p>Este artículo propone cómo construir una <strong>política institucional de IA</strong> breve y aplicable, organizada en tres categorías: usos <strong>permitidos</strong>, <strong>condicionados</strong> y <strong>no autorizados</strong>. Incluye una <a href="/descargas/politica-ia-colegio/matriz-politica-ia-colegio.xlsx">matriz descargable en Excel</a> con 16 usos para docentes, estudiantes y directivos, una evaluación de herramientas y una plantilla de declaración de uso. Datos verificados el 9 de octubre de 2026.</p>
 <p class="notice"><strong>Resumen.</strong> Una política de IA no se escribe para prohibir ni para aplaudir la tecnología, sino para dejar claro <strong>quién decide qué</strong>: la IA puede asistir; las decisiones sobre las personas (notas finales, sanciones, promoción) y el cuidado de los datos de los menores siguen en manos de humanos que responden por ellas. La política se construye con la comunidad educativa, se prueba y se revisa cada año.</p>
 
@@ -36,7 +36,7 @@ $html = <<<'HTML'
 <li><strong>Condicionado:</strong> usos valiosos que solo se aceptan si se cumple una condición concreta. Ejemplo: un borrador de retroalimentación que el docente revisa y firma como suyo.</li>
 <li><strong>No autorizado:</strong> usos que afectan decisiones sobre personas, comprometen datos de menores o son deshonestos. Ejemplo: asignar la nota final con un sistema automático.</li>
 </ul>
-<p>La clave es que <strong>cada «condicionado» tenga una condición verificable y un responsable</strong>; si no, es un «permitido» disfrazado.</p>
+<p>La clave es que <strong>cada "condicionado" tenga una condición verificable y un responsable</strong>; si no, es un "permitido" disfrazado.</p>
 
 <h2>La matriz: 16 usos para empezar</h2>
 <p>El libro descargable trae una propuesta inicial; con ella, 2 usos quedan permitidos, 6 condicionados y 8 no autorizados. Estos son algunos:</p>
@@ -65,16 +65,16 @@ $html = <<<'HTML'
 </ol>
 
 <h2>Evaluar una herramienta antes de autorizarla</h2>
-<p>La hoja «Evaluacion_herramienta» trae nueve preguntas: ¿hay una necesidad concreta?, ¿se conoce qué datos recoge y para qué?, ¿permite cuentas institucionales?, ¿dónde se almacenan los datos y pueden eliminarse?, ¿el proveedor los usa para entrenar sus modelos?, ¿se puede usar con supervisión y sin que el menor cree una cuenta personal?, ¿hay evidencia independiente?, ¿hay responsable y plan de salida?, ¿se informó a las familias? Si las preguntas sobre datos tienen respuesta «no», no se autoriza (ver <a href="/mas-plataformas-no-es-mejor-educacion-deuda-tecnologica-colegios/">la deuda tecnológica de los colegios</a> y <a href="/comprar-software-suscripcion-desarrollo-propio-costo-total-3-anos/">comprar, suscribir o desarrollar</a>).</p>
+<p>La hoja "Evaluacion_herramienta" trae nueve preguntas: ¿hay una necesidad concreta?, ¿se conoce qué datos recoge y para qué?, ¿permite cuentas institucionales?, ¿dónde se almacenan los datos y pueden eliminarse?, ¿el proveedor los usa para entrenar sus modelos?, ¿se puede usar con supervisión y sin que el menor cree una cuenta personal?, ¿hay evidencia independiente?, ¿hay responsable y plan de salida?, ¿se informó a las familias? Si las preguntas sobre datos tienen respuesta "no", no se autoriza (ver <a href="/mas-plataformas-no-es-mejor-educacion-deuda-tecnologica-colegios/">la deuda tecnológica de los colegios</a> y <a href="/comprar-software-suscripcion-desarrollo-propio-costo-total-3-anos/">comprar, suscribir o desarrollar</a>).</p>
 
 <h2>La declaración de uso: honestidad en lugar de caza de brujas</h2>
-<p>En vez de perseguir el uso de IA, pide a los estudiantes que lo <strong>declaren</strong>: qué herramienta usaron, para qué, qué pidieron, qué parte es suya y cómo verificaron la información. El libro incluye la plantilla. Declarar cambia la conversación: del «¿lo copiaste?» al «¿qué aprendiste y cómo lo comprobaste?». Es coherente con la idea de que la tarea de verdad es el pensamiento del estudiante (ver <a href="/docente-autonomia-pedagogica-plataformas-que-planean-evaluan-recomiendan/">autonomía pedagógica ante las plataformas</a> y <a href="/calificaciones-miden-aprendizaje-o-cumplimiento-reglas-colegio/">qué miden las calificaciones</a>).</p>
+<p>En vez de perseguir el uso de IA, pide a los estudiantes que lo <strong>declaren</strong>: qué herramienta usaron, para qué, qué pidieron, qué parte es suya y cómo verificaron la información. El libro incluye la plantilla. Declarar cambia la conversación: del "¿lo copiaste?" al "¿qué aprendiste y cómo lo comprobaste?". Es coherente con la idea de que la tarea de verdad es el pensamiento del estudiante (ver <a href="/docente-autonomia-pedagogica-plataformas-que-planean-evaluan-recomiendan/">autonomía pedagógica ante las plataformas</a> y <a href="/calificaciones-miden-aprendizaje-o-cumplimiento-reglas-colegio/">qué miden las calificaciones</a>).</p>
 
 <h2>Colombia, Latinoamérica y el mundo</h2>
 <p>En el mundo, las políticas de IA en educación van desde prohibiciones totales hasta integraciones guiadas; lo común en las mejores prácticas es la combinación de alfabetización, reglas claras y protección de datos, como propone la UNESCO. En Colombia y Latinoamérica el desafío es doble: las desigualdades de acceso (no todos los estudiantes tienen las mismas herramientas en casa) y la falta de lineamientos específicos, lo que deja la decisión en manos de cada institución. Para los <strong>directivos</strong>, liderar el proceso y rendir cuentas; para los <strong>docentes</strong>, tener claridad y apoyo para usar la IA con criterio; para los <strong>estudiantes</strong>, aprender a usarla con honestidad; para las <strong>familias</strong>, saber qué datos de sus hijos se usan y poder opinar.</p>
 
 <h2>Herramientas que ya cumplen estas reglas</h2>
-<p>Las herramientas que construyo están pensadas para que el docente decida: el <a href="/herramientas/generador-de-examenes/">Generador de exámenes con IA</a> entrega el examen y sus soluciones para que el docente los revise antes de usarlos; <a href="/herramientas/piar/">PIAR con IA</a> redacta borradores que el equipo de expertos valida y no reemplaza su criterio; y el <a href="/producto/kit-de-ia-para-docentes/">Kit de IA para docentes</a> trae recetas por materia que se adaptan, no se copian. Son ejemplos de usos «condicionados» bien resueltos.</p>
+<p>Las herramientas que construyo están pensadas para que el docente decida: el <a href="/herramientas/generador-de-examenes/">Generador de exámenes con IA</a> entrega el examen y sus soluciones para que el docente los revise antes de usarlos; <a href="/herramientas/piar/">PIAR con IA</a> redacta borradores que el equipo de expertos valida y no reemplaza su criterio; y el <a href="/producto/kit-de-ia-para-docentes/">Kit de IA para docentes</a> trae recetas por materia que se adaptan, no se copian. Son ejemplos de usos "condicionados" bien resueltos.</p>
 {{productos:kit-de-ia-para-docentes,generador-de-examenes-ia-esencial}}
 <p>Sigue leyendo: <a href="/agentes-ia-acceso-sistemas-automatizacion-riesgo-seguridad/">agentes de IA con acceso a tus sistemas</a> y <a href="/errores-basicos-seguridad-empresa-lista-comprobacion/">errores básicos de seguridad</a>.</p>
 
@@ -110,7 +110,7 @@ return [
     'seo_description' => 'Construye una política de IA para tu colegio: usos permitidos, condicionados y no autorizados, con matriz descargable y evaluación de herramientas.',
     'focus_keyword' => 'política de IA para colegios',
     'cover' => '/assets/img/articulos/politica-ia-colegio/politica-ia-colegio-portada',
-    'cover_alt' => 'Portada «Política institucional de IA para colegios: qué permitir, qué condicionar y qué no autorizar» con una lista: adaptar un texto y un borrador revisado por el docente, marcados; nota final automática y datos de menores en IA pública, descartados.',
+    'cover_alt' => 'Portada "Política institucional de IA para colegios: qué permitir, qué condicionar y qué no autorizar" con una lista: adaptar un texto y un borrador revisado por el docente, marcados; nota final automática y datos de menores en IA pública, descartados.',
     'published_at' => '2026-11-18 12:00:00',
     'content_html' => $html,
 ];

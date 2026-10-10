@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «La retroalimentación que sí cambia el aprendizaje». Fuentes verificadas el 10 de octubre de 2026: Hattie y Timperley (2007), Kluger y DeNisi (1996), Education Endowment Foundation. Banco de 20 comentarios y rúbrica verificados en Excel.
+// "La retroalimentación que sí cambia el aprendizaje". Fuentes verificadas el 10 de octubre de 2026: Hattie y Timperley (2007), Kluger y DeNisi (1996), Education Endowment Foundation. Banco de 20 comentarios y rúbrica verificados en Excel.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/retroalimentacion-aprendizaje/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -16,9 +16,9 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>Un docente dedica el fin de semana a corregir treinta trabajos y escribe en cada uno «Muy bien», «Mejorar», «Falta esfuerzo». El lunes los devuelve; los estudiantes miran la nota, guardan el trabajo y no vuelven a abrirlo. Es la escena más repetida de la educación y una de las mayores pérdidas de tiempo docente: <strong>horas de retroalimentación que no cambian nada</strong>.</p>
+<p>Un docente dedica el fin de semana a corregir treinta trabajos y escribe en cada uno "Muy bien", "Mejorar", "Falta esfuerzo". El lunes los devuelve; los estudiantes miran la nota, guardan el trabajo y no vuelven a abrirlo. Es la escena más repetida de la educación y una de las mayores pérdidas de tiempo docente: <strong>horas de retroalimentación que no cambian nada</strong>.</p>
 <p>La retroalimentación es, según la evidencia, una de las intervenciones de más impacto y menor costo, pero con una advertencia que casi nadie cuenta: <strong>puede ayudar, no hacer nada o incluso perjudicar</strong>. Este artículo explica qué hace que una retroalimentación cambie el aprendizaje, con un <a href="/descargas/retroalimentacion/rubrica-banco-retroalimentacion.xlsx">banco de 20 ejemplos reescritos y una rúbrica descargable en Excel</a> para evaluar y mejorar tus propios comentarios. Datos verificados el 10 de octubre de 2026.</p>
-<p class="notice"><strong>Resumen.</strong> La retroalimentación funciona cuando se centra en <strong>la tarea, el proceso y la autorregulación</strong>, es específica, dice <strong>cómo mejorar</strong>, llega <strong>a tiempo</strong> y el estudiante tiene <strong>un momento para usarla</strong>. Los comentarios sobre la persona («eres muy inteligente», «no te esforzaste») rara vez ayudan. En un banco de 20 comentarios comunes, solo el 35 % ayuda a mejorar y el 35 % se centra en la persona. Con la rúbrica y el banco puedes auditar los tuyos en diez minutos.</p>
+<p class="notice"><strong>Resumen.</strong> La retroalimentación funciona cuando se centra en <strong>la tarea, el proceso y la autorregulación</strong>, es específica, dice <strong>cómo mejorar</strong>, llega <strong>a tiempo</strong> y el estudiante tiene <strong>un momento para usarla</strong>. Los comentarios sobre la persona ("eres muy inteligente", "no te esforzaste") rara vez ayudan. En un banco de 20 comentarios comunes, solo el 35 % ayuda a mejorar y el 35 % se centra en la persona. Con la rúbrica y el banco puedes auditar los tuyos en diez minutos.</p>
 
 <h2>Lo que dice la evidencia</h2>
 <ul>
@@ -34,10 +34,10 @@ $html = <<<'HTML'
 <table>
 <thead><tr><th>Comentario</th><th>Nivel</th><th>¿Ayuda?</th></tr></thead>
 <tbody>
-<tr><td>«Muy bien, eres muy inteligente.»</td><td>Persona</td><td>No: no dice qué estuvo bien ni qué hacer</td></tr>
-<tr><td>«Mal.»</td><td>Tarea (vaga)</td><td>No: no dice dónde ni por qué</td></tr>
-<tr><td>«Revisa la segunda línea: el signo cambia al pasar al otro lado de la igualdad.»</td><td>Tarea (específica)</td><td>Sí: dice dónde y cómo corregir</td></tr>
-<tr><td>«¿Qué estrategia usaste y por qué la elegiste? Compárala con la de tu compañero.»</td><td>Autorregulación</td><td>Sí: invita a pensar sobre su propio proceso</td></tr>
+<tr><td>"Muy bien, eres muy inteligente."</td><td>Persona</td><td>No: no dice qué estuvo bien ni qué hacer</td></tr>
+<tr><td>"Mal."</td><td>Tarea (vaga)</td><td>No: no dice dónde ni por qué</td></tr>
+<tr><td>"Revisa la segunda línea: el signo cambia al pasar al otro lado de la igualdad."</td><td>Tarea (específica)</td><td>Sí: dice dónde y cómo corregir</td></tr>
+<tr><td>"¿Qué estrategia usaste y por qué la elegiste? Compárala con la de tu compañero."</td><td>Autorregulación</td><td>Sí: invita a pensar sobre su propio proceso</td></tr>
 </tbody>
 </table>
 
@@ -54,24 +54,24 @@ $html = <<<'HTML'
 <tr><td><strong>Invita a reflexionar</strong></td><td>10 %</td><td>Pide comparar, explicar o planear</td></tr>
 </tbody>
 </table>
-<p>El libro calcula el puntaje (con todos los criterios en nivel 3, por ejemplo, 75/100) y da una lectura: «Retroalimentación potente», «Útil», «Débil» o «Poco útil». Los pesos son editables y deben sumar 100. Hay una advertencia importante en la última fila de la hoja: una retroalimentación excelente que llega cuando ya no se puede usar rinde poco. <strong>El criterio del tiempo importa tanto como el contenido.</strong></p>
+<p>El libro calcula el puntaje (con todos los criterios en nivel 3, por ejemplo, 75/100) y da una lectura: "Retroalimentación potente", "Útil", "Débil" o "Poco útil". Los pesos son editables y deben sumar 100. Hay una advertencia importante en la última fila de la hoja: una retroalimentación excelente que llega cuando ya no se puede usar rinde poco. <strong>El criterio del tiempo importa tanto como el contenido.</strong></p>
 
 <h2>El banco: 20 comentarios reales, reescritos</h2>
 {{img:ejemplos}}
-<p>La hoja «Banco_de_ejemplos» recoge 20 comentarios típicos de distintas áreas (matemáticas, lenguaje, ciencias, sociales, inglés, tecnología, educación física, arte), cada uno con su nivel, si ayuda a mejorar y una versión mejorada. Algunos ejemplos de reescritura:</p>
+<p>La hoja "Banco_de_ejemplos" recoge 20 comentarios típicos de distintas áreas (matemáticas, lenguaje, ciencias, sociales, inglés, tecnología, educación física, arte), cada uno con su nivel, si ayuda a mejorar y una versión mejorada. Algunos ejemplos de reescritura:</p>
 <ul>
-<li>«Tu texto es confuso.» → «Cada párrafo mezcla dos ideas: intenta una idea por párrafo y escribe la idea principal en la primera frase.»</li>
-<li>«Esta vez no te esforzaste.» → «Tu informe tiene la introducción pero no el método: complétalo para que otra persona pueda repetir el experimento.»</li>
-<li>«Nota: 3,2.» → «3,2: cumpliste los criterios 1 y 2; para subir, trabaja el criterio 3 (conclusión) con un ejemplo y entrégalo de nuevo.»</li>
-<li>«Bonito.» (arte) → «El contraste entre colores cálidos y fríos guía la mirada: prueba aplicarlo también al fondo.»</li>
+<li>"Tu texto es confuso." → "Cada párrafo mezcla dos ideas: intenta una idea por párrafo y escribe la idea principal en la primera frase."</li>
+<li>"Esta vez no te esforzaste." → "Tu informe tiene la introducción pero no el método: complétalo para que otra persona pueda repetir el experimento."</li>
+<li>"Nota: 3,2." → "3,2: cumpliste los criterios 1 y 2; para subir, trabaja el criterio 3 (conclusión) con un ejemplo y entrégalo de nuevo."</li>
+<li>"Bonito." (arte) → "El contraste entre colores cálidos y fríos guía la mirada: prueba aplicarlo también al fondo."</li>
 </ul>
 <p>De los 20 comentarios del banco, solo 7 (35 %) ayudan a mejorar tal como están y 7 (35 %) se centran en la persona; el resto son comentarios sobre la tarea que son vagos o incompletos. Notarás un patrón en las reescrituras: cada una <strong>nombra algo concreto del trabajo y propone una acción</strong>.</p>
 
 <h2>Audita tus propios comentarios en diez minutos</h2>
 <ol>
-<li><strong>Toma diez comentarios</strong> que escribiste la semana pasada y pégalos en la hoja «Mis_comentarios».</li>
+<li><strong>Toma diez comentarios</strong> que escribiste la semana pasada y pégalos en la hoja "Mis_comentarios".</li>
 <li><strong>Clasifica cada uno</strong> en Tarea, Proceso, Autorregulación o Persona, y responde si dice cómo mejorar y si llegó con tiempo.</li>
-<li><strong>Lee el resumen:</strong> el libro calcula el porcentaje por nivel y avisa, por ejemplo, «Muchos comentarios sobre la persona: reescribe esos hacia la tarea y el proceso» o «Faltan siguientes pasos». Probé el caso con nueve comentarios clasificados, cuatro sobre la persona (44 %) y tres con siguiente paso (33 %), y el resumen dio exactamente esa alerta.</li>
+<li><strong>Lee el resumen:</strong> el libro calcula el porcentaje por nivel y avisa, por ejemplo, "Muchos comentarios sobre la persona: reescribe esos hacia la tarea y el proceso" o "Faltan siguientes pasos". Probé el caso con nueve comentarios clasificados, cuatro sobre la persona (44 %) y tres con siguiente paso (33 %), y el resumen dio exactamente esa alerta.</li>
 <li><strong>Reescribe tres comentarios</strong> con el banco como guía y compara el puntaje de la rúbrica antes y después.</li>
 </ol>
 
@@ -87,10 +87,10 @@ $html = <<<'HTML'
 </ul>
 
 <h2>¿Y la IA?</h2>
-<p>Hoy hay herramientas que generan comentarios en segundos. Pueden ahorrar tiempo con borradores, pero <strong>un comentario generado sin revisión suele ser genérico</strong> («buen trabajo, sigue así»), justo lo que la rúbrica penaliza, y puede equivocarse sobre el trabajo. Úsalas como borrador que revisas contra la rúbrica, sin pegar datos de estudiantes en herramientas gratuitas (ver <a href="/siete-preguntas-antes-de-pegar-datos-en-una-ia-gratuita-matriz/">siete preguntas antes de pegar datos en una IA</a>), y recuerda que la decisión de evaluación es tuya (ver <a href="/politica-institucional-ia-colegios-que-permitir-condicionar-no-autorizar/">política institucional de IA</a> y <a href="/docente-autonomia-pedagogica-plataformas-que-planean-evaluan-recomiendan/">autonomía pedagógica</a>).</p>
+<p>Hoy hay herramientas que generan comentarios en segundos. Pueden ahorrar tiempo con borradores, pero <strong>un comentario generado sin revisión suele ser genérico</strong> ("buen trabajo, sigue así"), justo lo que la rúbrica penaliza, y puede equivocarse sobre el trabajo. Úsalas como borrador que revisas contra la rúbrica, sin pegar datos de estudiantes en herramientas gratuitas (ver <a href="/siete-preguntas-antes-de-pegar-datos-en-una-ia-gratuita-matriz/">siete preguntas antes de pegar datos en una IA</a>), y recuerda que la decisión de evaluación es tuya (ver <a href="/politica-institucional-ia-colegios-que-permitir-condicionar-no-autorizar/">política institucional de IA</a> y <a href="/docente-autonomia-pedagogica-plataformas-que-planean-evaluan-recomiendan/">autonomía pedagógica</a>).</p>
 
 <h2>Colombia, Latinoamérica y el mundo</h2>
-<p>En el mundo, la retroalimentación formativa es una de las prácticas más respaldadas por la evidencia. En Colombia y Latinoamérica, la realidad de grupos numerosos y docentes con muchas horas de clase hace que la retroalimentación escrita individual sea difícil de sostener: de ahí el valor de la <strong>retroalimentación oral, la grupal y la entre pares</strong>, y de concentrarse en pocos comentarios de calidad. El Sistema Institucional de Evaluación de los Estudiantes (SIEE) de cada colegio es el lugar para acordar cómo se hace y se usa (ver <a href="/calificaciones-miden-aprendizaje-o-cumplimiento-reglas-colegio/">el artículo sobre calificaciones</a>). Para los <strong>docentes</strong>, el reto es dar menos y mejor; para los <strong>directivos</strong>, proteger tiempo para que la retroalimentación se use; para las <strong>familias</strong>, preguntar «¿qué debe hacer mi hijo para mejorar?», más que «¿qué nota sacó?»; y para los <strong>estudiantes</strong>, aprender a pedir y a usar la retroalimentación.</p>
+<p>En el mundo, la retroalimentación formativa es una de las prácticas más respaldadas por la evidencia. En Colombia y Latinoamérica, la realidad de grupos numerosos y docentes con muchas horas de clase hace que la retroalimentación escrita individual sea difícil de sostener: de ahí el valor de la <strong>retroalimentación oral, la grupal y la entre pares</strong>, y de concentrarse en pocos comentarios de calidad. El Sistema Institucional de Evaluación de los Estudiantes (SIEE) de cada colegio es el lugar para acordar cómo se hace y se usa (ver <a href="/calificaciones-miden-aprendizaje-o-cumplimiento-reglas-colegio/">el artículo sobre calificaciones</a>). Para los <strong>docentes</strong>, el reto es dar menos y mejor; para los <strong>directivos</strong>, proteger tiempo para que la retroalimentación se use; para las <strong>familias</strong>, preguntar "¿qué debe hacer mi hijo para mejorar?", más que "¿qué nota sacó?"; y para los <strong>estudiantes</strong>, aprender a pedir y a usar la retroalimentación.</p>
 
 <h2>Herramientas para el docente</h2>
 <p>Para producir evaluaciones con criterios claros, donde la retroalimentación se apoya en soluciones y rúbricas, el <a href="/herramientas/generador-de-examenes/">Generador de exámenes con IA</a> entrega exámenes y soluciones que revisas antes de usar; el <a href="/producto/kit-de-ia-para-docentes/">Kit de IA para docentes</a> trae recetas por materia, incluidas ideas para dar retroalimentación; y <a href="/herramientas/piar/">PIAR con IA</a> ayuda a documentar ajustes razonables que la retroalimentación debe tener en cuenta.</p>
@@ -100,7 +100,7 @@ $html = <<<'HTML'
 <h2>Preguntas frecuentes</h2>
 <h3>¿Qué hace efectiva a la retroalimentación?</h3>
 <p>Que se centre en la tarea, el proceso o la autorregulación, sea específica, diga cómo mejorar, llegue a tiempo y que el estudiante tenga un momento para usarla.</p>
-<h3>¿Por qué un elogio como «eres muy inteligente» no ayuda?</h3>
+<h3>¿Por qué un elogio como "eres muy inteligente" no ayuda?</h3>
 <p>Porque habla de la persona y no dice qué hizo bien ni qué hacer después. Según Hattie y Timperley, el comentario sobre la persona rara vez contribuye al aprendizaje.</p>
 <h3>¿Puede la retroalimentación empeorar el aprendizaje?</h3>
 <p>Sí. En el metaanálisis de Kluger y DeNisi (1996), más de un tercio de las intervenciones empeoró el desempeño, sobre todo las que desplazaron la atención hacia el yo y lejos de la tarea.</p>
@@ -119,7 +119,7 @@ $html = $code($html);
 $html = (string) preg_replace('#<a href="(https?://[^"]+)">#', '<a href="$1" target="_blank" rel="noopener">', $html);
 $html = strtr($html, [
     '{{img:niveles}}' => $img('retroalimentacion-aprendizaje-niveles', 573, 'Cuatro tarjetas con los niveles de un comentario según Hattie y Timperley: tarea, proceso, autorregulación y persona, el menos útil.', '¿Sobre qué habla tu comentario?'),
-    '{{img:ejemplos}}' => $img('retroalimentacion-aprendizaje-ejemplos', 444, 'Tabla con tres comentarios comunes, su nivel y una versión mejorada: «muy bien, eres inteligente», «tu texto es confuso» y «buen trabajo».', 'De un comentario vacío a uno que guía.'),
+    '{{img:ejemplos}}' => $img('retroalimentacion-aprendizaje-ejemplos', 444, 'Tabla con tres comentarios comunes, su nivel y una versión mejorada: &quot;muy bien, eres inteligente&quot;, &quot;tu texto es confuso&quot; y &quot;buen trabajo&quot;.', 'De un comentario vacío a uno que guía.'),
 ]);
 
 return [
@@ -130,7 +130,7 @@ return [
     'seo_description' => 'Qué hace efectiva a la retroalimentación: evidencia, cuatro niveles de comentario, 20 ejemplos reescritos y una rúbrica descargable para tus comentarios.',
     'focus_keyword' => 'retroalimentación efectiva en el aula',
     'cover' => '/assets/img/articulos/retroalimentacion-aprendizaje/retroalimentacion-aprendizaje-portada',
-    'cover_alt' => 'Portada «La retroalimentación que sí cambia el aprendizaje, con ejemplos y rúbrica» con una tarjeta: 1 de cada 3 intervenciones de retroalimentación empeoró el desempeño en un metaanálisis clásico; los comentarios sobre la persona dañan.',
+    'cover_alt' => 'Portada "La retroalimentación que sí cambia el aprendizaje, con ejemplos y rúbrica" con una tarjeta: 1 de cada 3 intervenciones de retroalimentación empeoró el desempeño en un metaanálisis clásico; los comentarios sobre la persona dañan.',
     'published_at' => '2026-12-16 12:00:00',
     'content_html' => $html,
 ];

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Simulacro riguroso o banco de preguntas inventado con IA». Fuentes verificadas el 9 de octubre de 2026: respuestas de la CNSC al proyecto de acuerdo (septiembre de 2026, documento preliminar), El Espectador (21-feb-2026). Preguntas de ejemplo hipotéticas hechas por el autor, no oficiales.
+// "Simulacro riguroso o banco de preguntas inventado con IA". Fuentes verificadas el 9 de octubre de 2026: respuestas de la CNSC al proyecto de acuerdo (septiembre de 2026, documento preliminar), El Espectador (21-feb-2026). Preguntas de ejemplo hipotéticas hechas por el autor, no oficiales.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/simulacro-riguroso-concurso/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -16,21 +16,21 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>Alrededor de cada concurso docente crece un negocio: simulacros, bancos de preguntas, cursos y «paquetes definitivos». Algunos son serios; otros son colecciones de preguntas generadas en minutos con inteligencia artificial, sin revisión, con claves que a veces están mal. Como aspirante, tienes poco tiempo y mucha ansiedad, y es fácil confundir <strong>cantidad con calidad</strong>. Una pregunta con la clave equivocada no solo no te ayuda: te enseña mal.</p>
+<p>Alrededor de cada concurso docente crece un negocio: simulacros, bancos de preguntas, cursos y "paquetes definitivos". Algunos son serios; otros son colecciones de preguntas generadas en minutos con inteligencia artificial, sin revisión, con claves que a veces están mal. Como aspirante, tienes poco tiempo y mucha ansiedad, y es fácil confundir <strong>cantidad con calidad</strong>. Una pregunta con la clave equivocada no solo no te ayuda: te enseña mal.</p>
 <p>Este artículo te da una <strong>rúbrica de diez criterios</strong> para evaluar cualquier simulacro (incluido el mío, y lo digo más abajo), tres ejemplos de preguntas defectuosas y una <a href="/descargas/concurso-docente/rubrica-simulacro-concurso-docente.xlsx">rúbrica descargable en Excel</a> que calcula el puntaje. Datos verificados el 9 de octubre de 2026.</p>
 <p class="notice"><strong>Advertencias.</strong> Los ejemplos de preguntas de este artículo son hipotéticos y los escribí yo para ilustrar errores; <strong>no son preguntas oficiales</strong>. Ningún simulacro garantiza un puntaje ni un nombramiento. La información oficial del concurso se consulta únicamente en el portal de la CNSC y en SIMO, y las condiciones definitivas están en los documentos definitivos de la convocatoria, no en preliminares ni en lo que diga un vendedor.</p>
 
 <h2>Por qué importa la calidad de la práctica</h2>
 <p>Según las respuestas oficiales de la CNSC a las observaciones al proyecto de acuerdo (septiembre de 2026, documento preliminar cuyas reglas debes confirmar en el acuerdo definitivo), la prueba de aptitudes y competencias básicas vale el 55 % y exige un mínimo de 60/100 para docentes y de 70/100 para directivos docentes; sus componentes incluyen lectura crítica, razonamiento cuantitativo, competencias blandas y conocimientos disciplinares y pedagógicos. Es un peso grande, y por eso la forma en que practicas importa: <strong>practicar con preguntas mal hechas puede entrenarte para el examen equivocado</strong>.</p>
-<p>La prensa colombiana ha recordado, además, que los simulacros ayudan a gestionar el tiempo y a familiarizarse con el tipo de preguntas, pero que «ningún simulacro garantiza un resultado» y que muchas ofertas son de apoyo privado y no material oficial de la CNSC (El Espectador, febrero de 2026). Ese es el punto de partida: <strong>un simulacro es práctica, no un adelanto de la prueba</strong>.</p>
+<p>La prensa colombiana ha recordado, además, que los simulacros ayudan a gestionar el tiempo y a familiarizarse con el tipo de preguntas, pero que "ningún simulacro garantiza un resultado" y que muchas ofertas son de apoyo privado y no material oficial de la CNSC (El Espectador, febrero de 2026). Ese es el punto de partida: <strong>un simulacro es práctica, no un adelanto de la prueba</strong>.</p>
 
-<h2>El problema de los bancos «inventados»</h2>
+<h2>El problema de los bancos "inventados"</h2>
 <p>Generar mil preguntas con IA cuesta casi nada. Revisarlas cuesta mucho. Cuando falta la revisión, aparecen tres defectos típicos, que ilustro con ejemplos hipotéticos:</p>
 {{img:defectos}}
 <ol>
-<li><strong>Clave equivocada.</strong> «En un curso de 40 estudiantes aprobó el 35 %. ¿Cuántos NO aprobaron? A) 14 B) 26 C) 25 D) 65.» Si el banco marca A, está contestando cuántos aprobaron (40 × 0,35 = 14); quienes no aprobaron son 26. Un solo error así, repetido, te enseña a leer mal el enunciado.</li>
-<li><strong>Más de una respuesta correcta.</strong> «¿Cuál de los siguientes números es primo? A) 21 B) 23 C) 29 D) 33.» Tanto 23 como 29 son primos. En una prueba de selección única, esa pregunta no se podría usar.</li>
-<li><strong>Normas citadas que no existen.</strong> «Según el artículo 87 del Decreto 1075 de 2015…» El Decreto 1075 de 2015 se numera con el formato 2.3.3.3…, y no tiene un artículo 87 citado así. Una cita que no puedes ubicar en la fuente oficial es una señal de alerta; la IA es especialmente propensa a inventar referencias convincentes.</li>
+<li><strong>Clave equivocada.</strong> "En un curso de 40 estudiantes aprobó el 35 %. ¿Cuántos NO aprobaron? A) 14 B) 26 C) 25 D) 65." Si el banco marca A, está contestando cuántos aprobaron (40 × 0,35 = 14); quienes no aprobaron son 26. Un solo error así, repetido, te enseña a leer mal el enunciado.</li>
+<li><strong>Más de una respuesta correcta.</strong> "¿Cuál de los siguientes números es primo? A) 21 B) 23 C) 29 D) 33." Tanto 23 como 29 son primos. En una prueba de selección única, esa pregunta no se podría usar.</li>
+<li><strong>Normas citadas que no existen.</strong> "Según el artículo 87 del Decreto 1075 de 2015…" El Decreto 1075 de 2015 se numera con el formato 2.3.3.3…, y no tiene un artículo 87 citado así. Una cita que no puedes ubicar en la fuente oficial es una señal de alerta; la IA es especialmente propensa a inventar referencias convincentes.</li>
 </ol>
 <p>No todo banco generado con IA es malo: la IA puede ayudar a redactar borradores. Lo decisivo es lo que ocurre <strong>después</strong>: revisión por personas expertas, verificación de claves y de normas, y mejora con datos reales.</p>
 
@@ -40,7 +40,7 @@ $html = <<<'HTML'
 <thead><tr><th>#</th><th>Criterio</th><th>Qué verificar</th></tr></thead>
 <tbody>
 <tr><td>1</td><td><strong>Alineación con la estructura oficial</strong></td><td>Indica componentes, tipo de preguntas y tiempo, y cita el documento de la CNSC.</td></tr>
-<tr><td>2</td><td><strong>Declara que no es oficial</strong></td><td>No anuncia «preguntas reales» ni se presenta como la CNSC.</td></tr>
+<tr><td>2</td><td><strong>Declara que no es oficial</strong></td><td>No anuncia "preguntas reales" ni se presenta como la CNSC.</td></tr>
 <tr><td>3</td><td><strong>Origen de las preguntas</strong></td><td>Autores o revisores identificables; explica si usa IA.</td></tr>
 <tr><td>4</td><td><strong>Revisión por expertos</strong></td><td>Cada pregunta la revisó una persona experta en la disciplina y en pedagogía.</td></tr>
 <tr><td>5</td><td><strong>Claves justificadas</strong></td><td>Explica por qué la correcta lo es y por qué las otras no.</td></tr>
@@ -57,7 +57,7 @@ $html = <<<'HTML'
 <ol>
 <li>Toma <strong>10 preguntas al azar</strong> del simulacro (no las primeras, que suelen ser las más cuidadas).</li>
 <li><strong>Resuélvelas tú antes de ver la clave</strong>, y subraya lo que pide el enunciado.</li>
-<li>Marca en la hoja «Revision_de_items» cuántas tienen más de una correcta, clave errónea, enunciado que no coincide con la clave, distractores absurdos o normas que no puedes verificar.</li>
+<li>Marca en la hoja "Revision_de_items" cuántas tienen más de una correcta, clave errónea, enunciado que no coincide con la clave, distractores absurdos o normas que no puedes verificar.</li>
 <li>Si encuentras <strong>dos o más</strong> preguntas con error en la muestra, no confíes en sus claves y busca otra fuente.</li>
 </ol>
 
@@ -102,7 +102,7 @@ return [
     'seo_description' => 'Rúbrica de diez criterios y revisión de 10 preguntas para distinguir un simulacro riguroso del Concurso Docente de un banco de preguntas sin control.',
     'focus_keyword' => 'simulacro Concurso Docente',
     'cover' => '/assets/img/articulos/simulacro-riguroso-concurso/simulacro-riguroso-concurso-portada',
-    'cover_alt' => 'Portada «Simulacro riguroso o banco de preguntas inventado con IA: cómo distinguirlos» con una lista: declara que no es oficial, explica cada clave y lo revisó un experto, marcados; promete tu nombramiento, descartado.',
+    'cover_alt' => 'Portada "Simulacro riguroso o banco de preguntas inventado con IA: cómo distinguirlos" con una lista: declara que no es oficial, explica cada clave y lo revisó un experto, marcados; promete tu nombramiento, descartado.',
     'published_at' => '2026-11-13 12:00:00',
     'content_html' => $html,
 ];

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «¿Para qué enseñar a programar si la IA escribe el código? Lo que sigue importando». Fuentes verificadas el 9 de octubre de 2026: Bastani et al. (2024, preprint, «Generative AI Can Harm Learning»), Peng et al. (2023, Copilot), Prather et al. (ICER 2024, «The Widening Gap»). Ejercicio de depuración probado con unittest (3 de 6 pruebas fallan con el código de la IA; 6 de 6 con la solución). Rúbrica verificada en Excel.
+// "¿Para qué enseñar a programar si la IA escribe el código? Lo que sigue importando". Fuentes verificadas el 9 de octubre de 2026: Bastani et al. (2024, preprint, "Generative AI Can Harm Learning"), Peng et al. (2023, Copilot), Prather et al. (ICER 2024, "The Widening Gap"). Ejercicio de depuración probado con unittest (3 de 6 pruebas fallan con el código de la IA; 6 de 6 con la solución). Rúbrica verificada en Excel.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/programacion-era-ia/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -16,13 +16,13 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 );
 
 $html = <<<'HTML'
-<p>Un estudiante de décimo entrega un programa que funciona a la perfección. Le preguntas cómo lo hizo y responde: «le pedí a la IA». Le pides que cambie una línea y no sabe por dónde empezar. Lo que antes era una señal de aprendizaje (el programa funciona) ya no lo es. Y con la pregunta que muchos docentes se hacen en voz baja: <strong>¿para qué enseñar a programar si una máquina escribe el código?</strong></p>
+<p>Un estudiante de décimo entrega un programa que funciona a la perfección. Le preguntas cómo lo hizo y responde: "le pedí a la IA". Le pides que cambie una línea y no sabe por dónde empezar. Lo que antes era una señal de aprendizaje (el programa funciona) ya no lo es. Y con la pregunta que muchos docentes se hacen en voz baja: <strong>¿para qué enseñar a programar si una máquina escribe el código?</strong></p>
 <p>Este artículo propone una respuesta basada en evidencia: <strong>programar sigue siendo pensar</strong>, y lo que debe cambiar es cómo se enseña y cómo se evalúa. Incluye una <a href="/descargas/programacion-ia/rubrica-programacion-era-ia.xlsx">rúbrica descargable en Excel</a> para evaluar comprensión (no solo que el código corra), una bitácora de uso de IA y un <a href="/descargas/programacion-ia/ejercicio_mediana.py">ejercicio de depuración</a> con código que parece correcto, probado con pruebas automáticas. Datos verificados el 9 de octubre de 2026.</p>
 <p class="notice"><strong>Resumen.</strong> La evidencia disponible dice que la IA acelera tareas de programación, pero que usada sin límites puede crear una ilusión de progreso: en un estudio con unos 1.000 estudiantes de secundaria, quienes practicaron con un asistente sin límites mejoraron durante la práctica y rindieron peor en un examen sin IA. Por eso <strong>la enseñanza se desplaza hacia entender el problema, probar, depurar y explicar</strong>, y la evaluación hacia el proceso y la comprensión, con el uso de la IA declarado. Son estudios concretos, con limitaciones: dan señales, no leyes.</p>
 
 <h2>Qué dice la evidencia (con sus límites)</h2>
 <ul>
-<li><strong>Una ayuda que puede dañar (Bastani et al., 2024).</strong> En un ensayo aleatorizado con unos 1.000 estudiantes de secundaria en Turquía (matemáticas de 9.º a 11.º), los que practicaron con un asistente tipo ChatGPT («GPT Base») rindieron un 48 % mejor durante la práctica, pero un <strong>17 % peor</strong> en el examen sin IA que el grupo de control. Los que usaron un tutor diseñado con salvaguardas (con las soluciones y las notas del docente, e instrucciones de no dar la respuesta) rindieron un 127 % mejor en la práctica y <strong>no tuvieron pérdida</strong> en el examen frente al control. Es un preprint de 2024 y de matemáticas, no de programación; pero muestra el mecanismo: usar la herramienta como muleta.</li>
+<li><strong>Una ayuda que puede dañar (Bastani et al., 2024).</strong> En un ensayo aleatorizado con unos 1.000 estudiantes de secundaria en Turquía (matemáticas de 9.º a 11.º), los que practicaron con un asistente tipo ChatGPT ("GPT Base") rindieron un 48 % mejor durante la práctica, pero un <strong>17 % peor</strong> en el examen sin IA que el grupo de control. Los que usaron un tutor diseñado con salvaguardas (con las soluciones y las notas del docente, e instrucciones de no dar la respuesta) rindieron un 127 % mejor en la práctica y <strong>no tuvieron pérdida</strong> en el examen frente al control. Es un preprint de 2024 y de matemáticas, no de programación; pero muestra el mecanismo: usar la herramienta como muleta.</li>
 <li><strong>Una ayuda que acelera (Peng et al., 2023).</strong> En un experimento con programadores contratados, quienes tuvieron GitHub Copilot terminaron una tarea acotada (un servidor HTTP en JavaScript) un <strong>55,8 % más rápido</strong> (intervalo de confianza muy amplio, del 21 % al 89 %). Mide velocidad en una tarea, no aprendizaje.</li>
 <li><strong>Una ayuda que engaña (Prather et al., ICER 2024).</strong> En un estudio de laboratorio con 21 estudiantes de un primer curso de programación, 20 terminaron el problema con IA; pero entre los 10 que tuvieron dificultades, 9 llegaron a la solución con la IA y la mayoría <strong>creía entender más de lo que entendía</strong>: la herramienta les daba una ilusión de progreso. Es un estudio pequeño y exploratorio. Los estudiantes que ya sabían qué querían escribir usaron la IA para acelerar y descartaron las sugerencias malas.</li>
 </ul>
@@ -134,7 +134,7 @@ return [
     'seo_description' => 'Cómo enseñar y evaluar programación cuando la IA escribe código: evidencia, rúbrica descargable, bitácora de uso y un ejercicio de depuración probado.',
     'focus_keyword' => 'enseñar programación con IA',
     'cover' => '/assets/img/articulos/programacion-era-ia/programacion-era-ia-portada',
-    'cover_alt' => 'Portada «¿Para qué enseñar a programar si la IA escribe el código? Lo que sigue importando» con una tarjeta: +48 % en la práctica y −17 % en el examen sin IA con un asistente sin límites; un tutor con límites no tuvo pérdida.',
+    'cover_alt' => 'Portada "¿Para qué enseñar a programar si la IA escribe el código? Lo que sigue importando" con una tarjeta: +48 % en la práctica y −17 % en el examen sin IA con un asistente sin límites; un tutor con límites no tuvo pérdida.',
     'published_at' => '2026-12-02 12:00:00',
     'content_html' => $html,
 ];

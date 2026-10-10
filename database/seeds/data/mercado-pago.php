@@ -6,7 +6,7 @@ declare(strict_types=1);
 return [
     'slug' => 'mercado-pago-pagos-rechazados-montos-altos',
     'title' => 'Mercado Pago rechaza pagos altos: mi experiencia y lo que debes saber antes de vender',
-    'excerpt' => 'Pagos de 600, 1.000 y 5.000 dólares rechazados «para tu seguridad», un mensaje de sitio sospechoso para mis clientes y un soporte que pide que el comprador abra cuenta. Te cuento qué pasó, por qué ocurre y cuándo Mercado Pago sí te conviene.',
+    'excerpt' => 'Pagos de 600, 1.000 y 5.000 dólares rechazados "para tu seguridad", un mensaje de sitio sospechoso para mis clientes y un soporte que pide que el comprador abra cuenta. Te cuento qué pasó, por qué ocurre y cuándo Mercado Pago sí te conviene.',
     'seo_title' => 'Mercado Pago rechaza pagos altos: mi experiencia real',
     'seo_description' => 'Mercado Pago me rechazó pagos de 600 a 5.000 dólares. Qué responde soporte, por qué pasa y cuándo sí conviene esta pasarela para tu comercio en línea.',
     'focus_keyword' => 'Mercado Pago rechaza pagos',
@@ -25,35 +25,35 @@ return [
 <li><strong>Integración casi en cualquier lugar.</strong> Funciona con las plataformas de comercio electrónico más usadas y con muchas herramientas SaaS de facturación, agendamiento o membresías, además de enlaces de pago y códigos QR que no requieren tener una tienda.</li>
 <li><strong>Abrir la cuenta es rápido.</strong> En pocos minutos puedes tener un enlace de pago funcionando.</li>
 </ul>
-<p>Con todo eso, la conclusión parece sencilla: «abro la cuenta, conecto mi sitio y empiezo a cobrar». Para muchos negocios es exactamente así. Para el mío no lo fue.</p>
+<p>Con todo eso, la conclusión parece sencilla: "abro la cuenta, conecto mi sitio y empiezo a cobrar". Para muchos negocios es exactamente así. Para el mío no lo fue.</p>
 
 <h2>Lo que me pasó: tres cobros, tres rechazos</h2>
 <p>Mi negocio no es una tienda de camisetas. Además de plantillas y herramientas de bajo costo, vendo <strong>licencias de software, implementaciones y proyectos a medida</strong> para colegios y empresas. Eso significa que algunos cobros son de 600 dólares, otros de 1.000 y algunos llegan a 5.000 dólares.</p>
 <p>Creé la cuenta, configuré el cobro y empecé a recibir pagos. Los de monto bajo pasaron sin problema. Pero cuando llegaron los cobros grandes, <strong>todas las transacciones fueron rechazadas</strong>. No una: todas. Clientes distintos, tarjetas distintas, montos distintos, mismo resultado.</p>
 
-<h3>Primera llamada: «hay que esperar al algoritmo»</h3>
+<h3>Primera llamada: "hay que esperar al algoritmo"</h3>
 <p>Llamé al servicio de atención. La explicación fue que la cuenta tenía que esperar a que su <strong>algoritmo heurístico</strong> determinara que los pagos se podían hacer por esos montos. Pregunté si existía un límite o una política para montos altos y me dijeron que <strong>no tienen ninguna política sobre montos elevados</strong>. Es decir: no hay un tope que yo pueda conocer, ni un requisito que pueda cumplir, ni una fecha en la que eso cambie. Solo esperar.</p>
 
 <h3>Segundo intento: el mensaje que vio mi cliente</h3>
 <p>Llegó otro cliente, intentó pagarme y otra vez: rechazado. Aquí apareció lo que considero lo más grave de toda la experiencia, porque son dos mensajes diferentes para el mismo pago:</p>
 <ul>
-<li><strong>A mí</strong>, en el panel, el pago aparecía como rechazado <em>«para tu seguridad»</em>, como si me estuvieran protegiendo de algo.</li>
+<li><strong>A mí</strong>, en el panel, el pago aparecía como rechazado <em>"para tu seguridad"</em>, como si me estuvieran protegiendo de algo.</li>
 <li><strong>A mi cliente</strong> le apareció que el pago se rechazaba porque había <strong>sospecha de sitio fraudulento</strong>.</li>
 </ul>
 <p>Piensa en lo que eso significa. Un cliente que ya decidió comprarte, que confió lo suficiente como para sacar su tarjeta, recibe de una empresa con la reputación de Mercado Pago el aviso de que <strong>tu comercio podría ser un fraude</strong>. Ese daño no lo repara ninguna disculpa: muchos clientes no vuelven a intentarlo, y algunos lo comentan.</p>
-<p>Y del otro lado, a mí no me dijeron la verdad completa. «Para tu seguridad» no es lo mismo que «tu comercio fue marcado como posible fraude». Si el sistema sospecha de mí, quiero saberlo, para poder aclararlo. Tener información distinta en cada lado de la transacción es, sencillamente, falta de transparencia.</p>
+<p>Y del otro lado, a mí no me dijeron la verdad completa. "Para tu seguridad" no es lo mismo que "tu comercio fue marcado como posible fraude". Si el sistema sospecha de mí, quiero saberlo, para poder aclararlo. Tener información distinta en cada lado de la transacción es, sencillamente, falta de transparencia.</p>
 
-<h3>Tercer intento y la «solución» del soporte</h3>
+<h3>Tercer intento y la "solución" del soporte</h3>
 <p>Volví a intentar con otro pago y volvió a ser rechazado. En la siguiente llamada la respuesta fue todavía más difícil de aceptar: para que pasen pagos de ese monto, <strong>el cliente final debe crear una cuenta de Mercado Pago</strong> y asociar allí su tarjeta de crédito o débito. El objetivo, según me explicaron, es que ellos puedan verificar que la tarjeta realmente pertenece a quien paga.</p>
 <p>Entiendo la intención de prevenir fraudes. Lo que no puedo entender es que, con todo lo que ha avanzado el comercio electrónico, la salida sea <strong>obligar a mi cliente a registrarse en una plataforma que no eligió</strong> y en la que posiblemente no quiere tener cuenta. Hoy existen mecanismos como la autenticación 3-D Secure, en los que el banco del cliente confirma la compra con una notificación o un código, sin pedirle que abra cuentas en ningún lado.</p>
 
-<h3>Después: la verificación de mi «honestidad»</h3>
+<h3>Después: la verificación de mi "honestidad"</h3>
 <p>Al final no obtuve ninguna respuesta positiva. Lo que sí llegó fue un correo en el que, en la práctica, me pedían <strong>demostrar mi honestidad</strong>. Las preguntas no eran solo sobre mí o mi negocio, sino sobre terceros:</p>
 <ul>
 <li>qué tipo de relación tengo con determinado cliente;</li>
 <li>cuándo, dónde y a quién entregué el software que supuestamente estoy vendiendo o que ya vendí.</li>
 </ul>
-<p>Además de lo incómodo que resulta, hay preguntas de fondo: ¿cómo obtienen esa información de mis clientes?, ¿por qué el comerciante tiene que exponer datos de terceros para que le permitan cobrar?, y sobre todo, ¿cómo se «entrega» un software que se descarga o se instala de forma remota? En los productos digitales no hay guía de transportadora ni firma de recibido. Para un negocio como el mío, ese tipo de verificación es un callejón sin salida.</p>
+<p>Además de lo incómodo que resulta, hay preguntas de fondo: ¿cómo obtienen esa información de mis clientes?, ¿por qué el comerciante tiene que exponer datos de terceros para que le permitan cobrar?, y sobre todo, ¿cómo se "entrega" un software que se descarga o se instala de forma remota? En los productos digitales no hay guía de transportadora ni firma de recibido. Para un negocio como el mío, ese tipo de verificación es un callejón sin salida.</p>
 
 <h2>Por qué pasa esto (y por qué no es solo mala suerte)</h2>
 <p>Para ser justo, vale la pena entender la lógica detrás de lo que viví. No la comparto, pero ayuda a tomar mejores decisiones.</p>
@@ -97,7 +97,7 @@ return [
 <tr><td>Montos altos (cientos o miles de dólares)</td><td>—</td><td>Rechazos sin un límite conocido, sobre todo en cuentas nuevas.</td></tr>
 <tr><td>Cobertura</td><td>Varios países de Latinoamérica.</td><td>Las condiciones cambian según el país.</td></tr>
 <tr><td>Integraciones</td><td>Plataformas de comercio, SaaS, enlaces de pago y QR.</td><td>La integración no evita los rechazos del antifraude.</td></tr>
-<tr><td>Mensajes de rechazo</td><td>—</td><td>Al vendedor «para tu seguridad»; al comprador, sospecha de fraude.</td></tr>
+<tr><td>Mensajes de rechazo</td><td>—</td><td>Al vendedor "para tu seguridad"; al comprador, sospecha de fraude.</td></tr>
 <tr><td>Soporte</td><td>Fácil de contactar.</td><td>Respuestas genéricas, sin solución concreta para montos altos.</td></tr>
 <tr><td>Verificación</td><td>Busca prevenir fraudes.</td><td>Puede pedirte información sobre tus clientes y sobre la entrega de productos digitales.</td></tr>
 </tbody>
@@ -106,11 +106,11 @@ return [
 <h2>Si ya tienes cuenta: cómo reducir los rechazos</h2>
 <p>Si Mercado Pago ya es tu pasarela, o la necesitas por su alcance, estas medidas ayudan a que el sistema antifraude tenga más información y menos motivos para rechazar. No hacen milagros con montos muy altos, pero mejoran la tasa de aprobación:</p>
 <ol>
-<li><strong>Empieza con montos bajos y construye historial.</strong> Unas semanas de ventas pequeñas, sin contracargos, le dan a la cuenta un comportamiento «normal» antes de cobrar valores grandes.</li>
+<li><strong>Empieza con montos bajos y construye historial.</strong> Unas semanas de ventas pequeñas, sin contracargos, le dan a la cuenta un comportamiento "normal" antes de cobrar valores grandes.</li>
 <li><strong>Envía todos los datos del comprador y del pedido.</strong> Nombre completo, correo, documento y teléfono del comprador, y una descripción clara de cada producto. Si tu desarrollador integró la pasarela, pídele que revise la guía de aprobación de pagos de la documentación para desarrolladores de Mercado Pago.</li>
 <li><strong>Usa un nombre de comercio reconocible en el extracto.</strong> Si el cliente ve en su tarjeta un nombre que no reconoce, aumentan los desconocimientos de compra, y con ellos el riesgo de tu cuenta.</li>
 <li><strong>Ten tu negocio en regla y documentado.</strong> Factura electrónica, términos y condiciones, política de reembolsos y datos de contacto visibles en tu sitio. Si te piden verificación, tendrás con qué responder.</li>
-<li><strong>Guarda evidencia de cada entrega digital.</strong> Correos con los enlaces de descarga, registros de descarga, actas de instalación o de capacitación. En productos digitales, esa es tu «guía de envío».</li>
+<li><strong>Guarda evidencia de cada entrega digital.</strong> Correos con los enlaces de descarga, registros de descarga, actas de instalación o de capacitación. En productos digitales, esa es tu "guía de envío".</li>
 <li><strong>Avisa al cliente antes de un cobro grande.</strong> Explícale que su banco o la pasarela podrían pedirle una verificación adicional, para que no se asuste si algo falla.</li>
 </ol>
 
@@ -134,7 +134,7 @@ return [
 <h2>Preguntas frecuentes</h2>
 <h3>¿Mercado Pago tiene un límite de monto por transacción?</h3>
 <p>Según lo que me dijeron en soporte, no existe una política pública de montos máximos: la aprobación depende de su sistema antifraude, que evalúa cada pago. En la práctica, en una cuenta nueva los cobros de varios cientos o miles de dólares fueron rechazados de forma sistemática.</p>
-<h3>¿Por qué Mercado Pago rechaza un pago «para tu seguridad»?</h3>
+<h3>¿Por qué Mercado Pago rechaza un pago "para tu seguridad"?</h3>
 <p>Es el mensaje que aparece cuando su sistema de prevención de fraude considera riesgosa la transacción. Influyen el historial de la cuenta, el monto frente a tus ventas habituales, el tipo de producto y la información disponible sobre el comprador.</p>
 <h3>¿Mi cliente tiene que crear una cuenta de Mercado Pago para pagarme?</h3>
 <p>Para pagos normales no. En mi caso, para montos altos, el soporte indicó que el cliente debía crear una cuenta y asociar su tarjeta para que pudieran verificar que era el titular. Es una exigencia que muchos clientes no aceptan.</p>

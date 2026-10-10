@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «Integraciones que fallan en silencio: API, webhooks, reintentos y alertas». Fuentes verificadas el 9 de octubre de 2026: documentación de webhooks de Stripe (docs.stripe.com/webhooks). Demostración en Python ejecutada y descargable; inventario de ejemplo con datos ficticios.
+// "Integraciones que fallan en silencio: API, webhooks, reintentos y alertas". Fuentes verificadas el 9 de octubre de 2026: documentación de webhooks de Stripe (docs.stripe.com/webhooks). Demostración en Python ejecutada y descargable; inventario de ejemplo con datos ficticios.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/integraciones-fallan-silencio/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -25,8 +25,8 @@ $html = <<<'HTML'
 <ul>
 <li><strong>El destino estuvo caído un rato</strong> y el mensaje se perdió, porque nadie reintentó.</li>
 <li><strong>El mensaje llegó dos veces</strong> y se registró dos pagos o dos matrículas.</li>
-<li><strong>Los mensajes llegaron en otro orden</strong> y un estado «pagado» fue pisado por uno más viejo.</li>
-<li><strong>Cambió un campo en la API</strong> del proveedor y la integración sigue «funcionando», pero con datos vacíos.</li>
+<li><strong>Los mensajes llegaron en otro orden</strong> y un estado "pagado" fue pisado por uno más viejo.</li>
+<li><strong>Cambió un campo en la API</strong> del proveedor y la integración sigue "funcionando", pero con datos vacíos.</li>
 <li><strong>Venció una credencial o un certificado</strong> y desde ese día todo falla sin avisar.</li>
 <li><strong>Quien la hizo se fue</strong> y nadie sabe que existe.</li>
 </ul>
@@ -39,7 +39,7 @@ $html = <<<'HTML'
 <h2>El flujo en cinco pasos</h2>
 {{img:flujo}}
 <ol>
-<li><strong>Verifica.</strong> Comprueba la firma, el secreto compartido o el origen antes de actuar. Sin esto, cualquiera podría enviar un «pago confirmado» falso.</li>
+<li><strong>Verifica.</strong> Comprueba la firma, el secreto compartido o el origen antes de actuar. Sin esto, cualquiera podría enviar un "pago confirmado" falso.</li>
 <li><strong>Guarda y confirma.</strong> Registra el evento y responde 2xx de inmediato; si haces el trabajo pesado antes de responder, el proveedor puede dar el envío por fallido y reenviarlo.</li>
 <li><strong>Procesa sin duplicar (idempotencia).</strong> Usa el identificador del evento: si ya lo viste, no lo apliques otra vez.</li>
 <li><strong>Reintenta lo temporal.</strong> Con espera creciente y un poco de azar, para no golpear al destino todos a la vez. No reintentes errores permanentes (un pedido que no existe no va a existir mañana).</li>
@@ -85,10 +85,10 @@ evt_5: nuevo, se procesa
 Pagos aplicados: (3, 250000)
 Eventos fallidos: [('evt_5', 'pedido inexistente en el sistema (error permanente)')]
 Alertas enviadas: 1</code></pre>
-<p>Los dos eventos repetidos se ignoraron; el que falló dos veces de forma temporal se aplicó al tercer intento (los 3 pagos suman 250.000, no 450.000); y el error permanente quedó en la cola de fallidos con una alerta. Una advertencia honesta: <strong>esta demostración marca el evento como procesado al recibirlo</strong>, para que se vea con claridad la idempotencia. En producción es mejor guardar un estado por evento (recibido, procesado, fallido) y marcarlo «procesado» solo cuando el trabajo termina, para no perder un evento que falló a mitad de camino.</p>
+<p>Los dos eventos repetidos se ignoraron; el que falló dos veces de forma temporal se aplicó al tercer intento (los 3 pagos suman 250.000, no 450.000); y el error permanente quedó en la cola de fallidos con una alerta. Una advertencia honesta: <strong>esta demostración marca el evento como procesado al recibirlo</strong>, para que se vea con claridad la idempotencia. En producción es mejor guardar un estado por evento (recibido, procesado, fallido) y marcarlo "procesado" solo cuando el trabajo termina, para no perder un evento que falló a mitad de camino.</p>
 
 <h2>Inventaria tus integraciones</h2>
-<p>Antes de mejorar el código, haz una lista. El libro descargable trae un inventario con columnas para el responsable, si hay alerta, si reintenta, si evita duplicados, si verifica el origen y la fecha de la última revisión; calcula un riesgo por integración. Con los datos de ejemplo, <strong>3 de las 6 integraciones quedan en riesgo alto</strong>: una sin alerta ni reintentos, otra sin ningún control y otra sin responsable. La hoja «Plan_de_falla» trae nueve preguntas para cada integración crítica, como «¿cuánto tardaríamos en enterarnos?» y «¿cómo reprocesamos lo perdido?».</p>
+<p>Antes de mejorar el código, haz una lista. El libro descargable trae un inventario con columnas para el responsable, si hay alerta, si reintenta, si evita duplicados, si verifica el origen y la fecha de la última revisión; calcula un riesgo por integración. Con los datos de ejemplo, <strong>3 de las 6 integraciones quedan en riesgo alto</strong>: una sin alerta ni reintentos, otra sin ningún control y otra sin responsable. La hoja "Plan_de_falla" trae nueve preguntas para cada integración crítica, como "¿cuánto tardaríamos en enterarnos?" y "¿cómo reprocesamos lo perdido?".</p>
 <p>Un detalle: la columna de días desde la revisión usa la fecha de hoy, así que el riesgo cambia con el tiempo; es intencional, para que una integración que nadie revisa suba de riesgo sola.</p>
 
 <h2>Qué monitorear</h2>
@@ -97,7 +97,7 @@ Alertas enviadas: 1</code></pre>
 <tbody>
 <tr><td><strong>Eventos recibidos por día</strong></td><td>Si cae a cero o se dispara, algo cambió</td><td>Alerta por desviación frente al promedio</td></tr>
 <tr><td><strong>Eventos en cola de fallidos</strong></td><td>Trabajo que nadie ha atendido</td><td>Revisión diaria y responsable</td></tr>
-<tr><td><strong>Tiempo desde el último evento</strong></td><td>Una integración «muda»</td><td>Alerta si pasa más de lo esperable</td></tr>
+<tr><td><strong>Tiempo desde el último evento</strong></td><td>Una integración "muda"</td><td>Alerta si pasa más de lo esperable</td></tr>
 <tr><td><strong>Vencimiento de credenciales</strong></td><td>Una caída anunciada</td><td>Calendario de renovación</td></tr>
 <tr><td><strong>Conciliación diaria</strong></td><td>Diferencias entre origen y destino</td><td>Compara totales de ambos lados</td></tr>
 </tbody>
@@ -124,7 +124,7 @@ Alertas enviadas: 1</code></pre>
 <h3>¿Necesito programar para esto?</h3>
 <p>Para el código, sí o con apoyo técnico; pero el inventario, los responsables y el plan de falla no requieren programación, y son lo que más evita sorpresas.</p>
 
-<p class="notice"><strong>Esta semana:</strong> descarga el <a href="/descargas/integraciones/inventario-integraciones.xlsx">inventario de integraciones</a>, lista las tuyas, asigna un responsable a cada una y responde la hoja «Plan_de_falla» para las críticas. Si quieres ver las defensas en código, ejecuta la <a href="/descargas/integraciones/integracion_resiliente.py">demostración en Python</a>.</p>
+<p class="notice"><strong>Esta semana:</strong> descarga el <a href="/descargas/integraciones/inventario-integraciones.xlsx">inventario de integraciones</a>, lista las tuyas, asigna un responsable a cada una y responde la hoja "Plan_de_falla" para las críticas. Si quieres ver las defensas en código, ejecuta la <a href="/descargas/integraciones/integracion_resiliente.py">demostración en Python</a>.</p>
 
 <h2>Para pensar</h2>
 <p>Una integración que funciona el 99 % del tiempo y falla en silencio el otro 1 % puede ser peor que una que falla a gritos, porque nadie sabe que debe corregir. <strong>¿Es aceptable que un colegio o una empresa dependa de conexiones que nadie vigila, cuando de ellas dependen los pagos, las notas o los datos de las personas? Y cuando una falla silenciosa perjudica a alguien (un cobro duplicado, una matrícula perdida), ¿quién responde: quien programó la integración, quien la contrató o quien debía vigilarla?</strong></p>
@@ -145,7 +145,7 @@ return [
     'seo_description' => 'Cómo evitar que una integración falle en silencio: verificación, idempotencia, reintentos, alertas y un inventario descargable con demostración en Python.',
     'focus_keyword' => 'integraciones que fallan en silencio',
     'cover' => '/assets/img/articulos/integraciones-fallan-silencio/integraciones-fallan-silencio-portada',
-    'cover_alt' => 'Portada «Las integraciones que fallan en silencio: API, webhooks, reintentos y alertas» con una tarjeta: 3 de 6 integraciones del ejemplo tienen riesgo alto, un evento repetido no debe duplicar un pago y un error permanente avisa a una persona.',
+    'cover_alt' => 'Portada "Las integraciones que fallan en silencio: API, webhooks, reintentos y alertas" con una tarjeta: 3 de 6 integraciones del ejemplo tienen riesgo alto, un evento repetido no debe duplicar un pago y un error permanente avisa a una persona.',
     'published_at' => '2026-11-17 12:00:00',
     'content_html' => $html,
 ];

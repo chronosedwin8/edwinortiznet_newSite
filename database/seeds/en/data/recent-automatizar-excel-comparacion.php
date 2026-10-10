@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «Power Query, VBA, Office Scripts o Python: ¿cuál es la mejor forma de automatizar Excel?». Key is the Spanish slug. Test of
+// English version of "Power Query, VBA, Office Scripts o Python: ¿cuál es la mejor forma de automatizar Excel?". Key is the Spanish slug. Test of
 // October 9, 2026: 12 workbooks of 10,000 rows consolidated with Power Query (6.7 s; 3.7 s refresh), VBA (7.5 s) and Python with pandas (7.0 s), all
 // giving 120,000 rows and a Value sum of 11,111,254,600. Office Scripts were NOT executed. Status and date come from the Spanish post via
 // en/02_recent_posts.php (scheduled for Thursday, October 29, 2026, 7:00 a.m. Bogotá time).

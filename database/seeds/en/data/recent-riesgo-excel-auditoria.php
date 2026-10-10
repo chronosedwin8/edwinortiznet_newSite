@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// English version of «El riesgo oculto de Excel…». Key is the Spanish slug. Cases and sources checked on October 9, 2026; the commission case is
+// English version of "El riesgo oculto de Excel…". Key is the Spanish slug. Cases and sources checked on October 9, 2026; the commission case is
 // hypothetical and all formulas and figures were tested in Microsoft Excel 16. Status and date come from the Spanish post via en/02_recent_posts.php
 // (scheduled for Thursday, October 22, 2026, 7:00 a.m. Bogotá time).
 $img = static function (string $name, int $h960, string $alt, string $caption): string {

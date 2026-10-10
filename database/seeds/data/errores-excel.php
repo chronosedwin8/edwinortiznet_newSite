@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// «#N/A, #SPILL!, #CALC! y #VALUE!: qué significan y cómo arreglarlos de verdad». Todo probado en Microsoft Excel 16 (es-CO): BUSCARX con espacio final da #N/D; FILTRAR con celda obstruyendo da #¡DESBORDAMIENTO!; FILTRAR sin filas da #CALC!; texto «12 unidades» da #¡VALOR!. Datos ficticios. Verificado el 9 de octubre de 2026.
+// "#N/A, #SPILL!, #CALC! y #VALUE!: qué significan y cómo arreglarlos de verdad". Todo probado en Microsoft Excel 16 (es-CO): BUSCARX con espacio final da #N/D; FILTRAR con celda obstruyendo da #¡DESBORDAMIENTO!; FILTRAR sin filas da #CALC!; texto "12 unidades" da #¡VALOR!. Datos ficticios. Verificado el 9 de octubre de 2026.
 $img = static function (string $name, int $h960, string $alt, string $caption): string {
     $base = '/assets/img/articulos/errores-excel/' . $name;
     return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
@@ -18,7 +18,7 @@ $code = static fn (string $html): string => (string) preg_replace_callback(
 $html = <<<'HTML'
 <p>Un error en Excel asusta: una celda llena de #N/D, otra con #¡VALOR!, un derrame que no se derrama. La reacción más común es taparlo con <code>SI.ERROR</code> y seguir adelante. Es la peor idea: <strong>ocultas el síntoma y dejas la causa</strong>, y la próxima vez el error ya no se verá aunque los números estén mal.</p>
 <p>Este artículo explica cuatro errores que aparecen cada vez más con las funciones modernas (#N/A, #SPILL!, #CALC! y #VALUE!), qué significan realmente y cómo corregir <strong>la causa</strong>. Cada uno viene con un ejercicio resuelto en un <a href="/descargas/errores-excel/errores-excel-ejercicios.xlsx">libro de ejercicios con soluciones</a>. Todo se probó en Microsoft Excel 16 con configuración regional es-CO (en español los errores se llaman #N/D, #¡DESBORDAMIENTO!, #CALC! y #¡VALOR!). Verificado el 9 de octubre de 2026.</p>
-<p class="notice"><strong>Resumen.</strong> Un error de Excel casi siempre tiene una causa pequeña y concreta: un espacio de más, una celda que estorba, un filtro sin resultados, un texto donde iba un número. <strong>Lee el error, busca la causa, corrige la causa</strong> y, solo si es un caso esperado (por ejemplo, «sin resultados»), usa el argumento previsto para manejarlo. Evita envolver todo en SI.ERROR.</p>
+<p class="notice"><strong>Resumen.</strong> Un error de Excel casi siempre tiene una causa pequeña y concreta: un espacio de más, una celda que estorba, un filtro sin resultados, un texto donde iba un número. <strong>Lee el error, busca la causa, corrige la causa</strong> y, solo si es un caso esperado (por ejemplo, "sin resultados"), usa el argumento previsto para manejarlo. Evita envolver todo en SI.ERROR.</p>
 
 <h2>Por qué no tapar los errores con SI.ERROR</h2>
 <p><code>=SI.ERROR(fórmula; "")</code> hace desaparecer cualquier error, incluso los que significan que algo está roto. Si buscas el precio de un código y el código no existe, ¿quieres ver un vacío o una alarma? Un vacío puede acabar sumándose como cero en un total (ver <a href="/riesgo-oculto-excel-auditoria-control-versiones/">el riesgo oculto de Excel</a>). Regla práctica: <strong>maneja de forma explícita los casos esperados</strong> (con el argumento que la función ofrece para eso) y deja visibles los inesperados.</p>
@@ -28,7 +28,7 @@ $html = <<<'HTML'
 <pre><code>=BUSCARX(B3; Datos!A2:A13; Datos!C2:C13)        ' español
 =XLOOKUP(B3, Datos!A2:A13, Datos!C2:C13)        ' inglés
 ' Resultado: #N/D (#N/A)</code></pre>
-<p><strong>Causa.</strong> El código existe, pero el que se escribió tiene un espacio al final y no es idéntico al de la lista. #N/A significa «no disponible»: el valor buscado no se encontró.</p>
+<p><strong>Causa.</strong> El código existe, pero el que se escribió tiene un espacio al final y no es idéntico al de la lista. #N/A significa "no disponible": el valor buscado no se encontró.</p>
 <p><strong>Solución.</strong> Limpia el valor buscado y maneja explícitamente el caso de que no exista:</p>
 <pre><code>=BUSCARX(ESPACIOS(B3); Datos!A2:A13; Datos!C2:C13; "No existe")
 =XLOOKUP(TRIM(B3), Datos!A2:A13, Datos!C2:C13, "No existe")
@@ -58,7 +58,7 @@ $html = <<<'HTML'
 <p><strong>Situación.</strong> Quieres calcular el valor del inventario del producto A-109 (precio por unidades):</p>
 <pre><code>=Datos!C10*Datos!D10
 ' Resultado: #¡VALOR!</code></pre>
-<p><strong>Causa.</strong> La celda D10 contiene el texto <code>"12 unidades"</code> en lugar del número 12, y Excel no puede multiplicar por un texto que no es un número. Con un texto que sí parece número (como «1.200» guardado como texto) Excel a veces lo convierte solo; con «12 unidades» no.</p>
+<p><strong>Causa.</strong> La celda D10 contiene el texto <code>"12 unidades"</code> en lugar del número 12, y Excel no puede multiplicar por un texto que no es un número. Con un texto que sí parece número (como "1.200" guardado como texto) Excel a veces lo convierte solo; con "12 unidades" no.</p>
 <p><strong>Solución.</strong> La buena es <strong>corregir el dato</strong>: escribir 12 y poner la unidad en el encabezado, y añadir <em>validación de datos</em> en la columna para que solo acepte números enteros. Si no puedes tocar el origen, extrae el número:</p>
 <pre><code>=Datos!C10*VALOR(IZQUIERDA(Datos!D10; ENCONTRAR(" "; Datos!D10)-1))
 =Datos!C10*VALUE(LEFT(Datos!D10, FIND(" ", Datos!D10)-1))
@@ -76,12 +76,12 @@ $html = <<<'HTML'
 <tr><td><strong>#NUM! (#¡NUM!)</strong></td><td>Número inválido para la operación</td><td>Raíz de un negativo o resultado demasiado grande</td></tr>
 </tbody>
 </table>
-<p>Comprobé en Excel que <code>=B1/0</code> da #¡DIV/0!, <code>=RAIZ(-1)</code> da #¡NUM! y una función inexistente da #¿NOMBRE?. El libro trae una hoja «Guia_errores» con los ocho errores.</p>
+<p>Comprobé en Excel que <code>=B1/0</code> da #¡DIV/0!, <code>=RAIZ(-1)</code> da #¡NUM! y una función inexistente da #¿NOMBRE?. El libro trae una hoja "Guia_errores" con los ocho errores.</p>
 
 <h2>Un método de cuatro pasos</h2>
 <ol>
 <li><strong>Lee el error:</strong> cada uno apunta a una familia de causas.</li>
-<li><strong>Evalúa la fórmula por partes:</strong> en <em>Fórmulas</em>, «Evaluar fórmula» muestra cada paso, y F9 sobre una parte seleccionada calcula solo esa parte.</li>
+<li><strong>Evalúa la fórmula por partes:</strong> en <em>Fórmulas</em>, "Evaluar fórmula" muestra cada paso, y F9 sobre una parte seleccionada calcula solo esa parte.</li>
 <li><strong>Revisa los datos de entrada:</strong> espacios, texto contra números, celdas vacías, tipos.</li>
 <li><strong>Corrige la causa</strong> y solo entonces decide si ese caso se maneja explícitamente.</li>
 </ol>
@@ -96,7 +96,7 @@ $html = <<<'HTML'
 
 <h2>Preguntas frecuentes</h2>
 <h3>¿Qué significa #N/A en Excel?</h3>
-<p>Que el valor buscado no se encontró. La causa más frecuente son espacios de más o diferencias de tipo (texto contra número). Limpia con ESPACIOS y usa el argumento «si no se encuentra».</p>
+<p>Que el valor buscado no se encontró. La causa más frecuente son espacios de más o diferencias de tipo (texto contra número). Limpia con ESPACIOS y usa el argumento "si no se encuentra".</p>
 <h3>¿Por qué sale #SPILL! y cómo lo arreglo?</h3>
 <p>Porque el resultado de una fórmula dinámica no cabe: hay celdas ocupadas, celdas combinadas o una tabla en el rango de derrame. Libera el rango.</p>
 <h3>¿Cuál es la diferencia entre #CALC! y #VALUE!?</h3>
@@ -106,7 +106,7 @@ $html = <<<'HTML'
 <h3>¿Estos errores existen en versiones antiguas de Excel?</h3>
 <p>#N/A y #VALUE! existen desde hace décadas. #SPILL! y #CALC! aparecen con las matrices dinámicas de Excel moderno (Microsoft 365 y Excel 2021 o posterior).</p>
 
-<p class="notice"><strong>Practica ahora.</strong> Descarga el <a href="/descargas/errores-excel/errores-excel-ejercicios.xlsx">libro de ejercicios</a>, resuelve las cuatro hojas y compara con «Soluciones». Requiere Excel 2021 o Microsoft 365 (BUSCARX y FILTRAR).</p>
+<p class="notice"><strong>Practica ahora.</strong> Descarga el <a href="/descargas/errores-excel/errores-excel-ejercicios.xlsx">libro de ejercicios</a>, resuelve las cuatro hojas y compara con "Soluciones". Requiere Excel 2021 o Microsoft 365 (BUSCARX y FILTRAR).</p>
 
 <h2>Para pensar</h2>
 <p>Un error visible es una oportunidad: te avisa que algo está mal. Un error tapado es una deuda. <strong>¿Deberían las organizaciones prohibir el uso indiscriminado de SI.ERROR en los libros que mueven dinero, notas o decisiones, y exigir que cada error se explique y se resuelva? ¿O es una exageración que ahogaría la agilidad que hizo popular a Excel?</strong></p>
@@ -126,7 +126,7 @@ return [
     'seo_description' => 'Qué significan los errores #N/A, #SPILL!, #CALC! y #VALUE! en Excel, cómo corregir su causa y un libro de ejercicios con soluciones para practicar.',
     'focus_keyword' => 'errores de Excel N/A SPILL CALC VALUE',
     'cover' => '/assets/img/articulos/errores-excel/errores-excel-portada',
-    'cover_alt' => 'Portada «#N/A, #SPILL!, #CALC! y #VALUE!: qué significan y cómo arreglarlos de verdad» con una tarjeta de cuatro errores y su causa: un espacio de más, una celda que estorba, una lista vacía y texto en vez de número.',
+    'cover_alt' => 'Portada "#N/A, #SPILL!, #CALC! y #VALUE!: qué significan y cómo arreglarlos de verdad" con una tarjeta de cuatro errores y su causa: un espacio de más, una celda que estorba, una lista vacía y texto en vez de número.',
     'published_at' => '2026-11-26 12:00:00',
     'content_html' => $html,
 ];
