@@ -1,0 +1,30 @@
+codigo,nombre,correo,curso
+0001,MARIA PEREZ,maria.perez@colegio.example,7A
+0002,Jose  Diaz,jose.diaz@colegio.example,7B
+0003,ÁNGEL Ruiz,angel.ruiz@colegio.example,8A
+0004,Andrea Gómez Ruiz,andrea.gomez@colegio.example,7A
+0005,Camilo Torrez,camilo.torres@colegio.example,7B
+0006,Lucía Mora,lucia.mora@colegio.example.com,8A
+0007,Santiago Vega,santiago.vega@colegio.exmaple,7A
+0008,Valentina Rojas,valentina.rojas@colegio.example,8A
+0009,Mateo Cruz,mateo.cruz@colegio.example,8A
+0010,Sara Pardo,sara.pardo@colegio.example,8B
+0011,Daniel Salas,daniel.salas@colegio.example,7B
+12,Laura Gil,laura.gil@colegio.example,8A
+0013,Nicolás Peña,nicolas.pena@colegio.example,7A
+0014,Isabela Ríos,isabela.rios@colegio.example,7B
+0015,Tomás León,tomas.leon@colegio.example,8A
+0016,Camila Ortiz,camila.ortiz@colegio.example,7A
+0017,Samuel Cano,samuel.cano@colegio.example,7B
+0018,Mariana Bravo,mariana.bravo@colegio.example,8A
+0019,Julián Mejía,julian.mejia@colegio.example,7A
+0020,Emma Soto,emma.soto@colegio.example,7B
+0021,Felipe Reyes,felipe.reyes@colegio.example,8A
+0022,Antonia Luna,antonia.luna@colegio.example,7A
+0023,Gabriel Ramos,gabriel.ramos@colegio.example,7B
+0024,Paula Cardona,paula.cardona@colegio.example,8A
+0025,Esteban Núñez,esteban.nunez@colegio.example,7A
+0026,Juliana Prada,juliana.prada@colegio.example,7B
+0028,Renata Ávila,renata.avila@colegio.example,7A
+0030,Alejandra Mesa,alejandra.mesa@colegio.example,8A
+0099,Retirado Prueba,retirado.prueba@colegio.example,8A
