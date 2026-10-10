@@ -33,7 +33,7 @@ $html = <<<'HTML'
 <li><strong>El archivo es lento, pesado o frágil.</strong> Tarda minutos en abrir, se cuelga o ya se acerca a cientos de miles de filas con fórmulas pesadas.</li>
 <li><strong>Necesitas impedir datos incoherentes.</strong> Pedidos de clientes que no existen, códigos duplicados, fechas imposibles. Una base de datos puede rechazarlos por regla; Excel solo avisa si alguien configuró la validación y nadie la borra.</li>
 <li><strong>Otras aplicaciones necesitan los datos.</strong> Si alguien copia y pega cada semana del libro a la facturación, a la página web o al correo masivo, ya tienes un proceso que pide una fuente central y automática.</li>
-<li><strong>Manejas datos personales o sensibles.</strong> Un archivo que viaja por correo, con copias en cada computador, es difícil de proteger y auditar. La Ley 1581 de 2012 exige al responsable del tratamiento medidas de seguridad sobre los datos personales (ver <a href="/colegio-datos-estudiantes-ia-personalizar-aprendizaje-privacidad/">datos de estudiantes</a>).</li>
+<li><strong>Manejas datos personales o sensibles.</strong> Un archivo que viaja por correo, con copias en cada computador, es difícil de proteger y auditar. La Ley 1581 de 2012 exige al responsable del tratamiento medidas de seguridad sobre los datos personales (ver <a href="/colegio-datos-estudiantes-ia-personalizar-aprendizaje-privacidad/">datos de estudiantes</a>). Por eso un documento como el PIAR de un estudiante no debería vivir en una hoja que circula: <a href="/herramientas/piar/">PIAR con IA</a> lo guarda en una cuenta con acceso controlado.</li>
 </ol>
 
 <h2>Un ejemplo con código: dos clientes que parecen cinco</h2>

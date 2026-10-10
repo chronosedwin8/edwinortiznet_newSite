@@ -33,7 +33,7 @@ $html = <<<'HTML'
 <li><strong>The file is slow, heavy or fragile.</strong> It takes minutes to open, freezes or is nearing hundreds of thousands of rows with heavy formulas.</li>
 <li><strong>You need to prevent inconsistent data.</strong> Orders for customers that do not exist, duplicate codes, impossible dates. A database can reject them by rule; Excel only warns if someone set up validation and nobody deletes it.</li>
 <li><strong>Other applications need the data.</strong> If someone copies and pastes every week from the workbook to billing, the website or bulk email, you already have a process that calls for a central, automatic source.</li>
-<li><strong>You handle personal or sensitive data.</strong> A file traveling by email, with copies on every computer, is hard to protect and audit. Colombia's Law 1581 of 2012 requires data controllers to apply security measures to personal data (see <a href="/colegio-datos-estudiantes-ia-personalizar-aprendizaje-privacidad/">student data</a>).</li>
+<li><strong>You handle personal or sensitive data.</strong> A file traveling by email, with copies on every computer, is hard to protect and audit. Colombia's Law 1581 of 2012 requires data controllers to apply security measures to personal data (see <a href="/colegio-datos-estudiantes-ia-personalizar-aprendizaje-privacidad/">student data</a>). That is why a document like a student's PIAR should not live in a sheet that gets passed around: <a href="/herramientas/piar/">PIAR con IA</a> keeps it in an account with controlled access.</li>
 </ol>
 
 <h2>An example with code: two customers that look like five</h2>
