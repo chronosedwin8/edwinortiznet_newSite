@@ -1,0 +1,154 @@
+<?php
+
+declare(strict_types=1);
+
+// English version of «Las matemáticas están a punto de morir... ¿o solo están cambiando? Lo que OpenAI…». Key is the Spanish slug. Status and date come from the Spanish post via en/02_recent_posts.php.
+$img = static function (string $name, int $h960, string $alt, string $caption): string {
+    $base = '/assets/img/articulos/matematicas-openai/' . $name . '-en';
+    return '<figure><img src="' . $base . '-960.webp" srcset="' . $base . '-640.webp 640w, ' . $base . '-960.webp 960w, ' . $base . '-1440.webp 1440w" '
+        . 'sizes="(min-width: 760px) 720px, 100vw" alt="' . $alt . '" width="960" height="' . $h960 . '" loading="lazy" decoding="async">'
+        . '<figcaption>' . $caption . '</figcaption></figure>';
+};
+$code = static fn (string $html): string => (string) preg_replace_callback(
+    '#<pre><code>(.*?)</code></pre>#s',
+    static fn (array $m): string => '<pre><code>' . htmlspecialchars($m[1], ENT_NOQUOTES, 'UTF-8') . '</code></pre>',
+    $html
+);
+
+$html = <<<'HTML'
+<p>Some headlines seem written to scare and yet have some truth in them. "Mathematics is about to die" is one of them. On October 6, 2026, OpenAI published on GitHub a set of mathematical manuscripts produced by an internal model it has not yet released: <strong>722 documents, now 719, grouped into 372 families of results</strong>, which the company says solve open problems or make substantial progress toward solving them in mathematics and theoretical computer science. Four days later, nobody has been able to read them all, and the discussion already divides mathematicians between enthusiasm, alarm and skepticism.</p>
+<p>This article does not judge the proofs (that cannot be done in four days, or from outside). It does three things: it separates <strong>what was published</strong> from <strong>what has been verified</strong>, it summarizes <strong>what mathematicians themselves say</strong> with their sources, and it analyzes four ideas circulating in the debate: that what is verifiable falls to reinforcement learning, the machine-speed idea, who owns the data centers and whether a mathematician should be thrilled or feel displaced. It includes an <a href="/descargas/openai-matematicas/catalogo-openai-matematicas-verificacion.xlsx">Excel workbook</a> (in Spanish) with a calculation of my own on the catalog (the data come from OpenAI's repository; the review assumptions are mine and marked), verified in Microsoft Excel 16 and against an independent calculation.</p>
+<p class="notice"><strong>How to read this article.</strong> All figures are as of <strong>October 10, 2026</strong> and the situation changes by the hour: OpenAI has already withdrawn three manuscripts over a sign error and corrected fourteen others. I always distinguish between what a primary document says (the repository, the original paper, the declaration), what a secondary source says and what is opinion. The four ideas I analyze come from <a href="https://x.com/antonello/status/2107706311907401882">a thread by Antonio Ortiz on X</a> (in Spanish), who raised them on October 6. I could not open OpenAI's announcement page (it returned an access error), so I took the company's figures from the <strong>README and history of its repository</strong>, which I read in full.</p>
+
+<h2>What was published, and what was not</h2>
+<ul>
+<li><strong>The catalog:</strong> the <em>openai/math</em> repository was created on October 6, 2026 and is under an Apache 2.0 license. It contains <strong>719 manuscripts in 372 families</strong> (a family groups a main result and its companion papers) and classifies them into 17 disciplines. The fields with the most manuscripts are probability and statistical mechanics (105), algebraic and complex geometry (86) and theoretical computer science (73). They are PDF papers, not journal publications.</li>
+<li><strong>How they were produced:</strong> with an unreleased internal model. According to the README, it was posed <strong>about 4,000 problems</strong>; on average each result used <strong>three hours of "ChatGPT Pro thinking" compute</strong>; the vast majority followed the same procedure (with a single agent, per The Decoder's coverage); and from that material the results with an "appropriate level of significance" were selected. There were exceptions: the work on a zero-free region of the Riemann zeta function and the proof of the Hodge conjecture for CM abelian varieties did not follow the fixed procedure, and the write-up of the Re(s) > 11/12 zero-free region was human-edited for readability.</li>
+<li><strong>What was not published:</strong> the model, the <em>prompts</em> and the rest of the attempts. There are abridged summaries of the reasoning, but only for <strong>10 families</strong> out of 372. And the repository's "Issues" (GitHub's channel for reporting errors) are disabled.</li>
+<li><strong>What the catalog titles say</strong> (company claims, unverified): a zero-free region Re(s) > 7/8 for every Dirichlet L-function (the "quasi-Riemann hypothesis"), the full Birch and Swinnerton-Dyer formula in certain cases, that no algorithm decides Hilbert's tenth problem over the rationals, that the Euclidean plane is not five-colorable, a counterexample to Hadwiger's conjecture, integer multiplication below n log n, and, according to computer scientist Scott Aaronson, a proof of the Unique Games Conjecture and of L = BPL.</li>
+</ul>
+<p>It is, in Aaronson's words, "one of the biggest days in mathematical history", if the results hold up, and that condition is everything.</p>
+
+<h2>What has been verified (and what has not)</h2>
+{{img:lean}}
+<p><strong>Lean</strong> is a proof assistant: a program that checks, step by step, that a proof written in a formal language is logically valid. When a proof "passes Lean", no logical step is wrong. But mathematician Thomas Hales, in a text published on October 9 on Terence Tao's blog, recalls the limits: a Lean proof should not be accepted until a person audits the <strong>fidelity of the statement</strong> (is the theorem that was verified the one we think it is?, do the definitions in Lean correspond to those they should?), and he reminds us that the checker itself has had bugs: in the "summer of soundness bugs" of 2026, several flaws were found, with AI's help, in Lean's kernel (one allowed an illicit "proof" that the Collatz conjecture was false), now fixed. Lean does not say whether a result is relevant, original or whether anyone understands it.</p>
+<p>How much of the catalog is formalized? It depends on how you count:</p>
+<ul>
+<li><strong>According to OpenAI</strong> (history of October 7): <strong>300 of 719, about 42%</strong>, of "top-line results" formalized; the README adds that "some of the unformalized results could have issues".</li>
+<li><strong>According to my calculation with the catalog</strong> <em>lean/formalization.yaml</em> (version 0.4, read on October 10): <strong>173 documents</strong> with a formalized main result (24% of 719). Cross-matching them with the manuscript list, 172 map to a family, and those families are <strong>135 of 372 (36.3%)</strong>. I could not reconcile the two counts (they measure different things: results versus documents), and OpenAI's own text warns that formalizations will keep being added.</li>
+</ul>
+{{img:formalizacion}}
+<p>By field, the difference is huge: there is formalization in <strong>83%</strong> of mathematical logic families and 73% of functional analysis ones, but only 19% of partial differential equations, 17% of dynamical systems and <strong>6%</strong> of topology. A plausible explanation (which I have not verified) is that Lean's mathematics library covers some fields better than others.</p>
+<p>And another important check: on the same October 7, OpenAI <strong>withdrew three manuscripts</strong> because a sign error invalidated an argument about Weil classes on abelian eightfolds and the construction on which two further papers depended, and <strong>revised 14 others</strong> with proof repairs. It is good news, because it shows the correction process working in public, and a reminder that "published" does not mean "proved". On the company's previous release (ten results announced on August 1, 2026), an audit posted on arXiv (2608.14673, by Sienicki and Sienicki) concluded that in the reviews examined no confirmed substantive error remains in a principal result, although the depth of the reviews varies, some dependencies are only partly checked and one chapter received a request for major revision. Its authors propose that confidence should combine formal checking, human reconstruction, independent use and a public record of corrections.</p>
+{{img:etapas}}
+
+<h2>What mathematicians say</h2>
+<ul>
+<li><strong>Scott Aaronson</strong> ("The Mathocalypse", October 7): celebrates the day as one of the most important in the discipline's history, but admits that "no human seems to have understood just about any of these proofs yet" and that the race to understand them has just started. He says a colleague, an expert on the Unique Games Conjecture, described the paper as nearly impossible to read without AI help. He criticizes the stance "nobody should solve our open problems with AI": he finds it untenable and unenforceable.</li>
+<li><strong>The Association for Human Mathematics</strong> (statement of October 7, published on Terence Tao's blog): rejects OpenAI's claim that this release advances the discipline, says that "mathematicians did not ask for this work to be done" and urges stopping collaboration with the company. Aaronson clarified that its members speak for themselves and not for the whole community.</li>
+<li><strong>The Fields medalists' declaration</strong> ("A Severe Misalignment of AI in Mathematics", September 11, 2026, mathandai.org): signed by 28 Fields medalists according to the published list (the press said 25), including Terence Tao. It argues that solving problems is "only a tool and proxy" for conceptual understanding, and that mass production of true or false statements "could destroy fertile ground instead of breathing life into new ideas". It does not call for banning AI: it calls for aligning goals.</li>
+<li><strong>The Advisory Group on Mathematics and Artificial Intelligence</strong> (announced September 21, hosted at the Institute for Advanced Study in Princeton; its nine members include Timothy Gowers, Martin Hairer, Edward Witten and Melanie Matchett Wood): declares itself independent of the companies, unpaid and without decision-making power over them, and arose after OpenAI approached some of its members. Its first task was advising on how to coordinate the release of these results.</li>
+<li><strong>Terence Tao</strong> (slides of "Math 2.0", October 10): describes a present marked by the "excessive emphasis on automated solving of open problems" and proposes a "Math 2.0" where AI sustains the mathematical community and the role of understanding. The texts he invited to his blog have different tones: <strong>Raghu Meka</strong> ("The barriers of perception") sees a chance to revisit barriers we accepted by inheritance; <strong>Jeremy Avigad</strong> recalls that what remains stable in mathematics' history is that it is "a culture of rigorous reasoning and communication"; <strong>Álvaro Lozano-Robledo</strong> ("What should we tell our students?") addresses students with "keep calm and carry on studying math", while acknowledging that nobody knows the future.</li>
+</ul>
+
+<h2>Four ideas, one by one</h2>
+<h3>1. "What is verifiable falls to reinforcement learning"</h3>
+<p><strong>What holds up.</strong> Formal mathematics offers something rare: a mechanical checker (Lean) that says, without argument, whether a proof is valid. That allows training systems with verifiable rewards, and the catalog shows that, on selected open problems, the result can be striking. The idea that "in every discipline that meets this, it will happen" is a reasonable hypothesis.</p>
+<p><strong>What needs nuance.</strong> (a) What is verifiable is the <em>proof</em>, not the <em>statement</em>: without a human audit, Lean can certify a theorem that is not the intended one. (b) Today only part of the catalog is formalized (between 24% of documents and 42% of results, depending on how you count), with large differences by field. (c) "Far surpasses humans" is true at producing proofs of certain problems at scale, and we do not yet know whether it is true at understanding or at choosing which problems matter. (d) Critics disagree even on whether there are "alien" ideas: Aaronson cites descriptions of a "completely new" construction while Lozano-Robledo maintains that none of the proofs so far contains ideas foreign to the prior literature. It is an open debate.</p>
+<h3>2. "Some knowledge moves at machine speed"</h3>
+<p><strong>What holds up.</strong> It is the strongest part: 719 manuscripts in a week, dated mostly between September 23 and 27 (547 according to the repository folders' dates), against human reading that moves at human speed. Aaronson sums it up: nobody has understood almost anything yet.</p>
+<p><strong>What needs nuance, with an exercise.</strong> The Excel workbook estimates the human review workload for the 547 manuscripts unformalized according to the catalog, with <strong>my own editable assumptions</strong> (40 hours of an expert per manuscript, 25 experts available per field, 5 hours a week per expert): about 21,880 hours, and the most loaded field, probability and statistical mechanics (93 unformalized manuscripts), would need about 30 weeks, nearly seven months, just to read. It is not a prediction: it is a way to see that the bottleneck is not the machine but expert attention, and that it changes a lot if the assumptions change (with 100 hours per manuscript, it would be nearly 75 weeks).</p>
+<pre><code>' Unformalized manuscripts of a discipline (C = manuscripts, E = formalized)
+=C2-E2
+' Weeks of human review (assumptions in Parametros: hours B4, experts B5, hours per week B6)
+=G2*Parametros!$B$4/(Parametros!$B$5*Parametros!$B$6)
+' Share of families with at least one formalized manuscript
+=D2/B2
+' Discipline with the most review work
+=INDEX(Disciplinas!A2:A18,MATCH(MAX(Disciplinas!H2:H18),Disciplinas!H2:H18,0))           ' English
+=INDICE(Disciplinas!A2:A18;COINCIDIR(MAX(Disciplinas!H2:H18);Disciplinas!H2:H18;0))     ' Spanish</code></pre>
+<h3>3. "Let us look at who owns the data centers"</h3>
+<p><strong>What holds up.</strong> Producing these results requires compute that very few have: the three-hour average per result hides the cost of the roughly 4,000 attempts and, according to the specialized outlet The Decoder, the September result on the Navier-Stokes equations required a swarm of 10,000 agents and millions of dollars. Whoever has that compute decides which problems are attempted and how they are communicated. Tao's blog has raised the question of a "CERN for AI-assisted science", that is, public infrastructure.</p>
+<p><strong>What needs nuance.</strong> "Good for OpenAI for publishing everything" is not quite accurate. OpenAI published <strong>the results</strong>, under an open license, and that has merit. It did not publish <strong>the model, the <em>prompts</em> or the failed attempts</strong> (you see only the 372 "significant" results out of about 4,000 problems), it only shared reasoning summaries for 10 families and it disabled the error-reporting channel. Without the model, nobody independent can reproduce the process; and without knowing the denominator of attempts, you cannot tell how efficient it is.</p>
+<h3>4. "Are you thrilled or do you sink into alienation?"</h3>
+<p><strong>What holds up.</strong> Both reactions are real and documented: Aaronson says his wife, an expert on that conjecture, feels "all of the emotions", including seeing a robot solve the problem she dedicated her career to, and also feeling vindicated because it was true; Lozano-Robledo says this is the most exciting moment of his career; and a student writes to him that they are "lost" about the point of continuing.</p>
+<p><strong>What needs nuance.</strong> Alienation does not come only from losing prominence, but from what the medalists' declaration calls the "human transmission chain": mathematics is sustained because people understand, simplify, teach and connect ideas. If the production of results decouples from that chain, the risk is not that there are no theorems, but that nobody understands them (Aaronson: "unless you are happy to outsource the task of understanding and applying the ideas to AI models as well"). There is no single answer, and anyone who declares one with certainty, says Lozano-Robledo, deserves distrust.</p>
+
+<h2>Is mathematics about to die?</h2>
+<p>The question mixes three things. <strong>1) Mathematics as solving open problems:</strong> here the change is real and fast, and it is what is most debated. <strong>2) Mathematics as understanding and culture:</strong> it is what Avigad, Tao and the medalists defend, and it is not solved by volume; it depends on people who understand and transmit. <strong>3) The mathematics taught in school and university:</strong> where learning to reason, prove and explain remains the goal, not producing new theorems. If "dying" means that nobody will be needed to understand, neither the sources nor this week's facts support it; if it means that the craft, the profession and the way of publishing will change, it probably will, and it is already starting to.</p>
+
+<h2>What it means for schools, families and students (Colombia, Latin America and the world)</h2>
+<p>An announcement about research problems does not change what a student needs to learn in the classroom; it does change with what tools they will do it. In Colombia the prior challenge is different: in PISA 2022 the country scored <strong>383 points in mathematics</strong>, below the OECD average, and almost no students reached the top levels (5 or 6). For many students, the distance to frontier mathematics is huge; AI can widen or shorten it depending on how it is used. The available evidence points to use with guardrails: in an experiment with about 1,000 high school students (Bastani and colleagues, <em>PNAS</em>, July 2025), those who practiced with an unrestricted ChatGPT improved 48% in practice, but did 17% worse on the AI-free exam than those who never used it; those who used a tutor with hints instead of answers improved 127% in practice and performed the same as the control group. It is short-term evidence from a specific context and age.</p>
+<ul>
+<li><strong>For teachers:</strong> ask students to explain and defend (orally or in writing) what they solve, teach checking, and use AI as a tutor that asks, not as a solver. The burden of proof shifts from the result to the reasoning.</li>
+<li><strong>For principals:</strong> avoid both total bans and uncritical adoption; agree rules by level and task type, and train teachers.</li>
+<li><strong>For families:</strong> the message to a child who loves mathematics is not "it is no longer worth studying" but "learning to reason and explain rigorously is what cannot be delegated". And distrust headlines with expiry dates.</li>
+<li><strong>For students:</strong> studying mathematics is training a way of thinking. With AI, the useful question is "could I explain and reproduce this without it?".</li>
+</ul>
+<p>In Latin America, where almost nobody has access to data centers like these companies', the debate about "21st-century science with AI" is also one about who takes part: producing results with these models is far from our universities, but verifying, teaching and applying them is not. For the same critical method applied to another technology promise, see <a href="/inteligencia-artificial-cuantica-aplicaciones-limites/">quantum artificial intelligence between revolution and promises yet to be proven</a>, <a href="/gran-mentira-ia-inteligencia-artificial-no-piensa/">the great lie about AI</a> and <a href="/inteligencia-artificial-educacion-superior-espejismo-evaluacion/">the mirage of AI in higher education</a> (the last two in Spanish).</p>
+
+<h2>The Excel workbook</h2>
+<ul>
+<li><strong>Parametros:</strong> the repository data (719 manuscripts, 372 families, 300 formalized according to OpenAI, 173 documents in the catalog) and three <strong>editable illustrative assumptions</strong> (review hours per manuscript, experts per field and weekly hours).</li>
+<li><strong>Disciplinas:</strong> the 17 disciplines with their number of families, manuscripts, families with formalization, formalized manuscripts, percentage, unformalized manuscripts and review weeks under the assumptions. The data come from cross-matching three repository files (<em>overview.pdf</em>, <em>CONTENTS.md</em> and <em>lean/formalization.yaml</em>).</li>
+<li><strong>Resumen:</strong> the key counts and the field with the most pending work.</li>
+</ul>
+<p>Result: 372 families and 719 manuscripts; 135 families (36.3%) with some formalized manuscript; 172 manuscripts with a formalized main result matched to a family and 547 unformalized (76.1%) per the catalog; highest share in mathematical logic (83%), lowest in topology (6%); and, with the example assumptions, 29.8 weeks (0.57 years) of review in probability and statistical mechanics. <strong>An honest reading:</strong> the 76% "unformalized" depends on a catalog that is being updated (OpenAI says 42% in another measure); the capacity model is an illustration, not an estimate; and a manuscript being formalized does not exempt it from the statement audit or from human reading.</p>
+
+<h2>Tools and templates</h2>
+<p>If you teach mathematics, to prepare material and reasoning assessments (with AI as an assistant, always reviewing what it produces and without including student data in tools not designed to safeguard it), take a look at these tools of our own.</p>
+{{productos:kit-de-ia-para-docentes,generador-de-examenes-ia-esencial}}
+<p>Keep reading: <a href="/descargas/openai-matematicas/catalogo-openai-matematicas-verificacion.xlsx">the catalog workbook</a>, <a href="/excel-con-inteligencia-artificial-ejemplos-practicos-python/">Excel with artificial intelligence</a> and the <a href="/herramientas/generador-de-examenes/">AI Exam Generator</a> and <a href="/herramientas/piar/">PIAR with AI</a> tools.</p>
+
+<h2>Sources consulted (October 10, 2026)</h2>
+<p>Primary documents first.</p>
+<ul>
+<li><strong>OpenAI, repository <a href="https://github.com/openai/math">openai/math</a>:</strong> <a href="https://raw.githubusercontent.com/openai/math/main/README.md">README</a>, <a href="https://raw.githubusercontent.com/openai/math/main/history.md">history</a> (withdrawals and corrections of October 7), <a href="https://raw.githubusercontent.com/openai/math/main/CONTENTS.md">CONTENTS.md</a>, <a href="https://raw.githubusercontent.com/openai/math/main/overview.pdf">overview.pdf</a> and <a href="https://raw.githubusercontent.com/openai/math/main/lean/formalization.yaml">lean/formalization.yaml</a>. Company documents; the mathematical claims are theirs and have not been verified by third parties. Announcement: <a href="https://openai.com/index/sharing-ai-progress-in-mathematics/">openai.com/index/sharing-ai-progress-in-mathematics</a> (I could not open it).</li>
+<li><strong>Scott Aaronson,</strong> <a href="https://scottaaronson.blog/?p=10169">"The Mathocalypse"</a>, October 7, 2026 (updated on the 9th) (a specialist's opinion).</li>
+<li><strong>Association for Human Mathematics,</strong> <a href="https://terrytao.wordpress.com/2026/10/07/ahm-statement-on-openais-october-6-release-of-mathematical-documents/">statement of October 7</a> (published as a guest post on Terence Tao's blog); <strong>Thomas Hales,</strong> <a href="https://terrytao.wordpress.com/2026/10/09/what-mathematicians-should-know-about-the-lean-theorem-proverquestions-of-reliability-and-ai/">"What mathematicians should know about the Lean Theorem Prover"</a> (October 9); <strong>Raghu Meka,</strong> <a href="https://terrytao.wordpress.com/2026/10/07/the-barriers-of-perception/">"The barriers of perception"</a>; <strong>Jeremy Avigad,</strong> <a href="https://terrytao.wordpress.com/2026/10/05/the-future-of-mathematics/">"The Future of Mathematics"</a>; <strong>Álvaro Lozano-Robledo,</strong> <a href="https://terrytao.wordpress.com/2026/10/08/what-should-we-tell-our-students/">"What should we tell our students?"</a>; <strong>Terence Tao,</strong> <a href="https://terrytao.wordpress.com/2026/10/10/math-2-0/">"Math 2.0"</a> (specialists' opinions).</li>
+<li><strong>Declaration "A Severe Misalignment of AI in Mathematics"</strong> (September 11, 2026), at <a href="https://www.mathandai.org/">mathandai.org</a>; <strong>Advisory Group on Mathematics and AI,</strong> <a href="https://terrytao.wordpress.com/2026/09/21/advisory-group-on-mathematics-and-artificial-intelligence/">announcement of September 21</a>.</li>
+<li><strong>Lance Fortnow,</strong> <a href="https://blog.computationalcomplexity.org/2026/09/navier-stokes-and-lean.html">"Navier-Stokes and Lean"</a> (September 9) (blog); <strong>The Decoder,</strong> <a href="https://the-decoder.com/openai-dumps-372-ai-generated-math-proofs-on-github-telling-the-academic-world-to-keep-up/">coverage of October 7</a> (specialized outlet; secondary source).</li>
+<li><strong>Sienicki and Sienicki (2026),</strong> <a href="https://arxiv.org/abs/2608.14673">"A Human Audit of OpenAI's AI-Generated Mathematical Proofs"</a>, arXiv:2608.14673 (preprint, not peer-reviewed).</li>
+<li><strong>OECD,</strong> <a href="https://www.oecd.org/publication/pisa-2022-results/country-notes/colombia-dd5f34d9/">PISA 2022, country note: Colombia</a>; <strong>Bastani et al. (2025),</strong> "Generative AI without guardrails can harm learning: Evidence from high school mathematics", <em>PNAS</em> 122(26).</li>
+<li><strong>Antonio Ortiz,</strong> <a href="https://x.com/antonello/status/2107706311907401882">thread on X of October 6, 2026</a> (opinion), the source of the four ideas analyzed.</li>
+</ul>
+
+<h2>Frequently asked questions</h2>
+<h3>What did OpenAI publish on October 6, 2026?</h3>
+<p>A repository with 719 mathematical manuscripts (722 at first) grouped into 372 families of results, produced by an unreleased internal model, with some formalizations in Lean.</p>
+<h3>Are the results verified?</h3>
+<p>Only in part. OpenAI says about 42% of top-line results have a proof formalized in Lean; the rest depends on review by the community, which has barely begun. Three manuscripts have already been withdrawn over a sign error.</p>
+<h3>What does Lean verify and what does it not?</h3>
+<p>It verifies that a proof is logically valid given a formal statement. It does not by itself verify that the statement is faithful to the problem, that the result is relevant or original, or that anyone understands it.</p>
+<h3>Will mathematics or mathematicians disappear?</h3>
+<p>Nobody knows with certainty. What does change is the craft: solving open problems speeds up, and understanding, verification, teaching and choosing questions still need people. The more careful sources ask not to make life decisions based on a headline.</p>
+<h3>Should my child keep studying mathematics?</h3>
+<p>Learning to reason rigorously, to prove and to explain remains valuable with or without AI; using AI as a tutor with hints, not as a solver, is what the available evidence supports.</p>
+
+<p class="notice"><strong>Explore the catalog yourself.</strong> Download the <a href="/descargas/openai-matematicas/catalogo-openai-matematicas-verificacion.xlsx">catalog workbook</a> (in Spanish), change the review assumptions (hours, experts and weekly hours) and see which field would carry the most work.</p>
+
+<h2>Food for thought</h2>
+<p>Perhaps the question is not whether mathematics will die, but which part of learning it was the path and not the result: the effort of understanding why something is true, which is not transferred by a proof already written. <strong>If a machine handed you today the solution to a problem you dreamed of solving, what would remain of what that problem would have taught you? And how could we, in school and university, protect that path without denying the tools that are already here?</strong></p>
+HTML;
+
+$html = $code($html);
+$html = (string) preg_replace('#<a href="(https?://[^"]+)">#', '<a href="$1" target="_blank" rel="noopener">', $html);
+$html = strtr($html, [
+    '{{img:lean}}' => $img('matematicas-openai-lean', 499, 'Table on what a Lean proof does and does not verify: that the proof is correct, that the statement is faithful, that the result matters and that someone understands it.', 'A Lean proof does not settle everything.'),
+    '{{img:formalizacion}}' => $img('matematicas-openai-formalizacion', 612, 'Bar chart of the percentage of families with some formalized manuscript in eight fields: logic 83, functional analysis 73, convex geometry 67, theoretical computer science 55, partial differential equations 19, algebraic geometry 19, dynamical systems 17 and topology 6.', 'Formalization is very uneven across fields.'),
+    '{{img:etapas}}' => $img('matematicas-openai-etapas', 467, 'Five stages from announcement to accepted truth: publish, formalize, audit the statement, reconstruct with human reading and use with public correction.', 'From announcement to accepted truth.'),
+]);
+
+return [
+    'las-matematicas-estan-a-punto-de-morir-openai-372-resultados-verificacion-lean' => [
+        'slug' => 'mathematics-is-about-to-die-openai-372-results-verification-lean',
+        'title' => 'Mathematics Is About to Die... or Is It Just Changing? What OpenAI Published, What Remains to Be Verified and What Changes',
+        'excerpt' => 'On October 6 OpenAI published 372 families of mathematical results from an internal model. What was published, what has been verified in Lean, what mathematicians say and what changes for those who teach and learn mathematics, with an Excel workbook on the catalog.',
+        'seo_title' => 'Is Math Dying? OpenAI\'s 372 Results',
+        'seo_description' => 'OpenAI published 372 families of AI-made mathematical results. What was verified in Lean, what mathematicians say and what changes for teachers and learners.',
+        'focus_keyword' => 'OpenAI 372 math results',
+        'cover' => '/assets/img/articulos/matematicas-openai/matematicas-openai-portada-en',
+        'cover_alt' => 'Cover "Mathematics is about to die... or is it just changing?" with a card: about 42% of top-line results have a proof formalized in Lean, per OpenAI.',
+        'content_html' => $html,
+    ],
+];
