@@ -1,0 +1,21 @@
+id,tipo,serie,compra,garantia_meses,ubicacion,responsable,estado
+ACT-001,Portátil,SN-A1001,2022-02-10,24,Sala de profesores,Coordinación,Operativo
+ACT-002,Portátil,SN-A1002,2022-02-10,24,Sala de profesores,Coordinación,Operativo
+ACT-003,Portátil,SN-A1003,2023-08-05,36,Aula 301,Docente Pérez,Operativo
+ACT-004,Portátil,SN-A1004,2026-03-15,36,Rectoría,Rectoría,Operativo
+ACT-005,Tableta,SN-B2001,2023-05-20,12,Carro de tabletas,Biblioteca,Operativo
+ACT-006,Tableta,SN-B2002,2023-05-20,12,Carro de tabletas,Biblioteca,Operativo
+ACT-007,Tableta,SN-B2003,2023-05-20,12,Carro de tabletas,Biblioteca,En reparación
+ACT-008,Proyector,SN-C3001,2021-09-01,24,Aula 201,Docente Gómez,Operativo
+ACT-009,Proyector,SN-C3002,2021-09-01,24,Aula 202,Docente Rojas,Operativo
+ACT-010,Proyector,SN-C3003,2024-11-12,36,Aula 203,Docente Díaz,Operativo
+ACT-011,Punto de acceso,SN-D4001,2020-06-30,24,Pasillo piso 2,Sistemas,Operativo
+ACT-012,Punto de acceso,SN-D4002,2024-07-08,36,Pasillo piso 1,Sistemas,Operativo
+ACT-013,Impresora,SN-E5001,2022-01-17,12,Secretaría,Secretaría,Operativo
+ACT-014,Impresora,SN-E5002,2025-04-22,12,Coordinación,Coordinación,Operativo
+ACT-015,PC de escritorio,SN-F6001,2020-10-14,36,Sala de sistemas,Sistemas,Operativo
+ACT-016,PC de escritorio,SN-F6002,2020-10-14,36,Sala de sistemas,Sistemas,Operativo
+ACT-017,PC de escritorio,SN-F6003,2020-10-14,36,Sala de sistemas,Sistemas,Baja
+ACT-018,Portátil,SN-A1005,2025-09-03,18,Aula 302,Docente Torres,Operativo
+ACT-019,Tableta,SN-B2004,2025-02-11,24,Carro de tabletas,Biblioteca,Operativo
+ACT-020,Proyector,SN-C3004,2025-06-06,24,Aula 204,Docente Vega,Operativo

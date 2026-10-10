@@ -1,0 +1,29 @@
+fecha,id,tipo,destino,responsable
+2020-06-30,ACT-011,Entrada,Pasillo piso 2,Sistemas
+2020-10-14,ACT-015,Entrada,Sala de sistemas,Sistemas
+2020-10-14,ACT-016,Entrada,Sala de sistemas,Sistemas
+2020-10-14,ACT-017,Entrada,Sala de sistemas,Sistemas
+2021-09-01,ACT-008,Entrada,Aula 201,Docente Gómez
+2021-09-01,ACT-009,Entrada,Aula 202,Docente Rojas
+2022-01-17,ACT-013,Entrada,Secretaría,Secretaría
+2022-02-10,ACT-001,Entrada,Sala de profesores,Coordinación
+2022-02-10,ACT-002,Entrada,Sala de profesores,Coordinación
+2023-05-20,ACT-005,Entrada,Carro de tabletas,Biblioteca
+2023-05-20,ACT-006,Entrada,Carro de tabletas,Biblioteca
+2023-05-20,ACT-007,Entrada,Carro de tabletas,Biblioteca
+2023-08-05,ACT-003,Entrada,Sala de profesores,Coordinación
+2023-09-01,ACT-003,Asignación,Aula 301,Docente Pérez
+2023-09-20,ACT-008,Préstamo,Auditorio,Docente Gómez
+2023-09-22,ACT-008,Devolución,Aula 201,Docente Gómez
+2024-07-08,ACT-012,Entrada,Pasillo piso 1,Sistemas
+2024-11-12,ACT-010,Entrada,Aula 203,Docente Díaz
+2025-02-11,ACT-019,Entrada,Carro de tabletas,Biblioteca
+2025-04-22,ACT-014,Entrada,Coordinación,Coordinación
+2025-06-06,ACT-020,Entrada,Aula 204,Docente Vega
+2025-09-03,ACT-018,Entrada,Sala de profesores,Coordinación
+2025-10-06,ACT-018,Asignación,Aula 302,Docente Torres
+2026-02-02,ACT-020,Traslado,Aula 205,Docente Vega
+2026-03-15,ACT-004,Entrada,Rectoría,Rectoría
+2026-06-15,ACT-018,Traslado,Laboratorio,Docente Torres
+2026-11-03,ACT-007,Reparación,Taller externo,Sistemas
+2026-12-10,ACT-017,Baja,Bodega de bajas,Sistemas
