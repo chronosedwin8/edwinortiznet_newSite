@@ -45,6 +45,10 @@ final class Planner
                     $out[] = "{$channel['name']}: sin cuentas conectadas.";
                     continue;
                 }
+                $completed = Queue::addMissingNetworks($channel, $accounts, $useAi, $now);
+                if ($completed > 0) {
+                    $out[] = "{$channel['name']}: $completed publicación(es) de la cola completadas con la red que les faltaba (en borrador).";
+                }
                 $created = 0;
                 foreach (Schedule::slots($channel['schedule'], $now + 600, $days) as $slot) {
                     if (DB::value('SELECT 1 FROM social_posts WHERE channel_id = :c AND scheduled_at = :s LIMIT 1', ['c' => (int) $channel['id'], 's' => $slot]) !== null) {

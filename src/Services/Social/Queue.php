@@ -49,32 +49,76 @@ final class Queue
         $group = bin2hex(random_bytes(10));
         $status = !empty($channel['auto_approve']) ? 'approved' : 'draft';
         foreach (CaptionWriter::NETWORKS as $network) {
-            if (!isset($accounts[$network])) {
-                continue;
+            if (isset($accounts[$network])) {
+                self::insertRow($channel, $item, $group, $network, $accounts[$network], $captions, $images[$network] ?? null, $scheduledAt, $status, $createdBy);
             }
-            $image = $images[$network] ?? null;
-            DB::insert('social_posts', [
-                'group_key' => $group,
-                'channel_id' => (int) $channel['id'],
-                'network' => $network,
-                'account_id' => (int) $accounts[$network]['id'],
-                'content_type' => $item['type'],
-                'content_id' => $item['id'],
-                'content_key' => $item['key'],
-                'title' => mb_substr((string) $item['title'], 0, 255),
-                'link' => self::utm((string) $item['path'], $network, (string) $channel['key']),
-                'caption' => $captions[$network]['text'],
-                'hashtags' => CaptionWriter::formatTags($captions[$network]['hashtags']),
-                'caption_source' => $captions['source'] === 'ai' ? 'ai' : 'template',
-                'image_path' => $image,
-                'image_url' => $image !== null ? url($image) : null,
-                'scheduled_at' => $scheduledAt,
-                'status' => $status,
-                'error' => $network === 'ig' && $image === null ? 'No se pudo generar la imagen de Instagram.' : null,
-                'created_by' => $createdBy,
-            ]);
         }
         return $group;
+    }
+
+    /**
+     * Completa los grupos pendientes del canal con las redes conectadas que les falten (por ejemplo, al vincular
+     * una cuenta de Instagram a un canal que ya tenía la semana planificada). La fila nueva queda en borrador,
+     * salvo aprobación automática del canal: así nada se publica en la red nueva sin aprobarlo.
+     * @param array<string, array> $accounts red => cuenta activa
+     */
+    public static function addMissingNetworks(array $channel, array $accounts, bool $useAi = true, ?int $now = null): int
+    {
+        $now ??= time();
+        $rows = DB::all(
+            "SELECT * FROM social_posts WHERE channel_id = :c AND scheduled_at > :t ORDER BY scheduled_at, FIELD(network, 'fb', 'ig')",
+            ['c' => (int) $channel['id'], 't' => gmdate('Y-m-d H:i:s', $now + 600)]
+        );
+        $groups = [];
+        foreach ($rows as $row) {
+            $groups[$row['group_key']][$row['network']] = $row;
+        }
+        $added = 0;
+        foreach ($groups as $groupKey => $byNetwork) {
+            $pending = array_filter($byNetwork, fn ($r) => in_array($r['status'], ['draft', 'approved'], true));
+            $missing = array_diff(array_keys($accounts), array_keys($byNetwork));
+            if ($pending === [] || $missing === []) {
+                continue;
+            }
+            $first = reset($byNetwork);
+            $item = Catalog::item((string) $first['content_key']);
+            if ($item === null) {
+                continue;
+            }
+            $captions = CaptionWriter::write($item, self::recentOpenings((int) $channel['id']), $useAi);
+            $images = self::images($item, $missing);
+            $status = !empty($channel['auto_approve']) ? 'approved' : 'draft';
+            foreach ($missing as $network) {
+                self::insertRow($channel, $item, (string) $groupKey, $network, $accounts[$network], $captions, $images[$network] ?? null,
+                    (string) $first['scheduled_at'], $status, (string) ($first['created_by'] ?? 'planner'));
+                $added++;
+            }
+        }
+        return $added;
+    }
+
+    private static function insertRow(array $channel, array $item, string $group, string $network, array $account, array $captions, ?string $image, string $scheduledAt, string $status, string $createdBy): void
+    {
+        DB::insert('social_posts', [
+            'group_key' => $group,
+            'channel_id' => (int) $channel['id'],
+            'network' => $network,
+            'account_id' => (int) $account['id'],
+            'content_type' => $item['type'],
+            'content_id' => $item['id'],
+            'content_key' => $item['key'],
+            'title' => mb_substr((string) $item['title'], 0, 255),
+            'link' => self::utm((string) $item['path'], $network, (string) $channel['key']),
+            'caption' => $captions[$network]['text'],
+            'hashtags' => CaptionWriter::formatTags($captions[$network]['hashtags']),
+            'caption_source' => $captions['source'] === 'ai' ? 'ai' : 'template',
+            'image_path' => $image,
+            'image_url' => $image !== null ? url($image) : null,
+            'scheduled_at' => $scheduledAt,
+            'status' => $status,
+            'error' => $network === 'ig' && $image === null ? 'No se pudo generar la imagen de Instagram.' : null,
+            'created_by' => $createdBy,
+        ]);
     }
 
     /** @param string[] $networks @return array<string, ?string> */

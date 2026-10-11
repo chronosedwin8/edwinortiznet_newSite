@@ -270,6 +270,32 @@ final class SocialTest extends TestCase
         $this->assertContains($mine[1], array_column(Planner::ranked($channel, gmdate('Y-m-d H:i:s', $base + 86400)), 'key'));
     }
 
+    public function testPlannerAddsNewlyLinkedNetworkToQueuedGroupsAsDraft(): void
+    {
+        $accounts = $this->accounts();
+        $channel = $this->channel(['fb' => $accounts['fb']], ['types' => ['tool'], 'tools' => ['qr']]);
+        $future = gmdate('Y-m-d H:i:s', time() + 2 * 86400);
+        $approved = $this->row((int) $channel['id'], 'fb', $accounts['fb'], ['scheduled_at' => $future]);
+        $past = $this->row((int) $channel['id'], 'fb', $accounts['fb']);
+        $done = $this->row((int) $channel['id'], 'fb', $accounts['fb'], ['scheduled_at' => gmdate('Y-m-d H:i:s', time() + 3 * 86400), 'status' => 'skipped']);
+
+        // Se vincula Instagram al canal: el grupo aprobado recibe su fila de Instagram, en borrador.
+        DB::update('social_channels', ['ig_account_id' => $accounts['ig']], ['id' => (int) $channel['id']]);
+        $channel = Channels::find((int) $channel['id']);
+        $this->assertSame(1, Queue::addMissingNetworks($channel, Channels::accounts($channel), false));
+        $group = Queue::group((string) $this->post($approved)['group_key']);
+        $this->assertSame(['fb', 'ig'], array_column($group, 'network'));
+        $this->assertSame('approved', $group[0]['status'], 'La fila de Facebook no cambia');
+        $this->assertSame('draft', $group[1]['status'], 'Instagram espera aprobación');
+        $this->assertSame($future, $group[1]['scheduled_at']);
+        $this->assertStringContainsString('utm_source=instagram', $group[1]['link']);
+        $this->assertNotSame('', (string) $group[1]['caption']);
+        // Lo pasado y lo omitido no se tocan; una segunda pasada no duplica.
+        $this->assertCount(1, Queue::group((string) $this->post($past)['group_key']));
+        $this->assertCount(1, Queue::group((string) $this->post($done)['group_key']));
+        $this->assertSame(0, Queue::addMissingNetworks($channel, Channels::accounts($channel), false));
+    }
+
     public function testCaptionWriterAiAndFallback(): void
     {
         $item = Catalog::item('tool:qr');

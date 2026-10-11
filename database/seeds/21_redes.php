@@ -13,7 +13,7 @@ use App\Services\Social\Channels;
  *   todos los días a las 18:30 (hora de Colombia), todo el contenido menos el hub del Concurso Docente.
  * - concurso: página de Facebook «Fundales.com», lunes, miércoles y viernes a las 19:00, entradas del hub del
  *   Concurso Docente y el simulacro (PIAR y exámenes se pueden activar en el panel).
- * - miaulaweb: página de Facebook «Miaulaweb», todos los días a las 12:30: tecnología educativa, pedagogía y
+ * - miaulaweb: página de Facebook «Miaulaweb» + Instagram @miaulaweb, todos los días a las 12:30: tecnología educativa, pedagogía y
  *   Concurso Docente (hubs de docentes y del concurso) y las herramientas PIAR, exámenes y Fundales.
  * - tecnozona: página de Facebook «Mi TecnoZona», todos los días a las 20:00: tecnología y Excel (todo menos el
  *   Concurso Docente), productos de oficina y las herramientas QR y número a letras.
