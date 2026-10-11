@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Services\Storage;
 
 use App\Core\Config;
+use App\Core\DB;
+use App\Services\Tools\ToolRegistry;
 use RuntimeException;
 
 /**
@@ -213,6 +215,31 @@ final class PublicDownloads
             }
         }
         return $broken;
+    }
+
+    /**
+     * Enlaces /descargas/ sin archivo en el inventario: entradas y páginas (todos los estados) y herramientas.
+     *
+     * @return array<string, string[]> dónde (locale/slug o herramienta) => rutas
+     */
+    public static function brokenLinksInSite(): array
+    {
+        $out = [];
+        $rows = DB::all("SELECT locale, slug, CONCAT(COALESCE(content_html, ''), COALESCE(notice_html, '')) AS html
+            FROM posts WHERE content_html LIKE '%/descargas/%' OR notice_html LIKE '%/descargas/%'");
+        foreach ($rows as $row) {
+            $broken = self::brokenLinks((string) $row['html']);
+            if ($broken !== []) {
+                $out[$row['locale'] . '/' . $row['slug']] = $broken;
+            }
+        }
+        foreach (ToolRegistry::excelZips() as $key => $zips) {
+            $broken = array_values(array_filter($zips, fn (string $zip) => !isset(self::manifest()[$zip])));
+            if ($broken !== []) {
+                $out['herramienta ' . $key] = $broken;
+            }
+        }
+        return $out;
     }
 
     private static function extension(string $path): string

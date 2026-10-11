@@ -172,18 +172,10 @@ final class Kernel
         $result = PublicDownloads::publish($options[0] ?? null, fn (string $l) => $this->out($l));
         $this->out(sprintf('S3: %d subidos, %d ya estaban al día, %d con problemas.', count($result['uploaded']), count($result['ok']), count($result['missing'])));
         $broken = 0;
-        foreach (DB::all("SELECT locale, slug, content FROM posts WHERE content LIKE '%/descargas/%'") as $row) {
-            foreach (PublicDownloads::brokenLinks((string) $row['content']) as $path) {
+        foreach (PublicDownloads::brokenLinksInSite() as $where => $paths) {
+            foreach ($paths as $path) {
                 $broken++;
-                $this->out(sprintf('  ENLACE ROTO  %s/%s → /descargas/%s', $row['locale'], $row['slug'], $path));
-            }
-        }
-        foreach (\App\Services\Tools\ToolRegistry::excelZips() as $key => $zips) {
-            foreach ($zips as $zip) {
-                if (!isset(PublicDownloads::manifest()[$zip])) {
-                    $broken++;
-                    $this->out(sprintf('  ENLACE ROTO  herramienta %s → /descargas/%s', $key, $zip));
-                }
+                $this->out(sprintf('  ENLACE ROTO  %s → /descargas/%s', $where, $path));
             }
         }
         $this->out($broken === 0 ? 'Todos los enlaces /descargas/ de las entradas y herramientas están en el inventario.' : "$broken enlace(s) sin archivo.");

@@ -163,6 +163,23 @@ final class PublicDownloadsTest extends TestCase
         $this->assertSame(['bloom-ia/perdido.xlsx'], PublicDownloads::brokenLinks($html));
     }
 
+    public function testSiteScanReportsLinksMissingFromManifest(): void
+    {
+        $group = bin2hex(random_bytes(4));
+        DB::run("INSERT INTO posts (type, locale, translation_group, slug, title, content_html, status, published_at)
+            VALUES ('post', 'es', :g, :s, 'Prueba descargas', :h, 'draft', UTC_TIMESTAMP())", [
+            'g' => $group, 's' => "prueba-descargas-$group",
+            'h' => '<a href="/descargas/bloom-ia/banco.xlsx">ok</a> <a href="/descargas/bloom-ia/perdido.xlsx">x</a>',
+        ]);
+        try {
+            $broken = PublicDownloads::brokenLinksInSite();
+            $this->assertSame(['bloom-ia/perdido.xlsx'], $broken["es/prueba-descargas-$group"]);
+            $this->assertArrayHasKey('herramienta qr', $broken);
+        } finally {
+            DB::run('DELETE FROM posts WHERE translation_group = :g', ['g' => $group]);
+        }
+    }
+
     public function testToolPageShowsExcelSectionFromManifest(): void
     {
         PublicDownloads::setManifest(['codigo-qr-excel.zip' => ['size' => 40960, 'sha256' => str_repeat('a', 64)]]);
