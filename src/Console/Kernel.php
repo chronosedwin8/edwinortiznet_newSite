@@ -12,6 +12,7 @@ use App\Core\Migrator;
 use App\Core\Request;
 use App\Core\RateLimiter;
 use App\Services\Downloads\DownloadService;
+use App\Services\Storage\PublicDownloads;
 use App\Services\Importer\WxrImporter;
 use App\Services\Orders\Reconciler;
 use App\Services\Seo\Sitemap;
@@ -34,6 +35,8 @@ final class Kernel
                 'seed' => $this->seed($options),
                 'downloads:check' => $this->downloadsCheck(),
                 'downloads:fetch' => $this->downloadsFetch(),
+                'downloads:manifest' => $this->downloadsManifest($options),
+                'downloads:publish' => $this->downloadsPublish($options),
                 'sitemap:build' => $this->sitemap(),
                 'posts:publish-due' => $this->postsPublishDue(),
                 'admin:create' => $this->adminCreate($options),
@@ -63,7 +66,7 @@ final class Kernel
 
     private function help(): int
     {
-        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, sitemap:build, posts:publish-due, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify, piar:purge, examenes:purge, kit:build [materia…] [--check], social:plan [--sin-ia], social:publish, social:connect, social:check, newsletter:run, newsletter:render [temas] [archivo.html] [--en]');
+        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, downloads:manifest [carpeta], downloads:publish [carpeta], sitemap:build, posts:publish-due, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify, piar:purge, examenes:purge, kit:build [materia…] [--check], social:plan [--sin-ia], social:publish, social:connect, social:check, newsletter:run, newsletter:render [temas] [archivo.html] [--en]');
         return 0;
     }
 
@@ -144,6 +147,47 @@ final class Kernel
         }
         \App\Core\Cache::flushPages();
         return $this->downloadsCheck();
+    }
+
+    /** Inventario de los archivos gratuitos (storage/descargas/ por omisión) en resources/descargas.json. */
+    private function downloadsManifest(array $options): int
+    {
+        $dir = $options[0] ?? Config::root(PublicDownloads::LOCAL_DIR);
+        [$added, $changed, $removed] = PublicDownloads::writeManifest($dir);
+        foreach (['NUEVO' => $added, 'CAMBIADO' => $changed, 'QUITADO' => $removed] as $label => $paths) {
+            foreach ($paths as $path) {
+                $this->out(sprintf('  %-10s %s', $label, $path));
+            }
+        }
+        $this->out(count(PublicDownloads::manifest()) . ' archivos en ' . PublicDownloads::MANIFEST . '.');
+        return 0;
+    }
+
+    /**
+     * Sube a S3 (recursos/) los archivos del inventario que falten o hayan cambiado, tomándolos de la carpeta
+     * indicada; sin carpeta solo verifica. Además revisa que todo enlace /descargas/ de las entradas exista.
+     */
+    private function downloadsPublish(array $options): int
+    {
+        $result = PublicDownloads::publish($options[0] ?? null, fn (string $l) => $this->out($l));
+        $this->out(sprintf('S3: %d subidos, %d ya estaban al día, %d con problemas.', count($result['uploaded']), count($result['ok']), count($result['missing'])));
+        $broken = 0;
+        foreach (DB::all("SELECT locale, slug, content FROM posts WHERE content LIKE '%/descargas/%'") as $row) {
+            foreach (PublicDownloads::brokenLinks((string) $row['content']) as $path) {
+                $broken++;
+                $this->out(sprintf('  ENLACE ROTO  %s/%s → /descargas/%s', $row['locale'], $row['slug'], $path));
+            }
+        }
+        foreach (\App\Services\Tools\ToolRegistry::excelZips() as $key => $zips) {
+            foreach ($zips as $zip) {
+                if (!isset(PublicDownloads::manifest()[$zip])) {
+                    $broken++;
+                    $this->out(sprintf('  ENLACE ROTO  herramienta %s → /descargas/%s', $key, $zip));
+                }
+            }
+        }
+        $this->out($broken === 0 ? 'Todos los enlaces /descargas/ de las entradas y herramientas están en el inventario.' : "$broken enlace(s) sin archivo.");
+        return $result['missing'] === [] && $broken === 0 ? 0 : 1;
     }
 
     /** Publica las entradas programadas cuya hora ya llegó (cron cada 5 minutos). */

@@ -1,4 +1,4 @@
-# Construye y prueba el kit gratuito «Excel con IA» y lo publica en public/descargas/excel-con-ia/.
+# Construye y prueba el kit gratuito «Excel con IA» y lo deja en storage/descargas/excel-con-ia/ (se publica en S3 con downloads:publish).
 #   pwsh -File tools/excel-con-ia/build.ps1            pruebas sin llamadas reales a Gemini
 #   pwsh -File tools/excel-con-ia/build.ps1 -ConIA     además ~8 llamadas reales (clave GEMINI_API_KEY del .env)
 # Requiere Excel para Windows y Python con pandas, numpy y openpyxl (y requests para -ConIA).
@@ -9,7 +9,7 @@ $ErrorActionPreference = 'Stop'
 $root = Resolve-Path "$PSScriptRoot\..\.."
 $work = Join-Path $env:TEMP 'eo-excel-con-ia'
 $pkg = Join-Path $work 'paquete'
-$out = "$root\public\descargas\excel-con-ia"
+$out = "$root\storage\descargas\excel-con-ia"
 
 function Get-EnvKey {
   $line = Get-Content "$root\.env" -Encoding UTF8 | Where-Object { $_ -match '^\s*GEMINI_API_KEY\s*=' } | Select-Object -First 1

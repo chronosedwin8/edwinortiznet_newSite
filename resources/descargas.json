@@ -1,0 +1,418 @@
+{
+    "accesibilidad-web/formulario-accesible.html": {
+        "size": 850,
+        "sha256": "2a1da2b084ac8ad962b332907ea513065e4bab195f60a7d2e30f55085ef40c28"
+    },
+    "accesibilidad-web/formulario-inaccesible.html": {
+        "size": 549,
+        "sha256": "f50690cd4fcf420438d4f9b926ef2dc4f217604101b7d2ca81ede22b81d67428"
+    },
+    "accesibilidad-web/lista-accesibilidad-web.xlsx": {
+        "size": 9221,
+        "sha256": "6936b10ccaaa7779bf38924e237f290c1ac57737cc973f0d7a9812c9323cfa6e"
+    },
+    "accesibilidad-web/revisar_accesibilidad_basica.py": {
+        "size": 5653,
+        "sha256": "1674dde2a08da68976ee505cf33d41d8b80f8f1d78456894cd874f703abc3d05"
+    },
+    "altas-bajas-cuentas/control-altas-bajas-cuentas.xlsx": {
+        "size": 10670,
+        "sha256": "ec6f0acd845688e43db07615efc801289897054bf291735f90bcb91acd8935a0"
+    },
+    "analisis-de-items/analisis-de-items-prueba.xlsx": {
+        "size": 18679,
+        "sha256": "f71ab9853ffd41cea856d03a50c191d4157d2083375d7227e6c806650ac67785"
+    },
+    "aprender-a-aprender/aprender-a-aprender-calibracion-tecnicas-plan.xlsx": {
+        "size": 9720,
+        "sha256": "8a01ae19a84136a4a1530b611b02807cb5d488896566aa6da73c1649dd5ad900"
+    },
+    "argumentar-con-evidencia/rubrica-argumentacion-evidencia.xlsx": {
+        "size": 10339,
+        "sha256": "a6c13f3ae83e040aced3ff4964bc3409aa158602246cb14560af9a7a9fe22678"
+    },
+    "auditoria-horarios/auditoria-horario-escolar.xlsx": {
+        "size": 42559,
+        "sha256": "cadad4c6f9dc5e7de09c8a3fcea11180a121b3f4ed2b73c489f2329b109021ca"
+    },
+    "ausentismo-excel/ausentismo-escolar-excel.xlsx": {
+        "size": 15911,
+        "sha256": "ed9a8192759e052596f29adbc711230c9e9f905006bae2cf1dfa5872dfc07d75"
+    },
+    "base-de-conocimiento/base-de-conocimiento-colegio.xlsx": {
+        "size": 9565,
+        "sha256": "2e47da8dcc5ba5f486156c40c860c1989cafded9f953cbe9b2c1d085bb050187"
+    },
+    "bloom-ia/banco-bloom-actividades-con-ia.xlsx": {
+        "size": 13685,
+        "sha256": "5a60c048b3684fc63a8deaee1f5a20333b68d1b7716e9f37fda8a222341cd2a9"
+    },
+    "carga-academica/carga-academica-docente.xlsx": {
+        "size": 12739,
+        "sha256": "e4ee8db358eb3b7e28a755f47fa9f0c4f5671d70929f2e56ab66986702a2b895"
+    },
+    "clases-sin-conexion/planificador-clase-sin-conexion.xlsx": {
+        "size": 9468,
+        "sha256": "be523119e0d907e62471ed32281e218a8f4cfbac31a3e47d24ceda14bb17ed6b"
+    },
+    "codigo-qr-excel.zip": {
+        "size": 115619,
+        "sha256": "bb7ad45b82fd72195b793788213d9bdf34733ad65397a5a24ff0ab17d2f64c93"
+    },
+    "comparar-creditos/comparador-ofertas-credito.xlsx": {
+        "size": 11334,
+        "sha256": "022c374ea00967b709305164c74949dd54f5705e532fbda945d3e269523c7a83"
+    },
+    "compatibilidad-excel/lista-compatibilidad-excel.xlsx": {
+        "size": 10592,
+        "sha256": "33c9c7baba4dae72f0a75c62f57de9f6908f7083652f4a9cc8234ed363e9d102"
+    },
+    "compatibilidad-excel/revisar_compatibilidad_xlsx.py": {
+        "size": 3851,
+        "sha256": "81985fd42d2117a223a078bf96607250c960d8846245edd240090f8b915d8927"
+    },
+    "concepciones-alternativas/banco-diagnostico-ideas-previas.xlsx": {
+        "size": 14889,
+        "sha256": "11017a874d0344e70c6d947e642bb3887ae7dae27a0f1e1d17bc30a7b73b3f6e"
+    },
+    "conciliar-datos/aula-virtual.csv": {
+        "size": 1516,
+        "sha256": "3365c4e4498a53c551d90118d83a3c4d687f1ea788540f35d93ff0fd65a40f88"
+    },
+    "conciliar-datos/conciliador.py": {
+        "size": 3172,
+        "sha256": "2321ba9d7c1898a03d2e55eea733e5cc1c5b44c8bba74bf74834212e53e08acf"
+    },
+    "conciliar-datos/matriz-fuente-de-verdad.xlsx": {
+        "size": 9539,
+        "sha256": "2c88d57011779f3ae00c0cf8cac69a40fbf9985c88d768a72e354fe14691d684"
+    },
+    "conciliar-datos/sistema-gestion.csv": {
+        "size": 1559,
+        "sha256": "4e79b11dce27d251cb5e5006f39812fc89c4dd1bae40b4b10884f8e2bb08adb6"
+    },
+    "conciliar-listados-excel/conciliar-dos-listados-con-formulas.xlsx": {
+        "size": 17658,
+        "sha256": "fb9f3737775ee5f1886ece74e54ff26fef58d5489a53c4d7bd42e8dedb03ba9d"
+    },
+    "concurso-docente/control-documentos-aspirante.xlsx": {
+        "size": 16512,
+        "sha256": "8e8af1bc66bc6f0328ccfc02d481c657127a89aab73442346b0f12e3e8db50b3"
+    },
+    "concurso-docente/ficha-estudio-constitucion-13-44-67.xlsx": {
+        "size": 10205,
+        "sha256": "f33f69d89015500ce9da556b823faeda9bb27a80a604a343bb226f3ec81ea3a7"
+    },
+    "concurso-docente/ficha-estudio-decreto-1421-piar.xlsx": {
+        "size": 13586,
+        "sha256": "da0e4ba744124428cd99fabc649810284295f8494bfa5120a6f5f329af1922d5"
+    },
+    "concurso-docente/ficha-estudio-decreto-ley-1278-de-2002.xlsx": {
+        "size": 14916,
+        "sha256": "f4d6fb1e047a78692fd9e8f8fd53029d7e69a89c2859db6176fcaf744560040d"
+    },
+    "concurso-docente/ficha-estudio-ley-1098-codigo-infancia-adolescencia.xlsx": {
+        "size": 13520,
+        "sha256": "f6220c561714bba346f6a3ec1d0ce14622fa00e1363b595d09ab2589fa1961b4"
+    },
+    "concurso-docente/ficha-estudio-ley-115-decreto-1860.xlsx": {
+        "size": 12115,
+        "sha256": "dfb25d640d6473a79411bf069954fb851be415e7acdf68ddf7616b047dff354d"
+    },
+    "concurso-docente/ficha-estudio-ley-1620-decreto-1965.xlsx": {
+        "size": 12583,
+        "sha256": "f05568db4bf707ec28c15d8cc18a0223da9cfe6afca67329ff553cf95766bbc5"
+    },
+    "concurso-docente/ficha-estudio-ley-715-de-2001.xlsx": {
+        "size": 12499,
+        "sha256": "55dd61e62134cd542a3b1fdcda05da35c7eceecfedf10b59f6a33b57df48bd30"
+    },
+    "concurso-docente/ficha-estudio-siee-decreto-1290.xlsx": {
+        "size": 12744,
+        "sha256": "16965bbee943f14e4834dd68ba46182a99f85c88621bdf301971284c87ee211f"
+    },
+    "concurso-docente/hoja-seguimiento-simulacros-plan-mejora.xlsx": {
+        "size": 11833,
+        "sha256": "48a1d0d09cbf12775ca5fd20836399b20b108929cd541d45f8d0d8415bb54952"
+    },
+    "concurso-docente/mapa-normativo-concurso-docente.xlsx": {
+        "size": 10952,
+        "sha256": "877937d530032f208c5c415ccf26e071546f0510516f4d355fa7f1ee571773ba"
+    },
+    "concurso-docente/mapa-procedimientos-reclamaciones-concurso-docente.xlsx": {
+        "size": 10994,
+        "sha256": "aeb3c07c28e66594b10c3c7fd8ce87c8fc8889eb99b3e53f722894c17c34fd6b"
+    },
+    "concurso-docente/matriz-trazabilidad-titulo-opec.xlsx": {
+        "size": 10092,
+        "sha256": "f2672142e4b790d96758aa50f0d7a4566e5faed073bf43b0a722d1eb72ac70ac"
+    },
+    "concurso-docente/matriz-vacantes-concurso-docente.xlsx": {
+        "size": 10717,
+        "sha256": "38a679965f8062dfc9d0edd12f188361abace406c1fd24e8bde288fd319e49e5"
+    },
+    "concurso-docente/rubrica-simulacro-concurso-docente.xlsx": {
+        "size": 9292,
+        "sha256": "47b7139870f921a58219df7b9ddcb0e602237591bedcc40ec8269b3a38af68f9"
+    },
+    "concurso-docente/tablero-progreso-concurso-docente.xlsx": {
+        "size": 13823,
+        "sha256": "89ad84bd926e9d60baad2bf132b6c0eba56e57a8de6047cabf0d070598634c8c"
+    },
+    "continuidad-operativa/analisis-impacto-continuidad-operativa.xlsx": {
+        "size": 10663,
+        "sha256": "6130cfd5cccfa7c9da91efe9e1d5ec924637e0ed62158e2dc9971c562daed5bc"
+    },
+    "convivencia-escolar/clasificador-situaciones-convivencia.xlsx": {
+        "size": 11179,
+        "sha256": "696a7392e37016718c6cc39c650ea0f804654fd28e182026969063b417817b62"
+    },
+    "costos-unitarios/costos-unitarios-colegio.xlsx": {
+        "size": 8860,
+        "sha256": "33f4e59c016c352d58ed7a07b1240d1bdc3827c582a7353ef6774a8095fc5534"
+    },
+    "csv-excel/practica-csv-excel.zip": {
+        "size": 3614,
+        "sha256": "11dbefe945730f0cd7dd7592abf91b4f53737f2e59c5edf3bf13da569f67f967"
+    },
+    "curriculo-oculto/mapa-expectativas-entre-grados.xlsx": {
+        "size": 9510,
+        "sha256": "f06ae646298afc216f91f7ab7a6f95cff4fbc28137b8d35a6601a5c21386f2fb"
+    },
+    "dashboard-excel/tablero-cartera-colegio.xlsx": {
+        "size": 16170,
+        "sha256": "514700de8e63d49005348103198844d0f584a7d840dc16f21c561b074b667948"
+    },
+    "datos-en-ia/anonimizar_texto.py": {
+        "size": 1790,
+        "sha256": "2b5b9121cd35757302e70c3b4158f9ffe1a1f425a7075a26b4e6878959593976"
+    },
+    "datos-en-ia/ejemplo_nombres.txt": {
+        "size": 52,
+        "sha256": "c80ed7555564beb951e47fdf3fbd4886e6a40a75be6ab57187940531ada60eb4"
+    },
+    "datos-en-ia/ejemplo_texto.txt": {
+        "size": 371,
+        "sha256": "9b3bd31e69aede68b50def21fd77d95d5e486544a69fdd70db543998dcd4f9d9"
+    },
+    "datos-en-ia/matriz-siete-preguntas-datos-en-ia.xlsx": {
+        "size": 9475,
+        "sha256": "c74a12f05b50e5b2ad392d3e9ee96afa6915df44acd1bf10439333213710f625"
+    },
+    "deuda-tecnologica/inventario-herramientas-colegio.xlsx": {
+        "size": 8053,
+        "sha256": "4cfa5b3d4fb016719fe7ae7a62cee72ce487e08efbb28a9d456e3c19b92df5e6"
+    },
+    "ejecucion-presupuestal/ejecucion-presupuestal-colegio.xlsx": {
+        "size": 30695,
+        "sha256": "98a566fc8d979cc0b70e095eda62536bbff853e5dfb64cc2ee69f77133722394"
+    },
+    "errores-excel/errores-excel-ejercicios.xlsx": {
+        "size": 28929,
+        "sha256": "8409f6464c85831a5d78677e9810a930d0b1692bf6e0b7193edeea0a11d88916"
+    },
+    "errores-matematicos/matriz-errores-matematicos-diagnostico.xlsx": {
+        "size": 13450,
+        "sha256": "d4bf83e33d9704e69916d2365ca6c3f5a349d33365b43527a094c098cd1afd46"
+    },
+    "estafas-concurso/lista-verificacion-estafas-concurso-docente.xlsx": {
+        "size": 11188,
+        "sha256": "b6e5520c7ca783a0dadefa3d3f2533e484c367e215a947903e52adfffbdd69dd"
+    },
+    "estafas-concurso/verificar_enlace.py": {
+        "size": 1574,
+        "sha256": "184ee1fbbbd966446779d04f61014fc97f5eed4fb6e21d32bbe8b5f7b2d45b70"
+    },
+    "excel-base-de-datos/siete-senales-excel-base-de-datos.xlsx": {
+        "size": 9253,
+        "sha256": "bf8ce0829a47b33428a1e4ce30789b657006fcc08b63916f6a4f03b0d033bd27"
+    },
+    "excel-con-ia/ExcelConIA-modulo.zip": {
+        "size": 17826,
+        "sha256": "833f126469bc2d7ad9a7063502fd9b49eec4c034a301408154c80cad86b57c4c"
+    },
+    "excel-con-ia/excel-con-ia.zip": {
+        "size": 133186,
+        "sha256": "4b23ac22ce35e08f384cf9e10b52302805e69049daea4648c5b6f30993e86ce4"
+    },
+    "extensiones-navegador/auditar_extensiones.py": {
+        "size": 4372,
+        "sha256": "80be9dbbd682a00670d492787ed58d671e63a77db2c3afff5d9effcbd8a676a9"
+    },
+    "extensiones-navegador/inventario-politica-extensiones-navegador.xlsx": {
+        "size": 10426,
+        "sha256": "f5ae164051afaf3f931fff9d71de8b40e0550fee9d8e91b9d6581acd25ebda5a"
+    },
+    "flujo-aprobacion/analizador_aprobaciones.py": {
+        "size": 3146,
+        "sha256": "36eff102fa4ef594220cb1e116a655851439b7b6eee559dd02ef3e82e0899365"
+    },
+    "flujo-aprobacion/disenador-flujo-aprobacion.xlsx": {
+        "size": 9745,
+        "sha256": "bbaae95172fa34e2fcb5766dcc86472410522df94a9842f9127bc7af80bd5ca0"
+    },
+    "flujo-aprobacion/solicitudes-ejemplo.csv": {
+        "size": 1887,
+        "sha256": "bb87ed9c38cbdbb40b856332f1652028d60fc34697112d9dd3b37ab8bf5c6b25"
+    },
+    "gramatica-escolar/encuesta-gramatica-escolar-que-cambiarias.xlsx": {
+        "size": 10529,
+        "sha256": "cb4114110866e349536996adcf53bb147bb36fc2e7547866b6b0b5b98a4334dc"
+    },
+    "ia-cuantica/auditoria-afirmaciones-ia-cuantica.xlsx": {
+        "size": 9890,
+        "sha256": "ad3a0b23df8c93c3cac685a7a302b6348262ca698f6d99ce1fda622e8700e648"
+    },
+    "ia-en-educacion/matriz-uso-ia-por-tarea.xlsx": {
+        "size": 9203,
+        "sha256": "be3ee7a5e7bd0ba0e8e6a2523019e60c6cc28e2fd432c16928baafbc97597e1d"
+    },
+    "integraciones/integracion_resiliente.py": {
+        "size": 3765,
+        "sha256": "fdc7e156718c1636f691a50cc379112f6d70282e325b2c6707130bf21595616c"
+    },
+    "integraciones/inventario-integraciones.xlsx": {
+        "size": 7766,
+        "sha256": "e2694c28880b464082ce67b6e9d8a1adca0a01ae3db7bfb692f41c201bef9137"
+    },
+    "inventario-tecnologico/auditor_inventario.py": {
+        "size": 3586,
+        "sha256": "1380b12b1b115b6292ac8e1a8641354c929b512e2eb1236dbc667bf6a89e57bd"
+    },
+    "inventario-tecnologico/inventario-ejemplo.csv": {
+        "size": 1651,
+        "sha256": "2facfc3e46cf1bab8422e4311673cf67bd96bdcf0d51cf9d0d25c839e55fcec9"
+    },
+    "inventario-tecnologico/inventario-tecnologico-trazabilidad.xlsx": {
+        "size": 27621,
+        "sha256": "2336c8beeaf6875bbf49925a81bc1a5cc14768f83317d11e8c6fd55969f0ae93"
+    },
+    "inventario-tecnologico/movimientos-ejemplo.csv": {
+        "size": 1569,
+        "sha256": "326b7d36649367a04859af7783d7f86ecd693eec38af8d7fdeb6f0f104a2d76b"
+    },
+    "listas-dependientes/listas-desplegables-dependientes.xlsx": {
+        "size": 22993,
+        "sha256": "1e6f107a59c075a78f43ffaafb7f2a3cda6572ad2e3175ccc3badd0dc429e4b8"
+    },
+    "matriz-costes/matriz-costes-3-anos.xlsx": {
+        "size": 8579,
+        "sha256": "6635a369dc5481351500307d7a3adb642d78ba4ec800f97b04384921feedb4e1"
+    },
+    "mesa-de-ayuda/mesa-de-ayuda-colegio.xlsx": {
+        "size": 28578,
+        "sha256": "2ff0d63fcc0eea62476855b03f78d4b2c6c9b8784f74d07b1ff15f8255bc7262"
+    },
+    "monitoreo-web/monitor_basico.py": {
+        "size": 2251,
+        "sha256": "e483472dd7c9e4ffb2f9a865a26655755a2141b252f730c75c5be258974118d2"
+    },
+    "monitoreo-web/plan-monitoreo-aplicacion-web.xlsx": {
+        "size": 10804,
+        "sha256": "4d039abe3339181b4cda0b7768cdafeb2ccf72dc85eaf113d94423342df9d633"
+    },
+    "number-to-words-excel.zip": {
+        "size": 70551,
+        "sha256": "37fff0d4b2e697dd1a81b02f15eb958903696a4a7c8d4be761c2b2984c9f0078"
+    },
+    "numero-a-letras-excel.zip": {
+        "size": 71038,
+        "sha256": "93f88bce54cc03164ec54c8ff5cc40ae9db5feb8342903a78c8940aa7afd3f93"
+    },
+    "openai-matematicas/catalogo-openai-matematicas-verificacion.xlsx": {
+        "size": 8886,
+        "sha256": "b52401fdbd541235a9d24c8e6218ca76b93760e1b1cd3f0162794dbab2491cde"
+    },
+    "plan-30-dias/plan-implementacion-30-dias.xlsx": {
+        "size": 22094,
+        "sha256": "68ed9726cd7994e5519e300082115145fdf94e8d8909c7eab4f960ca1b6537c1"
+    },
+    "planeacion-inversa/planeacion-inversa-alineacion.xlsx": {
+        "size": 9675,
+        "sha256": "b02fa94fb45885734f4030191993fca5a986a521ae42898437d934d376aadd4a"
+    },
+    "politica-ia-colegio/matriz-politica-ia-colegio.xlsx": {
+        "size": 10498,
+        "sha256": "221f1274001ed7f984668768843aabee9f4865dc26a4930373e961fa85f240d9"
+    },
+    "presupuesto-limitado-solver/presupuesto-limitado-solver.xlsx": {
+        "size": 26070,
+        "sha256": "0c868e19f679a612265f72ab8f9bbe2b0db7188be8d9d72d6b2a0d97c7db02ce"
+    },
+    "programacion-ia/ejercicio_mediana.py": {
+        "size": 451,
+        "sha256": "ba95b6b43d74249990a6043b1b3314be4593cb2ad64104b1d75bbfdc784fbe19"
+    },
+    "programacion-ia/pruebas_mediana.py": {
+        "size": 826,
+        "sha256": "812f5b4d9d64275326dd0239e7cae48c3bbf5eb61732a171f47a6959f6dbfe4c"
+    },
+    "programacion-ia/rubrica-programacion-era-ia.xlsx": {
+        "size": 9220,
+        "sha256": "f66ca0c51c5e9d3ad596fd5c1cc3762b412bfc896288475314282e3367ce76b8"
+    },
+    "programacion-ia/solucion_mediana.py": {
+        "size": 610,
+        "sha256": "42550f60e75862d40043c3aec5b96f39234d55a58033178dcf59985d4f305090"
+    },
+    "promedios-excel/siete-errores-promedios-excel.xlsx": {
+        "size": 12510,
+        "sha256": "0c881d8fef9763cf65a28d379a2fe1babf9b7ebab099e70dba1580ba167d6580"
+    },
+    "pronosticos-excel/pronosticos-excel-ejercicios.xlsx": {
+        "size": 10429,
+        "sha256": "3fd855ad37debbcdeab735f5104b6ade18036da6f00aee2b708025bf9e3eaae3"
+    },
+    "proteger-dominio/auditor_dominio.py": {
+        "size": 3903,
+        "sha256": "5887ee1e806d8f9901e7b45de48cd2205ee00088224fe6d393430bdb5b01eba1"
+    },
+    "proteger-dominio/inventario-dominios.xlsx": {
+        "size": 8107,
+        "sha256": "2795575928dbb0ad72a778f8880c1ee8d1ae38dafb457f83834f80d0d7472e39"
+    },
+    "prueba-herramienta-educativa/ficha-prueba-4-semanas-herramienta-educativa.xlsx": {
+        "size": 9002,
+        "sha256": "487fe5f933a85418b1aad58acd96f53fc9826b99e045e2980af91ad49431e036"
+    },
+    "prueba-herramienta-educativa/simulacion-prueba-herramienta.py": {
+        "size": 1890,
+        "sha256": "54b9c8bc970bffb02f95dc118bebeec4dfda6ce93134ac318f61450d2b3e3765"
+    },
+    "qr-code-excel.zip": {
+        "size": 115407,
+        "sha256": "d5ca3699290833b7edf044564dd9a1f8aa4706a4e7e77b124b5f68c618fccc30"
+    },
+    "ransomware/protocolo-60-minutos-ransomware.xlsx": {
+        "size": 10317,
+        "sha256": "be9f8be0be9c3f5bda6d75d3e57ad6503076d0c4b4bfaddff33c48c7ea93d36c"
+    },
+    "respaldo/verificar-restauracion.ps1": {
+        "size": 1163,
+        "sha256": "ee993e0671b6a04401b9b0d0c89d1d3bdb340ff7b1d16573b97f21079239c649"
+    },
+    "retroalimentacion/rubrica-banco-retroalimentacion.xlsx": {
+        "size": 11094,
+        "sha256": "9188f66898dd96f2dc0eafbfba237ebade784c7bd794b3e24b1b58af1f0cd4e0"
+    },
+    "steam-bajo-costo/plantilla-steam-bajo-costo.xlsx": {
+        "size": 11135,
+        "sha256": "84114fae72cfd6f1956b46dd0a4a5cb28089d9d0b7191f2f686d188741c67b94"
+    },
+    "textos-iguales/evaluacion-afirmacion-textos-humanos.xlsx": {
+        "size": 8009,
+        "sha256": "206b106412af4c2875bf82d97d6706de434068391faaef372eabf67e0ce7dd89"
+    },
+    "textos-iguales/medidor_homogeneidad.py": {
+        "size": 6040,
+        "sha256": "b440e5fd00113430df43f13a7495417d9d3e736f31645ffee02883262ddb1959"
+    },
+    "trabajo-en-grupo/trabajo-en-grupo-justo.xlsx": {
+        "size": 10707,
+        "sha256": "e96b03f74fc87c3b12671cdc371e5909571b59ecb5bd9c7a527d5c801f363222"
+    },
+    "transferencia-aprendizaje/diseno-para-la-transferencia.xlsx": {
+        "size": 11078,
+        "sha256": "9aefd4ab90f75385ebe9c92ced5c890b35beb08edcd51439c4ad7808bbee2be0"
+    }
+}

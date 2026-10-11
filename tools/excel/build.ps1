@@ -1,5 +1,5 @@
 # Construye las descargas gratuitas para Excel (módulos .bas, complementos .xlam y libros de ejemplo .xlsm)
-# y las empaqueta en public/descargas/. Requiere Excel para Windows y Node (para los casos de QR).
+# y las empaqueta en storage/descargas/ (se publican en S3 con downloads:publish). Requiere Excel para Windows y Node (para los casos de QR).
 #   pwsh -File tools/excel/build.ps1
 # Activa temporalmente "Confiar en el acceso al modelo de objetos de proyectos de VBA" (AccessVBOM) y lo deja
 # como estaba. El trabajo con Excel corre en un proceso hijo: Excel solo se cierra del todo (y reescribe ese
@@ -8,7 +8,7 @@ param([switch]$Worker)
 $ErrorActionPreference = 'Stop'
 $root = Resolve-Path "$PSScriptRoot\..\.."
 $work = Join-Path $env:TEMP "eo-excel-build"
-$out = "$root\public\descargas"
+$out = "$root\storage\descargas"
 $books = @(
   @{ zip = 'numero-a-letras-excel'; lang = 'es'; mod = 'NumerosALetras'; example = 'NumerosALetras-ejemplo.xlsm'; readme = 'numero-a-letras.es.txt'; title = 'Número a letras para Excel (edwinortiz.net)' },
   @{ zip = 'number-to-words-excel'; lang = 'en'; mod = 'NumerosALetras'; example = 'NumerosALetras-example.xlsm'; readme = 'numero-a-letras.en.txt'; title = 'Number to words for Excel (edwinortiz.net)' },

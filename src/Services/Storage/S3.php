@@ -54,9 +54,9 @@ final class S3
     }
 
     /** Sube un archivo local. $public = lectura pública (imágenes); si no, el objeto queda privado. */
-    public static function put(string $key, string $file, string $contentType, bool $public, ?string $cacheControl = null): void
+    public static function put(string $key, string $file, string $contentType, bool $public, ?string $cacheControl = null, array $extraHeaders = []): void
     {
-        $headers = ['content-type' => $contentType];
+        $headers = ['content-type' => $contentType] + array_change_key_case($extraHeaders, CASE_LOWER);
         if ($public) {
             $headers['x-amz-acl'] = 'public-read';
         }
@@ -93,11 +93,15 @@ final class S3
     /** Tamaño en bytes del objeto, o null si no existe. */
     public static function size(string $key): ?int
     {
+        $headers = self::head($key);
+        return $headers === null ? null : (int) ($headers['content-length'] ?? 0);
+    }
+
+    /** Cabeceras del objeto (en minúsculas, incluidas las x-amz-meta-*), o null si no existe. */
+    public static function head(string $key): ?array
+    {
         $res = self::send('HEAD', $key);
-        if ($res['status'] !== 200) {
-            return null;
-        }
-        return isset($res['headers']['content-length']) ? (int) $res['headers']['content-length'] : 0;
+        return $res['status'] === 200 ? $res['headers'] : null;
     }
 
     /** URL temporal para descargar un objeto privado (con nombre de archivo sugerido). */

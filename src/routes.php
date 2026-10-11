@@ -50,6 +50,8 @@ return static function (Router $r): void {
     $r->post('/webhooks/{gateway}', [WebhookController::class, 'handle'], 'webhook');
     $r->get('/webhooks/{gateway}', [WebhookController::class, 'ping']);
     $r->get('/descarga/{token}/', [DownloadController::class, 'download'], 'download');
+    // Archivos gratuitos de artículos y herramientas: viven en S3 (recursos/), ver PublicDownloads.
+    $r->get('/descargas/{path:any}', [\App\Controllers\PublicDownloadController::class, 'show'], 'public.download');
     // Boletín: píxel de apertura y clics (redirección firmada con APP_KEY).
     $r->get('/n/o/{id}/{token}/', [\App\Controllers\NewsletterController::class, 'open'], 'newsletter.open');
     $r->get('/n/c/{id}/{token}/', [\App\Controllers\NewsletterController::class, 'click'], 'newsletter.click');

@@ -1,16 +1,17 @@
 <?php
 /** @var string $key @var array $excel ['module' => string, 'zip' => [locale => file]] */
 
-use App\Core\Config;
 use App\Services\I18n\I18n;
+use App\Services\Storage\PublicDownloads;
 
+// El ZIP está en S3 (inventario resources/descargas.json); sin él no se muestra la sección.
 $zip = $excel['zip'][I18n::locale()] ?? null;
-$file = $zip !== null ? Config::root('public/descargas/' . $zip) : null;
-if ($file === null || !is_file($file)) {
+$bytes = $zip !== null ? PublicDownloads::size($zip) : null;
+if ($bytes === null) {
     return;
 }
 $module = $excel['module'];
-$kb = I18n::number(filesize($file) / 1024, 0);
+$kb = I18n::number($bytes / 1024, 0);
 ?>
 <section class="excel-dl section wrap" id="excel" aria-labelledby="excel-dl-title">
   <div class="excel-dl__inner">

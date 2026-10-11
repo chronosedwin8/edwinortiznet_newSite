@@ -195,7 +195,7 @@ En este equipo el sitio corre en **http://localhost:8090/** mediante un VirtualH
 
 ### Módulos gratuitos para Excel
 
-Las herramientas de número a letras y de códigos QR también se descargan como módulos VBA para Excel (función `=NUMEROALETRAS()` / `=NUMBERTOWORDS()` y función `=QR()` con la macro `GenerarQR`). El código fuente está en `tools/excel/src/`. Para regenerar los ZIP de `public/descargas/` (módulo `.bas`, complemento `.xlam`, libro de ejemplo `.xlsm` e instrucciones) en un equipo con Excel para Windows:
+Las herramientas de número a letras y de códigos QR también se descargan como módulos VBA para Excel (función `=NUMEROALETRAS()` / `=NUMBERTOWORDS()` y función `=QR()` con la macro `GenerarQR`). El código fuente está en `tools/excel/src/`. Para regenerar los ZIP de `storage/descargas/` (luego `downloads:manifest` y `downloads:publish`, que los suben a S3) (módulo `.bas`, complemento `.xlam`, libro de ejemplo `.xlsm` e instrucciones) en un equipo con Excel para Windows:
 
 ```
 pwsh -File tools/excel/build.ps1

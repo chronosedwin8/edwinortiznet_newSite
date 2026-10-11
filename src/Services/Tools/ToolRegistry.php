@@ -17,7 +17,7 @@ final class ToolRegistry
             'product_wp_id' => 409,
             'script' => 'js/tools/qr-tool.js',
             'icon' => 'qr',
-            // Módulo VBA gratuito (tools/excel/build.ps1 genera los ZIP en public/descargas/)
+            // Módulo VBA gratuito (tools/excel/build.ps1 genera los ZIP en storage/descargas/; se publican en S3)
             'excel' => ['module' => 'CodigoQR', 'zip' => ['es' => 'codigo-qr-excel.zip', 'en' => 'qr-code-excel.zip']],
         ],
         'words' => [
@@ -50,6 +50,18 @@ final class ToolRegistry
             'tag' => 'tools.ai',
         ],
     ];
+
+    /** @return array<string, string[]> clave => ZIP de Excel de cada idioma (rutas bajo /descargas/) */
+    public static function excelZips(): array
+    {
+        $out = [];
+        foreach (self::TOOLS as $key => $tool) {
+            if (isset($tool['excel']['zip'])) {
+                $out[$key] = array_values($tool['excel']['zip']);
+            }
+        }
+        return $out;
+    }
 
     public static function forLocale(string $locale): array
     {
