@@ -59,6 +59,10 @@
         "size": 115619,
         "sha256": "bb7ad45b82fd72195b793788213d9bdf34733ad65397a5a24ff0ab17d2f64c93"
     },
+    "colegio-virtual-ia/matriz-viabilidad-colegio-virtual-ia.xlsx": {
+        "size": 10814,
+        "sha256": "137f87782b706849ea11355bac92536e87ac50a0d18df0394af14b67747a09fc"
+    },
     "comparar-creditos/comparador-ofertas-credito.xlsx": {
         "size": 11334,
         "sha256": "022c374ea00967b709305164c74949dd54f5705e532fbda945d3e269523c7a83"
@@ -202,6 +206,10 @@
     "deuda-tecnologica/inventario-herramientas-colegio.xlsx": {
         "size": 8053,
         "sha256": "4cfa5b3d4fb016719fe7ae7a62cee72ce487e08efbb28a9d456e3c19b92df5e6"
+    },
+    "docente-aprender-ia/balance-tiempo-aprender-ia-docente.xlsx": {
+        "size": 13248,
+        "sha256": "7212795b3dae910ede5e61b6d951ebe2198de0ada9d937040d6d5a5995a59a3e"
     },
     "ejecucion-presupuestal/ejecucion-presupuestal-colegio.xlsx": {
         "size": 30695,

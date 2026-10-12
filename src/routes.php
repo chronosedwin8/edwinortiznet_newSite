@@ -47,6 +47,8 @@ return static function (Router $r): void {
     $r->post('/api/carrito', [CartController::class, 'validate'], 'api.cart');
     $r->get('/api/reacciones/{id}', [\App\Controllers\ReactionsController::class, 'show'], 'api.reactions');
     $r->post('/api/reacciones/{id}', [\App\Controllers\ReactionsController::class, 'update']);
+    $r->get('/api/encuestas/{key}', [\App\Controllers\PollsController::class, 'show'], 'api.polls');
+    $r->post('/api/encuestas/{key}', [\App\Controllers\PollsController::class, 'vote']);
     $r->post('/webhooks/{gateway}', [WebhookController::class, 'handle'], 'webhook');
     $r->get('/webhooks/{gateway}', [WebhookController::class, 'ping']);
     $r->get('/descarga/{token}/', [DownloadController::class, 'download'], 'download');

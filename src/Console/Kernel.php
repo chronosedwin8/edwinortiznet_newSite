@@ -37,6 +37,7 @@ final class Kernel
                 'downloads:fetch' => $this->downloadsFetch(),
                 'downloads:manifest' => $this->downloadsManifest($options),
                 'downloads:publish' => $this->downloadsPublish($options),
+                'polls:results' => $this->pollsResults($options),
                 'sitemap:build' => $this->sitemap(),
                 'posts:publish-due' => $this->postsPublishDue(),
                 'admin:create' => $this->adminCreate($options),
@@ -66,7 +67,7 @@ final class Kernel
 
     private function help(): int
     {
-        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, downloads:manifest [carpeta], downloads:publish [carpeta], sitemap:build, posts:publish-due, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify, piar:purge, examenes:purge, kit:build [materia…] [--check], social:plan [--sin-ia], social:publish, social:connect, social:check, newsletter:run, newsletter:render [temas] [archivo.html] [--en]');
+        $this->out('Comandos: migrate [--fresh], import:wxr, seed, downloads:check, downloads:fetch, downloads:manifest [carpeta], downloads:publish [carpeta], polls:results [clave], sitemap:build, posts:publish-due, mail:test, mail:ses-password, admin:create, orders:reconcile, cache:clear, routes:check, storage:s3, waitlist:notify, piar:purge, examenes:purge, kit:build [materia…] [--check], social:plan [--sin-ia], social:publish, social:connect, social:check, newsletter:run, newsletter:render [temas] [archivo.html] [--en]');
         return 0;
     }
 
@@ -147,6 +148,52 @@ final class Kernel
         }
         \App\Core\Cache::flushPages();
         return $this->downloadsCheck();
+    }
+
+    /** Resultados de las encuestas de los artículos (todas, o la clave indicada). */
+    private function pollsResults(array $options): int
+    {
+        $keys = $options !== [] ? [$options[0]] : DB::column('SELECT DISTINCT poll_key FROM poll_votes ORDER BY poll_key');
+        if ($keys === []) {
+            $this->out('Aún no hay respuestas.');
+        }
+        foreach ($keys as $key) {
+            $def = \App\Services\Polls::definition((string) $key, 'es');
+            if ($def === null) {
+                $this->out("No existe resources/polls/$key.php");
+                continue;
+            }
+            $res = \App\Services\Polls::results((string) $key);
+            $byLocale = DB::all('SELECT locale, COUNT(DISTINCT visitor) AS n FROM poll_votes WHERE poll_key = :k GROUP BY locale', ['k' => $key]);
+            $this->out(sprintf('%s: %d persona(s) (%s)', $key, $res['people'], implode(', ', array_map(fn ($r) => $r['locale'] . ' ' . $r['n'], $byLocale))));
+            foreach ($def['questions'] as $i => $q) {
+                $this->out(sprintf('  %d. %s (%d respuestas)', $i + 1, $q['q'], $res['questions'][$i]['total']));
+                foreach ($q['options'] as $j => $option) {
+                    $n = $res['questions'][$i]['counts'][$j];
+                    $this->out(sprintf('       %5.1f %%  %3d  %s', $res['questions'][$i]['total'] ? 100 * $n / $res['questions'][$i]['total'] : 0, $n, $option));
+                }
+            }
+            $segments = \App\Services\Polls::segments((string) $key);
+            if ($segments !== []) {
+                $seg = $def['segment'];
+                $this->out(sprintf('  Cruce por la pregunta %d (%s):', $seg + 1, $def['questions'][$seg]['q']));
+                foreach ($segments as $j => $data) {
+                    if ($data['people'] === 0) {
+                        continue;
+                    }
+                    $this->out(sprintf('    %s (%d)', $def['questions'][$seg]['options'][$j], $data['people']));
+                    foreach ($data['questions'] as $i => $counts) {
+                        $total = array_sum($counts);
+                        if ($total === 0) {
+                            continue;
+                        }
+                        $top = array_keys($counts, max($counts))[0];
+                        $this->out(sprintf('       P%d: «%s» %d de %d', $i + 1, $def['questions'][$i]['options'][$top], $counts[$top], $total));
+                    }
+                }
+            }
+        }
+        return 0;
     }
 
     /** Inventario de los archivos gratuitos (storage/descargas/ por omisión) en resources/descargas.json. */

@@ -48,6 +48,13 @@ final class ContentRenderer
             return View::render('partials/inline-posts', ['posts' => $posts]);
         }, $html) ?? $html;
 
+        // Marcador {{encuesta:clave}}: encuesta corta (resources/polls/clave.php) con resultados en vivo.
+        $html = preg_replace_callback('#<p>\s*\{\{encuesta:([a-z0-9-]+)\}\}\s*</p>|\{\{encuesta:([a-z0-9-]+)\}\}#u', function (array $m) use ($locale): string {
+            $key = $m[1] !== '' ? $m[1] : ($m[2] ?? '');
+            $poll = \App\Services\Polls::definition($key, $locale);
+            return $poll === null ? '' : View::render('partials/poll', ['key' => $key, 'poll' => $poll, 'locale' => $locale]);
+        }, $html) ?? $html;
+
         $html = self::describeGenericLinks($html);
         $html = self::carousels($html);
         // Miniaturas de YouTube: 320 px en pantallas pequeñas, 480 px en el resto.
@@ -203,7 +210,10 @@ final class ContentRenderer
     /** Scripts que necesita el HTML ya renderizado (carousel.js solo si hay carruseles). */
     public static function scripts(string $html): array
     {
-        return str_contains($html, '<div class="carousel-gallery"') ? ['js/carousel.js'] : [];
+        return array_merge(
+            str_contains($html, '<div class="carousel-gallery"') ? ['js/carousel.js'] : [],
+            str_contains($html, 'data-poll') ? ['js/poll.js'] : []
+        );
     }
 
     /** Si $pos cae dentro de un carrusel, devuelve la posición justo después de su cierre. */
