@@ -15,7 +15,6 @@ final class Channels
     public const DEFAULT_ACCOUNTS = [
         'principal' => ['fb' => '1424980334291776', 'ig' => '17841405799896866'],
         'concurso' => ['fb' => '988842070972110'],
-        'miaulaweb' => ['fb' => '545086455830381', 'ig' => '17841406102216683'],
         'tecnozona' => ['fb' => '101073022380589'],
     ];
 
